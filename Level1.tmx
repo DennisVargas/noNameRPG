@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="left-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" source="../../git/PacWorm/PacWorm/src/worms/resource/blockedTiles.tsx"/>
+ <tileset firstgid="25" source="../../git/PacWorm/PacWorm/src/worms/resource/MapSet.tsx"/>
+ <tileset firstgid="46" source="../../git/PacWorm/PacWorm/src/worms/resource/RPGTiles.tsx"/>
+ <layer name="Tile Layer 1" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJzt3EtugzAABuEscv/jpdepsoiEkI1fP2YW80koojQsmBJsR+rn/Xp93FCbGI49ZjuW9jWndB1b17N23B7ran/vrfdc/dwe80rPD3s8p/Uc6N33+ZFxNb7qva5e/5xWD8fLeyWupz1yEvNIe+Ss3B+/9/3ZI6Z3fn4+/tv/skdObf7RM+7y8ypvZtxkj/vYgyUxrrJHzuh88Hz8+Kp19mAZWb+yx/16n9veH3t4f7DYg2Vk/aq3m+a11q/Ov1vat0fOSI/Se4+vWte7vlubn4983qmttP4xcw5lJNaj7JFjD5bE88AeOT3j2p5zKMMeLPZgufreb+Qcykj0UI73B4s9WFrrUiPrWVrn84Plqodd9ruaf9hlv57vo+yxz8j3gLpf7fPK8dMzEutXynE+weL1Z7EHiz1Y7MFiDxZ7sNiDxR4s9mCxB4s9WOzBYg8We7DYg8UeLPZgsQeLPVjswWIPFnuw2IPFHiz2YLEHiz1Y7MFiDxZ7sNiDxR4s9mCxB4s9WOzBYg8We7DYg8UeLPZgsQeLPVjswWIPFnuw2IPFHiz2YLEHiz1Y7MFS+3+Wbs9t/zpOM90=
+  </data>
+ </layer>
+ <layer name="Walls" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+  </data>
+ </layer>
+</map>
