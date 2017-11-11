@@ -1,11 +1,10 @@
 ## Resolved Issues ##
 - **[1]** Need a skeletal, executable game
-
+- **[4]** Create Main Menu with transitions to GamePlay state
 
 ## Claimed Issues ##
 - **[2]** Add art assets
 - **[3]** Build first level map with graphic tiles
-- **[4]** Add first level screen and transition from start
 - **[5]** Put character on screen with movement control and animation
 - **[6]** Client/server networking system
 
