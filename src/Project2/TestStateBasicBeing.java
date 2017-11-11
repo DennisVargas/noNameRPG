@@ -6,11 +6,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class BasicBeingTestState extends BasicGameState{
+public class TestStateBasicBeing extends BasicGameState{
     private int state_id;
     private int n;
     private BasicBeing being1;
-    public BasicBeingTestState(int state_id) {
+    public TestStateBasicBeing(int state_id) {
         this.state_id = state_id;
     }
 
