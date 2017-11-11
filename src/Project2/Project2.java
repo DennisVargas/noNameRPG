@@ -1,8 +1,6 @@
 package Project2;
 
-import jdk.nashorn.internal.objects.annotations.Property;
 import jig.Entity;
-import org.lwjgl.util.mapped.MappedField;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;
@@ -26,6 +24,8 @@ public class Project2 extends StateBasedGame {
      * these are defined test states for development purposes
      */
     public static final int BASICBEINGTESTSTATE = 20;
+    public static final int MENUITEMTESTSTATE = 21;
+
 
 
 
@@ -46,8 +46,10 @@ public class Project2 extends StateBasedGame {
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         Entity.setCoarseGrainedCollisionBoundary(Entity.CIRCLE);
+//        this.addState(new TestStateMenuItem(BASICBEINGTESTSTATE));
+//        this.addState(new TestStateBasicBeing(BASICBEINGTESTSTATE));
         this.addState(new MainMenuState(MAINMENUSTATE));
-        this.addState(new BasicBeingTestState(BASICBEINGTESTSTATE));
+        
     }
 
 }
