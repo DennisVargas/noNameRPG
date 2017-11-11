@@ -7,7 +7,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
-import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class MainMenuState extends BasicGameState {
@@ -15,6 +14,7 @@ public class MainMenuState extends BasicGameState {
 
     private String inputCommand;
 
+//  MenuItem objects are a vector position and a animation
     private MenuItem newSingleItem; private MenuItem quitItem;
     private MenuItem newMultiItem; private MenuItem optionItem;
 
@@ -22,8 +22,11 @@ public class MainMenuState extends BasicGameState {
         return stateId;
     }
 
-    private enum MenuChoices {NewSingle, NewMulti, Options, Quit}
-    MenuChoices menuChoice;
+    /**
+     * MainMenuChoices in main menu
+     */
+    private enum MainMenuChoices {NewSingle, NewMulti, Options, Quit}
+    MainMenuChoices menuChoice;
 
 //  image resource file paths that will be passed to MenuItem() constructor
     private static String singlePlayerOffImageRsc = "testAssets/new_game3.png";
@@ -54,7 +57,7 @@ public class MainMenuState extends BasicGameState {
         ResourceManager.loadImage(optionsOnImageRsc);
         ResourceManager.loadImage(quitOffImageRsc);
         ResourceManager.loadImage(quitOnImageRsc);
-        menuChoice = MenuChoices.NewSingle;
+        menuChoice = MainMenuChoices.NewSingle;
     }
 
     @Override
@@ -68,6 +71,7 @@ public class MainMenuState extends BasicGameState {
         optionItem.setItemOff();
         quitItem = new MenuItem(new Vector(640f, 250f), quitOffImageRsc, quitOnImageRsc,"quit-item");
         quitItem.setItemOff();
+        menuChoice = MainMenuChoices.NewSingle;
     }
 
     @Override
@@ -87,7 +91,17 @@ public class MainMenuState extends BasicGameState {
         ProcessInputCommand(inputCommand, stateBasedGame);
     }
 
-    private void ProcessInputCommand(String inputCommand, StateBasedGame sbg) {
+    /**
+     * ProcessInputCommand takes a string and evaluates
+     * which menuitem to switch on and off based on the
+     * currently selected menuChoice. Once the MenuItem is
+     * toggled On or Off the menuChoice is iterated to the
+     * new choice. stateBasedGame is passed so this function
+     * can transition to another state if the command is "enter"
+     * @param inputCommand
+     * @param stateBasedGame
+     */
+    private void ProcessInputCommand(String inputCommand, StateBasedGame stateBasedGame) {
         switch(inputCommand){
             case "up":
                 // menuChoice gets set in Input Process this is wrong.
@@ -95,22 +109,22 @@ public class MainMenuState extends BasicGameState {
                     case NewSingle:
                         newSingleItem.setItemOff();
                         quitItem.setItemOn();
-                        menuChoice = MenuChoices.Quit;
+                        menuChoice = MainMenuChoices.Quit;
                         break;
                     case NewMulti:
                         newSingleItem.setItemOn();
                         newMultiItem.setItemOff();
-                        menuChoice = MenuChoices.NewSingle;
+                        menuChoice = MainMenuChoices.NewSingle;
                         break;
                     case Options:
                         newMultiItem.setItemOn();
                         optionItem.setItemOff();
-                        menuChoice = MenuChoices.NewMulti;
+                        menuChoice = MainMenuChoices.NewMulti;
                         break;
                     case Quit:
                         quitItem.setItemOff();
                         optionItem.setItemOn();
-                        menuChoice = MenuChoices.Options;
+                        menuChoice = MainMenuChoices.Options;
                         break;
                     default:
                         break;
@@ -121,22 +135,22 @@ public class MainMenuState extends BasicGameState {
                     case NewSingle:
                         newSingleItem.setItemOff();
                         newMultiItem.setItemOn();
-                        menuChoice = MenuChoices.NewMulti;
+                        menuChoice = MainMenuChoices.NewMulti;
                         break;
                     case NewMulti:
                         newMultiItem.setItemOff();
                         optionItem.setItemOn();
-                        menuChoice = MenuChoices.Options;
+                        menuChoice = MainMenuChoices.Options;
                         break;
                     case Options:
                         optionItem.setItemOff();
                         quitItem.setItemOn();
-                        menuChoice = MenuChoices.Quit;
+                        menuChoice = MainMenuChoices.Quit;
                         break;
                     case Quit:
                         quitItem.setItemOff();
                         newSingleItem.setItemOn();
-                        menuChoice = MenuChoices.NewSingle;
+                        menuChoice = MainMenuChoices.NewSingle;
                         break;
                     default:
                         break;
@@ -145,10 +159,13 @@ public class MainMenuState extends BasicGameState {
             case "enter":
                 switch(menuChoice){
                     case NewSingle:
+                        stateBasedGame.enterState(Project2.NEWSINGLEMENUSTATE);
                         break;
                     case NewMulti:
+                        stateBasedGame.enterState(Project2.NEWMULTIMENUSTATE);
                         break;
                     case Options:
+                        stateBasedGame.enterState(Project2.OPTIONMENUSTATE);
                         break;
                     case Quit:
                         System.exit(0);
