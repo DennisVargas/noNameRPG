@@ -10,6 +10,11 @@ import org.newdawn.slick.state.StateBasedGame;
 public class MainMenuState extends BasicGameState {
     private int stateId;
 
+    private String inputCommand;
+
+    private MenuItem newSingleItem; private MenuItem quitItem;
+    private MenuItem newMultiItem; private MenuItem optionItem;
+
     public MainMenuState(int stateId) {
         this.stateId = stateId;
     }
