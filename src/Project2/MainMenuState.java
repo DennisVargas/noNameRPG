@@ -1,7 +1,10 @@
 package Project2;
 
+import jig.ResourceManager;
+import jig.Vector;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.GameState;
@@ -15,9 +18,14 @@ public class MainMenuState extends BasicGameState {
     private MenuItem newSingleItem; private MenuItem quitItem;
     private MenuItem newMultiItem; private MenuItem optionItem;
 
+    public int getStateId() {
+        return stateId;
+    }
+
     private enum MenuChoices {NewSingle, NewMulti, Options, Quit}
     MenuChoices menuChoice;
-    
+
+//  image resource file paths that will be passed to MenuItem() constructor
     private static String singlePlayerOffImageRsc = "testAssets/new_game3.png";
     private static String singlePlayerOnImageRsc = "testAssets/new_game4.png";
     private static String multiPlayerOffImageRsc = "testAssets/new_game3.png";
@@ -38,23 +46,119 @@ public class MainMenuState extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        System.out.println("Init Main Menu State "
-                + gameContainer.getScreenHeight());
+        ResourceManager.loadImage(singlePlayerOffImageRsc);
+        ResourceManager.loadImage(singlePlayerOnImageRsc);
+        ResourceManager.loadImage(multiPlayerOffImageRsc);
+        ResourceManager.loadImage(multiPlayerOnImageRsc);
+        ResourceManager.loadImage(optionsOffImageRsc);
+        ResourceManager.loadImage(optionsOnImageRsc);
+        ResourceManager.loadImage(quitOffImageRsc);
+        ResourceManager.loadImage(quitOnImageRsc);
+        menuChoice = MenuChoices.NewSingle;
     }
 
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        System.out.println("Entering Main Menu state");
+        newSingleItem = new MenuItem(new Vector(640f, 100f), singlePlayerOffImageRsc, singlePlayerOnImageRsc,"new-game-item");
+        newSingleItem.setItemOn();
+        newMultiItem = new MenuItem(new Vector(640f, 150f), multiPlayerOffImageRsc, multiPlayerOnImageRsc,"quit-item");
+        newMultiItem.setItemOff();
+        optionItem = new MenuItem(new Vector(640f, 200f), optionsOffImageRsc, optionsOnImageRsc,"quit-item");
+        optionItem.setItemOff();
+        quitItem = new MenuItem(new Vector(640f, 250f), quitOffImageRsc, quitOnImageRsc,"quit-item");
+        quitItem.setItemOff();
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-        graphics.drawString(String.valueOf(stateId), 640,360);
+        newSingleItem.renderItem(graphics);
+        newMultiItem.renderItem(graphics);
+        optionItem.renderItem(graphics);
+        quitItem.renderItem(graphics);
+        graphics.drawString(String.valueOf(menuChoice), 200,125);
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
+        Input input = gameContainer.getInput();
 
+        inputCommand = InputManager.ProcessInput(input, getStateId());
+        ProcessInputCommand(inputCommand, stateBasedGame);
+    }
+
+    private void ProcessInputCommand(String inputCommand, StateBasedGame sbg) {
+        switch(inputCommand){
+            case "up":
+                // menuChoice gets set in Input Process this is wrong.
+                switch(menuChoice){
+                    case NewSingle:
+                        newSingleItem.setItemOff();
+                        quitItem.setItemOn();
+                        menuChoice = MenuChoices.Quit;
+                        break;
+                    case NewMulti:
+                        newSingleItem.setItemOn();
+                        newMultiItem.setItemOff();
+                        menuChoice = MenuChoices.NewSingle;
+                        break;
+                    case Options:
+                        newMultiItem.setItemOn();
+                        optionItem.setItemOff();
+                        menuChoice = MenuChoices.NewMulti;
+                        break;
+                    case Quit:
+                        quitItem.setItemOff();
+                        optionItem.setItemOn();
+                        menuChoice = MenuChoices.Options;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "down":
+                switch(menuChoice){
+                    case NewSingle:
+                        newSingleItem.setItemOff();
+                        newMultiItem.setItemOn();
+                        menuChoice = MenuChoices.NewMulti;
+                        break;
+                    case NewMulti:
+                        newMultiItem.setItemOff();
+                        optionItem.setItemOn();
+                        menuChoice = MenuChoices.Options;
+                        break;
+                    case Options:
+                        optionItem.setItemOff();
+                        quitItem.setItemOn();
+                        menuChoice = MenuChoices.Quit;
+                        break;
+                    case Quit:
+                        quitItem.setItemOff();
+                        newSingleItem.setItemOn();
+                        menuChoice = MenuChoices.NewSingle;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "enter":
+                switch(menuChoice){
+                    case NewSingle:
+                        break;
+                    case NewMulti:
+                        break;
+                    case Options:
+                        break;
+                    case Quit:
+                        System.exit(0);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
