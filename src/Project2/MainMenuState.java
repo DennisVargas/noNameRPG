@@ -15,6 +15,18 @@ public class MainMenuState extends BasicGameState {
     private MenuItem newSingleItem; private MenuItem quitItem;
     private MenuItem newMultiItem; private MenuItem optionItem;
 
+    private enum MenuChoices {NewSingle, NewMulti, Options, Quit}
+    MenuChoices menuChoice;
+    
+    private static String singlePlayerOffImageRsc = "testAssets/new_game3.png";
+    private static String singlePlayerOnImageRsc = "testAssets/new_game4.png";
+    private static String multiPlayerOffImageRsc = "testAssets/new_game3.png";
+    private static String multiPlayerOnImageRsc = "testAssets/new_game4.png";
+    private static String optionsOffImageRsc = "testAssets/options3.png";
+    private static String optionsOnImageRsc = "testAssets/options4.png";
+    private static String quitOffImageRsc = "testAssets/quit3.png";
+    private static String quitOnImageRsc = "testAssets/quit4.png";
+
     public MainMenuState(int stateId) {
         this.stateId = stateId;
     }

@@ -49,7 +49,7 @@ public class Project2 extends StateBasedGame {
 //        this.addState(new TestStateMenuItem(BASICBEINGTESTSTATE));
 //        this.addState(new TestStateBasicBeing(BASICBEINGTESTSTATE));
         this.addState(new MainMenuState(MAINMENUSTATE));
-        
+
     }
 
 }
