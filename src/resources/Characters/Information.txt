@@ -1,0 +1,8 @@
+CrystalBuddy
+1- moving right
+2- moving left
+3- moving forward
+4- moving backwards
+5- being hit
+6- idle
+7- death
