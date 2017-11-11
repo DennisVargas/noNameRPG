@@ -19,7 +19,6 @@ public class Project2 extends StateBasedGame {
     public static final float SCALE = 1f;
     public static final String NAME = "Game Project 2";
 
-
     /**
      * 5 MAIN GAME STATES
      */

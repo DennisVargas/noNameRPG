@@ -1,14 +1,13 @@
 ## Resolved Issues ##
 - **[1]** Need a skeletal, executable game
 - **[4]** Create Main Menu with transitions to GamePlay state
+- **[25]** Add Gamepad functionality to input Manager Menu Controls
 
 ## Claimed Issues ##
 - **[2]** Add art assets
 - **[3]** Build first level map with graphic tiles
 - **[5]** Put character on screen with movement control and animation
 - **[6]** Client/server networking system
-- **[25]** Add Gamepad functionality to menu controls
-
 
 ## Open Issues ##
 - **[7]** Camera viewport that follows player
@@ -31,4 +30,3 @@
 - **[24]** Create functional MenuItem object in Single player menu
 - **[26]** Create functional MenuItems in Option Menu
 - **[26]** Create functional MenuItems in Multiplayer Menu
-- **[27]**
