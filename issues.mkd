@@ -1,0 +1,30 @@
+## Resolved Issues ##
+- **[1]** Need a skeletal, executable game
+
+
+## Claimed Issues ##
+- **[2]** Add art assets
+- **[3]** Build first level map with graphic tiles
+- **[4]** Add first level screen and transition from start
+- **[5]** Put character on screen with movement control and animation
+- **[6]** Client/server networking system
+
+
+## Open Issues ##
+- **[7]** Camera viewport that follows player
+- **[8]** Add first animated mob
+- **[9]** Add mob path finding
+- **[10]** Add mob death
+- **[11]** Add character death, basic lives counter, and game over screen
+- **[12]** Add additional animated mob types
+- **[13]** UI design (health for each player, life pool, collectible items)
+- **[14]** Design and implement level 1 mob & item locations
+- **[15]** Mob & destructibles drop system
+- **[16]** Add money-to-lives system
+- **[17]** Add second character type
+- **[18]** Splash screen & menu system for character selection and networking integration
+- **[19]** Level complete and win screens
+- **[20]** Add music and sound effects
+- **[21]** Build second level map
+- **[22]** Design and implement level 2 mob & item locations
+- **[23]** Add any missing mobs if less than four types implemented
