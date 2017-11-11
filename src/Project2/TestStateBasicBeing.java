@@ -33,4 +33,5 @@ public class TestStateBasicBeing extends BasicGameState{
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         n++;
     }
+
 }
