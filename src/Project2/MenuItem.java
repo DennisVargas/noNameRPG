@@ -16,6 +16,8 @@ public class MenuItem {
         setName(itemName);
         //  set menu item off and on images
         InitAnimation(notSelectedImage, selectedImage);
+        ResourceManager.loadImage(notSelectedImage);
+        ResourceManager.loadImage(selectedImage);
         //
 
     }
