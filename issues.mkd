@@ -7,6 +7,7 @@
 - **[3]** Build first level map with graphic tiles
 - **[5]** Put character on screen with movement control and animation
 - **[6]** Client/server networking system
+- **[25]** Add Gamepad functionality to menu controls
 
 
 ## Open Issues ##
@@ -27,3 +28,7 @@
 - **[21]** Build second level map
 - **[22]** Design and implement level 2 mob & item locations
 - **[23]** Add any missing mobs if less than four types implemented
+- **[24]** Create functional MenuItem object in Single player menu
+- **[26]** Create functional MenuItems in Option Menu
+- **[26]** Create functional MenuItems in Multiplayer Menu
+- **[27]**
