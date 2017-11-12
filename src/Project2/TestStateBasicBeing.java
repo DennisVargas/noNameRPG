@@ -1,5 +1,7 @@
 package Project2;
 
+import jig.ResourceManager;
+import jig.Vector;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -14,6 +16,9 @@ public class TestStateBasicBeing extends BasicGameState{
         this.state_id = state_id;
     }
 
+    private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+
     @Override
     public int getID() {
         return this.state_id;
@@ -21,12 +26,21 @@ public class TestStateBasicBeing extends BasicGameState{
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
+        ResourceManager.loadImage(WALKINGSHEETRSC);
+        ResourceManager.loadImage(ATTACKINGSHEETRSC);
+    }
 
+    @Override
+    public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+        super.enter(container, game);
+        being1 = new BasicBeing(new Vector(200,200), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
+                ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         graphics.drawString("hello Test Basic Being " + n, 640,360);
+        being1.RenderBeing();
     }
 
     @Override
