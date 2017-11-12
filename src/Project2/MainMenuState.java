@@ -12,7 +12,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class MainMenuState extends BasicGameState {
     private int stateId;
 
-    private String inputCommand;
+    private InputManager.InputCommands inputCommand;
 
 //  MenuItem objects are a vector position and a animation
     private MenuItem newSingleItem; private MenuItem quitItem;
@@ -101,9 +101,9 @@ public class MainMenuState extends BasicGameState {
      * @param inputCommand
      * @param stateBasedGame
      */
-    private void ProcessInputCommand(String inputCommand, StateBasedGame stateBasedGame) {
+    private void ProcessInputCommand(InputManager.InputCommands inputCommand, StateBasedGame stateBasedGame) {
         switch(inputCommand){
-            case "up":
+            case up:
                 // menuChoice gets set in Input Process this is wrong.
                 switch(menuChoice){
                     case NewSingle:
@@ -130,7 +130,7 @@ public class MainMenuState extends BasicGameState {
                         break;
                 }
                 break;
-            case "down":
+            case down:
                 switch(menuChoice){
                     case NewSingle:
                         newSingleItem.setItemOff();
@@ -156,7 +156,7 @@ public class MainMenuState extends BasicGameState {
                         break;
                 }
                 break;
-            case "enter":
+            case enter:
                 switch(menuChoice){
                     case NewSingle:
                         stateBasedGame.enterState(Project2.NEWSINGLEMENUSTATE);

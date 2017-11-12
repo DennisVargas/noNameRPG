@@ -19,7 +19,7 @@ public class NewSingleMenu extends BasicGameState {
     private static final String startGameOnRsc = "testAssets/start_game_white.png";
 
 
-    private String inputCommand;
+    private InputManager.InputCommands inputCommand;
 
     public int getStateId() {
         return stateId;
@@ -44,7 +44,6 @@ public class NewSingleMenu extends BasicGameState {
         ResourceManager.loadImage(backOnRsc);
         ResourceManager.loadImage(startGameOffRsc);
         ResourceManager.loadImage(startGameOnRsc);
-
     }
 
     @Override
@@ -71,10 +70,10 @@ public class NewSingleMenu extends BasicGameState {
         ProcessInputCommand(inputCommand, stateBasedGame);
     }
 
-    private void ProcessInputCommand(String inputCommand, StateBasedGame stateBasedGame) {
+    private void ProcessInputCommand(InputManager.InputCommands inputCommand, StateBasedGame stateBasedGame) {
         switch(inputCommand){
-            case "up":
-            case "down":
+            case up:
+            case down:
                 switch(menuChoice){
                     case start:
                         startGameItem.setItemOff();
@@ -88,7 +87,7 @@ public class NewSingleMenu extends BasicGameState {
                         break;
                 }
                 break;
-            case "enter":
+            case enter:
                 switch(menuChoice){
                     case start:
                         stateBasedGame.enterState(Project2.GAMEPLAYSTATE);

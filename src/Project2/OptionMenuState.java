@@ -15,7 +15,8 @@ public class OptionMenuState extends BasicGameState {
     private MenuItem backItem;
     private static final String backOffRsc = "testAssets/grey_back.png";
     private static final String backOnRsc = "testAssets/white_back.png";
-    private String inputCommand;
+
+    private InputManager.InputCommands inputCommand;
 
     public int getStateId() {
         return stateId;
@@ -58,12 +59,16 @@ public class OptionMenuState extends BasicGameState {
         ProcessInputCommand(inputCommand, stateBasedGame);
     }
 
-    private void ProcessInputCommand(String inputCommand, StateBasedGame stateBasedGame) {
+    private void ProcessInputCommand(InputManager.InputCommands inputCommand, StateBasedGame stateBasedGame) {
+
         switch(inputCommand){
-            case "enter":
+//      todo: fill in with options menu things here
+            case enter:
                 switch(menuChoice){
                     case back:
                         stateBasedGame.enterState(Project2.MAINMENUSTATE);
+                        break;
+                    default:
                         break;
                 }
         }
