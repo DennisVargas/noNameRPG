@@ -65,14 +65,14 @@ public class MainMenuState extends BasicGameState {
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
         newSingleItem = new MenuItem(new Vector(640f, 100f), singlePlayerOffImageRsc, singlePlayerOnImageRsc,"new-game-item");
-        newSingleItem.setItemOn();
+        newSingleItem.setItemOff();
         newMultiItem = new MenuItem(new Vector(640f, 150f), multiPlayerOffImageRsc, multiPlayerOnImageRsc,"quit-item");
-        newMultiItem.setItemOff();
+        newMultiItem.setItemOn();
         optionItem = new MenuItem(new Vector(640f, 200f), optionsOffImageRsc, optionsOnImageRsc,"quit-item");
         optionItem.setItemOff();
         quitItem = new MenuItem(new Vector(640f, 250f), quitOffImageRsc, quitOnImageRsc,"quit-item");
         quitItem.setItemOff();
-        menuChoice = MainMenuChoices.NewSingle;
+        menuChoice = MainMenuChoices.NewMulti;
     }
 
     @Override
