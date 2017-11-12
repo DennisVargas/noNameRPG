@@ -3,6 +3,7 @@ package Project2;
 import jig.Entity;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -36,8 +37,6 @@ public class Project2 extends StateBasedGame {
 
     public Project2() {
         super(NAME);
-//        test states
-//        this.addState(new TestStateBasicBeing(BASICBEINGTESTSTATE));
 
 //      official states
         this.addState(new MainMenuState(MAINMENUSTATE));
@@ -45,6 +44,9 @@ public class Project2 extends StateBasedGame {
         this.addState(new NewMultiMenu(NEWMULTIMENUSTATE));
         this.addState(new OptionMenuState(OPTIONMENUSTATE));
         this.addState(new GamePlayState(GAMEPLAYSTATE));
+
+//       TEST STATES
+        this.addState(new TestStateBasicBeing(BASICBEINGTESTSTATE));
     }
 
     public static void main(String[] args)throws SlickException{
@@ -60,8 +62,13 @@ public class Project2 extends StateBasedGame {
     @Override
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         Entity.setCoarseGrainedCollisionBoundary(Entity.CIRCLE);
+        Input input = gameContainer.getInput();
+        input.initControllers();
+        input.clearControlPressedRecord();
+
 //        test states init
-//        this.getState(BASICBEINGTESTSTATE).init(gameContainer,this);
+        this.getState(BASICBEINGTESTSTATE).init(gameContainer,this);
+
 
 //        official state init
         this.getState(MAINMENUSTATE).init(gameContainer, this);
