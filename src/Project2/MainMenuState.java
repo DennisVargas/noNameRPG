@@ -8,11 +8,12 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import static Project2.InputManager.InputCommands;
 
 public class MainMenuState extends BasicGameState {
     private int stateId;
 
-    private InputManager.InputCommands inputCommand;
+    private InputCommands inputCommand;
 
 //  MenuItem objects are a vector position and a animation
     private MenuItem newSingleItem; private MenuItem quitItem;

@@ -4,7 +4,8 @@ import org.newdawn.slick.Input;
 
 public class InputManager {
 
-    public enum InputCommands {up, down, left, right, enter, idle, attack, back}
+    public enum InputCommands {up, down, left, right, enter, idle, attack, back, hit,
+                                ulDiag, dlDiag, urDiag, drDiag, death}
 
     private static boolean buttonBeenPressed;
 
@@ -15,16 +16,31 @@ public class InputManager {
             return ProcessMenuInput(input);
         }
 //      if currently in the game state
-        else if(stateId == Project2.GAMEPLAYSTATE){
+        else if(stateId == Project2.GAMEPLAYSTATE || stateId == Project2.BASICBEINGTESTSTATE){
             return ProcessGamePlayInput(input);
         }
         else
             return InputCommands.idle;
     }
 
-    private static InputManager.InputCommands ProcessGamePlayInput(Input input) {
+    private static InputCommands ProcessGamePlayInput(Input input) {
         if(input.isKeyPressed(Input.KEY_ESCAPE)){
             return InputCommands.back;
+        }else if(input.isKeyDown(Input.KEY_W)
+                ||input.isControllerUp(0)){
+            return InputCommands.up;
+        }else if(input.isKeyDown(Input.KEY_S)
+                ||input.isControllerDown(0)){
+            return InputCommands.down;
+        }else if(input.isKeyDown(Input.KEY_A)
+                ||input.isControllerLeft(0)){
+            return InputCommands.left;
+        }else if(input.isKeyDown(Input.KEY_D)
+                ||input.isControllerRight(0)) {
+            return InputCommands.right;
+        }else if(input.isKeyDown(Input.KEY_UP)
+                ||input.isButton3Pressed(0)){
+            return InputCommands.attack;
         }
         return InputCommands.idle;
     }
