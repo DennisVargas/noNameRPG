@@ -3,6 +3,7 @@ package Project2;
 import org.newdawn.slick.Input;
 
 import static Project2.InputManager.InputCommands.*;
+
 public class InputManager {
 
     public enum InputCommands {up, down, left, right, enter, idle, attack, back, hit,
@@ -70,7 +71,7 @@ public class InputManager {
         if (input.isKeyPressed(Input.KEY_DOWN)) {
             return InputCommands.down;
         } else if (input.isKeyPressed(Input.KEY_UP)) {
-            return InputCommands.up;
+            return up;
         } else if (input.isKeyPressed(Input.KEY_ENTER)) {
             return InputCommands.enter;
         }
@@ -82,7 +83,7 @@ public class InputManager {
         } else if (input.isControllerUp(0)) {
             if(!buttonBeenPressed){
                 buttonBeenPressed = true;
-                return InputCommands.up;}
+                return up;}
 
         } else if (input.isControllerDown(0)) {
             if(!buttonBeenPressed){

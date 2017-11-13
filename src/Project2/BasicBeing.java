@@ -27,7 +27,7 @@ public class BasicBeing extends Entity{
     private float speed =2f;
     private Animation currentAnimation;
     boolean isHit = false;
-    boolean isDead = false;
+
 
     public BasicBeing(Vector position, SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
         super(position);
@@ -38,6 +38,10 @@ public class BasicBeing extends Entity{
         setCurrentAnimation(idleAnim);
         InitNextVectors();
 
+    }
+
+    public boolean isDead(){
+        return health <= 0;
     }
 
     private void InitNextVectors() {
