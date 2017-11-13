@@ -2,11 +2,12 @@
 - **[1]** Need a skeletal, executable game
 - **[4]** Create Main Menu with transitions to GamePlay state
 - **[25]** Add Gamepad functionality to input Manager Menu Controls
+- **[5]** Put character on screen with movement control and animation
 
 ## Claimed Issues ##
 - **[2]** Add art assets
 - **[3]** Build first level map with graphic tiles
-- **[5]** Put character on screen with movement control and animation
+- **[27]** InputManager detect if more than one move direction is pressed.
 - **[6]** Client/server networking system
 
 ## Open Issues ##
@@ -30,3 +31,4 @@
 - **[24]** Create functional MenuItem object in Single player menu
 - **[26]** Create functional MenuItems in Option Menu
 - **[26]** Create functional MenuItems in Multiplayer Menu
+
