@@ -145,7 +145,7 @@ public class BasicBeing extends Entity{
         setNextMoveDirection(getNextMoveCommand());
 //        multiply direction by movement speed
         setNextMoveTranslation();
-//
+
         setNextPosition();
 
     }
@@ -159,9 +159,13 @@ public class BasicBeing extends Entity{
                 setCurrentAnimation(walkDnAnim);
                 break;
             case left:
+            case dlDiag:
+            case ulDiag:
                 setCurrentAnimation(walkLeftAnim);
                 break;
             case right:
+            case drDiag:
+            case urDiag:
                 setCurrentAnimation(walkRightAnim);
                 break;
             case idle:
@@ -176,6 +180,7 @@ public class BasicBeing extends Entity{
             case death:
                 setCurrentAnimation(deathAnim);
                 break;
+
         }
     }
 
