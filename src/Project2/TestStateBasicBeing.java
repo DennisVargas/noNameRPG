@@ -14,6 +14,8 @@ import static Project2.InputManager.InputCommands;
 import static Project2.InputManager.InputCommands.*;
 
 public class TestStateBasicBeing extends BasicGameState{
+    private double x, y;
+    private int mapX, mapY;
     private int stateId;
     private int n;
     private BasicBeing being1;
@@ -27,7 +29,9 @@ public class TestStateBasicBeing extends BasicGameState{
     private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
 
     public TiledMap mapTest = null;
+    public TiledMap map1 = null;
     private final String TESTLEVELRSC = "resources/Levels/testlevel.tmx";
+    private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
     private final String TILESHEETRSC = "resources/Levels";
 
     @Override
@@ -39,20 +43,25 @@ public class TestStateBasicBeing extends BasicGameState{
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         ResourceManager.loadImage(WALKINGSHEETRSC);
         ResourceManager.loadImage(ATTACKINGSHEETRSC);
-        mapTest = new TiledMap(TESTLEVELRSC,TILESHEETRSC);
+//        mapTest = new TiledMap(TESTLEVELRSC,TILESHEETRSC);
+        map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
     }
 
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        being1 = new BasicBeing(new Vector(1260,680), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
+        System.out.println(container.getWidth());
+        System.out.println(container.getHeight());
+        being1 = new BasicBeing(new Vector(container.getWidth()/2,container.getHeight()/2), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
                 ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
+        mapX = 90;
+        mapY = 104;
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
 
-        mapTest.render(0, 0);
+        map1.render((int)x - 32, (int)y - 32, mapX, mapY, mapX + 45, mapY + 30);
         graphics.drawString("hello Test Basic Being " + n, 640,360);
         being1.RenderBeing(graphics);
     }
@@ -60,8 +69,33 @@ public class TestStateBasicBeing extends BasicGameState{
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input input = gameContainer.getInput();
-        inputCommand = InputManager.ProcessInput(input, stateId);
+        if (input.isKeyDown(Input.KEY_W))
+            y += i/3.0f;
+        if (input.isKeyDown(Input.KEY_S))
+            y  -= i/3.0f;
+        if (input.isKeyDown(Input.KEY_D))
+            x -= i/3.0f;
+        if (input.isKeyDown(Input.KEY_A))
+            x += i/3.0f;
 
+        if (x < 0) {
+            mapX++;
+            x = 32;
+        }
+        if (x > 32) {
+            mapX --;
+            x = 0;
+        }
+        if (y < 0) {
+            mapY++;
+            y = 32;
+        }
+        if (y > 32) {
+            mapY --;
+            y = 0;
+        }
+        inputCommand = InputManager.ProcessInput(input, stateId);
+//
         ProcessInputCommand(inputCommand);
     }
 
