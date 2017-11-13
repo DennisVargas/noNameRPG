@@ -8,11 +8,10 @@
 ## Claimed Issues ##
 - **[2]** Add art assets
 - **[3]** Build first level map with graphic tiles
-
 - **[6]** Client/server networking system
+- **[7]** Camera viewport that follows player
 
 ## Open Issues ##
-- **[7]** Camera viewport that follows player
 - **[8]** Add first animated mob
 - **[9]** Add mob path finding
 - **[10]** Add mob death

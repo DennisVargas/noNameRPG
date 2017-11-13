@@ -66,5 +66,4 @@ public class TestStateBasicBeing extends BasicGameState{
         //  private methods.
         being1.UpdateBeing();
     }
-
 }
