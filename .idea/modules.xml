@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JIG/JIG.iml" filepath="$PROJECT_DIR$/JIG/JIG.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../repo/JIG/JIG.iml" filepath="$PROJECT_DIR$/../repo/JIG/JIG.iml" />
       <module fileurl="file://$PROJECT_DIR$/Project2.iml" filepath="$PROJECT_DIR$/Project2.iml" />
     </modules>
   </component>

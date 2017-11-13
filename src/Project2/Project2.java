@@ -8,7 +8,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class Project2 extends StateBasedGame {
-    public static final int WIDTH = 1280;
+//    public static final int WIDTH = 1280;
+    public static final int WIDTH = 1920;
     public static final int HEIGHT = (WIDTH/16)*9;
     /**
      * If changing the screen resolution this SCALE variable

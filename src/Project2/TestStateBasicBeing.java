@@ -8,6 +8,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.tiled.TiledMap;
+
 import static Project2.InputManager.InputCommands;
 import static Project2.InputManager.InputCommands.*;
 
@@ -24,6 +26,10 @@ public class TestStateBasicBeing extends BasicGameState{
     private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
 
+    public TiledMap mapTest = null;
+    private final String TESTLEVELRSC = "resources/Levels/testlevel.tmx";
+    private final String TILESHEETRSC = "resources/Levels";
+
     @Override
     public int getID() {
         return this.stateId;
@@ -33,6 +39,7 @@ public class TestStateBasicBeing extends BasicGameState{
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         ResourceManager.loadImage(WALKINGSHEETRSC);
         ResourceManager.loadImage(ATTACKINGSHEETRSC);
+        mapTest = new TiledMap(TESTLEVELRSC,TILESHEETRSC);
     }
 
     @Override
@@ -44,6 +51,7 @@ public class TestStateBasicBeing extends BasicGameState{
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+        mapTest.render(0, 0);
         graphics.drawString("hello Test Basic Being " + n, 640,360);
         being1.RenderBeing(graphics);
     }
