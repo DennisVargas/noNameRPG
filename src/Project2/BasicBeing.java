@@ -20,6 +20,7 @@ public class BasicBeing extends Entity{
     private Animation walkRightAnim, walkLeftAnim, walkUpAnim, walkDnAnim,
             idleAnim, attackAnim, hitAnim, deathAnim, currentAnim;
     private String name = "default";
+    private int beingID = 0;
     private InputCommands nextMoveCommand;
     private Vector nextPosition;
     private Vector nextMoveDirection;
@@ -94,6 +95,9 @@ public class BasicBeing extends Entity{
                 this.nextMoveDirection = new Vector(1f,1f);
                 break;
             case idle:
+                this.nextMoveDirection = new Vector(0,0);
+                break;
+            case attack:
                 this.nextMoveDirection = new Vector(0,0);
                 break;
         }
