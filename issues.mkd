@@ -3,11 +3,12 @@
 - **[4]** Create Main Menu with transitions to GamePlay state
 - **[25]** Add Gamepad functionality to input Manager Menu Controls
 - **[5]** Put character on screen with movement control and animation
+- **[27]** InputManager detect if more than one move direction is pressed.
 
 ## Claimed Issues ##
 - **[2]** Add art assets
 - **[3]** Build first level map with graphic tiles
-- **[27]** InputManager detect if more than one move direction is pressed.
+
 - **[6]** Client/server networking system
 
 ## Open Issues ##
