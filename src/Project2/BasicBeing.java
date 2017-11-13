@@ -20,6 +20,7 @@ public class BasicBeing extends Entity{
     private Animation walkRightAnim, walkLeftAnim, walkUpAnim, walkDnAnim,
             idleAnim, attackAnim, hitAnim, deathAnim, currentAnim;
     private String name = "default";
+    private int beingID = 0;
     private InputCommands nextMoveCommand;
     private Vector nextPosition;
     private Vector nextMoveDirection;
@@ -27,7 +28,7 @@ public class BasicBeing extends Entity{
     private float speed =2f;
     private Animation currentAnimation;
     boolean isHit = false;
-    boolean isDead = false;
+
 
     public BasicBeing(Vector position, SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
         super(position);
@@ -38,6 +39,10 @@ public class BasicBeing extends Entity{
         setCurrentAnimation(idleAnim);
         InitNextVectors();
 
+    }
+
+    public boolean isDead(){
+        return health <= 0;
     }
 
     private void InitNextVectors() {
@@ -92,6 +97,9 @@ public class BasicBeing extends Entity{
             case idle:
                 this.nextMoveDirection = new Vector(0,0);
                 break;
+            case attack:
+                this.nextMoveDirection = new Vector(0,0);
+                break;
         }
     }
 
@@ -137,7 +145,7 @@ public class BasicBeing extends Entity{
         setNextMoveDirection(getNextMoveCommand());
 //        multiply direction by movement speed
         setNextMoveTranslation();
-//
+
         setNextPosition();
 
     }
@@ -151,9 +159,13 @@ public class BasicBeing extends Entity{
                 setCurrentAnimation(walkDnAnim);
                 break;
             case left:
+            case dlDiag:
+            case ulDiag:
                 setCurrentAnimation(walkLeftAnim);
                 break;
             case right:
+            case drDiag:
+            case urDiag:
                 setCurrentAnimation(walkRightAnim);
                 break;
             case idle:
@@ -168,6 +180,7 @@ public class BasicBeing extends Entity{
             case death:
                 setCurrentAnimation(deathAnim);
                 break;
+
         }
     }
 
@@ -185,5 +198,29 @@ public class BasicBeing extends Entity{
 
     public InputCommands getNextMoveCommand() {
         return nextMoveCommand;
+    }
+
+    public int getBeingID() {
+        return beingID;
+    }
+
+    public void setBeingID(int beingID) {
+        this.beingID = beingID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
     }
 }

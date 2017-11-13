@@ -2,6 +2,8 @@ package Project2;
 
 import org.newdawn.slick.Input;
 
+import static Project2.InputManager.InputCommands.*;
+
 public class InputManager {
 
     public enum InputCommands {up, down, left, right, enter, idle, attack, back, hit,
@@ -24,25 +26,44 @@ public class InputManager {
     }
 
     private static InputCommands ProcessGamePlayInput(Input input) {
+        InputCommands curCommand = InputCommands.idle;
+
         if(input.isKeyPressed(Input.KEY_ESCAPE)){
-            return InputCommands.back;
-        }else if(input.isKeyDown(Input.KEY_W)
-                ||input.isControllerUp(0)){
-            return InputCommands.up;
-        }else if(input.isKeyDown(Input.KEY_S)
-                ||input.isControllerDown(0)){
-            return InputCommands.down;
-        }else if(input.isKeyDown(Input.KEY_A)
-                ||input.isControllerLeft(0)){
-            return InputCommands.left;
-        }else if(input.isKeyDown(Input.KEY_D)
-                ||input.isControllerRight(0)) {
-            return InputCommands.right;
-        }else if(input.isKeyDown(Input.KEY_UP)
-                ||input.isButton3Pressed(0)){
-            return InputCommands.attack;
+            return back;
+        }else {
+//            test the y direction for input
+            if (input.isKeyDown(Input.KEY_W)
+                    || input.isControllerUp(0)) {
+                curCommand = up;
+            } else if (input.isKeyDown(Input.KEY_S)
+                    || input.isControllerDown(0)) {
+                curCommand = down;
+            }
+//            test the x direction for input
+            if (input.isKeyDown(Input.KEY_A)
+                    || input.isControllerLeft(0)) {
+                if(curCommand == up)
+                    curCommand = ulDiag;
+                else if(curCommand == down)
+                    curCommand = dlDiag;
+                else
+                    curCommand = left;
+            } else if (input.isKeyDown(Input.KEY_D)
+                    || input.isControllerRight(0)) {
+                if(curCommand == up)
+                    curCommand = urDiag;
+                else if(curCommand == down)
+                    curCommand = drDiag;
+                else
+                    curCommand = right;
+            }
+//            test for the attack action which stops movement.
+            if (input.isKeyDown(Input.KEY_UP)
+                    || input.isButton3Pressed(0)) {
+                curCommand = attack;}
+
+            return curCommand;
         }
-        return InputCommands.idle;
     }
 
     private static InputCommands ProcessMenuInput(Input input){
@@ -50,7 +71,7 @@ public class InputManager {
         if (input.isKeyPressed(Input.KEY_DOWN)) {
             return InputCommands.down;
         } else if (input.isKeyPressed(Input.KEY_UP)) {
-            return InputCommands.up;
+            return up;
         } else if (input.isKeyPressed(Input.KEY_ENTER)) {
             return InputCommands.enter;
         }
@@ -62,7 +83,7 @@ public class InputManager {
         } else if (input.isControllerUp(0)) {
             if(!buttonBeenPressed){
                 buttonBeenPressed = true;
-                return InputCommands.up;}
+                return up;}
 
         } else if (input.isControllerDown(0)) {
             if(!buttonBeenPressed){
