@@ -51,6 +51,7 @@ public class TestStateBasicBeing extends BasicGameState{
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+
         mapTest.render(0, 0);
         graphics.drawString("hello Test Basic Being " + n, 640,360);
         being1.RenderBeing(graphics);
