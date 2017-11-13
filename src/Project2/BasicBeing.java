@@ -199,4 +199,28 @@ public class BasicBeing extends Entity{
     public InputCommands getNextMoveCommand() {
         return nextMoveCommand;
     }
+
+    public int getBeingID() {
+        return beingID;
+    }
+
+    public void setBeingID(int beingID) {
+        this.beingID = beingID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
+    }
 }
