@@ -125,6 +125,38 @@ public class BasicBeing extends Entity{
         }
     }
 
+    public float getCurrentDisplacementX(){
+        return this.currentDisplacement.getX();
+    }
+
+    public float getCurrentDisplacementY(){
+        return this.currentDisplacement.getY();
+    }
+    private void CalculateCurrentDisplacement() {
+        if(this.currentDisplacement == null)
+            this.currentDisplacement = new Vector(0,0);
+        else{
+            int dx = (int)this.currentDisplacement.getX();
+            int dy = (int)this.currentDisplacement.getY();
+            dx += (int)this.nextMoveTranslation.getX();
+            dy += (int)this.nextMoveTranslation.getY();
+//            if (dx < 0) {
+//                dx = 32;
+//            }
+//            if (dx > 32) {
+//                dx = 0;
+//            }
+//            if (dy < 0) {
+//                dy = 32;
+//            }
+//            if (dy > 32) {
+//                dy = 0;
+//            }
+//            dx %= 34;
+//            dy %= 34;
+            this.currentDisplacement = new Vector(dx, dy);
+        }
+    }
     private void InitAnimations(SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
         this.walkRightAnim = new Animation(walkingSheet, 0,0,5,0,true,100,true);
         this.walkLeftAnim = new Animation(walkingSheet, 0,1,5,1,true,100,true);
