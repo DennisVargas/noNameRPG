@@ -17,38 +17,60 @@ import static Project2.InputManager.InputCommands.*;
  * HeroTypes will never be controlled by AI according to spec.
  */
 public class BasicBeing extends Entity{
+
     private float health = 1f;
-    private Animation walkRightAnim, walkLeftAnim, walkUpAnim, walkDnAnim,
-            idleAnim, attackAnim, hitAnim, deathAnim, currentAnim;
+
+    private Animation walkRightAnim, walkLeftAnim,
+                      walkUpAnim, walkDnAnim,
+                      idleAnim, attackAnim, hitAnim,
+                      deathAnim, currentAnim;
+
     private String name = "default";
     private int beingID = 0;
+
     private InputCommands nextMoveCommand;
     private Vector nextPosition;
     private Vector nextMoveDirection;
     private Vector nextMoveTranslation;
+    private Vector currentDisplacement;
+
     private float speed =2f;
     private Animation currentAnimation;
     boolean isHit = false;
 
 
+    /**
+     * BasicBeing: Constructs a basic being. Initializes <code>nextMoveCommand</code> to idle.
+     * Then the <code>InitAnimations(SpriteSheet, SpriteSheet)</code> is called.
+     * The being gets initialized to the idle animation to begin with.
+     * Finally All the vectors for the next Being and map movement are initialized.
+     * @param position: A JIG Vector that set the Being starting location
+     * @param walkingSheet: A sprite sheet of non attacking animation frames
+     * @param attackingSheet: A sprite sheet of attack animation frames
+     */
     public BasicBeing(Vector position, SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
         super(position);
         nextMoveCommand = idle;
         InitAnimations(walkingSheet, attackingSheet);
-//        this.addAnimation(walkRightAnim);
-//        this.addAnimation(walkLeftAnim);
         setCurrentAnimation(idleAnim);
         InitNextVectors();
-
     }
 
+
+    /**
+     * @return if health is less than or equal to zero.
+     */
     public boolean isDead(){
         return health <= 0;
     }
 
+
+    /**
+     * subroutine which initializes the direction, translation, and
+     * position vectors in the basic being class.
+     */
     private void InitNextVectors() {
 //        init next position to current position
-
         setNextPosition();
 //        init the direction based on nextMoveCommand == idle
         setNextMoveDirection(nextMoveCommand);
@@ -149,7 +171,6 @@ public class BasicBeing extends Entity{
 //        setNextMoveTranslation();
 
         setNextPosition();
-
     }
 
     private void ProcessNextMoveAnimation() {
