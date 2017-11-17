@@ -8,6 +8,7 @@
 .idea/**/tasks.xml
 .idea/dictionaries
 *.iml
+*.idea*
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -52,3 +53,10 @@ crashlytics-build.properties
 fabric.properties
 
 *.idea*
+/bin/
+
+JIG/
+
+lib/
+
+*.iml
