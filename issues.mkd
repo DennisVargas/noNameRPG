@@ -4,15 +4,15 @@
 - **[25]** Add Gamepad functionality to input Manager Menu Controls
 - **[5]** Put character on screen with movement control and animation
 - **[27]** InputManager detect if more than one move direction is pressed.
+- **[3]** Build first level map with graphic tiles
+- **[7]** Camera viewport that follows player
+- **[21]** Build second level map
 
 ## Claimed Issues ##
 - **[2]** Add art assets
-- **[3]** Build first level map with graphic tiles
-
 - **[6]** Client/server networking system
 
 ## Open Issues ##
-- **[7]** Camera viewport that follows player
 - **[8]** Add first animated mob
 - **[9]** Add mob path finding
 - **[10]** Add mob death
@@ -26,7 +26,6 @@
 - **[18]** Splash screen & menu system for character selection and networking integration
 - **[19]** Level complete and win screens
 - **[20]** Add music and sound effects
-- **[21]** Build second level map
 - **[22]** Design and implement level 2 mob & item locations
 - **[23]** Add any missing mobs if less than four types implemented
 - **[24]** Create functional MenuItem object in Single player menu

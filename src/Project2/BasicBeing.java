@@ -5,6 +5,7 @@ import jig.Vector;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
+import java.lang.Math;
 
 import static Project2.InputManager.InputCommands;
 import static Project2.InputManager.InputCommands.*;
@@ -69,6 +70,7 @@ public class BasicBeing extends Entity{
     }
 
     private void setNextMoveDirection(InputCommands nextMoveCommand) {
+        float diagSpeed = (float)Math.sqrt(2)/2;
         switch (nextMoveCommand){
             case up:
                 this.nextMoveDirection = new Vector(0,-1f);
@@ -83,16 +85,16 @@ public class BasicBeing extends Entity{
                 this.nextMoveDirection = new Vector(1f,0);
                 break;
             case ulDiag:
-                this.nextMoveDirection = new Vector(-1f,-1f);
+                this.nextMoveDirection = new Vector(-1f,-1f).scale(0.75f);
                 break;
             case dlDiag:
-                this.nextMoveDirection = new Vector(-1f,1f);
+                this.nextMoveDirection = new Vector(-1f,1f).scale(0.75f);
                 break;
             case urDiag:
-                this.nextMoveDirection = new Vector(1f,-1f);
+                this.nextMoveDirection = new Vector(1f,-1f).scale(0.75f);
                 break;
             case drDiag:
-                this.nextMoveDirection = new Vector(1f,1f);
+                this.nextMoveDirection = new Vector(1f,1f).scale(0.75f);
                 break;
             case idle:
                 this.nextMoveDirection = new Vector(0,0);
@@ -144,7 +146,7 @@ public class BasicBeing extends Entity{
 //        looking at the move command set the direction of movement
         setNextMoveDirection(getNextMoveCommand());
 //        multiply direction by movement speed
-        setNextMoveTranslation();
+//        setNextMoveTranslation();
 
         setNextPosition();
 
