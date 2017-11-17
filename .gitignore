@@ -53,3 +53,7 @@ crashlytics-build.properties
 fabric.properties
 
 /bin/
+
+JIG/
+
+lib/
