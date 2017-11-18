@@ -52,11 +52,11 @@ public class TestStateBasicBeing extends BasicGameState{
         super.enter(container, game);
         System.out.println(container.getWidth());
         System.out.println(container.getHeight());
-
-        being1 = new BasicBeing(new Vector(container.getWidth()/2,container.getHeight()/2), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
-                ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
         mapX = 90;
         mapY = 104;
+        being1 = new BasicBeing(new Vector(container.getWidth()/2,container.getHeight()/2), new Vector(mapX, mapY), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
+                ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
+
     }
 
     @Override
