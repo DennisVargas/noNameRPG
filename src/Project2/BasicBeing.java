@@ -38,9 +38,8 @@ public class BasicBeing extends Entity{
     private Animation currentAnimation;
     boolean isHit = false;
 
-
     /**
-     * BasicBeing: Constructs a basic being. Initializes <code>nextMoveCommand</code> to idle.
+     * Constructs a basic being. Initializes <code>nextMoveCommand</code> to idle.
      * Then the <code>InitAnimations(SpriteSheet, SpriteSheet)</code> is called.
      * The being gets initialized to the idle animation to begin with.
      * Finally All the vectors for the next Being and map movement are initialized.
@@ -50,7 +49,7 @@ public class BasicBeing extends Entity{
      */
     public BasicBeing(Vector position, SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
         super(position);
-        nextMoveCommand = idle;
+        setNextMoveCommand(idle);
         InitAnimations(walkingSheet, attackingSheet);
         setCurrentAnimation(idleAnim);
         InitNextVectors();
