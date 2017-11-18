@@ -20,10 +20,9 @@ public class BasicBeing extends Entity{
 
     private float health = 1f;
 
-    private Animation   walkRightAnim, walkLeftAnim,
-                        walkUpAnim, walkDnAnim,
-                        idleAnim, attackAnim, hitAnimLt,
-                        hitAnimRt, deathAnim, currentAnim;
+    private Animation   walkRightAnim, walkLeftAnim, walkUpAnim,
+                        walkDnAnim, idleAnimLt, idleAnimRt, attackAnim,
+                        hitAnimLt, hitAnimRt, deathAnim, currentAnim;
 
     private String name = "default";
     private int beingID = 0;
@@ -34,9 +33,10 @@ public class BasicBeing extends Entity{
     private Vector nextMoveTranslation;
     private Vector currentDisplacement;
 
-    private float speed =2f;
+    private float speed = 2f;
     private Animation currentAnimation;
     boolean isHit = false;
+
 
     /**
      * Constructs a basic being. Initializes <code>nextMoveCommand</code> to idle.
@@ -51,7 +51,7 @@ public class BasicBeing extends Entity{
         super(position);
         setNextMoveCommand(idle);
         InitAnimations(walkingSheet, attackingSheet);
-        setCurrentAnimation(idleAnim);
+        setCurrentAnimation(idleAnimLt);
         InitNextVectors();
     }
 
@@ -68,8 +68,9 @@ public class BasicBeing extends Entity{
         else{
             int dx = (int)this.currentDisplacement.getX();
             int dy = (int)this.currentDisplacement.getY();
-            dx += (int)this.nextMoveTranslation.getX();
-            dy += (int)this.nextMoveTranslation.getY();
+            dx += (int)this.nextMoveTranslation.getX()*-1;
+            dy += (int)this.nextMoveTranslation.getY()*-1;
+            System.out.println("dx: "+dx+" dy: "+dy);
 //            if (dx < 0) {
 //                dx = 32;
 //            }
@@ -114,10 +115,25 @@ public class BasicBeing extends Entity{
                 setCurrentAnimation(walkRightAnim);
                 break;
             case idle:
-                setCurrentAnimation(idleAnim);
+                if(currentAnim == walkLeftAnim
+                        || currentAnim == hitAnimLt
+                        || currentAnim == walkDnAnim)
+                    setCurrentAnimation(idleAnimLt);
+                else if(currentAnim == walkRightAnim
+                        || currentAnim == hitAnimRt
+                        || currentAnim == walkUpAnim)
+                    setCurrentAnimation(idleAnimRt);
                 break;
             case attack:
-                setCurrentAnimation(attackAnim);
+                if(currentAnim == walkLeftAnim
+                        || currentAnim == idleAnimLt
+                        || currentAnim == walkDnAnim)
+                    setCurrentAnimation(hitAnimLt);
+                else if(currentAnim == walkRightAnim
+                        || currentAnim == idleAnimRt
+                        || currentAnim == walkUpAnim)
+                    setCurrentAnimation(hitAnimRt);
+
                 break;
             case hitLt:
                 setCurrentAnimation(hitAnimLt);
@@ -232,6 +248,7 @@ public class BasicBeing extends Entity{
 //      multiply direction by movement speed
         CalcNextMoveTranslation();
         CalcNextPosition();
+        CalcCurrentDisplacement();
     }
 
     /**
@@ -365,12 +382,13 @@ public class BasicBeing extends Entity{
         this.walkDnAnim = new Animation(walkingSheet, 0,2,5,2,true,100,true);
         this.walkUpAnim = new Animation(walkingSheet, 0,3,5,3,true,100,true);
         this.hitAnimRt = new Animation(walkingSheet, 0,4,1,4,true,100,true);
-        this.hitAnimLt = new Animation(walkingSheet, 0,4,1,4,true,100,true);
-        this.idleAnim = new Animation(walkingSheet, 0,5,5,5,true,100,true);
+        this.hitAnimLt = new Animation(walkingSheet, 0,5,1,5,true,100,true);
+        this.idleAnimRt = new Animation(walkingSheet, 0,6,5,6,true,100,true);
+        this.idleAnimLt = new Animation(walkingSheet, 0,7,5,7,true,100,true);
 
-        this.deathAnim = new Animation(walkingSheet, 0,6,1,6,true,100,true);
+        this.deathAnim = new Animation(walkingSheet, 0,8,7,8,true,100,true);
         //  Attack and hit anim are the same except he shoots things when attacking.
-        this.attackAnim = new Animation(walkingSheet, 0,4,1,4,true,100,true);
+        this.attackAnim = new Animation(walkingSheet, 0,5,1,5,true,100,true);
     }
 
     /**
@@ -384,6 +402,7 @@ public class BasicBeing extends Entity{
         CalcNextMoveDirection();
 //      init the move translation using the other zero vectors
         CalcNextMoveTranslation();
+        CalcCurrentDisplacement();
     }
 
     /**
