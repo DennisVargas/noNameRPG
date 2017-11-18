@@ -51,12 +51,15 @@ public class BasicBeing extends Entity{
      * Then the <code>InitAnimations(SpriteSheet, SpriteSheet)</code> is called.
      * The being gets initialized to the idle animation to begin with.
      * Finally All the vectors for the next Being and map movement are initialized.
-     * @param position: A JIG Vector that set the Being starting location
-     * @param walkingSheet: A sprite sheet of non attacking animation frames
+     *
+     * @param screenPosition: A JIG Vector that set the Being starting location
+     * @param walkingSheet:   A sprite sheet of non attacking animation frames
      * @param attackingSheet: A sprite sheet of attack animation frames
      */
-    public BasicBeing(Vector position, SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
-        super(position);
+    public BasicBeing(Vector screenPosition, Vector worldPosition, SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
+        super(screenPosition);
+        setScreenPosition(screenPosition);
+        setWorldPosition(worldPosition);
         setNextMoveCommand(idle);
         InitAnimations(walkingSheet, attackingSheet);
         setCurrentAnimation(idleAnimLt);
