@@ -83,20 +83,6 @@ public class BasicBeing extends Entity{
             dx += (int)this.nextMoveTranslation.getX()*-1;
             dy += (int)this.nextMoveTranslation.getY()*-1;
             System.out.println("dx: "+dx+" dy: "+dy);
-//            if (dx < 0) {
-//                dx = 32;
-//            }
-//            if (dx > 32) {
-//                dx = 0;
-//            }
-//            if (dy < 0) {
-//                dy = 32;
-//            }
-//            if (dy > 32) {
-//                dy = 0;
-//            }
-//            dx %= 34;
-//            dy %= 34;
             this.currentDisplacement = new Vector(dx, dy);
         }
     }
@@ -225,10 +211,10 @@ public class BasicBeing extends Entity{
      * destroyed and replaced in order to change the values.
      */
     private void CalcNextPosition() {
-        if(this.nextPosition == null)
-            this.nextPosition = this.getPosition().copy();
+        if(this.nextScreenPosition == null)
+            this.nextScreenPosition = this.getPosition().copy();
         else
-            this.nextPosition = new Vector( this.nextMoveTranslation.getX() + this.getPosition().getX(),
+            this.nextScreenPosition = new Vector( this.nextMoveTranslation.getX() + this.getPosition().getX(),
                     this.nextMoveTranslation.getY() + this.getPosition().getY());
     }
 
@@ -260,7 +246,7 @@ public class BasicBeing extends Entity{
 //      multiply direction by movement speed
         CalcNextMoveTranslation();
         CalcNextPosition();
-        CalcCurrentDisplacement();
+
     }
 
     /**
@@ -547,12 +533,18 @@ public class BasicBeing extends Entity{
 
 
     /**
-     * Sets the Beings Position to the currently calculated <code>this.nextPosition</code>;
+     * Sets the Beings Position to the currently calculated <code>this.nextScreenPosition</code>;
      * this should be called after collision checks have been made.
      */
     public void UpdateBeingPosition() {
         //  update being position based on next move
         //  and health if they were hit in the last collision check
-        this.setPosition(this.nextPosition);
+        CalcCurrentDisplacement();
+        CalcCurrentWorldPosition();
+        if(!isClient){
+            setScreenPosition(this.nextScreenPosition);
+        }
+
     }
+
 }
