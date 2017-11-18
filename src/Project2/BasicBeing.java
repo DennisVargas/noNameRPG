@@ -352,8 +352,8 @@ public class BasicBeing extends Entity{
      * next move translation.
      * @return currently projected next position of the Being.
      */
-    public Vector getNextPosition() {
-        return nextPosition;
+    public Vector getNextScreenPosition() {
+        return nextScreenPosition;
     }
 
     /**
@@ -368,9 +368,8 @@ public class BasicBeing extends Entity{
 
 
     /**
-     * Initializes the Being Animations for walking
-     * and attacking. These are set in the Basic Being
-     * Constructor.
+     * Initializes the Being Animations for walking, idle, attacking, and death.
+     * Sprite sheets are passed into the Basic Being Constructor.
      * @param walkingSheet
      * @param attackingSheet
      */
@@ -547,4 +546,23 @@ public class BasicBeing extends Entity{
 
     }
 
+    private void CalcCurrentWorldPosition() {
+        if (getCurrentDisplacementX() < 0) {
+            float x = getWorldPositionX();
+            setWorldPositionX(++x);
+            setCurrentDisplacementX(32);
+        }else if(getCurrentDisplacementX() > 32){
+            float x = getWorldPositionX();
+            setWorldPositionX(--x);
+            setCurrentDisplacementX(0);
+        }if(getCurrentDisplacementY() <0){
+            float y = getWorldPositionY();
+            setWorldPositionY(++y);
+            setCurrentDisplacementY(32);
+        }else if (getCurrentDisplacementY()> 32){
+            float y = getWorldPositionY();
+            setWorldPositionY(--y);
+            setCurrentDisplacementY(0);
+        }
+    }
 }
