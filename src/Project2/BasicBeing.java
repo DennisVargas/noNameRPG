@@ -30,14 +30,20 @@ public class BasicBeing extends Entity{
     private int beingID = 0;
 
     private InputCommands nextMoveCommand;
-    private Vector nextPosition;
+
+    private Vector worldPosition;
+    private Vector screenPosition;
+
+    private Vector nextScreenPosition;
     private Vector nextMoveDirection;
     private Vector nextMoveTranslation;
+
     private Vector currentDisplacement;
 
     private float speed = 2f;
     private Animation currentAnimation;
     boolean isHit = false;
+    private int worldPositionX;
 
 
     /**
