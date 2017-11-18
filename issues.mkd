@@ -11,6 +11,8 @@
 ## Claimed Issues ##
 - **[2]** Add art assets
 - **[6]** Client/server networking system
+- **[7]** Camera viewport that follows player
+- **[28]** Improve javadoc in BasicBeing class
 
 ## Open Issues ##
 - **[8]** Add first animated mob

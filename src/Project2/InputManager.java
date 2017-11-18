@@ -7,7 +7,7 @@ import static Project2.InputManager.InputCommands.*;
 public class InputManager {
 
     public enum InputCommands {up, down, left, right, enter, idle, attack, back, hit,
-                                ulDiag, dlDiag, urDiag, drDiag, death}
+                                ulDiag, dlDiag, urDiag, drDiag, hitLt, hitRt, death}
 
     private static boolean buttonBeenPressed;
 
