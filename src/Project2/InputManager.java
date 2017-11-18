@@ -12,11 +12,29 @@ import static Project2.InputManager.InputCommands.*;
  */
 public class InputManager {
 
+    /**
+     * defines the output that will become the movement language for the
+     * BasicBeing objects in the game. AI will have to emit the very same
+     * InputCommands to drive the BasicBeings.
+     */
     public enum InputCommands {up, down, left, right, enter, idle, attack, back, hit,
                                 ulDiag, dlDiag, urDiag, drDiag, hitLt, hitRt, death}
 
+//  boolean that stores the value of when a GamePad button
+//  has been pressed once so that it will not repeat.
     private static boolean buttonBeenPressed;
 
+    /**
+     * Based on the stateID current input key pressed returns a <code>InputCommands</code>.
+     * In menu states the controls must only acknowledge one press at a time while inside of
+     * the game buttons can be held and movement will be acknowledged. This is the reasoning behind
+     * needing the stateID argument in order know the difference between a game play state or
+     * a menu state.
+     * @param input - Slick2d Input type passed in from some Update method.
+     * @param stateId - the stateId sending the input message.
+     *                  !!! When a new state requiring Input is added this method must be updated!!!
+     * @return based on the stateID returns Menu or GamePlay <code>InputCommands</code>.
+     */
     public static InputCommands ProcessInput(Input input, int stateId) {
 //      if the stateId is equal to any of the menu states then ProcessMenuInput
         if (stateId == Project2.MAINMENUSTATE || stateId == Project2.OPTIONMENUSTATE
@@ -31,6 +49,12 @@ public class InputManager {
             return InputCommands.idle;
     }
 
+    /**
+     * Process input in game play state using <code>isKeyPressed()</code>;
+     * method allows for keys to be held down and Commands be issued.
+     * @param input slick2d Input type passed in from ProcessInput
+     * @return InputCommands enumeration
+     */
     private static InputCommands ProcessGamePlayInput(Input input) {
         InputCommands curCommand = InputCommands.idle;
 
@@ -72,6 +96,12 @@ public class InputManager {
         }
     }
 
+    /**
+     * Process input in menu with allowance for only one
+     * button press per command.
+     * @param input slick2d Input type
+     * @return enumerated <code>InputCommands</code> type
+     */
     private static InputCommands ProcessMenuInput(Input input){
         // if input key is down
         if (input.isKeyPressed(Input.KEY_DOWN)) {
