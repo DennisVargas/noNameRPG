@@ -565,4 +565,23 @@ public class BasicBeing extends Entity{
             setCurrentDisplacementY(0);
         }
     }
+
+    public void setWorldPositionY(float y) {
+        float x = getWorldPositionX();
+        this.worldPosition = new Vector(x, y);
+    }
+
+    public void setWorldPositionX(float x) {
+        float y = getWorldPositionY();
+        this.worldPosition = new Vector(x, y);
+    }
+
+    public float getWorldPositionY() {
+        return this.worldPosition.getY();
+    }
+
+    public void setWorldPosition(Vector worldPosition) {
+        this.worldPosition = worldPosition;
+    }
+
 }
