@@ -33,9 +33,10 @@ public class BasicBeing extends Entity{
     private Vector nextMoveTranslation;
     private Vector currentDisplacement;
 
-    private float speed =2f;
+    private float speed = 2f;
     private Animation currentAnimation;
     boolean isHit = false;
+
 
     /**
      * Constructs a basic being. Initializes <code>nextMoveCommand</code> to idle.
@@ -50,7 +51,7 @@ public class BasicBeing extends Entity{
         super(position);
         setNextMoveCommand(idle);
         InitAnimations(walkingSheet, attackingSheet);
-        setCurrentAnimation(idleAnim);
+        setCurrentAnimation(idleAnimLt);
         InitNextVectors();
     }
 
@@ -67,8 +68,9 @@ public class BasicBeing extends Entity{
         else{
             int dx = (int)this.currentDisplacement.getX();
             int dy = (int)this.currentDisplacement.getY();
-            dx += (int)this.nextMoveTranslation.getX();
-            dy += (int)this.nextMoveTranslation.getY();
+            dx += (int)this.nextMoveTranslation.getX()*-1;
+            dy += (int)this.nextMoveTranslation.getY()*-1;
+            System.out.println("dx: "+dx+" dy: "+dy);
 //            if (dx < 0) {
 //                dx = 32;
 //            }
