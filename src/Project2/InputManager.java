@@ -4,6 +4,12 @@ import org.newdawn.slick.Input;
 
 import static Project2.InputManager.InputCommands.*;
 
+/**
+ * Utility class with the main function of receiving input
+ * and returning a InputCommands enumeration. This enumeration
+ * definition is inherited by other classes and thus the translation
+ * of Slick2d <code>Input</code> is made.
+ */
 public class InputManager {
 
     public enum InputCommands {up, down, left, right, enter, idle, attack, back, hit,
@@ -94,5 +100,3 @@ public class InputManager {
         return InputCommands.idle;
     }
 }
-
-

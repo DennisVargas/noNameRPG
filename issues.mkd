@@ -14,6 +14,7 @@
 - **[7]** Camera viewport that follows player
 - **[30]** Create javadoc comments for where missing in all functional classes.
 
+
 ## Open Issues ##
 - **[8]** Add first animated mob
 - **[9]** Add mob path finding
