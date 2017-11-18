@@ -5,8 +5,7 @@ import org.newdawn.slick.Input;
 import static Project2.InputManager.InputCommands.*;
 
 /**
- * Utility class with the main function of receiving input
- * and returning a InputCommands enumeration. This enumeration
+ * Receives input and returns an InputCommands enumeration. This enumeration
  * definition is inherited by other classes and thus the translation
  * of Slick2d <code>Input</code> is made.
  */
@@ -42,7 +41,7 @@ public class InputManager {
             return ProcessMenuInput(input);
         }
 //      if currently in the game state
-        else if(stateId == Project2.GAMEPLAYSTATE || stateId == Project2.BASICBEINGTESTSTATE){
+        else if(stateId == Project2.GAMEPLAYSTATE || stateId == Project2.TESTSTATEBASICBEING){
             return ProcessGamePlayInput(input);
         }
         else
