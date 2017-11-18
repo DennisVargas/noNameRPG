@@ -7,8 +7,11 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+
+/**
+ * a Hammerwatch/Gauntlent slick2d <code>StateBasedGame</code>.
+ */
 public class Project2 extends StateBasedGame {
-//    public static final int WIDTH = 1280;
     public static final int WIDTH = 1280;
     public static final int HEIGHT = (WIDTH/16)*9;
     /**
@@ -33,9 +36,16 @@ public class Project2 extends StateBasedGame {
     /**
      * these are defined test states for development purposes
      */
-    public static final int BASICBEINGTESTSTATE = 20;
+    public static final int TESTSTATEBASICBEING = 20;
     public static final int MENUITEMTESTSTATE = 21;
 
+
+    /**
+     * instantiates the game name and then creates a
+     * new instance of each of the states in the game.
+     * MainMenu starts the order and New Single menu
+     * leads to <code>TestStateBasicBeing</code>
+     */
     public Project2() {
         super(NAME);
 
@@ -47,7 +57,7 @@ public class Project2 extends StateBasedGame {
         this.addState(new GamePlayState(GAMEPLAYSTATE));
 
 //       TEST STATES
-        this.addState(new TestStateBasicBeing(BASICBEINGTESTSTATE));
+        this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
     }
 
     public static void main(String[] args)throws SlickException{
@@ -68,7 +78,7 @@ public class Project2 extends StateBasedGame {
         input.clearControlPressedRecord();
 
 //        test states init
-        this.getState(BASICBEINGTESTSTATE).init(gameContainer,this);
+        this.getState(TESTSTATEBASICBEING).init(gameContainer,this);
 
 
 //        official state init

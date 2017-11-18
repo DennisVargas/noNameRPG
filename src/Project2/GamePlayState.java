@@ -8,6 +8,10 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.GameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+/**
+ * Should be deprecated as it is not implmented.
+ * This States functionality will be split between the server and client.
+ */
 public class GamePlayState extends BasicGameState {
     private int stateId;
     private InputManager.InputCommands inputCommand;
