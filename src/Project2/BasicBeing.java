@@ -13,8 +13,6 @@ import static Project2.InputManager.InputCommands.*;
 /**
  * The BasicBeing class will define all HeroTypes and MobTypes
  * this class defines all attributes heroes and enemies.
- * the biggest distinction between the two is controller type
- * HeroTypes will never be controlled by AI according to spec.
  */
 public class BasicBeing extends Entity{
 
@@ -47,8 +45,7 @@ public class BasicBeing extends Entity{
 
 
     /**
-     * Constructs a basic being. Initializes <code>nextMoveCommand</code> to idle.
-     * Then the <code>InitAnimations(SpriteSheet, SpriteSheet)</code> is called.
+     * Constructs a basic being by initializing its Screen and World position, current Animation, and next Vectors.
      * The being gets initialized to the idle animation to begin with.
      * Finally All the vectors for the next Being and map movement are initialized.
      *
@@ -68,7 +65,7 @@ public class BasicBeing extends Entity{
 
     /**
      * Calculates the BasicBeing's displacement given
-     * the an inverted current next move translation vector's x and y
+     * an inverted current next move translation vector's x and y
      * components. Thus the field <code>this.currentDisplacement</code>
      * holds a running total of the beings displacement from the center
      * of their closest tile. Translation is inverted because the map
@@ -82,11 +79,38 @@ public class BasicBeing extends Entity{
             int dy = (int)this.currentDisplacement.getY();
             dx += (int)this.nextMoveTranslation.getX()*-1;
             dy += (int)this.nextMoveTranslation.getY()*-1;
-            System.out.println("dx: "+dx+" dy: "+dy);
+//            System.out.println("dx: "+dx+" dy: "+dy);
             this.currentDisplacement = new Vector(dx, dy);
         }
     }
 
+    /**
+     * Evaluates the current displacement x and y components,
+     * then sets the world position accordingly. If the current
+     * displacement x or y component is less than 0 then world
+     * position is incremented and the displacement set to 32.
+     * If the displacement is greater than 32 then the world
+     * position is decremented and the displacement set to 0.
+     */
+    private void CalcCurrentWorldPosition() {
+        if (getCurrentDisplacementX() < 0) {
+            float x = getWorldPositionX();
+            setWorldPositionX(++x);
+            setCurrentDisplacementX(32);
+        }else if(getCurrentDisplacementX() > 32){
+            float x = getWorldPositionX();
+            setWorldPositionX(--x);
+            setCurrentDisplacementX(0);
+        }if(getCurrentDisplacementY() <0){
+            float y = getWorldPositionY();
+            setWorldPositionY(++y);
+            setCurrentDisplacementY(32);
+        }else if (getCurrentDisplacementY()> 32){
+            float y = getWorldPositionY();
+            setWorldPositionY(--y);
+            setCurrentDisplacementY(0);
+        }
+    }
 
     /**
      * Sets the next animation dependent on
@@ -231,7 +255,7 @@ public class BasicBeing extends Entity{
      * sum of (current position + translation).
      * This method does not account for collisions
      * the server will have to test being next move against everything that collides
-     * and adjusting the next translation vector accordingly.
+     * and adjusting the next translation vector accordingly. Finally the mov
      * @param nextMoveCommand <code>InputManager.InputCommands</code> type
      */
     public void GenerateNextMove(InputCommands nextMoveCommand){
@@ -348,12 +372,34 @@ public class BasicBeing extends Entity{
     }
 
     /**
-     * Get the next position projected based on the current
-     * next move translation.
+     * Get the next screen position projected based on the current
+     * next move translation. This projection is not currently known
+     * to be accurate when rendering beings who are not clients.
      * @return currently projected next position of the Being.
      */
     public Vector getNextScreenPosition() {
         return nextScreenPosition;
+    }
+
+    /**
+     * Gets the X component of the ScreenPosition.
+     * ScreenPosition will be useful to Beings who are
+     * not clients.
+     * @return  float x component of the
+     *          current screen position.
+     */
+    public float getScreenPositionX() {
+        return this.screenPosition.getX();
+    }
+    /**
+     * Gets the Y component of the ScreenPosition.
+     * ScreenPosition will be useful to Beings who are
+     * not clients.
+     * @return  float Y component of the
+     *          current screen position.
+     */
+    public float getScreenPositionY() {
+        return this.screenPosition.getY();
     }
 
     /**
@@ -366,6 +412,31 @@ public class BasicBeing extends Entity{
         return speed;
     }
 
+
+    /**
+     * Gets the Vector representing the Being current
+     * map world position.
+     * @return Position Vector of current map world
+     */
+    public Vector getWorldPosition(){
+        return this.worldPosition;
+    }
+
+    /**
+     * Gets the world position X coordinate.
+     * @return float of the world position x component
+     */
+    public float getWorldPositionX() {
+        return this.worldPosition.getX();
+    }
+
+    /**
+     * Gets the world position Y coordinate.
+     * @return float of the world position y component
+     */
+    public float getWorldPositionY() {
+        return this.worldPosition.getY();
+    }
 
     /**
      * Initializes the Being Animations for walking, idle, attacking, and death.
@@ -400,6 +471,15 @@ public class BasicBeing extends Entity{
 //      init the move translation using the other zero vectors
         CalcNextMoveTranslation();
         CalcCurrentDisplacement();
+    }
+
+    /**
+     * Returns true when the client flag is enabled during
+     * initialization.
+     * @return true when client flag enabled on construction
+     */
+    public boolean isClient() {
+        return isClient;
     }
 
     /**
@@ -440,6 +520,16 @@ public class BasicBeing extends Entity{
      */
     public void setBeingID(int beingID) {
         this.beingID = beingID;
+    }
+
+
+    /**
+     * Sets the flag for isClient to the value passed
+     * into the argument of the method.
+     * @param client value to set isClient field
+     */
+    public void setClient(boolean client) {
+        isClient = client;
     }
 
     /**
@@ -522,6 +612,33 @@ public class BasicBeing extends Entity{
 
 
     /**
+     * Sets the Being screen position to the Vector passed
+     * into the method arguments.
+     * @param screenPosition Vector of the new current
+     *                       Being screen position
+     */
+    public void setScreenPosition(Vector screenPosition) {
+        this.screenPosition = screenPosition;
+    }
+
+    /**
+     * Sets the X component of Being screen position Vector.
+     * @param x new x component
+     */
+    public void setScreenPositionX(float x){
+        float y = this.screenPosition.getY();
+        this.screenPosition = new Vector(x, y);
+    }
+    /**
+     * Sets the Y component of Being screen position Vector.
+     * @param y new y component
+     */
+    public void setScreenPositionY(float y){
+        float x = this.screenPosition.getX();
+        this.screenPosition = new Vector(x, y);
+    }
+
+    /**
      * Sets the speed to the float value passed it.
      * @param speed a float value that will be used as the magnitude
      *              of the translation vector.
@@ -530,10 +647,37 @@ public class BasicBeing extends Entity{
         this.speed = speed;
     }
 
+    /**
+     * Sets the world position to the Vector passed into the argument.
+     * @param worldPosition Vector for the new current world position
+     */
+    public void setWorldPosition(Vector worldPosition) {
+        this.worldPosition = worldPosition;
+    }
 
     /**
-     * Sets the Beings Position to the currently calculated <code>this.nextScreenPosition</code>;
-     * this should be called after collision checks have been made.
+     * Sets the x component of the <code>BasicBeing</code>
+     * world position vector.
+     * @param x float value for new world position x component
+     */
+    public void setWorldPositionX(float x) {
+        float y = getWorldPositionY();
+        this.worldPosition = new Vector(x, y);
+    }
+    /**
+     * Sets the y component of the <code>BasicBeing</code>
+     * world position vector.
+     * @param y float value for new world position y component
+     */
+    public void setWorldPositionY(float y) {
+        float x = getWorldPositionX();
+        this.worldPosition = new Vector(x, y);
+    }
+
+    /**
+     * Calculates the current displacement and the current world position,
+     * then sets the screen position if the being is not a client;
+     * should be called after collision checks have been made.
      */
     public void UpdateBeingPosition() {
         //  update being position based on next move
@@ -545,67 +689,4 @@ public class BasicBeing extends Entity{
         }
 
     }
-
-    private void CalcCurrentWorldPosition() {
-        if (getCurrentDisplacementX() < 0) {
-            float x = getWorldPositionX();
-            setWorldPositionX(++x);
-            setCurrentDisplacementX(32);
-        }else if(getCurrentDisplacementX() > 32){
-            float x = getWorldPositionX();
-            setWorldPositionX(--x);
-            setCurrentDisplacementX(0);
-        }if(getCurrentDisplacementY() <0){
-            float y = getWorldPositionY();
-            setWorldPositionY(++y);
-            setCurrentDisplacementY(32);
-        }else if (getCurrentDisplacementY()> 32){
-            float y = getWorldPositionY();
-            setWorldPositionY(--y);
-            setCurrentDisplacementY(0);
-        }
-    }
-
-    public void setWorldPositionY(float y) {
-        float x = getWorldPositionX();
-        this.worldPosition = new Vector(x, y);
-    }
-
-    public void setWorldPositionX(float x) {
-        float y = getWorldPositionY();
-        this.worldPosition = new Vector(x, y);
-    }
-
-    public float getWorldPositionY() {
-        return this.worldPosition.getY();
-    }
-
-    public void setWorldPosition(Vector worldPosition) {
-        this.worldPosition = worldPosition;
-    }
-
-    public void setScreenPosition(Vector screenPosition) {
-        this.screenPosition = screenPosition;
-    }
-
-    public boolean isClient() {
-        return isClient;
-    }
-
-    public void setClient(boolean client) {
-        isClient = client;
-    }
-
-    public float getWorldPositionX() {
-        return this.worldPosition.getX();
-    }
-
-    public float getScreenPositionX() {
-        return this.screenPosition.getX();
-    }
-
-    public float getScreenPositionY() {
-        return this.screenPosition.getY();
-    }
-
 }
