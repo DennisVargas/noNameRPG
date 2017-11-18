@@ -5,14 +5,14 @@
 - **[5]** Put character on screen with movement control and animation
 - **[27]** InputManager detect if more than one move direction is pressed.
 - **[3]** Build first level map with graphic tiles
-- **[7]** Camera viewport that follows player
 - **[21]** Build second level map
+- **[28]** Improve javadoc in BasicBeing class
 
 ## Claimed Issues ##
 - **[2]** Add art assets
 - **[6]** Client/server networking system
 - **[7]** Camera viewport that follows player
-- **[28]** Improve javadoc in BasicBeing class
+- **[30]** Create javadoc comments for where missing in all functional classes.
 
 ## Open Issues ##
 - **[8]** Add first animated mob
@@ -32,5 +32,4 @@
 - **[23]** Add any missing mobs if less than four types implemented
 - **[24]** Create functional MenuItem object in Single player menu
 - **[26]** Create functional MenuItems in Option Menu
-- **[26]** Create functional MenuItems in Multiplayer Menu
-
+- **[29]** Create functional MenuItems in Multiplayer Menu
