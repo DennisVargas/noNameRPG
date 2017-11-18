@@ -1,7 +1,7 @@
 ## Resolved Issues ##
 - **[1]** Need a skeletal, executable game
 - **[4]** Create Main Menu with transitions to GamePlay state
-- **[25]** Add Gamepad functionality to input Manager Menu Controls
+- **[25]** Add game pad functionality to input Manager Menu Controls
 - **[5]** Put character on screen with movement control and animation
 - **[27]** InputManager detect if more than one move direction is pressed.
 - **[3]** Build first level map with graphic tiles
@@ -12,8 +12,7 @@
 - **[2]** Add art assets
 - **[6]** Client/server networking system
 - **[7]** Camera viewport that follows player
-- **[30]** Create javadoc comments for where missing in all functional classes.
-
+- **[30]** Create javadoc comments where missing
 
 ## Open Issues ##
 - **[8]** Add first animated mob
@@ -23,7 +22,7 @@
 - **[12]** Add additional animated mob types
 - **[13]** UI design (health for each player, life pool, collectible items)
 - **[14]** Design and implement level 1 mob & item locations
-- **[15]** Mob & destructibles drop system
+- **[15]** Mob & destructible drop system
 - **[16]** Add money-to-lives system
 - **[17]** Add second character type
 - **[18]** Splash screen & menu system for character selection and networking integration
@@ -33,4 +32,4 @@
 - **[23]** Add any missing mobs if less than four types implemented
 - **[24]** Create functional MenuItem object in Single player menu
 - **[26]** Create functional MenuItems in Option Menu
-- **[29]** Create functional MenuItems in Multiplayer Menu
+- **[29]** Create functional MenuItems in Multi-player Menu
