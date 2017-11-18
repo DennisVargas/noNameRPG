@@ -101,6 +101,6 @@ public class TestStateBasicBeing extends BasicGameState{
         being1.GenerateNextMove(inputCommand);
         //  update the beings position and health inside of
         //  private methods.
-//        being1.UpdateBeingPosition();
+        being1.UpdateBeingPosition();
     }
 }
