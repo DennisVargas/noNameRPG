@@ -52,6 +52,7 @@ public class TestStateBasicBeing extends BasicGameState{
         super.enter(container, game);
         System.out.println(container.getWidth());
         System.out.println(container.getHeight());
+
         being1 = new BasicBeing(new Vector(container.getWidth()/2,container.getHeight()/2), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
                 ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
         mapX = 90;
@@ -61,7 +62,10 @@ public class TestStateBasicBeing extends BasicGameState{
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
 
-        map1.render((int)x - 32, (int)y - 32, mapX, mapY, mapX + 45, mapY + 30);
+//        map1.render((int)x - 32, (int)y - 32, mapX, mapY, mapX + 45, mapY + 30);
+        System.out.println("player x: "+x+" player y: "+y);
+        System.out.println("map x: "+mapX+" map y: "+mapY);
+        map1.render((int)x-32, (int)y-32, mapX, mapY, mapX+45, mapY+30 );
         graphics.drawString("hello Test Basic Being " + n, 640,360);
         being1.RenderBeing(graphics);
     }
@@ -69,30 +73,37 @@ public class TestStateBasicBeing extends BasicGameState{
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input input = gameContainer.getInput();
-        if (input.isKeyDown(Input.KEY_W))
-            y += i/3.0f;
-        if (input.isKeyDown(Input.KEY_S))
-            y  -= i/3.0f;
-        if (input.isKeyDown(Input.KEY_D))
-            x -= i/3.0f;
-        if (input.isKeyDown(Input.KEY_A))
-            x += i/3.0f;
+//        if (input.isKeyDown(Input.KEY_W))
+//            y += i/3.0f;
+//        if (input.isKeyDown(Input.KEY_S))
+//            y  -= i/3.0f;
+//        if (input.isKeyDown(Input.KEY_D))
+//            x -= i/3.0f;
+//        if (input.isKeyDown(Input.KEY_A))
+//            x += i/3.0f;
 
+        x = being1.getCurrentDisplacementX();
+        y = being1.getCurrentDisplacementY();
+        System.out.println("player x: "+x+" player y: "+y);
         if (x < 0) {
             mapX++;
-            x = 32;
+            x= 32;
+            being1.setCurrentDisplacementX(32);
         }
         if (x > 32) {
             mapX --;
-            x = 0;
+            x= 0;
+            being1.setCurrentDisplacementX(0);
         }
         if (y < 0) {
             mapY++;
-            y = 32;
+            y= 32;
+            being1.setCurrentDisplacementY(32);
         }
         if (y > 32) {
             mapY --;
-            y = 0;
+            y= 0;
+            being1.setCurrentDisplacementY(0);
         }
         inputCommand = InputManager.ProcessInput(input, stateId);
 //
