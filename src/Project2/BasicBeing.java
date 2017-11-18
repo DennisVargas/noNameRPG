@@ -246,6 +246,7 @@ public class BasicBeing extends Entity{
 //      multiply direction by movement speed
         CalcNextMoveTranslation();
         CalcNextPosition();
+        CalcCurrentDisplacement();
     }
 
     /**
@@ -379,12 +380,13 @@ public class BasicBeing extends Entity{
         this.walkDnAnim = new Animation(walkingSheet, 0,2,5,2,true,100,true);
         this.walkUpAnim = new Animation(walkingSheet, 0,3,5,3,true,100,true);
         this.hitAnimRt = new Animation(walkingSheet, 0,4,1,4,true,100,true);
-        this.hitAnimLt = new Animation(walkingSheet, 0,4,1,4,true,100,true);
-        this.idleAnim = new Animation(walkingSheet, 0,5,5,5,true,100,true);
+        this.hitAnimLt = new Animation(walkingSheet, 0,5,1,5,true,100,true);
+        this.idleAnimRt = new Animation(walkingSheet, 0,6,5,6,true,100,true);
+        this.idleAnimLt = new Animation(walkingSheet, 0,7,5,7,true,100,true);
 
-        this.deathAnim = new Animation(walkingSheet, 0,6,1,6,true,100,true);
+        this.deathAnim = new Animation(walkingSheet, 0,8,7,8,true,100,true);
         //  Attack and hit anim are the same except he shoots things when attacking.
-        this.attackAnim = new Animation(walkingSheet, 0,4,1,4,true,100,true);
+        this.attackAnim = new Animation(walkingSheet, 0,5,1,5,true,100,true);
     }
 
     /**
@@ -398,6 +400,7 @@ public class BasicBeing extends Entity{
         CalcNextMoveDirection();
 //      init the move translation using the other zero vectors
         CalcNextMoveTranslation();
+        CalcCurrentDisplacement();
     }
 
     /**
