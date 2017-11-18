@@ -56,15 +56,14 @@ public class TestStateBasicBeing extends BasicGameState{
         mapY = 104;
         being1 = new BasicBeing(new Vector(container.getWidth()/2,container.getHeight()/2), new Vector(mapX, mapY), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
                 ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
-
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
 
 //        map1.render((int)x - 32, (int)y - 32, mapX, mapY, mapX + 45, mapY + 30);
-        System.out.println("player x: "+x+" player y: "+y);
-        System.out.println("map x: "+mapX+" map y: "+mapY);
+//        System.out.println("player x: "+x+" player y: "+y);
+//        System.out.println("map x: "+mapX+" map y: "+mapY);
 
         int displaceX, displaceY, worldPosX, worldPosY;
         displaceX = (int)being1.getCurrentDisplacementX(); displaceY = (int)being1.getCurrentDisplacementY();
