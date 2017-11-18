@@ -70,9 +70,6 @@ public class MainMenuState extends BasicGameState {
     /**
      * Initializes the <code>MainMenuState</code>; loads image resources,
      * sets the initial menu choice.
-     * @param gameContainer
-     * @param stateBasedGame
-     * @throws SlickException
      */
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
@@ -92,9 +89,6 @@ public class MainMenuState extends BasicGameState {
      * Each menu choice is given a position, off image,
      * on image and a name. These are arguments to the <code>MenuItem</code>
      * constructor.
-     * @param container
-     * @param game
-     * @throws SlickException
      */
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
@@ -116,10 +110,6 @@ public class MainMenuState extends BasicGameState {
      * items in main menu. A string is drawn to screen showing the accurate
      * menu selection as opposed to the png currently being used which are
      * placeholders till menu art is complete.
-     * @param gameContainer
-     * @param stateBasedGame
-     * @param graphics
-     * @throws SlickException
      */
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
@@ -134,10 +124,6 @@ public class MainMenuState extends BasicGameState {
     /**
      * processes input with InputManager then uses the results in the
      * <code>ProcessInputCommand()</code>.
-     * @param gameContainer
-     * @param stateBasedGame
-     * @param i
-     * @throws SlickException
      */
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
@@ -150,8 +136,6 @@ public class MainMenuState extends BasicGameState {
     /**
      * Swaps the MenuItem image and sets the current menu choice with up and down input commands,
      * confirms selection with 'hit' commands.
-     * @param inputCommand
-     * @param stateBasedGame
      */
     private void ProcessInputCommand(InputManager.InputCommands inputCommand, StateBasedGame stateBasedGame) {
         switch(inputCommand){

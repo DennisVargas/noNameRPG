@@ -52,61 +52,43 @@ public class TestStateBasicBeing extends BasicGameState{
         super.enter(container, game);
         System.out.println(container.getWidth());
         System.out.println(container.getHeight());
-
-        being1 = new BasicBeing(new Vector(container.getWidth()/2,container.getHeight()/2), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
-                ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
         mapX = 90;
         mapY = 104;
+        being1 = new BasicBeing(new Vector(container.getWidth()/2,container.getHeight()/2), new Vector(mapX, mapY), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
+                ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
 
 //        map1.render((int)x - 32, (int)y - 32, mapX, mapY, mapX + 45, mapY + 30);
-        System.out.println("player x: "+x+" player y: "+y);
-        System.out.println("map x: "+mapX+" map y: "+mapY);
-        map1.render((int)x-32, (int)y-32, mapX, mapY, mapX+45, mapY+30 );
+//        System.out.println("player x: "+x+" player y: "+y);
+//        System.out.println("map x: "+mapX+" map y: "+mapY);
+
+        int displaceX, displaceY, worldPosX, worldPosY;
+        displaceX = (int)being1.getCurrentDisplacementX(); displaceY = (int)being1.getCurrentDisplacementY();
+        worldPosX = (int)being1.getWorldPositionX(); worldPosY = (int)being1.getWorldPositionY();
+
+        //  render the map using the client displacement from tile center
+        //  and current world position.
+        map1.render(displaceX-32, displaceY-32,
+                worldPosX, worldPosY, worldPosX+45, worldPosY+30 );
+
         graphics.drawString("hello Test Basic Being " + n, 640,360);
+        graphics.drawString("displaceX: "+being1.getCurrentDisplacementX()
+                +" displaceY:"+being1.getCurrentDisplacementY(), 200,200);
+        graphics.drawString("worldX: "+being1.getWorldPositionX()
+                +" worldY:"+being1.getWorldPositionY(), 200,230);
+        graphics.drawString("screenX: "+being1.getScreenPositionX()
+                +" screenY:"+being1.getScreenPositionY(), 200,260);
         being1.RenderBeing(graphics);
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input input = gameContainer.getInput();
-//        if (input.isKeyDown(Input.KEY_W))
-//            y += i/3.0f;
-//        if (input.isKeyDown(Input.KEY_S))
-//            y  -= i/3.0f;
-//        if (input.isKeyDown(Input.KEY_D))
-//            x -= i/3.0f;
-//        if (input.isKeyDown(Input.KEY_A))
-//            x += i/3.0f;
 
-        x = being1.getCurrentDisplacementX();
-        y = being1.getCurrentDisplacementY();
-        System.out.println("player x: "+x+" player y: "+y);
-        if (x < 0) {
-            mapX++;
-            x= 32;
-            being1.setCurrentDisplacementX(32);
-        }
-        if (x > 32) {
-            mapX --;
-            x= 0;
-            being1.setCurrentDisplacementX(0);
-        }
-        if (y < 0) {
-            mapY++;
-            y= 32;
-            being1.setCurrentDisplacementY(32);
-        }
-        if (y > 32) {
-            mapY --;
-            y= 0;
-            being1.setCurrentDisplacementY(0);
-        }
         inputCommand = InputManager.ProcessInput(input, stateId);
-//
         ProcessInputCommand(inputCommand);
     }
 
@@ -118,6 +100,6 @@ public class TestStateBasicBeing extends BasicGameState{
         being1.GenerateNextMove(inputCommand);
         //  update the beings position and health inside of
         //  private methods.
-//        being1.UpdateBeingPosition();
+        being1.UpdateBeingPosition();
     }
 }
