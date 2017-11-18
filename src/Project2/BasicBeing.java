@@ -588,6 +588,14 @@ public class BasicBeing extends Entity{
         this.screenPosition = screenPosition;
     }
 
+    public boolean isClient() {
+        return isClient;
+    }
+
+    public void setClient(boolean client) {
+        isClient = client;
+    }
+
     public float getWorldPositionX() {
         return this.worldPosition.getX();
     }
