@@ -88,40 +88,8 @@ public class TestStateBasicBeing extends BasicGameState{
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input input = gameContainer.getInput();
-//        if (input.isKeyDown(Input.KEY_W))
-//            y += i/3.0f;
-//        if (input.isKeyDown(Input.KEY_S))
-//            y  -= i/3.0f;
-//        if (input.isKeyDown(Input.KEY_D))
-//            x -= i/3.0f;
-//        if (input.isKeyDown(Input.KEY_A))
-//            x += i/3.0f;
 
-        x = being1.getCurrentDisplacementX();
-        y = being1.getCurrentDisplacementY();
-        System.out.println("player x: "+x+" player y: "+y);
-        if (x < 0) {
-            mapX++;
-            x= 32;
-            being1.setCurrentDisplacementX(32);
-        }
-        if (x > 32) {
-            mapX --;
-            x= 0;
-            being1.setCurrentDisplacementX(0);
-        }
-        if (y < 0) {
-            mapY++;
-            y= 32;
-            being1.setCurrentDisplacementY(32);
-        }
-        if (y > 32) {
-            mapY --;
-            y= 0;
-            being1.setCurrentDisplacementY(0);
-        }
         inputCommand = InputManager.ProcessInput(input, stateId);
-//
         ProcessInputCommand(inputCommand);
     }
 
