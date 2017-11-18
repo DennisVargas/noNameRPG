@@ -55,12 +55,37 @@ public class BasicBeing extends Entity{
         InitNextVectors();
     }
 
-
     /**
-     * @return if health is less than or equal to zero.
+     * Calculates the BasicBeing's displacement given
+     * the current next move translation vector's x and y
+     * components. Thus the field <code>this.currentDisplacement</code>
+     * holds a running total of the beings displacement from their
+     * original position at game start.
      */
-    public boolean isDead(){
-        return health <= 0;
+    private void CalcCurrentDisplacement() {
+        if(this.currentDisplacement == null)
+            this.currentDisplacement = new Vector(0,0);
+        else{
+            int dx = (int)this.currentDisplacement.getX();
+            int dy = (int)this.currentDisplacement.getY();
+            dx += (int)this.nextMoveTranslation.getX();
+            dy += (int)this.nextMoveTranslation.getY();
+//            if (dx < 0) {
+//                dx = 32;
+//            }
+//            if (dx > 32) {
+//                dx = 0;
+//            }
+//            if (dy < 0) {
+//                dy = 32;
+//            }
+//            if (dy > 32) {
+//                dy = 0;
+//            }
+//            dx %= 34;
+//            dy %= 34;
+            this.currentDisplacement = new Vector(dx, dy);
+        }
     }
 
 
