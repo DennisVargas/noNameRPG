@@ -116,10 +116,12 @@ public class BasicBeing extends Entity{
                 break;
             case idle:
                 if(currentAnim == walkLeftAnim
-                        || currentAnim == hitAnimLt)
+                        || currentAnim == hitAnimLt
+                        || currentAnim == walkDnAnim)
                     setCurrentAnimation(idleAnimLt);
                 else if(currentAnim == walkRightAnim
-                        || currentAnim == hitAnimRt)
+                        || currentAnim == hitAnimRt
+                        || currentAnim == walkUpAnim)
                     setCurrentAnimation(idleAnimRt);
                 break;
             case attack:
