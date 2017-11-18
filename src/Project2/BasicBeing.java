@@ -584,4 +584,20 @@ public class BasicBeing extends Entity{
         this.worldPosition = worldPosition;
     }
 
+    public void setScreenPosition(Vector screenPosition) {
+        this.screenPosition = screenPosition;
+    }
+
+    public float getWorldPositionX() {
+        return this.worldPosition.getX();
+    }
+
+    public float getScreenPositionX() {
+        return this.screenPosition.getX();
+    }
+
+    public float getScreenPositionY() {
+        return this.screenPosition.getY();
+    }
+
 }
