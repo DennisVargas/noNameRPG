@@ -7,12 +7,15 @@
 - **[3]** Build first level map with graphic tiles
 - **[21]** Build second level map
 - **[28]** Improve javadoc in BasicBeing class
+- **[30]** Create javadoc comments where missing
+
 
 ## Claimed Issues ##
 - **[2]** Add art assets
 - **[6]** Client/server networking system
 - **[7]** Camera viewport that follows player
-- **[30]** Create javadoc comments where missing
+- **[31]** Adjust BasicBeing Animations to match updated sprite sheet
+
 
 ## Open Issues ##
 - **[8]** Add first animated mob
