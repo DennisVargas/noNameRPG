@@ -20,6 +20,8 @@ public class BasicBeing extends Entity{
 
     private float health = 1f;
 
+    boolean isClient = true;
+
     private Animation   walkRightAnim, walkLeftAnim, walkUpAnim,
                         walkDnAnim, idleAnimLt, idleAnimRt, attackAnim,
                         hitAnimLt, hitAnimRt, deathAnim, currentAnim;
