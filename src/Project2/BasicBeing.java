@@ -20,10 +20,10 @@ public class BasicBeing extends Entity{
 
     private float health = 1f;
 
-    private Animation walkRightAnim, walkLeftAnim,
-                      walkUpAnim, walkDnAnim,
-                      idleAnim, attackAnim, hitAnim,
-                      deathAnim, currentAnim;
+    private Animation   walkRightAnim, walkLeftAnim,
+                        walkUpAnim, walkDnAnim,
+                        idleAnim, attackAnim, hitAnimLt,
+                        hitAnimRt, deathAnim, currentAnim;
 
     private String name = "default";
     private int beingID = 0;
