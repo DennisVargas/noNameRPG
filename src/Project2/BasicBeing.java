@@ -68,10 +68,11 @@ public class BasicBeing extends Entity{
 
     /**
      * Calculates the BasicBeing's displacement given
-     * the current next move translation vector's x and y
+     * the an inverted current next move translation vector's x and y
      * components. Thus the field <code>this.currentDisplacement</code>
-     * holds a running total of the beings displacement from their
-     * original position at game start.
+     * holds a running total of the beings displacement from the center
+     * of their closest tile. Translation is inverted because the map
+     * will move in the opposite direction of the Being.
      */
     private void CalcCurrentDisplacement() {
         if(this.currentDisplacement == null)
