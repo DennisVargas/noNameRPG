@@ -38,6 +38,8 @@ public class Project2 extends StateBasedGame {
      */
     public static final int TESTSTATEBASICBEING = 20;
     public static final int MENUITEMTESTSTATE = 21;
+    public static final int TESTGAMESERVER = 22;
+    public static final int TESTGAMECLIENT = 23;
 
 
     /**
@@ -57,6 +59,8 @@ public class Project2 extends StateBasedGame {
         this.addState(new GamePlayState(GAMEPLAYSTATE));
 
 //       TEST STATES
+        this.addState(new TestGameServer(TESTGAMESERVER));
+        this.addState(new TestGameClient(TESTGAMECLIENT));
         this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
     }
 
@@ -70,13 +74,14 @@ public class Project2 extends StateBasedGame {
         }catch(Exception e){}
     }
 
-    @Override
+
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         Entity.setCoarseGrainedCollisionBoundary(Entity.CIRCLE);
         Input input = gameContainer.getInput();
         input.initControllers();
         input.clearControlPressedRecord();
 
+        /*
 //        test states init
         this.getState(TESTSTATEBASICBEING).init(gameContainer,this);
 
@@ -87,6 +92,7 @@ public class Project2 extends StateBasedGame {
         this.getState(NEWMULTIMENUSTATE).init(gameContainer, this);
         this.getState(OPTIONMENUSTATE).init(gameContainer, this);
         this.getState(GAMEPLAYSTATE).init(gameContainer, this);
+        */
     }
 
 }
