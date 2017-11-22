@@ -38,7 +38,7 @@ public class Project2 extends StateBasedGame {
      */
     public static final int TESTSTATEBASICBEING = 20;
     public static final int MENUITEMTESTSTATE = 21;
-    public static final int TESTGAMESERVER = 22;
+//    public static final int TESTGAMESERVER = 22;
     public static final int TESTGAMECLIENT = 23;
 
 
@@ -59,7 +59,7 @@ public class Project2 extends StateBasedGame {
         this.addState(new GamePlayState(GAMEPLAYSTATE));
 
 //       TEST STATES
-        this.addState(new TestGameServer(TESTGAMESERVER));
+//        this.addState(new TestGameServer(TESTGAMESERVER));
         this.addState(new TestGameClient(TESTGAMECLIENT));
         this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
     }

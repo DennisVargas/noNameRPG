@@ -43,11 +43,14 @@ public class Client {
             socket = new Socket(ipAddress, port);
             OutputStream outToServer = socket.getOutputStream();
             DataOutputStream out = new DataOutputStream(outToServer);
-            out.writeUTF("Hello from " + socket.getLocalSocketAddress());
-            InputStream inFromServer = socket.getInputStream();
-            DataInputStream in = new DataInputStream(inFromServer);
-            System.out.println("Server says " + in.readUTF());
-            socket.close();
+//            out.writeUTF("Hello from " + socket.getLocalSocketAddress());
+            out.writeUTF("INIT " + socket.getLocalSocketAddress() + " " + 1);
+            listening = true;
+            listen();
+//            InputStream inFromServer = socket.getInputStream();
+//            DataInputStream in = new DataInputStream(inFromServer);
+//            System.out.println("Server says " + in.readUTF());
+//            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Client cannot connect");
@@ -74,9 +77,55 @@ public class Client {
         return true;
     }
 
+    private void listen() {
+        // listen while socket is open
+        while(listening) {
+            // TCP
+            try {
+                InputStream inFromServer = socket.getInputStream();
+                DataInputStream in = new DataInputStream(inFromServer);
+                System.out.println("Server says: " + in.readUTF());
+                send("Client: still connected");
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Server has a problem listening");
+                listening = false;
+            }
+
+            // UDP
+            // create packet to hold received information
+//            DatagramPacket packet = new DatagramPacket(dataBuffer, MAX_PACKET_SIZE);
+
+            // wait for packet to received
+//            try {
+//                socket.receive(packet);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            System.out.println("packet received");
+//            process(packet);
+        }
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 //    private void process() {
 //
 //    }
+
+
+    private void send(String msg) {
+        // send an outgoing message
+        try {
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            out.writeUTF(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     // UDP

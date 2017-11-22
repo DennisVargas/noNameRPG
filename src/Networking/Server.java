@@ -64,6 +64,7 @@ public class Server {
 
             } catch (SocketTimeoutException t) {
                 System.out.println("Socket timed out");
+                send("Server: Are you still there?");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Server has a problem listening");
@@ -93,6 +94,7 @@ public class Server {
         try {
             System.out.println("Just connected to " + server.getRemoteSocketAddress());
             DataInputStream in = new DataInputStream(server.getInputStream());
+
             process(in);
         } catch (IOException e) {
             e.printStackTrace();
@@ -104,6 +106,7 @@ public class Server {
         // print the incoming message
         try {
             System.out.println(inMsg.readUTF());
+            // send info to testgameserver
             send();
         } catch (IOException e) {
             e.printStackTrace();
@@ -116,6 +119,16 @@ public class Server {
             DataOutputStream out = new DataOutputStream(server.getOutputStream());
             out.writeUTF("Thank you for connecting to " + server.getLocalSocketAddress()
                     + "\nGoodbye!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void send(String msg) {
+        // send an outgoing message
+        try {
+            DataOutputStream out = new DataOutputStream(server.getOutputStream());
+            out.writeUTF(msg);
         } catch (IOException e) {
             e.printStackTrace();
         }
