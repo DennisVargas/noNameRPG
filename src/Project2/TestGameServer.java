@@ -57,13 +57,15 @@ public class TestGameServer {
 
     // constructor sets port number and state ID for current level
     public TestGameServer(int stateId, int port) throws SlickException {
-        // Set game info
+        // Set game info based on what level was requested by host
         // TODO: eventually remove spritesheets
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
         if (stateId == 23) {
             ResourceManager.loadImage(WALKINGSHEETRSC);
             ResourceManager.loadImage(ATTACKINGSHEETRSC);
 //            map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
+            mapX = 90;
+            mapY = 104;
         }
 
         // Set port info
@@ -121,14 +123,15 @@ public class TestGameServer {
                 System.out.println("Server: unknown message received");
                 break;
         }
-
     }
 
     // TODO: initialization function for sending level info to player, creating player in game
     private void initPacket() {
+        System.out.println("executing initPackage");
         // TODO: map info
         // TODO: player positions
-        String msg = Integer.toString(stateId);
+//        String msg = "INIT " + Integer.toString(stateId);
+        String msg = "INIT " + Integer.toString(1);
         for (int i = 0; i < Players.size(); i++) {
             msg += " ";
             msg += Players.get(i).getName();

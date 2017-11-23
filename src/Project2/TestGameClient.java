@@ -3,9 +3,9 @@ package Project2;
 /**
  * Page should load from either a screen where the player sets up a server (enters port number) or the player chooses to
  * join someone else's game (enters IP and port number)
+ *
  * */
 
-import Networking.Client;
 import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.GameContainer;
@@ -17,21 +17,14 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.util.concurrent.*;
-
+import java.util.ArrayList;
 
 import static Project2.InputManager.InputCommands;
-import static Project2.InputManager.InputCommands.*;
+
 
 public class TestGameClient extends BasicGameState{
-    private double x, y;
-    private int mapX, mapY;
-    private int stateId;
-    private BasicBeing being1;
-    private InputCommands inputCommand;
-    private ExecutorService execService;
+    // SERVER STUFF
     TestGameServer gameserver;
     private String ipAddress; // client's IP address
     private String serverAddress; // server's IP address
@@ -39,18 +32,29 @@ public class TestGameClient extends BasicGameState{
     private boolean listening = false;
     Socket socket;
 
+    // GAME STUFF
+    private boolean init = false;
+    private int stateId;
+//    private BasicBeing being1;
+    private InputCommands inputCommand;
+    private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    private ArrayList<BasicBeing> Players;
+
+    // MAP STUFF
+    private double x, y;
+    private int mapX, mapY;
+    //    public TiledMap mapTest = null;
+    public TiledMap map1 = null;
+    //    private final String TESTLEVELRSC = "resources/Levels/testlevel.tmx";
+    private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
+    private final String TILESHEETRSC = "resources/Levels";
+
+
     public TestGameClient(int state_id) {
         this.stateId = state_id;
     }
 
-    private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-
-//    public TiledMap mapTest = null;
-    public TiledMap map1 = null;
-//    private final String TESTLEVELRSC = "resources/Levels/testlevel.tmx";
-    private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
-    private final String TILESHEETRSC = "resources/Levels";
 
     @Override
     public int getID() {
@@ -61,8 +65,7 @@ public class TestGameClient extends BasicGameState{
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         ResourceManager.loadImage(WALKINGSHEETRSC);
         ResourceManager.loadImage(ATTACKINGSHEETRSC);
-        // TODO: load map based on info received in init packet from server
-        map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
+        Players = new ArrayList<>();
     }
 
     @Override
@@ -70,9 +73,8 @@ public class TestGameClient extends BasicGameState{
         super.enter(container, game);
 
         // SERVER STUFF (if client is running server)
-        // TODO: send proper state ID for current level (and port number)
+        // TODO: determine level number and send as variable
         if (true) { // should evaluate whether or not player is hosting the server
-            System.out.println("Client's state_id" + Integer.toString(stateId));
             port = 1234;
             serverAddress = "localhost";
             gameserver = new TestGameServer(stateId, port);
@@ -90,40 +92,39 @@ public class TestGameClient extends BasicGameState{
             System.out.println("Client: connecting to " + serverAddress + " on port " + port);
             connect();
         }
-
-
-
-        // TODO: shouldn't be loading any map or player info until map info received from server
-        // MAP STUFF
-        mapX = 90;
-        mapY = 104;
-
-        // ENTITY STUFF
-        being1 = new BasicBeing(new Vector(container.getWidth()/2,container.getHeight()/2), new Vector(mapX, mapY), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
-                ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
     }
 
-    @Override
-    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-        // VIEWPORT STUFF
-        int displaceX, displaceY, worldPosX, worldPosY;
-        displaceX = (int)being1.getCurrentDisplacementX(); displaceY = (int)being1.getCurrentDisplacementY();
-        worldPosX = (int)being1.getWorldPositionX(); worldPosY = (int)being1.getWorldPositionY();
-        //  render the map using the client displacement from tile center
-        //  and current world position.
-        map1.render(displaceX-32, displaceY-32,
-                worldPosX, worldPosY, worldPosX+45, worldPosY+30 );
-        graphics.drawString("Test Game Client ", 740,360);
 
-        // ENTITY STUFF
-        being1.RenderBeing(graphics);
+
+    @Override
+    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics g) throws SlickException {
+        if (init) {
+            // VIEWPORT STUFF
+            int displaceX, displaceY, worldPosX, worldPosY;
+
+            //  render the map using the client displacement from tile center and current world position
+            displaceX = (int)Players.get(0).getCurrentDisplacementX(); displaceY = (int)Players.get(0).getCurrentDisplacementY();
+            worldPosX = (int)Players.get(0).getWorldPositionX(); worldPosY = (int)Players.get(0).getWorldPositionY();
+
+            map1.render(displaceX-32, displaceY-32, worldPosX, worldPosY, worldPosX+45, worldPosY+30 );
+            g.drawString("Test Game Client ", 740,360);
+
+            // ENTITY STUFF
+            // render players
+            for (int i = 0; i < Players.size(); i++) {
+                Players.get(i).render(g);
+            }
+        }
     }
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
-        Input input = gameContainer.getInput();
-        inputCommand = InputManager.ProcessInput(input, stateId);
-        ProcessInputCommand(inputCommand);
+        if (init) {
+//            System.out.println("executing update");
+            Input input = gameContainer.getInput();
+            inputCommand = InputManager.ProcessInput(input, stateId);
+            ProcessInputCommand(inputCommand);
+        }
     }
 
     private void ProcessInputCommand(InputCommands inputCommand) {
@@ -131,10 +132,34 @@ public class TestGameClient extends BasicGameState{
         //  pass the inputCommand to the Being and it will then react to its command.
         //  they will check their own next move for collision and will set the next move in
         //  preparation for their update call.
-        being1.GenerateNextMove(inputCommand);
+        Players.get(0).GenerateNextMove(inputCommand);
         //  update the beings position and health inside of
         //  private methods.
-        being1.UpdateBeingPosition();
+        Players.get(0).UpdateBeingPosition();
+    }
+
+    private void loadLevel(int level) throws SlickException {
+        System.out.println("executing loadLevel " + level);
+
+        // should match switch statement in TestGameServer constructor
+        switch (level) {
+            case 1:
+                map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
+                mapX = 90;
+                mapY = 104;
+                break;
+            default:
+                System.out.println("Client: unknown level");
+                break;
+        }
+    }
+
+    private void addPlayer(String playerID, float xPos, float yPos) {
+//        System.out.println("executing addPlayer");
+        // TODO: Add playerID and ClassID to Basic Being constructor or player constructor, whatever gets used here
+        BasicBeing being1 = new BasicBeing(new Vector(640,360), new Vector(xPos, yPos), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
+                ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
+        Players.add(being1);
     }
 
 
@@ -189,23 +214,6 @@ public class TestGameClient extends BasicGameState{
             return false;
         }
 
-        // UDP
-//        try {
-//            serverAddress = InetAddress.getByName(ipAddress);
-//        } catch (UnknownHostException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//        try {
-//            socket = new DatagramSocket(); // generates with random port number
-//        } catch (SocketException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//
-//        byte[] connMsg = "conn".getBytes();
-//        send(connMsg);
-        // wait for server to reply
         return true;
     }
 
@@ -216,26 +224,17 @@ public class TestGameClient extends BasicGameState{
             try {
                 InputStream inFromServer = socket.getInputStream();
                 DataInputStream in = new DataInputStream(inFromServer);
-                System.out.println("Client: server sent message: " + in.readUTF());
-                send("Client: still connected");
+                processMessage(in);
+//                System.out.println("Client: server sent message: " + in.readUTF());
+//                send("Client: still connected");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Client: server has a problem listening");
                 listening = false;
+            } catch (SlickException s) {
+                s.printStackTrace();
+                System.out.println("Client: problem in listen() calling processMessage()");
             }
-
-            // UDP
-            // create packet to hold received information
-//            DatagramPacket packet = new DatagramPacket(dataBuffer, MAX_PACKET_SIZE);
-
-            // wait for packet to received
-//            try {
-//                socket.receive(packet);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            System.out.println("packet received");
-//            process(packet);
         }
         try {
             socket.close();
@@ -244,9 +243,40 @@ public class TestGameClient extends BasicGameState{
         }
     }
 
-//    private void process() {
-//
-//    }
+    // process incoming messages from clients
+    public void processMessage(DataInputStream in) throws SlickException {
+        String msg = null;
+        // converts data steam into string
+        try {
+            msg = in.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*
+        Message Structures:
+        INIT levelID playerIP xPos yPos
+        INPT playerIP true false false true false
+         */
+        // sets empty space as delimiter
+        String delims = "[ ]";
+        // splits message into tokens at every space
+        String[] tokens = msg.split(delims);
+
+        switch (tokens[0]) {
+            case "INIT":
+                System.out.println("Client: got INIT response ");
+                loadLevel(Integer.parseInt(tokens[1]));
+                addPlayer(tokens[2], Float.parseFloat(tokens[3]), Float.parseFloat(tokens[4]));
+                init = true;
+                break;
+            case "INPT":
+                break;
+            default:
+                System.out.println("Server: unknown message received");
+                break;
+        }
+    }
 
 
     private void send(String msg) {
