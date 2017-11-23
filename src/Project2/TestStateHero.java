@@ -1,5 +1,6 @@
 package Project2;
 
+import jig.Vector;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -22,7 +23,7 @@ public class TestStateHero extends BasicGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-
+        hero1 = new Hero(new Vector(0,0), false);
     }
 
     @Override
@@ -32,7 +33,7 @@ public class TestStateHero extends BasicGameState {
 
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-
+        hero1.render(g);
     }
 
     @Override

@@ -57,7 +57,7 @@ public class Project2 extends StateBasedGame {
      */
     public Project2() {
         super(NAME);
-
+        this.addState(new TestStateHero(TESTSTATEHERO));
 //      official states
         this.addState(new MainMenuState(MAINMENUSTATE));
         this.addState(new NewSingleMenu(NEWSINGLEMENUSTATE));
@@ -68,12 +68,6 @@ public class Project2 extends StateBasedGame {
 //       TEST STATES
         this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
 
-        ResourceManager.loadImage(MOB1WALKINGSHEETRSC);
-        ResourceManager.loadImage(MOB1ATTACKINGSHEETRSC);
-        ResourceManager.loadImage(MELEEHEROATTACKINGSHEETRSC);
-        ResourceManager.loadImage(MELEEHEROWALKINGSHEETRSC);
-        ResourceManager.loadImage(RANGEDHEROWALKINGSHEETRSC);
-        ResourceManager.loadImage(RANGEDHEROATTACKINGSHEETRSC);
     }
 
     public static void main(String[] args)throws SlickException{
@@ -95,7 +89,7 @@ public class Project2 extends StateBasedGame {
 
 //        test states init
         this.getState(TESTSTATEBASICBEING).init(gameContainer,this);
-
+        this.getState(TESTSTATEHERO).init(gameContainer,this);
 
 //        official state init
         this.getState(MAINMENUSTATE).init(gameContainer, this);
@@ -103,6 +97,13 @@ public class Project2 extends StateBasedGame {
         this.getState(NEWMULTIMENUSTATE).init(gameContainer, this);
         this.getState(OPTIONMENUSTATE).init(gameContainer, this);
         this.getState(GAMEPLAYSTATE).init(gameContainer, this);
+
+        ResourceManager.loadImage(MOB1WALKINGSHEETRSC);
+        ResourceManager.loadImage(MOB1ATTACKINGSHEETRSC);
+        ResourceManager.loadImage(MELEEHEROATTACKINGSHEETRSC);
+        ResourceManager.loadImage(MELEEHEROWALKINGSHEETRSC);
+        ResourceManager.loadImage(RANGEDHEROWALKINGSHEETRSC);
+        ResourceManager.loadImage(RANGEDHEROATTACKINGSHEETRSC);
     }
 
 }

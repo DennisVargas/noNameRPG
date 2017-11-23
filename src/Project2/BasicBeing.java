@@ -28,7 +28,7 @@ public class BasicBeing extends Entity{
     private int beingID = 0;
 
     private InputCommands nextMoveCommand;
-
+    private Vector currentDisplacement;
     private Vector worldPosition;
     private Vector screenPosition;
 
@@ -36,7 +36,6 @@ public class BasicBeing extends Entity{
     private Vector nextMoveDirection;
     private Vector nextMoveTranslation;
 
-    private Vector currentDisplacement;
 
     private float speed = 2f;
     private Animation currentAnimation;
@@ -182,41 +181,41 @@ public class BasicBeing extends Entity{
      * resulting UNIT Vector is set as the next move direction vector.
      * Thus an up command produces vector (0,1).
      */
-    private void CalcNextMoveDirection() {
-        float diagSpeed = (float)Math.sqrt(2)/2;
-        switch (this.nextMoveCommand){
-            case up:
-                this.nextMoveDirection = new Vector(0,-1f);
-                break;
-            case down:
-                this.nextMoveDirection = new Vector(0,1f);
-                break;
-            case left:
-                this.nextMoveDirection = new Vector(-1f,0);
-                break;
-            case right:
-                this.nextMoveDirection = new Vector(1f,0);
-                break;
-            case ulDiag:
-                this.nextMoveDirection = new Vector(-1f,-1f);
-                break;
-            case dlDiag:
-                this.nextMoveDirection = new Vector(-1f,1f);
-                break;
-            case urDiag:
-                this.nextMoveDirection = new Vector(1f,-1f);
-                break;
-            case drDiag:
-                this.nextMoveDirection = new Vector(1f,1f);
-                break;
-            case idle:
-                this.nextMoveDirection = new Vector(0,0);
-                break;
-            case attack:
-                this.nextMoveDirection = new Vector(0,0);
-                break;
-        }
-    }
+//    private void CalcNextMoveDirection() {
+//        float diagSpeed = (float)Math.sqrt(2)/2;
+//        switch (this.nextMoveCommand){
+//            case up:
+//                this.nextMoveDirection = new Vector(0,-1f);
+//                break;
+//            case down:
+//                this.nextMoveDirection = new Vector(0,1f);
+//                break;
+//            case left:
+//                this.nextMoveDirection = new Vector(-1f,0);
+//                break;
+//            case right:
+//                this.nextMoveDirection = new Vector(1f,0);
+//                break;
+//            case ulDiag:
+//                this.nextMoveDirection = new Vector(-1f,-1f);
+//                break;
+//            case dlDiag:
+//                this.nextMoveDirection = new Vector(-1f,1f);
+//                break;
+//            case urDiag:
+//                this.nextMoveDirection = new Vector(1f,-1f);
+//                break;
+//            case drDiag:
+//                this.nextMoveDirection = new Vector(1f,1f);
+//                break;
+//            case idle:
+//                this.nextMoveDirection = new Vector(0,0);
+//                break;
+//            case attack:
+//                this.nextMoveDirection = new Vector(0,0);
+//                break;
+//        }
+//    }
 
 
     /**
@@ -226,10 +225,10 @@ public class BasicBeing extends Entity{
      * components. The result is used to instantiate a new
      * JIG Vector that is stored as nextMoveTranslation
      */
-    private void CalcNextMoveTranslation() {
-        nextMoveTranslation = new Vector(nextMoveDirection.getX()*speed,
-                nextMoveDirection.getY()*speed);
-    }
+//    private void CalcNextMoveTranslation() {
+//        nextMoveTranslation = new Vector(nextMoveDirection.getX()*speed,
+//                nextMoveDirection.getY()*speed);
+//    }
 
     /**
      * Calculates the Being's next position.
@@ -239,13 +238,13 @@ public class BasicBeing extends Entity{
      * new JIG Vector. Vector is an immutable type and must be
      * destroyed and replaced in order to change the values.
      */
-    private void CalcNextPosition() {
-        if(this.nextScreenPosition == null)
-            this.nextScreenPosition = this.getPosition().copy();
-        else
-            this.nextScreenPosition = new Vector( this.nextMoveTranslation.getX() + this.getPosition().getX(),
-                    this.nextMoveTranslation.getY() + this.getPosition().getY());
-    }
+//    private void CalcNextPosition() {
+//        if(this.nextScreenPosition == null)
+//            this.nextScreenPosition = this.getPosition().copy();
+//        else
+//            this.nextScreenPosition = new Vector( this.nextMoveTranslation.getX() + this.getPosition().getX(),
+//                    this.nextMoveTranslation.getY() + this.getPosition().getY());
+//    }
 
 
     /**
@@ -270,11 +269,11 @@ public class BasicBeing extends Entity{
 //      process what the next move means to animation
         CalcNextMoveAnimation();
 //      looking at the move command set the direction of movement
-        CalcNextMoveDirection();
-
-//      multiply direction by movement speed
-        CalcNextMoveTranslation();
-        CalcNextPosition();
+//        CalcNextMoveDirection();
+//
+////      multiply direction by movement speed
+//        CalcNextMoveTranslation();
+//        CalcNextPosition();
 
     }
 
