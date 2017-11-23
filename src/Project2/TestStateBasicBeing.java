@@ -65,18 +65,19 @@ public class TestStateBasicBeing extends BasicGameState{
 //        System.out.println("player x: "+x+" player y: "+y);
 //        System.out.println("map x: "+mapX+" map y: "+mapY);
 
-        int displaceX, displaceY, worldPosX, worldPosY;
-        displaceX = (int)being1.getCurrentDisplacementX(); displaceY = (int)being1.getCurrentDisplacementY();
+        float displaceX, displaceY, worldPosX, worldPosY;
         worldPosX = (int)being1.getWorldPositionX(); worldPosY = (int)being1.getWorldPositionY();
+        displaceX = (being1.getWorldPositionX()-worldPosX)*-32; displaceY = (being1.getWorldPositionY()-worldPosY)*-32;
+
 
         //  render the map using the client displacement from tile center
         //  and current world position.
-        map1.render(displaceX-32, displaceY-32,
-                worldPosX, worldPosY, worldPosX+45, worldPosY+30 );
+        map1.render((int)displaceX, (int)displaceY,
+                (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
 
         graphics.drawString("hello Test Basic Being " + n, 640,360);
-        graphics.drawString("displaceX: "+being1.getCurrentDisplacementX()
-                +" displaceY:"+being1.getCurrentDisplacementY(), 200,200);
+        graphics.drawString("displaceX: "+displaceX
+                +" displaceY:"+displaceY, 200,200);
         graphics.drawString("worldX: "+being1.getWorldPositionX()
                 +" worldY:"+being1.getWorldPositionY(), 200,230);
         graphics.drawString("screenX: "+being1.getScreenPositionX()

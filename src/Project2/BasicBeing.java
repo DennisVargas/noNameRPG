@@ -75,10 +75,10 @@ public class BasicBeing extends Entity{
         if(this.currentDisplacement == null)
             this.currentDisplacement = new Vector(0,0);
         else{
-            int dx = (int)this.currentDisplacement.getX();
-            int dy = (int)this.currentDisplacement.getY();
-            dx += (int)this.nextMoveTranslation.getX()*-1;
-            dy += (int)this.nextMoveTranslation.getY()*-1;
+            float dx = this.currentDisplacement.getX();
+            float dy = this.currentDisplacement.getY();
+            dx += (this.nextMoveTranslation.getX()/32f);
+            dy += (this.nextMoveTranslation.getY()/32f);
 //            System.out.println("dx: "+dx+" dy: "+dy);
             this.currentDisplacement = new Vector(dx, dy);
         }
@@ -93,23 +93,28 @@ public class BasicBeing extends Entity{
      * position is decremented and the displacement set to 0.
      */
     private void CalcCurrentWorldPosition() {
-        if (getCurrentDisplacementX() < 0) {
-            float x = getWorldPositionX();
-            setWorldPositionX(++x);
-            setCurrentDisplacementX(32);
-        }else if(getCurrentDisplacementX() > 32){
-            float x = getWorldPositionX();
-            setWorldPositionX(--x);
-            setCurrentDisplacementX(0);
-        }if(getCurrentDisplacementY() <0){
-            float y = getWorldPositionY();
-            setWorldPositionY(++y);
-            setCurrentDisplacementY(32);
-        }else if (getCurrentDisplacementY()> 32){
-            float y = getWorldPositionY();
-            setWorldPositionY(--y);
-            setCurrentDisplacementY(0);
-        }
+        float x = getWorldPositionX();
+        float y = getWorldPositionY();
+        x += (this.nextMoveTranslation.getX()/32f);
+        y += (this.nextMoveTranslation.getY()/32f);
+        setWorldPosition(new Vector(x,y));
+//        if (getCurrentDisplacementX() < 0) {
+//            float x = getWorldPositionX();
+//            setWorldPositionX(++x);
+//            setCurrentDisplacementX(32);
+//        }else if(getCurrentDisplacementX() > 32){
+//            float x = getWorldPositionX();
+//            setWorldPositionX(--x);
+//            setCurrentDisplacementX(0);
+//        }if(getCurrentDisplacementY() <0){
+//            float y = getWorldPositionY();
+//            setWorldPositionY(++y);
+//            setCurrentDisplacementY(32);
+//        }else if (getCurrentDisplacementY()> 32){
+//            float y = getWorldPositionY();
+//            setWorldPositionY(--y);
+//            setCurrentDisplacementY(0);
+//        }
     }
 
     /**
