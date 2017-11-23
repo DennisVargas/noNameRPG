@@ -444,7 +444,7 @@ public class BasicBeing extends Entity{
      * @param walkingSheet
      * @param attackingSheet
      */
-    private void InitAnimations(SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
+    public void InitAnimations(SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
         this.walkRightAnim = new Animation(walkingSheet, 0,0,5,0,true,100,true);
         this.walkLeftAnim = new Animation(walkingSheet, 0,1,5,1,true,100,true);
         this.walkDnAnim = new Animation(walkingSheet, 0,2,5,2,true,100,true);
