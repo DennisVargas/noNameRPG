@@ -1,6 +1,7 @@
 package Project2;
 
 import jig.Entity;
+import jig.ResourceManager;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
@@ -38,7 +39,15 @@ public class Project2 extends StateBasedGame {
      */
     public static final int TESTSTATEBASICBEING = 20;
     public static final int MENUITEMTESTSTATE = 21;
+    public static final int TESTSTATEHERO = 22;
 
+
+    public static final String MOB1WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String MOB1ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String MELEEHEROATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String MELEEHEROWALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String RANGEDHEROWALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String RANGEDHEROATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
 
     /**
      * instantiates the game name and then creates a
@@ -58,6 +67,13 @@ public class Project2 extends StateBasedGame {
 
 //       TEST STATES
         this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
+
+        ResourceManager.loadImage(MOB1WALKINGSHEETRSC);
+        ResourceManager.loadImage(MOB1ATTACKINGSHEETRSC);
+        ResourceManager.loadImage(MELEEHEROATTACKINGSHEETRSC);
+        ResourceManager.loadImage(MELEEHEROWALKINGSHEETRSC);
+        ResourceManager.loadImage(RANGEDHEROWALKINGSHEETRSC);
+        ResourceManager.loadImage(RANGEDHEROATTACKINGSHEETRSC);
     }
 
     public static void main(String[] args)throws SlickException{
