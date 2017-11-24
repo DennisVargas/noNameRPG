@@ -4,7 +4,7 @@ import jig.Vector;
 import static Project2.InputManager.InputCommands;
 
 
-public abstract class MovementCalc {
+public class MovementCalc {
 
 
     /**
