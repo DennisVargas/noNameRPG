@@ -5,7 +5,6 @@ import jig.Vector;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
-import java.lang.Math;
 
 import static Project2.InputManager.InputCommands;
 import static Project2.InputManager.InputCommands.*;
@@ -34,7 +33,7 @@ public class BasicBeing extends Entity{
 
     private Vector nextScreenPosition;
     private Vector nextMoveDirection;
-    private Vector nextMoveTranslation;
+    private Vector translation;
 
 
     private float speed = 2f;
@@ -76,8 +75,8 @@ public class BasicBeing extends Entity{
         else{
             float dx = this.currentDisplacement.getX();
             float dy = this.currentDisplacement.getY();
-            dx += (this.nextMoveTranslation.getX()/32f);
-            dy += (this.nextMoveTranslation.getY()/32f);
+            dx += (this.translation.getX()/32f);
+            dy += (this.translation.getY()/32f);
 //            System.out.println("dx: "+dx+" dy: "+dy);
             this.currentDisplacement = new Vector(dx, dy);
         }
@@ -94,8 +93,8 @@ public class BasicBeing extends Entity{
     private void CalcCurrentWorldPosition() {
         float x = getWorldPositionX();
         float y = getWorldPositionY();
-        x += (this.nextMoveTranslation.getX()/32f);
-        y += (this.nextMoveTranslation.getY()/32f);
+        x += (this.translation.getX()/32f);
+        y += (this.translation.getY()/32f);
         setWorldPosition(new Vector(x,y));
 //        if (getCurrentDisplacementX() < 0) {
 //            float x = getWorldPositionX();
@@ -223,10 +222,10 @@ public class BasicBeing extends Entity{
      * A move translation is calculated by multiplying the
      * Being speed by the next move direction vectors x and y
      * components. The result is used to instantiate a new
-     * JIG Vector that is stored as nextMoveTranslation
+     * JIG Vector that is stored as translation
      */
 //    private void CalcNextMoveTranslation() {
-//        nextMoveTranslation = new Vector(nextMoveDirection.getX()*speed,
+//        translation = new Vector(nextMoveDirection.getX()*speed,
 //                nextMoveDirection.getY()*speed);
 //    }
 
@@ -242,8 +241,8 @@ public class BasicBeing extends Entity{
 //        if(this.nextScreenPosition == null)
 //            this.nextScreenPosition = this.getPosition().copy();
 //        else
-//            this.nextScreenPosition = new Vector( this.nextMoveTranslation.getX() + this.getPosition().getX(),
-//                    this.nextMoveTranslation.getY() + this.getPosition().getY());
+//            this.nextScreenPosition = new Vector( this.translation.getX() + this.getPosition().getX(),
+//                    this.translation.getY() + this.getPosition().getY());
 //    }
 
 
@@ -371,8 +370,8 @@ public class BasicBeing extends Entity{
      * @return currently projected speed and direction of movement for the
      *         Being's next move.
      */
-    public Vector getNextMoveTranslation() {
-        return nextMoveTranslation;
+    public Vector getTranslation() {
+        return translation;
     }
 
     /**
@@ -469,11 +468,11 @@ public class BasicBeing extends Entity{
      */
     private void InitNextVectors() {
 //        init next position to current position
-        CalcNextPosition();
-//        init the direction based on nextMoveCommand == idle
-        CalcNextMoveDirection();
-//      init the move translation using the other zero vectors
-        CalcNextMoveTranslation();
+//        CalcNextPosition();
+////        init the direction based on nextMoveCommand == idle
+//        CalcNextMoveDirection();
+////      init the move translation using the other zero vectors
+//        CalcNextMoveTranslation();
         CalcCurrentDisplacement();
     }
 
@@ -615,6 +614,10 @@ public class BasicBeing extends Entity{
     }
 
 
+    public void setTranslation(Vector v){
+        this.translation = v;
+    }
+
     /**
      * Sets the Being screen position to the Vector passed
      * into the method arguments.
@@ -677,6 +680,7 @@ public class BasicBeing extends Entity{
         float x = getWorldPositionX();
         this.worldPosition = new Vector(x, y);
     }
+
 
     /**
      * Calculates the current displacement and the current world position,
