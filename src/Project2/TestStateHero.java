@@ -7,6 +7,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,9 @@ public class TestStateHero extends BasicGameState {
     private int stateID;
     private Hero hero1;
     private ArrayList<BasicBeing> beingList ;
-
+    private TiledMap map1;
+    private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
+    private final String TILESHEETRSC = "resources/Levels";
     public TestStateHero(int stateID) {
         this.stateID = stateID;
     }
@@ -31,10 +34,10 @@ public class TestStateHero extends BasicGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        hero1 = new Hero(new Vector(0,0), false);
+        hero1 = new Hero(new Vector(90,105), false);
         beingList = new ArrayList<BasicBeing>();
         beingList.add(hero1);
-
+        map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
     }
 
     @Override
@@ -44,13 +47,35 @@ public class TestStateHero extends BasicGameState {
 
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+        RenderMap(g);
+
         hero1.render(g);
+    }
+
+    private void RenderMap(Graphics g) {
+        float displaceX, displaceY, worldPosX, worldPosY;
+        worldPosX = (int)hero1.getWorldPositionX(); worldPosY = (int)hero1.getWorldPositionY();
+        displaceX = (hero1.getWorldPositionX()-worldPosX)*-32; displaceY = (hero1.getWorldPositionY()-worldPosY)*-32;
+
+        //  render the map using the client displacement from tile center
+        //  and current world position.
+
+        map1.render((int)displaceX, (int)displaceY,
+                (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
+
+        g.drawString("displaceX: "+displaceX*-1
+                +" displaceY:"+displaceY*-1, 200,200);
+        g.drawString("worldX: "+hero1.getWorldPositionX()
+                +"      worldY:"+hero1.getWorldPositionY(), 200,230);
+        g.drawString("screenX: "+hero1.getScreenPositionX()
+                +" screenY:"+hero1.getScreenPositionY(), 200,260);
     }
 
     @Override
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         Input input = container.getInput();
         InputCommands command = ProcessInput(input, getID());
+        System.out.println(input.isKeyDown(Input.KEY_W));
         UpdateBeings(beingList, command);
     }
 
@@ -62,7 +87,16 @@ public class TestStateHero extends BasicGameState {
             Vector translation = CalcTranslation(CalcDirection(command), being.getSpeed());
 //        a being's previous translation can be used to move them back from where they came if need be.
             being.setTranslation(translation);
+            Vector newWorldPosition = CalcWorldPosition(translation,being.getWorldPosition());
+            being.setWorldPosition(newWorldPosition);
+//          write new world position to client packet
         }
 //        check the beings collision
+//        update world position
+        for(BasicBeing being: beings){
+//          set the world position of each being
+            Vector newWorldPosition = CalcWorldPosition(being.getTranslation(),being.getWorldPosition());
+            being.setWorldPosition(newWorldPosition);
+        }
     }
 }

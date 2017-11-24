@@ -58,6 +58,7 @@ public class Project2 extends StateBasedGame {
     public Project2() {
         super(NAME);
         this.addState(new TestStateHero(TESTSTATEHERO));
+
 //      official states
         this.addState(new MainMenuState(MAINMENUSTATE));
         this.addState(new NewSingleMenu(NEWSINGLEMENUSTATE));
