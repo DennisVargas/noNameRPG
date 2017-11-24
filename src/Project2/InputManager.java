@@ -41,11 +41,9 @@ public class InputManager {
             return ProcessMenuInput(input);
         }
 //      if currently in the game state
-        else if(stateId == Project2.GAMEPLAYSTATE || stateId == Project2.TESTSTATEBASICBEING){
+        else{
             return ProcessGamePlayInput(input);
         }
-        else
-            return InputCommands.idle;
     }
 
     /**
