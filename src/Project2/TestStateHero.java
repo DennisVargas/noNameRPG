@@ -89,14 +89,7 @@ public class TestStateHero extends BasicGameState {
             being.setTranslation(translation);
             Vector newWorldPosition = CalcWorldPosition(translation,being.getWorldPosition());
             being.setWorldPosition(newWorldPosition);
-//          write new world position to client packet
-        }
-//        check the beings collision
-//        update world position
-        for(BasicBeing being: beings){
-//          set the world position of each being
-            Vector newWorldPosition = CalcWorldPosition(being.getTranslation(),being.getWorldPosition());
-            being.setWorldPosition(newWorldPosition);
+//          if server write new world position to client packet
         }
     }
 }
