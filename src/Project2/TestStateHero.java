@@ -75,7 +75,6 @@ public class TestStateHero extends BasicGameState {
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         Input input = container.getInput();
         InputCommands command = ProcessInput(input, getID());
-        System.out.println(input.isKeyDown(Input.KEY_W));
         UpdateBeings(beingList, command);
     }
 
