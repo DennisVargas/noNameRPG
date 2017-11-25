@@ -62,8 +62,8 @@ public class BasicBeing extends Entity{
      * Evaluates the possible animation options based on
      * the <code>InputManager.InputCommands</code> enumeration.
      */
-    private void CalcNextMoveAnimation() {
-        switch(this.nextMoveCommand){
+    private void ProcessNextAnimation(InputCommands command) {
+        switch(command){
             case up:
                 setCurrentAnimation(walkUpAnim);
                 break;
