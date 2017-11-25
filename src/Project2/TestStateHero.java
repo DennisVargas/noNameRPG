@@ -83,12 +83,15 @@ public class TestStateHero extends BasicGameState {
 //        set the translation for each being.
 
         for(BasicBeing being: beings) {
-            System.out.println(being.getClass());
             Vector translation = CalcTranslation(CalcDirection(command), being.getSpeed());
 //        a being's previous translation can be used to move them back from where they came if need be.
             being.setTranslation(translation);
             Vector newWorldPosition = CalcWorldPosition(translation,being.getWorldPosition());
-            being.setWorldPosition(newWorldPosition);
+
+//          updates the beings animation and world position.
+//          server can just do being.setNewWorldPosition()
+//          if swapping animation is unwanted extra computation cost
+            being.UpdateBeing(command, newWorldPosition);
 //          if server write new world position to client packet
         }
     }
