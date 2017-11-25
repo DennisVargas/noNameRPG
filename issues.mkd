@@ -17,10 +17,10 @@
 - **[2]** Add art assets
 - **[6]** Client/server networking system
 - **[7]** Camera viewport that follows player
-
+- **[8]** Add mob class that extends BasicBeing
 
 ## Open Issues ##
-- **[8]** Add first animated mob
+
 - **[9]** Add mob path finding
 - **[10]** Add mob death
 - **[11]** Add character death, basic lives counter, and game over screen
