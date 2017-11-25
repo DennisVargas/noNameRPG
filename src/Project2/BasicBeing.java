@@ -16,7 +16,7 @@ import static Project2.InputManager.InputCommands.*;
 public class BasicBeing extends Entity{
 
     private float health = 1f;
-
+    private float speed = 2f;
     boolean isClient = true;
 
     private Animation   walkRightAnim, walkLeftAnim, walkUpAnim,
@@ -26,17 +26,12 @@ public class BasicBeing extends Entity{
     private String name = "default";
     private int beingID = 0;
 
-    private InputCommands nextMoveCommand;
-    private Vector currentDisplacement;
-    private Vector worldPosition;
-    private Vector screenPosition;
 
-    private Vector nextScreenPosition;
-    private Vector nextMoveDirection;
+    private Vector worldPosition;
     private Vector translation;
 
+    private Vector screenPosition;
 
-    private float speed = 2f;
     private Animation currentAnimation;
     boolean isHit = false;
     private int worldPositionX;
