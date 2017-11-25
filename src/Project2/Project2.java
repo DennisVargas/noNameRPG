@@ -89,7 +89,7 @@ public class Project2 extends StateBasedGame {
         Input input = gameContainer.getInput();
         input.initControllers();
         input.clearControlPressedRecord();
-        
+
         ResourceManager.loadImage(MOB1WALKINGSHEETRSC);
         ResourceManager.loadImage(MOB1ATTACKINGSHEETRSC);
         ResourceManager.loadImage(MELEEHEROATTACKINGSHEETRSC);
