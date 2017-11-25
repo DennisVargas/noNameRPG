@@ -12,6 +12,9 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import static Project2.InputManager.InputCommands;
 import static Project2.InputManager.InputCommands.*;
+import static Project2.MovementCalc.CalcDirection;
+import static Project2.MovementCalc.CalcTranslation;
+import static Project2.MovementCalc.CalcWorldPosition;
 
 public class TestStateBasicBeing extends BasicGameState{
     private double x, y;
@@ -64,22 +67,20 @@ public class TestStateBasicBeing extends BasicGameState{
 //        map1.render((int)x - 32, (int)y - 32, mapX, mapY, mapX + 45, mapY + 30);
 //        System.out.println("player x: "+x+" player y: "+y);
 //        System.out.println("map x: "+mapX+" map y: "+mapY);
-
         float displaceX, displaceY, worldPosX, worldPosY;
         worldPosX = (int)being1.getWorldPositionX(); worldPosY = (int)being1.getWorldPositionY();
         displaceX = (being1.getWorldPositionX()-worldPosX)*-32; displaceY = (being1.getWorldPositionY()-worldPosY)*-32;
 
-
         //  render the map using the client displacement from tile center
         //  and current world position.
+
         map1.render((int)displaceX, (int)displaceY,
                 (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
 
-        graphics.drawString("hello Test Basic Being " + n, 640,360);
-        graphics.drawString("displaceX: "+displaceX
-                +" displaceY:"+displaceY, 200,200);
+        graphics.drawString("displaceX: "+displaceX*-1
+                +" displaceY:"+displaceY*-1, 200,200);
         graphics.drawString("worldX: "+being1.getWorldPositionX()
-                +" worldY:"+being1.getWorldPositionY(), 200,230);
+                +"      worldY:"+being1.getWorldPositionY(), 200,230);
         graphics.drawString("screenX: "+being1.getScreenPositionX()
                 +" screenY:"+being1.getScreenPositionY(), 200,260);
         being1.RenderBeing(graphics);
@@ -94,13 +95,18 @@ public class TestStateBasicBeing extends BasicGameState{
     }
 
     private void ProcessInputCommand(InputCommands inputCommand) {
-        // other things to do in playstate for input various things will need this input?
-        //  pass the inputCommand to the Being and it will then react to its command.
-        //  they will check their own next move for collision and will set the next move in
-        //  preparation for their update call.
-        being1.GenerateNextMove(inputCommand);
-        //  update the beings position and health inside of
-        //  private methods.
-        being1.UpdateBeingPosition();
+//        set the translation for each being.
+        System.out.println(being1.getClass());
+        Vector translation = CalcTranslation(CalcDirection(inputCommand), being1.getSpeed());
+//        a being's previous translation can be used to move them back from where they came if need be.
+        being1.setTranslation(translation);
+        Vector newWorldPosition = CalcWorldPosition(translation,being1.getWorldPosition());
+
+//          updates the beings animation and world position.
+//          server can just do being.setNewWorldPosition()
+//          if swapping animation is unwanted extra computation cost
+        being1.UpdateBeing(inputCommand, newWorldPosition);
+//          if server write new world position to client packet
+
     }
 }

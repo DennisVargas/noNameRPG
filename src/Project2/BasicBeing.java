@@ -16,7 +16,7 @@ import static Project2.InputManager.InputCommands.*;
 public class BasicBeing extends Entity{
 
     private float health = 1f;
-
+    private float speed = 2f;
     boolean isClient = true;
 
     private Animation   walkRightAnim, walkLeftAnim, walkUpAnim,
@@ -26,17 +26,12 @@ public class BasicBeing extends Entity{
     private String name = "default";
     private int beingID = 0;
 
-    private InputCommands nextMoveCommand;
-    private Vector currentDisplacement;
-    private Vector worldPosition;
-    private Vector screenPosition;
 
-    private Vector nextScreenPosition;
-    private Vector nextMoveDirection;
+    private Vector worldPosition;
     private Vector translation;
 
+    private Vector screenPosition;
 
-    private float speed = 2f;
     private Animation currentAnimation;
     boolean isHit = false;
     private int worldPositionX;
@@ -55,65 +50,11 @@ public class BasicBeing extends Entity{
         super(screenPosition);
         setScreenPosition(screenPosition);
         setWorldPosition(worldPosition);
-        setNextMoveCommand(idle);
         InitAnimations(walkingSheet, attackingSheet);
         setCurrentAnimation(idleAnimLt);
         InitNextVectors();
     }
 
-    /**
-     * Calculates the BasicBeing's displacement given
-     * an inverted current next move translation vector's x and y
-     * components. Thus the field <code>this.currentDisplacement</code>
-     * holds a running total of the beings displacement from the center
-     * of their closest tile. Translation is inverted because the map
-     * will move in the opposite direction of the Being.
-     */
-    private void CalcCurrentDisplacement() {
-        if(this.currentDisplacement == null)
-            this.currentDisplacement = new Vector(0,0);
-        else{
-            float dx = this.currentDisplacement.getX();
-            float dy = this.currentDisplacement.getY();
-            dx += (this.translation.getX()/32f);
-            dy += (this.translation.getY()/32f);
-//            System.out.println("dx: "+dx+" dy: "+dy);
-            this.currentDisplacement = new Vector(dx, dy);
-        }
-    }
-
-    /**
-     * Evaluates the current displacement x and y components,
-     * then sets the world position accordingly. If the current
-     * displacement x or y component is less than 0 then world
-     * position is incremented and the displacement set to 32.
-     * If the displacement is greater than 32 then the world
-     * position is decremented and the displacement set to 0.
-     */
-    private void CalcCurrentWorldPosition() {
-        float x = getWorldPositionX();
-        float y = getWorldPositionY();
-        x += (this.translation.getX()/32f);
-        y += (this.translation.getY()/32f);
-        setWorldPosition(new Vector(x,y));
-//        if (getCurrentDisplacementX() < 0) {
-//            float x = getWorldPositionX();
-//            setWorldPositionX(++x);
-//            setCurrentDisplacementX(32);
-//        }else if(getCurrentDisplacementX() > 32){
-//            float x = getWorldPositionX();
-//            setWorldPositionX(--x);
-//            setCurrentDisplacementX(0);
-//        }if(getCurrentDisplacementY() <0){
-//            float y = getWorldPositionY();
-//            setWorldPositionY(++y);
-//            setCurrentDisplacementY(32);
-//        }else if (getCurrentDisplacementY()> 32){
-//            float y = getWorldPositionY();
-//            setWorldPositionY(--y);
-//            setCurrentDisplacementY(0);
-//        }
-    }
 
     /**
      * Sets the next animation dependent on
@@ -121,8 +62,8 @@ public class BasicBeing extends Entity{
      * Evaluates the possible animation options based on
      * the <code>InputManager.InputCommands</code> enumeration.
      */
-    private void CalcNextMoveAnimation() {
-        switch(this.nextMoveCommand){
+    private void ProcessNextAnimation(InputCommands command) {
+        switch(command){
             case up:
                 setCurrentAnimation(walkUpAnim);
                 break;
@@ -171,111 +112,6 @@ public class BasicBeing extends Entity{
         }
     }
 
-
-    /**
-     * Calculates the next move direction dependent on
-     * the current value of the <code>nextMoveCommand</code> field.
-     * Movement commands are defined in the InputManager class. The
-     * command is placed in a switch and evaluated accordingly. A
-     * resulting UNIT Vector is set as the next move direction vector.
-     * Thus an up command produces vector (0,1).
-     */
-//    private void CalcNextMoveDirection() {
-//        float diagSpeed = (float)Math.sqrt(2)/2;
-//        switch (this.nextMoveCommand){
-//            case up:
-//                this.nextMoveDirection = new Vector(0,-1f);
-//                break;
-//            case down:
-//                this.nextMoveDirection = new Vector(0,1f);
-//                break;
-//            case left:
-//                this.nextMoveDirection = new Vector(-1f,0);
-//                break;
-//            case right:
-//                this.nextMoveDirection = new Vector(1f,0);
-//                break;
-//            case ulDiag:
-//                this.nextMoveDirection = new Vector(-1f,-1f);
-//                break;
-//            case dlDiag:
-//                this.nextMoveDirection = new Vector(-1f,1f);
-//                break;
-//            case urDiag:
-//                this.nextMoveDirection = new Vector(1f,-1f);
-//                break;
-//            case drDiag:
-//                this.nextMoveDirection = new Vector(1f,1f);
-//                break;
-//            case idle:
-//                this.nextMoveDirection = new Vector(0,0);
-//                break;
-//            case attack:
-//                this.nextMoveDirection = new Vector(0,0);
-//                break;
-//        }
-//    }
-
-
-    /**
-     * Calculates the translation vector for the next move.
-     * A move translation is calculated by multiplying the
-     * Being speed by the next move direction vectors x and y
-     * components. The result is used to instantiate a new
-     * JIG Vector that is stored as translation
-     */
-//    private void CalcNextMoveTranslation() {
-//        translation = new Vector(nextMoveDirection.getX()*speed,
-//                nextMoveDirection.getY()*speed);
-//    }
-
-    /**
-     * Calculates the Being's next position.
-     * This will be the sum of the players current position
-     * and the next move translation. These are vectors so each
-     * component must be added separately and used to create a
-     * new JIG Vector. Vector is an immutable type and must be
-     * destroyed and replaced in order to change the values.
-     */
-//    private void CalcNextPosition() {
-//        if(this.nextScreenPosition == null)
-//            this.nextScreenPosition = this.getPosition().copy();
-//        else
-//            this.nextScreenPosition = new Vector( this.translation.getX() + this.getPosition().getX(),
-//                    this.translation.getY() + this.getPosition().getY());
-//    }
-
-
-    /**
-     * Calculate Next Direction, Translation, and Direction Vectors.
-     * The next move command field is set from the argument passed so that the
-     * direction calculation has a
-     * next move animation is Calculated.
-     * Once the animation is set for the next move the next move direction
-     * is calculated. With move direction next move translation is calculated
-     * with the formula "translation = speed*direction". With the next translation
-     * calculated the next position can be estimated by the
-     * sum of (current position + translation).
-     * This method does not account for collisions
-     * the server will have to test being next move against everything that collides
-     * and adjusting the next translation vector accordingly. Finally the mov
-     * @param nextMoveCommand <code>InputManager.InputCommands</code> type
-     */
-    public void GenerateNextMove(InputCommands nextMoveCommand){
-//      read into this object the next move
-        setNextMoveCommand(nextMoveCommand);
-
-//      process what the next move means to animation
-        CalcNextMoveAnimation();
-//      looking at the move command set the direction of movement
-//        CalcNextMoveDirection();
-//
-////      multiply direction by movement speed
-//        CalcNextMoveTranslation();
-//        CalcNextPosition();
-
-    }
-
     /**
      * Gets the int value of the being id
      * @return  the value of beingID that has been set
@@ -292,34 +128,6 @@ public class BasicBeing extends Entity{
      */
     public Animation getCurrentAnimation() {
         return currentAnimation;
-    }
-
-    /**
-     * The current displacement vector counts the number of
-     * "steps" the <code>BasicBeing</code> has taken away from
-     * their start game location.
-     * This value is used in calculating the movement of the map
-     * underneath the BasicBeing.
-     * @return current displacement JIG Vector
-     */
-    public Vector getCurrentDisplacement() {
-        return currentDisplacement;
-    }
-
-    /**
-     * Gives only the X component of current displacement Vector.
-     * @return current displacement vector X component
-     */
-    public float getCurrentDisplacementX(){
-        return this.currentDisplacement.getX();
-    }
-
-    /**
-     * Gives only the Y component of current displacement Vector.
-     * @return current displacement vector Y component
-     */
-    public float getCurrentDisplacementY(){
-        return this.currentDisplacement.getY();
     }
 
     /**
@@ -344,24 +152,6 @@ public class BasicBeing extends Entity{
         return name;
     }
 
-    /**
-     * Get the last next move command the Being processed.
-     * @return the last next move command sent the Being.
-     */
-    public InputCommands getNextMoveCommand() {
-        return nextMoveCommand;
-    }
-
-
-    /**
-     * Get the next move direction generated based on the
-     * last next move command given.
-     * @return currently projected direction of movement for the
-     *         Being's next move.
-     */
-    public Vector getNextMoveDirection() {
-        return nextMoveDirection;
-    }
 
     /**
      * Get the next move translation generated based on the
@@ -374,15 +164,6 @@ public class BasicBeing extends Entity{
         return translation;
     }
 
-    /**
-     * Get the next screen position projected based on the current
-     * next move translation. This projection is not currently known
-     * to be accurate when rendering beings who are not clients.
-     * @return currently projected next position of the Being.
-     */
-    public Vector getNextScreenPosition() {
-        return nextScreenPosition;
-    }
 
     /**
      * Gets the X component of the ScreenPosition.
@@ -473,7 +254,7 @@ public class BasicBeing extends Entity{
 //        CalcNextMoveDirection();
 ////      init the move translation using the other zero vectors
 //        CalcNextMoveTranslation();
-        CalcCurrentDisplacement();
+//        CalcCurrentDisplacement();
     }
 
     /**
@@ -531,7 +312,7 @@ public class BasicBeing extends Entity{
      * into the argument of the method.
      * @param client value to set isClient field
      */
-    public void setClient(boolean client) {
+    public void setIsClient(boolean client) {
         isClient = client;
     }
 
@@ -546,36 +327,6 @@ public class BasicBeing extends Entity{
         this.currentAnim = anim;
         this.addAnimation(currentAnim);
     }
-
-
-    /**
-     * Sets a new current displacement Vector overwriting the old values.
-     * @param currentDisplacement
-     */
-    public void setCurrentDisplacement(Vector currentDisplacement) {
-        this.currentDisplacement = currentDisplacement;
-    }
-
-    /**
-     * Calculates a new current displacement vector
-     * with the argument as the new X value and the current Y value.
-     * @param newX an integer value that will become
-     *             the new X value of the current displacement.
-     */
-    public void setCurrentDisplacementX(int newX) {
-        this.currentDisplacement = new Vector(newX,this.getCurrentDisplacementY());
-    }
-
-    /**
-     * Creates a new current displacement vector
-     * with the current X value and newY value.
-     * @param newY an integer value that will become
-     *             the new Y value of the current displacement.
-     */
-    public void setCurrentDisplacementY(int newY) {
-        this.currentDisplacement = new Vector(this.getCurrentDisplacementX(),newY);
-    }
-
 
     /**
      * Sets the current health value to the value passed to this method.
@@ -592,16 +343,6 @@ public class BasicBeing extends Entity{
      */
     public void setHit(boolean hit) {
         isHit = hit;
-    }
-
-    /**
-     * Sets the next move command which dictates the Being
-     * next move direction.
-     * @param nextMoveCommand - An <code>InputManager</code> defined enum
-     *                          <code>InputCommands</code>
-     */
-    private void setNextMoveCommand(InputCommands nextMoveCommand) {
-        this.nextMoveCommand = nextMoveCommand;
     }
 
     /**
@@ -681,20 +422,13 @@ public class BasicBeing extends Entity{
         this.worldPosition = new Vector(x, y);
     }
 
-
     /**
-     * Calculates the current displacement and the current world position,
-     * then sets the screen position if the being is not a client;
-     * should be called after collision checks have been made.
+     * method which updates the <code>BasicBeing</code> animation and world position
+     * @param command InputCommands command which switches animation
+     * @param newWorldPos Vector which becomes new world position
      */
-    public void UpdateBeingPosition() {
-        //  update being position based on next move
-        //  and health if they were hit in the last collision check
-        CalcCurrentDisplacement();
-        CalcCurrentWorldPosition();
-        if(!isClient){
-            setScreenPosition(this.nextScreenPosition);
-        }
-
+    public void UpdateBeing(InputCommands command, Vector newWorldPos){
+        ProcessNextAnimation(command);
+        setWorldPosition(newWorldPos);
     }
 }
