@@ -42,12 +42,19 @@ public class Project2 extends StateBasedGame {
     public static final int TESTSTATEHERO = 22;
 
 
-    public static final String MOB1WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String MOB1ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+
     public static final String MELEEHEROATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String MELEEHEROWALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String RANGEDHEROWALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String RANGEDHEROATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String MOB1WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String MOB1ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String MOB2WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String MOB2ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String MOB3WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String MOB3ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String MOB4WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String MOB4ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
 
     /**
      * instantiates the game name and then creates a
@@ -57,10 +64,9 @@ public class Project2 extends StateBasedGame {
      */
     public Project2() {
         super(NAME);
-        //       TEST STATES
+//       TEST STATES
         this.addState(new TestStateHero(TESTSTATEHERO));
 //        this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
-
 
 //      official states
         this.addState(new MainMenuState(MAINMENUSTATE));
@@ -68,9 +74,6 @@ public class Project2 extends StateBasedGame {
         this.addState(new NewMultiMenu(NEWMULTIMENUSTATE));
         this.addState(new OptionMenuState(OPTIONMENUSTATE));
         this.addState(new GamePlayState(GAMEPLAYSTATE));
-
-
-
     }
 
     public static void main(String[] args)throws SlickException{
