@@ -23,25 +23,17 @@ public class Hero extends BasicBeing{
      * @param worldPosition starting world map tile position as a Vector
      * @param isRanged boolean which dictates if a character is Ranged or Melee
      */
-    public Hero(Vector worldPosition, boolean isRanged) {
+    public Hero(Vector worldPosition, boolean isRanged, boolean isClient) {
+//        initialize the hero as if they are a client and a melee character
         super(new Vector((Project2.WIDTH * Project2.SCALE)/2f,(Project2.HEIGHT * Project2.SCALE)/2f),
                 worldPosition, meleeWalkingSheet, meleeAttackingSheet);
+
+//        if the hero is ranged then set them to the ranged animation
         if (isRanged) {
             this.InitAnimations(rangedWalkingSheet,rangedAttackingSheet);
         }
-    }
-
-
-    /**
-     * constructs a hero who has a given starting screen position.
-     * @param screenPosition starting screen position of the the Hero
-     * @param worldPosition map position of the Hero
-     * @param isRanged
-     */
-    public Hero( Vector screenPosition, Vector worldPosition, boolean isRanged) {
-        super(screenPosition, worldPosition, meleeWalkingSheet, meleeAttackingSheet);
-        if (isRanged) {
-            this.InitAnimations(rangedWalkingSheet,rangedAttackingSheet);
-        }
+//        if the hero isn't a client then don't place them in center screen
+        if(!isClient)
+            this.setScreenPosition(new Vector(-5000,-5000));
     }
 }
