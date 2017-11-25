@@ -38,10 +38,11 @@ public class TestStateHero extends BasicGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         hero1 = new Hero(new Vector(90,105), false, "localhost");
         hero2 = new Hero(new Vector(92,105), false, "jugHead");
-        mob1 = new Mob(new Vector(91,105), 1);
+        mob1 = new Mob(new Vector(91,105), 1,"mob1");
         beingList = new ArrayList<BasicBeing>();
         beingList.add(hero1);
         beingList.add(hero2);
+        beingList.add(mob1);
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
     }
 
