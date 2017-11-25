@@ -39,8 +39,10 @@ public class InputManager {
         if (stateId == Project2.MAINMENUSTATE || stateId == Project2.OPTIONMENUSTATE
                 || stateId == Project2.NEWSINGLEMENUSTATE|| stateId == Project2.NEWMULTIMENUSTATE) {
             return ProcessMenuInput(input);
-        } else
+//      if currently in the game state
+        } else{
             return ProcessGamePlayInput(input);
+        }
     }
 
     /**

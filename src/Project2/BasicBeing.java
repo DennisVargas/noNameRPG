@@ -26,10 +26,8 @@ public class BasicBeing extends Entity{
     private String name = "default";
     private int beingID = 0;
 
-
     private Vector worldPosition;
-    private Vector velocity;
-
+    private Vector translation;
     private Vector screenPosition;
 
     private Animation currentAnimation;
@@ -151,8 +149,9 @@ public class BasicBeing extends Entity{
      * @return currently projected speed and direction of movement for the
      *         Being's next move.
      */
-    public Vector getVelocity() {
-        return velocity;
+
+    public Vector getTranslation() {
+        return translation;
     }
 
 
@@ -243,8 +242,8 @@ public class BasicBeing extends Entity{
 //        CalcNextPosition();
 ////        init the direction based on nextMoveCommand == idle
 //        CalcNextMoveDirection();
-////      init the move velocity using the other zero vectors
-//        CalcNextMoveVelocity();
+////      init the move translation using the other zero vectors
+//        CalcNextMoveTranslation();
 //        CalcCurrentDisplacement();
     }
 
@@ -346,8 +345,8 @@ public class BasicBeing extends Entity{
     }
 
 
-    public void setVelocity(Vector v){
-        this.velocity = v;
+    public void setTranslation(Vector v){
+        this.translation = v;
     }
 
     /**
