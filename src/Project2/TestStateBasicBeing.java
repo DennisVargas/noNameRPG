@@ -64,7 +64,7 @@ public class TestStateBasicBeing extends BasicGameState{
 //        map1.render((int)x - 32, (int)y - 32, mapX, mapY, mapX + 45, mapY + 30);
 //        System.out.println("player x: "+x+" player y: "+y);
 //        System.out.println("map x: "+mapX+" map y: "+mapY);
-
+/*
         int displaceX, displaceY, worldPosX, worldPosY;
         displaceX = (int)being1.getCurrentDisplacementX(); displaceY = (int)being1.getCurrentDisplacementY();
         worldPosX = (int)being1.getWorldPositionX(); worldPosY = (int)being1.getWorldPositionY();
@@ -82,6 +82,7 @@ public class TestStateBasicBeing extends BasicGameState{
         graphics.drawString("screenX: "+being1.getScreenPositionX()
                 +" screenY:"+being1.getScreenPositionY(), 200,260);
         being1.RenderBeing(graphics);
+        */
     }
 
     @Override
@@ -89,9 +90,9 @@ public class TestStateBasicBeing extends BasicGameState{
         Input input = gameContainer.getInput();
 
         inputCommand = InputManager.ProcessInput(input, stateId);
-        ProcessInputCommand(inputCommand);
+//        ProcessInputCommand(inputCommand);
     }
-
+/*
     private void ProcessInputCommand(InputCommands inputCommand) {
         // other things to do in playstate for input various things will need this input?
         //  pass the inputCommand to the Being and it will then react to its command.
@@ -102,4 +103,5 @@ public class TestStateBasicBeing extends BasicGameState{
         //  private methods.
         being1.UpdateBeingPosition();
     }
+    */
 }
