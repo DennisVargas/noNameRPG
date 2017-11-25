@@ -95,13 +95,18 @@ public class TestStateBasicBeing extends BasicGameState{
     }
 
     private void ProcessInputCommand(InputCommands inputCommand) {
-        // other things to do in playstate for input various things will need this input?
-        //  pass the inputCommand to the Being and it will then react to its command.
-        //  they will check their own next move for collision and will set the next move in
-        //  preparation for their update call.
-        being1.GenerateNextMove(inputCommand);
-        //  update the beings position and health inside of
-        //  private methods.
-        being1.UpdateBeingPosition();
+//        set the translation for each being.
+        System.out.println(being1.getClass());
+        Vector translation = CalcTranslation(CalcDirection(inputCommand), being1.getSpeed());
+//        a being's previous translation can be used to move them back from where they came if need be.
+        being1.setTranslation(translation);
+        Vector newWorldPosition = CalcWorldPosition(translation,being1.getWorldPosition());
+
+//          updates the beings animation and world position.
+//          server can just do being.setNewWorldPosition()
+//          if swapping animation is unwanted extra computation cost
+        being1.UpdateBeing(inputCommand, newWorldPosition);
+//          if server write new world position to client packet
+
     }
 }
