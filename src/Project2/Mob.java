@@ -15,8 +15,9 @@ public class Mob extends BasicBeing {
     private static final SpriteSheet mob4Walking = ResourceManager.getSpriteSheet(Project2.MOB4WALKINGSHEETRSC,32,32);
     private static final SpriteSheet mob4Attacking = ResourceManager.getSpriteSheet(Project2.MOB4ATTACKINGSHEETRSC,32,32);
 
-    public Mob(Vector worldPosition, int mobType) {
+    public Mob(Vector worldPosition, int mobType, String name) {
         super( new Vector(-5000,-5000), worldPosition, mob1Walking, mob1Attacking);
+        this.setName(name);
         setMobAnimation(mobType);
     }
 
