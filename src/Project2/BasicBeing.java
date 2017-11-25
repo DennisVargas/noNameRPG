@@ -20,16 +20,14 @@ public class BasicBeing extends Entity{
     boolean isClient = true;
 
     private Animation   walkRightAnim, walkLeftAnim, walkUpAnim,
-                        walkDnAnim, idleAnimLt, idleAnimRt, attackAnim,
-                        hitAnimLt, hitAnimRt, deathAnim, currentAnim;
+            walkDnAnim, idleAnimLt, idleAnimRt, attackAnim,
+            hitAnimLt, hitAnimRt, deathAnim, currentAnim;
 
     private String name = "default";
     private int beingID = 0;
 
-
     private Vector worldPosition;
     private Vector translation;
-
     private Vector screenPosition;
 
     private Animation currentAnimation;
@@ -81,25 +79,16 @@ public class BasicBeing extends Entity{
                 setCurrentAnimation(walkRightAnim);
                 break;
             case idle:
-                if(currentAnim == walkLeftAnim
-                        || currentAnim == hitAnimLt
-                        || currentAnim == walkDnAnim)
+                if(currentAnim == walkLeftAnim || currentAnim == hitAnimLt || currentAnim == walkDnAnim)
                     setCurrentAnimation(idleAnimLt);
-                else if(currentAnim == walkRightAnim
-                        || currentAnim == hitAnimRt
-                        || currentAnim == walkUpAnim)
+                else if(currentAnim == walkRightAnim || currentAnim == hitAnimRt || currentAnim == walkUpAnim)
                     setCurrentAnimation(idleAnimRt);
                 break;
             case attack:
-                if(currentAnim == walkLeftAnim
-                        || currentAnim == idleAnimLt
-                        || currentAnim == walkDnAnim)
+                if(currentAnim == walkLeftAnim || currentAnim == idleAnimLt || currentAnim == walkDnAnim)
                     setCurrentAnimation(hitAnimLt);
-                else if(currentAnim == walkRightAnim
-                        || currentAnim == idleAnimRt
-                        || currentAnim == walkUpAnim)
+                else if(currentAnim == walkRightAnim || currentAnim == idleAnimRt || currentAnim == walkUpAnim)
                     setCurrentAnimation(hitAnimRt);
-
                 break;
             case hitLt:
                 setCurrentAnimation(hitAnimLt);
@@ -154,12 +143,13 @@ public class BasicBeing extends Entity{
 
 
     /**
-     * Get the next move translation generated based on the
-     * last next move command given. Translation is the vector
+     * Get the next move velocity generated based on the
+     * last next move command given. Velocity is the vector
      * defined by the multiplication of speed and direction.
      * @return currently projected speed and direction of movement for the
      *         Being's next move.
      */
+
     public Vector getTranslation() {
         return translation;
     }
@@ -188,9 +178,9 @@ public class BasicBeing extends Entity{
 
     /**
      * Get the current value of the speed field. Speed is used in
-     * calculating the translation vector.
+     * calculating the velocity vector.
      * @return current scalar speed factor used in calculating
-     *         the translation vector.
+     *         the velocity vector.
      */
     public float getSpeed() {
         return speed;
@@ -244,7 +234,7 @@ public class BasicBeing extends Entity{
     }
 
     /**
-     * Initializes the direction, translation, and
+     * Initializes the direction, velocity, and
      * position vectors in the basic being class.
      */
     private void InitNextVectors() {
@@ -389,7 +379,7 @@ public class BasicBeing extends Entity{
     /**
      * Sets the speed to the float value passed it.
      * @param speed a float value that will be used as the magnitude
-     *              of the translation vector.
+     *              of the velocity vector.
      */
     public void setSpeed(float speed) {
         this.speed = speed;

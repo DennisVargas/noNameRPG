@@ -40,6 +40,10 @@ public class Project2 extends StateBasedGame {
     public static final int TESTSTATEBASICBEING = 20;
     public static final int MENUITEMTESTSTATE = 21;
     public static final int TESTSTATEHERO = 22;
+    public static final int TESTGAMECLIENT = 23;
+
+
+
 
 
     public static final String MOB1WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
@@ -70,6 +74,10 @@ public class Project2 extends StateBasedGame {
         this.addState(new GamePlayState(GAMEPLAYSTATE));
 
 
+//       TEST STATES
+//        this.addState(new TestGameServer(TESTGAMESERVER));
+        this.addState(new TestGameClient(TESTGAMECLIENT));
+        this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
 
     }
 
@@ -83,30 +91,12 @@ public class Project2 extends StateBasedGame {
         }catch(Exception e){}
     }
 
-    @Override
+
     public void initStatesList(GameContainer gameContainer) throws SlickException {
         Entity.setCoarseGrainedCollisionBoundary(Entity.CIRCLE);
         Input input = gameContainer.getInput();
         input.initControllers();
         input.clearControlPressedRecord();
-
-        ResourceManager.loadImage(MOB1WALKINGSHEETRSC);
-        ResourceManager.loadImage(MOB1ATTACKINGSHEETRSC);
-        ResourceManager.loadImage(MELEEHEROATTACKINGSHEETRSC);
-        ResourceManager.loadImage(MELEEHEROWALKINGSHEETRSC);
-        ResourceManager.loadImage(RANGEDHEROWALKINGSHEETRSC);
-        ResourceManager.loadImage(RANGEDHEROATTACKINGSHEETRSC);
-//        test states init
-//        this.getState(TESTSTATEBASICBEING).init(gameContainer,this);
-        this.getState(TESTSTATEHERO).init(gameContainer,this);
-
-//        official state init
-        this.getState(MAINMENUSTATE).init(gameContainer, this);
-        this.getState(NEWSINGLEMENUSTATE).init(gameContainer, this);
-        this.getState(NEWMULTIMENUSTATE).init(gameContainer, this);
-        this.getState(OPTIONMENUSTATE).init(gameContainer, this);
-        this.getState(GAMEPLAYSTATE).init(gameContainer, this);
-
 
     }
 

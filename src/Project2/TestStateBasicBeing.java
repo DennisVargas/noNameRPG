@@ -67,7 +67,8 @@ public class TestStateBasicBeing extends BasicGameState{
 //        map1.render((int)x - 32, (int)y - 32, mapX, mapY, mapX + 45, mapY + 30);
 //        System.out.println("player x: "+x+" player y: "+y);
 //        System.out.println("map x: "+mapX+" map y: "+mapY);
-        float displaceX, displaceY, worldPosX, worldPosY;
+
+/*
         worldPosX = (int)being1.getWorldPositionX(); worldPosY = (int)being1.getWorldPositionY();
         displaceX = (being1.getWorldPositionX()-worldPosX)*-32; displaceY = (being1.getWorldPositionY()-worldPosY)*-32;
 
@@ -84,6 +85,7 @@ public class TestStateBasicBeing extends BasicGameState{
         graphics.drawString("screenX: "+being1.getScreenPositionX()
                 +" screenY:"+being1.getScreenPositionY(), 200,260);
         being1.RenderBeing(graphics);
+        */
     }
 
     @Override
@@ -91,9 +93,9 @@ public class TestStateBasicBeing extends BasicGameState{
         Input input = gameContainer.getInput();
 
         inputCommand = InputManager.ProcessInput(input, stateId);
-        ProcessInputCommand(inputCommand);
+//        ProcessInputCommand(inputCommand);
     }
-
+/*
     private void ProcessInputCommand(InputCommands inputCommand) {
 //        set the translation for each being.
         System.out.println(being1.getClass());
@@ -109,4 +111,5 @@ public class TestStateBasicBeing extends BasicGameState{
 //          if server write new world position to client packet
 
     }
+    */
 }
