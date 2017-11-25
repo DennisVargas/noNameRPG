@@ -13,6 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * a Hammerwatch/Gauntlent slick2d <code>StateBasedGame</code>.
  */
 public class Project2 extends StateBasedGame {
+    private boolean testStatePlay = false;
     public static final int WIDTH = 1280;
     public static final int HEIGHT = (WIDTH/16)*9;
 
