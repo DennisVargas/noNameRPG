@@ -6,10 +6,9 @@ import static Project2.InputManager.InputCommands;
 
 public class MovementCalc {
 
-
     /**
-     * Calculates the next move direction dependent on
-     * the current value of the <code>nextMoveCommand</code> field.
+     * Calculates the direction dependent on
+     * the current value of the <code>moveCommand</code> argument.
      * Movement commands are defined in the InputManager class. The
      * command is placed in a switch and evaluated accordingly. A
      * resulting UNIT Vector is set as the next move direction vector.
@@ -43,26 +42,20 @@ public class MovementCalc {
     }
 
 
+    /**
+     * A new vector is returned that is the product of direction*speed; translation vector.
+     * @param direction unit Vector in the direction of the movement
+     * @param speed scalar speed of float type
+     * @return
+     */
     public static Vector CalcTranslation(Vector direction, float speed) {
         return new Vector(direction.getX()*speed,direction.getY()*speed);
     }
 
 
-//    private void CalcNextPosition() {
-//        if(this.nextScreenPosition == null)
-//            this.nextScreenPosition = this.getPosition().copy();
-//        else
-//            this.nextScreenPosition = new Vector( this.nextMoveTranslation.getX() + this.getPosition().getX(),
-//                    this.nextMoveTranslation.getY() + this.getPosition().getY());
-//    }
-
     /**
-     * Calculates the BasicBeing's displacement given
-     * an inverted current next move translation vector's x and y
-     * components. Thus the field <code>this.currentDisplacement</code>
-     * holds a running total of the beings displacement from the center
-     * of their closest tile. Translation is inverted because the map
-     * will move in the opposite direction of the Being.
+     * Calculates the world position given arguments translation and current world position.
+     * new world position = "current world position" + (translation)/32
      */
     public static Vector CalcWorldPosition(Vector translation, Vector curWorldPos) {
         float x = curWorldPos.getX();
