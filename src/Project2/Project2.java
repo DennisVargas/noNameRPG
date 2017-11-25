@@ -92,7 +92,8 @@ public class Project2 extends StateBasedGame {
     }
 
     public static void main(String[] args)throws SlickException{
-        boolean testStatePlay = true;
+//        if this variable is init to true then test states play without argument
+        boolean testStatePlay = false;
         try {
             if(args.length >= 1){
                 switch(args[0]){
