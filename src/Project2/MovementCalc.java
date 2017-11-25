@@ -43,6 +43,22 @@ public class MovementCalc {
 
 
     /**
+     * calculates the screen position of beings not centered in viewport. These screen positions need
+     * to be calculated in relation to the player being. "player being" is referring to the being
+     * controlled directly by controller input into this client instance. Method finds the floating point tile
+     * difference between player and non player beings. This value is multiplied by 32 then added to the
+     * @param playerMapPosition Vector denoting the map position of the center of the viewport == playerPosition
+     * @param beingMapPosition Vector denoting the map position of the Being who is not the player
+     * @return Vector representing the non-player being screen position
+     */
+    public static Vector CalcScreenPosition(Vector playerMapPosition, Vector beingMapPosition){
+        float scrnX = (beingMapPosition.getX() - playerMapPosition.getX())*32f + (Project2.WIDTH*Project2.SCALE)/2;
+        float scrnY = (beingMapPosition.getY()- playerMapPosition.getY() )*32f + (Project2.HEIGHT*Project2.SCALE)/2;
+        return new Vector(scrnX, scrnY);
+    }
+
+
+    /**
      * A new vector is returned that is the product of direction*speed; translation vector.
      * @param direction unit Vector in the direction of the movement
      * @param speed scalar speed of float type
