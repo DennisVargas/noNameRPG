@@ -57,7 +57,10 @@ public class Project2 extends StateBasedGame {
      */
     public Project2() {
         super(NAME);
+        //       TEST STATES
         this.addState(new TestStateHero(TESTSTATEHERO));
+//        this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
+
 
 //      official states
         this.addState(new MainMenuState(MAINMENUSTATE));
@@ -66,8 +69,7 @@ public class Project2 extends StateBasedGame {
         this.addState(new OptionMenuState(OPTIONMENUSTATE));
         this.addState(new GamePlayState(GAMEPLAYSTATE));
 
-//       TEST STATES
-        this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
+
 
     }
 
@@ -87,9 +89,15 @@ public class Project2 extends StateBasedGame {
         Input input = gameContainer.getInput();
         input.initControllers();
         input.clearControlPressedRecord();
-
+        
+        ResourceManager.loadImage(MOB1WALKINGSHEETRSC);
+        ResourceManager.loadImage(MOB1ATTACKINGSHEETRSC);
+        ResourceManager.loadImage(MELEEHEROATTACKINGSHEETRSC);
+        ResourceManager.loadImage(MELEEHEROWALKINGSHEETRSC);
+        ResourceManager.loadImage(RANGEDHEROWALKINGSHEETRSC);
+        ResourceManager.loadImage(RANGEDHEROATTACKINGSHEETRSC);
 //        test states init
-        this.getState(TESTSTATEBASICBEING).init(gameContainer,this);
+//        this.getState(TESTSTATEBASICBEING).init(gameContainer,this);
         this.getState(TESTSTATEHERO).init(gameContainer,this);
 
 //        official state init
@@ -99,12 +107,7 @@ public class Project2 extends StateBasedGame {
         this.getState(OPTIONMENUSTATE).init(gameContainer, this);
         this.getState(GAMEPLAYSTATE).init(gameContainer, this);
 
-        ResourceManager.loadImage(MOB1WALKINGSHEETRSC);
-        ResourceManager.loadImage(MOB1ATTACKINGSHEETRSC);
-        ResourceManager.loadImage(MELEEHEROATTACKINGSHEETRSC);
-        ResourceManager.loadImage(MELEEHEROWALKINGSHEETRSC);
-        ResourceManager.loadImage(RANGEDHEROWALKINGSHEETRSC);
-        ResourceManager.loadImage(RANGEDHEROATTACKINGSHEETRSC);
+
     }
 
 }
