@@ -50,65 +50,11 @@ public class BasicBeing extends Entity{
         super(screenPosition);
         setScreenPosition(screenPosition);
         setWorldPosition(worldPosition);
-        setNextMoveCommand(idle);
         InitAnimations(walkingSheet, attackingSheet);
         setCurrentAnimation(idleAnimLt);
         InitNextVectors();
     }
 
-    /**
-     * Calculates the BasicBeing's displacement given
-     * an inverted current next move translation vector's x and y
-     * components. Thus the field <code>this.currentDisplacement</code>
-     * holds a running total of the beings displacement from the center
-     * of their closest tile. Translation is inverted because the map
-     * will move in the opposite direction of the Being.
-     */
-    private void CalcCurrentDisplacement() {
-        if(this.currentDisplacement == null)
-            this.currentDisplacement = new Vector(0,0);
-        else{
-            float dx = this.currentDisplacement.getX();
-            float dy = this.currentDisplacement.getY();
-            dx += (this.translation.getX()/32f);
-            dy += (this.translation.getY()/32f);
-//            System.out.println("dx: "+dx+" dy: "+dy);
-            this.currentDisplacement = new Vector(dx, dy);
-        }
-    }
-
-    /**
-     * Evaluates the current displacement x and y components,
-     * then sets the world position accordingly. If the current
-     * displacement x or y component is less than 0 then world
-     * position is incremented and the displacement set to 32.
-     * If the displacement is greater than 32 then the world
-     * position is decremented and the displacement set to 0.
-     */
-    private void CalcCurrentWorldPosition() {
-        float x = getWorldPositionX();
-        float y = getWorldPositionY();
-        x += (this.translation.getX()/32f);
-        y += (this.translation.getY()/32f);
-        setWorldPosition(new Vector(x,y));
-//        if (getCurrentDisplacementX() < 0) {
-//            float x = getWorldPositionX();
-//            setWorldPositionX(++x);
-//            setCurrentDisplacementX(32);
-//        }else if(getCurrentDisplacementX() > 32){
-//            float x = getWorldPositionX();
-//            setWorldPositionX(--x);
-//            setCurrentDisplacementX(0);
-//        }if(getCurrentDisplacementY() <0){
-//            float y = getWorldPositionY();
-//            setWorldPositionY(++y);
-//            setCurrentDisplacementY(32);
-//        }else if (getCurrentDisplacementY()> 32){
-//            float y = getWorldPositionY();
-//            setWorldPositionY(--y);
-//            setCurrentDisplacementY(0);
-//        }
-    }
 
     /**
      * Sets the next animation dependent on
