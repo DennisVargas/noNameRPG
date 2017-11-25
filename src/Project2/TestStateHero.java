@@ -83,7 +83,10 @@ public class TestStateHero extends BasicGameState {
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         Input input = container.getInput();
         InputCommands command = ProcessInput(input, getID());
-        UpdateBeings(beingList, command);
+        hero1.setCommand(command);
+        hero2.setCommand(InputCommands.up);
+        mob1.setCommand(InputCommands.attack);
+        UpdateBeings(beingList);
     }
 
     private void UpdateBeings(ArrayList<BasicBeing> beings, InputCommands command) {
