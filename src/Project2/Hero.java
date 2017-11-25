@@ -19,21 +19,22 @@ public class Hero extends BasicBeing{
     private static final SpriteSheet meleeAttackingSheet = ResourceManager.getSpriteSheet(Project2.MELEEHEROATTACKINGSHEETRSC,32,32);
 
     /**
-     * constructs a hero who is centered in screen position.
+     * constructs a hero who is centered in screen position .
      * @param worldPosition starting world map tile position as a Vector
      * @param isRanged boolean which dictates if a character is Ranged or Melee
      */
-    public Hero(Vector worldPosition, boolean isRanged, boolean isClient) {
+    public Hero(Vector worldPosition, boolean isRanged, String name) {
 //        initialize the hero as if they are a client and a melee character
         super(new Vector((Project2.WIDTH * Project2.SCALE)/2f,(Project2.HEIGHT * Project2.SCALE)/2f),
                 worldPosition, meleeWalkingSheet, meleeAttackingSheet);
-
+        this.setName(name);
 //        if the hero is ranged then set them to the ranged animation
         if (isRanged) {
             this.InitAnimations(rangedWalkingSheet,rangedAttackingSheet);
         }
 //        if the hero isn't a client then don't place them in center screen
-        if(!isClient)
+//        todo: when the world class is created change this to a comparison of the ip address and a name argument passed into the Hero constructor
+        if(this.getName() != Project2.settings.getIpAddress())
             this.setScreenPosition(new Vector(-5000,-5000));
     }
 }
