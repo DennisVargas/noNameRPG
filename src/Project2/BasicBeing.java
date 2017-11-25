@@ -131,34 +131,6 @@ public class BasicBeing extends Entity{
     }
 
     /**
-     * The current displacement vector counts the number of
-     * "steps" the <code>BasicBeing</code> has taken away from
-     * their start game location.
-     * This value is used in calculating the movement of the map
-     * underneath the BasicBeing.
-     * @return current displacement JIG Vector
-     */
-    public Vector getCurrentDisplacement() {
-        return currentDisplacement;
-    }
-
-    /**
-     * Gives only the X component of current displacement Vector.
-     * @return current displacement vector X component
-     */
-    public float getCurrentDisplacementX(){
-        return this.currentDisplacement.getX();
-    }
-
-    /**
-     * Gives only the Y component of current displacement Vector.
-     * @return current displacement vector Y component
-     */
-    public float getCurrentDisplacementY(){
-        return this.currentDisplacement.getY();
-    }
-
-    /**
      * Health will be a stored value in <code>BasicBeing</code>
      * which all Hero and Mob types will inherit. Hit and IsDead
      * methods will have to reference the health value to make
@@ -180,24 +152,6 @@ public class BasicBeing extends Entity{
         return name;
     }
 
-    /**
-     * Get the last next move command the Being processed.
-     * @return the last next move command sent the Being.
-     */
-    public InputCommands getNextMoveCommand() {
-        return nextMoveCommand;
-    }
-
-
-    /**
-     * Get the next move direction generated based on the
-     * last next move command given.
-     * @return currently projected direction of movement for the
-     *         Being's next move.
-     */
-    public Vector getNextMoveDirection() {
-        return nextMoveDirection;
-    }
 
     /**
      * Get the next move translation generated based on the
@@ -210,15 +164,6 @@ public class BasicBeing extends Entity{
         return translation;
     }
 
-    /**
-     * Get the next screen position projected based on the current
-     * next move translation. This projection is not currently known
-     * to be accurate when rendering beings who are not clients.
-     * @return currently projected next position of the Being.
-     */
-    public Vector getNextScreenPosition() {
-        return nextScreenPosition;
-    }
 
     /**
      * Gets the X component of the ScreenPosition.
@@ -383,36 +328,6 @@ public class BasicBeing extends Entity{
         this.addAnimation(currentAnim);
     }
 
-
-    /**
-     * Sets a new current displacement Vector overwriting the old values.
-     * @param currentDisplacement
-     */
-    public void setCurrentDisplacement(Vector currentDisplacement) {
-        this.currentDisplacement = currentDisplacement;
-    }
-
-    /**
-     * Calculates a new current displacement vector
-     * with the argument as the new X value and the current Y value.
-     * @param newX an integer value that will become
-     *             the new X value of the current displacement.
-     */
-    public void setCurrentDisplacementX(int newX) {
-        this.currentDisplacement = new Vector(newX,this.getCurrentDisplacementY());
-    }
-
-    /**
-     * Creates a new current displacement vector
-     * with the current X value and newY value.
-     * @param newY an integer value that will become
-     *             the new Y value of the current displacement.
-     */
-    public void setCurrentDisplacementY(int newY) {
-        this.currentDisplacement = new Vector(this.getCurrentDisplacementX(),newY);
-    }
-
-
     /**
      * Sets the current health value to the value passed to this method.
      * @param health float value that will be used to set health.
@@ -428,16 +343,6 @@ public class BasicBeing extends Entity{
      */
     public void setHit(boolean hit) {
         isHit = hit;
-    }
-
-    /**
-     * Sets the next move command which dictates the Being
-     * next move direction.
-     * @param nextMoveCommand - An <code>InputManager</code> defined enum
-     *                          <code>InputCommands</code>
-     */
-    private void setNextMoveCommand(InputCommands nextMoveCommand) {
-        this.nextMoveCommand = nextMoveCommand;
     }
 
     /**
