@@ -19,6 +19,8 @@ public class TestStateHero extends BasicGameState {
 
     private int stateID;
     private Hero hero1;
+    private Hero hero2;
+    private Mob mob1;
     private ArrayList<BasicBeing> beingList ;
     private TiledMap map1;
     private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
@@ -34,9 +36,12 @@ public class TestStateHero extends BasicGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        hero1 = new Hero(new Vector(90,105), false, true);
+        hero1 = new Hero(new Vector(90,105), false, "localhost");
+        hero2 = new Hero(new Vector(92,105), false, "jugHead");
+        mob1 = new Mob(new Vector(91,105), 1);
         beingList = new ArrayList<BasicBeing>();
         beingList.add(hero1);
+        beingList.add(hero2);
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
     }
 
@@ -48,8 +53,8 @@ public class TestStateHero extends BasicGameState {
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         RenderMap(g);
-
         hero1.render(g);
+        hero2.render(g);
     }
 
     private void RenderMap(Graphics g) {

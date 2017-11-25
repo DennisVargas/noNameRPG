@@ -15,6 +15,10 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Project2 extends StateBasedGame {
     public static final int WIDTH = 1280;
     public static final int HEIGHT = (WIDTH/16)*9;
+
+
+
+    public static PlaySettings settings = new PlaySettings("localhost");
     /**
      * If changing the screen resolution this SCALE variable
      * can be adjusted to set the graphics ratio.
@@ -111,6 +115,10 @@ public class Project2 extends StateBasedGame {
         this.getState(GAMEPLAYSTATE).init(gameContainer, this);
 
 
+    }
+
+    public static PlaySettings getSettings() {
+        return settings;
     }
 
 }
