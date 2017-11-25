@@ -84,8 +84,16 @@ public class Project2 extends StateBasedGame {
     }
 
     public static void main(String[] args)throws SlickException{
+        boolean testStatePlay = true;
         try {
-            AppGameContainer app = new AppGameContainer(new Project2());
+            if(args.length >= 1){
+                switch(args[0]){
+                    case "-test":
+                        testStatePlay = true;
+                        break;
+                }
+            }
+            AppGameContainer app = new AppGameContainer(new Project2(testStatePlay));
             app.setDisplayMode((int) (WIDTH * SCALE), (int) (HEIGHT * SCALE), false);
             app.setVSync(true);
             app.setShowFPS(false);
