@@ -5,6 +5,7 @@ import jig.Vector;
 import org.newdawn.slick.SpriteSheet;
 
 public class Mob extends BasicBeing {
+    private int mobType;
     private static final SpriteSheet mob1Walking = ResourceManager.getSpriteSheet(Project2.MOB1WALKINGSHEETRSC,32,32);
     private static final SpriteSheet mob1Attacking = ResourceManager.getSpriteSheet(Project2.MOB1ATTACKINGSHEETRSC,32,32);
     private static final SpriteSheet mob2Walking = ResourceManager.getSpriteSheet(Project2.MOB2WALKINGSHEETRSC,32,32);
@@ -16,20 +17,28 @@ public class Mob extends BasicBeing {
 
     public Mob(Vector worldPosition, int mobType) {
         super( new Vector(-5000,-5000), worldPosition, mob1Walking, mob1Attacking);
-        setMobType(mobType);
+        setMobAnimation(mobType);
     }
 
-    private void setMobType(int mobType) {
+    public int getMobType(){
+        return this.mobType;
+    }
+
+    private void setMobAnimation(int mobType) {
         switch(mobType){
             case 2:
-                InitAnimations(mob2Walking,mob2Attacking);
+                InitAnimations(mob2Walking, mob2Attacking);
                 break;
             case 3:
-                InitAnimations(mob3Walking,mob3Attacking);
+                InitAnimations(mob3Walking, mob3Attacking);
                 break;
             case 4:
-                InitAnimations(mob4Walking,mob4Attacking);
+                InitAnimations(mob4Walking, mob4Attacking);
                 break;
         }
+    }
+
+    public void setMobType(int mobType){
+        this.mobType = mobType;
     }
 }
