@@ -369,6 +369,8 @@ public class BasicBeing extends Entity{
      */
     public void setScreenPosition(Vector screenPosition) {
         this.screenPosition = screenPosition;
+//        JIG entity position which is what the screen will render
+        this.setPosition(screenPosition);
     }
 
     /**
