@@ -17,7 +17,7 @@ public class BasicBeing extends Entity{
 
     private float health = 1f;
     private float speed = 2f;
-    boolean isClient = true;
+    boolean isClient = false;
 
     private Animation   walkRightAnim, walkLeftAnim, walkUpAnim,
                         walkDnAnim, idleAnimLt, idleAnimRt, attackAnim,
@@ -228,7 +228,7 @@ public class BasicBeing extends Entity{
      * @param walkingSheet
      * @param attackingSheet
      */
-    public void InitAnimations(SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
+    protected void InitAnimations(SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
         this.walkRightAnim = new Animation(walkingSheet, 0,0,5,0,true,100,true);
         this.walkLeftAnim = new Animation(walkingSheet, 0,1,5,1,true,100,true);
         this.walkDnAnim = new Animation(walkingSheet, 0,2,5,2,true,100,true);
