@@ -254,7 +254,7 @@ public class BasicBeing extends Entity{
 //        CalcNextMoveDirection();
 ////      init the move translation using the other zero vectors
 //        CalcNextMoveTranslation();
-        CalcCurrentDisplacement();
+//        CalcCurrentDisplacement();
     }
 
     /**
@@ -312,7 +312,7 @@ public class BasicBeing extends Entity{
      * into the argument of the method.
      * @param client value to set isClient field
      */
-    public void setClient(boolean client) {
+    public void setIsClient(boolean client) {
         isClient = client;
     }
 
@@ -422,20 +422,13 @@ public class BasicBeing extends Entity{
         this.worldPosition = new Vector(x, y);
     }
 
-
     /**
-     * Calculates the current displacement and the current world position,
-     * then sets the screen position if the being is not a client;
-     * should be called after collision checks have been made.
+     * method which updates the <code>BasicBeing</code> animation and world position
+     * @param command InputCommands command which switches animation
+     * @param newWorldPos Vector which becomes new world position
      */
-    public void UpdateBeingPosition() {
-        //  update being position based on next move
-        //  and health if they were hit in the last collision check
-        CalcCurrentDisplacement();
-        CalcCurrentWorldPosition();
-        if(!isClient){
-            setScreenPosition(this.nextScreenPosition);
-        }
-
+    public void UpdateBeing(InputCommands command, Vector newWorldPos){
+        ProcessNextAnimation(command);
+        setWorldPosition(newWorldPos);
     }
 }
