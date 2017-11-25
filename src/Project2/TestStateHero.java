@@ -54,8 +54,10 @@ public class TestStateHero extends BasicGameState {
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         RenderMap(g);
-        hero1.render(g);
-        hero2.render(g);
+        for(BasicBeing being:beingList){
+            being.render(g);
+        }
+
     }
 
     private void RenderMap(Graphics g) {
