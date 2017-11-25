@@ -7,7 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 
 import static Project2.InputManager.InputCommands;
-import static Project2.InputManager.InputCommands.*;
+
 
 /**
  * The BasicBeing class will define all HeroTypes and MobTypes
@@ -27,8 +27,10 @@ public class BasicBeing extends Entity{
     private int beingID = 0;
 
 
+    private InputCommands inputCommand;
     private Vector worldPosition;
     private Vector translation;
+
 
     private Vector screenPosition;
 
@@ -377,6 +379,7 @@ public class BasicBeing extends Entity{
         float y = this.screenPosition.getY();
         this.screenPosition = new Vector(x, y);
     }
+
     /**
      * Sets the Y component of Being screen position Vector.
      * @param y new y component
