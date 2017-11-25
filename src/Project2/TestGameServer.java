@@ -20,6 +20,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static Project2.InputManager.ProcessInput;
+import static Project2.MovementCalc.*;
 import static Project2.InputManager.InputCommands;
 import static Project2.InputManager.InputCommands.*;
 
@@ -77,66 +79,6 @@ public class TestGameServer {
         // mob/player, mob/wall only, and player-object only
         // call in the sendUpdate runnable?
 
-    // TODO: remove these when they can be linked from proper class position
-    /**
-     * Calculates the direction dependent on
-     * the current value of the <code>moveCommand</code> argument.
-     * Movement commands are defined in the InputManager class. The
-     * command is placed in a switch and evaluated accordingly. A
-     * resulting UNIT Vector is set as the next move direction vector.
-     * Thus an up command produces vector (0,1).
-     */
-    public static Vector CalcDirection(InputCommands moveCommand) {
-        float diagSpeed = (float)Math.sqrt(2)/2;
-        switch (moveCommand){
-            case up:
-                return new Vector(0,-1f);
-            case down:
-                return new Vector(0,1f);
-            case left:
-                return new Vector(-1f,0);
-            case right:
-                return new Vector(1f,0);
-            case ulDiag:
-                return new Vector(-1f,-1f);
-            case dlDiag:
-                return new Vector(-1f,1f);
-            case urDiag:
-                return new Vector(1f,-1f);
-            case drDiag:
-                return new Vector(1f,1f);
-            case idle:
-                return new Vector(0,0);
-            case attack:
-                return new Vector(0,0);
-        }
-        return null;
-    }
-
-
-    /**
-     * A new vector is returned that is the product of direction*speed; translation vector.
-     * @param direction unit Vector in the direction of the movement
-     * @param speed scalar speed of float type
-     * @return
-     */
-    public static Vector CalcVelocity(Vector direction, float speed) {
-        return new Vector(direction.getX()*speed,direction.getY()*speed);
-    }
-
-
-    /**
-     * Calculates the world position given arguments translation and current world position.
-     * new world position = "current world position" + (translation)/32
-     */
-    public static Vector CalcWorldPosition(Vector translation, Vector curWorldPos) {
-        float x = curWorldPos.getX();
-        float y = curWorldPos.getY();
-        x += (translation.getX()/32f);
-        y += (translation.getY()/32f);
-        return new Vector(x, y);
-    }
-
 
 
 /** Server Functions */
@@ -185,8 +127,8 @@ public class TestGameServer {
 
                 // TODO: fix this after IP is stored in player class
                 // process movement based on input
-                Vector velocity = (CalcVelocity(CalcDirection(inputCommand), Players.get(0).getSpeed()));
-                Players.get(0).setVelocity(velocity);
+                Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(0).getSpeed()));
+                Players.get(0).setTranslation(velocity);
                 Vector newWorldPosition = CalcWorldPosition(velocity, Players.get(0).getWorldPosition());
                 Players.get(0).setWorldPosition(newWorldPosition);
                 float x = Players.get(0).getWorldPositionX();
