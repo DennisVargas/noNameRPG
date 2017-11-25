@@ -436,4 +436,12 @@ public class BasicBeing extends Entity{
         ProcessNextAnimation(command);
         setWorldPosition(newWorldPos);
     }
+
+    public void setCommand(InputCommands command) {
+        this.inputCommand = command;
+    }
+
+    public InputCommands getCommand(){
+        return this.inputCommand;
+    }
 }
