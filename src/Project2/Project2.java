@@ -67,12 +67,14 @@ public class Project2 extends StateBasedGame {
      * MainMenu starts the order and New Single menu
      * leads to <code>TestStateBasicBeing</code>
      */
-    public Project2() {
+    public Project2(boolean testStatePlay) {
         super(NAME);
-//       TEST STATES
-        this.addState(new TestStateHero(TESTSTATEHERO));
-//        this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
-
+        if(testStatePlay) {
+            this.testStatePlay = true;
+//          TEST STATES
+            this.addState(new TestStateHero(TESTSTATEHERO));
+//          this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
+        }
 //      official states
         this.addState(new MainMenuState(MAINMENUSTATE));
         this.addState(new NewSingleMenu(NEWSINGLEMENUSTATE));
