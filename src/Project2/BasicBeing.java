@@ -7,7 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
 
 import static Project2.InputManager.InputCommands;
-import static Project2.InputManager.InputCommands.*;
+
 
 /**
  * The BasicBeing class will define all HeroTypes and MobTypes
@@ -17,7 +17,7 @@ public class BasicBeing extends Entity{
 
     private float health = 1f;
     private float speed = 2f;
-    boolean isClient = true;
+    boolean isClient = false;
 
     private Animation   walkRightAnim, walkLeftAnim, walkUpAnim,
             walkDnAnim, idleAnimLt, idleAnimRt, attackAnim,
@@ -26,6 +26,8 @@ public class BasicBeing extends Entity{
     private String name = "default";
     private int beingID = 0;
 
+
+    private InputCommands inputCommand;
     private Vector worldPosition;
     private Vector translation;
     private Vector screenPosition;
@@ -218,7 +220,7 @@ public class BasicBeing extends Entity{
      * @param walkingSheet
      * @param attackingSheet
      */
-    public void InitAnimations(SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
+    protected void InitAnimations(SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
         this.walkRightAnim = new Animation(walkingSheet, 0,0,5,0,true,100,true);
         this.walkLeftAnim = new Animation(walkingSheet, 0,1,5,1,true,100,true);
         this.walkDnAnim = new Animation(walkingSheet, 0,2,5,2,true,100,true);
@@ -357,6 +359,8 @@ public class BasicBeing extends Entity{
      */
     public void setScreenPosition(Vector screenPosition) {
         this.screenPosition = screenPosition;
+//        JIG entity position which is what the screen will render
+        this.setPosition(screenPosition);
     }
 
     /**
@@ -367,6 +371,7 @@ public class BasicBeing extends Entity{
         float y = this.screenPosition.getY();
         this.screenPosition = new Vector(x, y);
     }
+
     /**
      * Sets the Y component of Being screen position Vector.
      * @param y new y component
@@ -420,5 +425,13 @@ public class BasicBeing extends Entity{
     public void UpdateBeing(InputCommands command, Vector newWorldPos){
         ProcessNextAnimation(command);
         setWorldPosition(newWorldPos);
+    }
+
+    public void setCommand(InputCommands command) {
+        this.inputCommand = command;
+    }
+
+    public InputCommands getCommand(){
+        return this.inputCommand;
     }
 }

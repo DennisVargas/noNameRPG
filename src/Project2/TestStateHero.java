@@ -19,6 +19,8 @@ public class TestStateHero extends BasicGameState {
 
     private int stateID;
     private Hero hero1;
+    private Hero hero2;
+    private Mob mob1;
     private ArrayList<BasicBeing> beingList ;
     private TiledMap map1;
     private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
@@ -34,9 +36,13 @@ public class TestStateHero extends BasicGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        hero1 = new Hero(new Vector(90,105), false);
+        hero1 = new Hero(new Vector(90,105), false, "localhost");
+        hero2 = new Hero(new Vector(92,105), false, "jugHead");
+        mob1 = new Mob(new Vector(91,105), 1,"mob1");
         beingList = new ArrayList<BasicBeing>();
         beingList.add(hero1);
+        beingList.add(hero2);
+        beingList.add(mob1);
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
     }
 
@@ -48,8 +54,10 @@ public class TestStateHero extends BasicGameState {
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         RenderMap(g);
+        for(BasicBeing being:beingList){
+            being.render(g);
+        }
 
-        hero1.render(g);
     }
 
     private void RenderMap(Graphics g) {
@@ -75,14 +83,17 @@ public class TestStateHero extends BasicGameState {
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
         Input input = container.getInput();
         InputCommands command = ProcessInput(input, getID());
-        UpdateBeings(beingList, command);
+        hero1.setCommand(command);
+        hero2.setCommand(InputCommands.up);
+        mob1.setCommand(InputCommands.attack);
+        UpdateBeings(beingList);
     }
 
-    private void UpdateBeings(ArrayList<BasicBeing> beings, InputCommands command) {
+    private void UpdateBeings(ArrayList<BasicBeing> beings) {
 //        set the translation for each being.
 
         for(BasicBeing being: beings) {
-            Vector translation = CalcTranslation(CalcDirection(command), being.getSpeed());
+            Vector translation = CalcTranslation(CalcDirection(being.getCommand()), being.getSpeed());
 //        a being's previous translation can be used to move them back from where they came if need be.
             being.setTranslation(translation);
             Vector newWorldPosition = CalcWorldPosition(translation,being.getWorldPosition());
@@ -90,8 +101,11 @@ public class TestStateHero extends BasicGameState {
 //          updates the beings animation and world position.
 //          server can just do being.setNewWorldPosition()
 //          if swapping animation is unwanted extra computation cost
-            being.UpdateBeing(command, newWorldPosition);
+            being.UpdateBeing(being.getCommand(), newWorldPosition);
 //          if server write new world position to client packet
+            if(being.getName() != Project2.getSettings().getIpAddress()){
+//                hero1 is taking the place of localhost
+                being.setScreenPosition(CalcScreenPosition(this.hero1.getWorldPosition(), being.getWorldPosition()));}
         }
     }
 }
