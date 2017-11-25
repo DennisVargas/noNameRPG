@@ -12,12 +12,13 @@
 - **[32]** Update BasicBeing to have World Position and Screen Position Vectors
 - **[17]** Create a Hero Class with two character types
 - **[33]** javadoc update Hero, MovementCalc, BasicBeing classes.
+- **[8]** Add mob class that extends BasicBeing
 
 ## Claimed Issues ##
 - **[2]** Add art assets
 - **[6]** Client/server networking system
 - **[7]** Camera viewport that follows player
-- **[8]** Add mob class that extends BasicBeing
+
 
 ## Open Issues ##
 
