@@ -91,7 +91,7 @@ public class NewSingleMenu extends BasicGameState {
                 switch(menuChoice){
                     case start:
 //                        stateBasedGame.enterState(Project2.GAMEPLAYSTATE);
-                        stateBasedGame.enterState(Project2.TESTSTATEBASICBEING);
+                        stateBasedGame.enterState(Project2.MAINMENUSTATE);
                         break;
                     case back:
                         stateBasedGame.enterState(Project2.MAINMENUSTATE);
