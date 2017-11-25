@@ -18,6 +18,8 @@
 - **[2]** Add art assets
 - **[6]** Client/server networking system
 - **[7]** Camera viewport that follows player
+- **[34]** BasicBeing/BasicBeing collisions
+- **[10]** BasicBeing hit function reduces health
 
 
 ## Open Issues ##
