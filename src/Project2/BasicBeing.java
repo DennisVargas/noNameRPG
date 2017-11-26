@@ -237,6 +237,14 @@ public class BasicBeing extends Entity{
         this.deathAnim = new Animation(walkingSheet, 0,8,7,8,true,100,true);
         //  Attack and hit anim are the same except he shoots things when attacking.
         this.attackAnim = new Animation(walkingSheet, 0,5,1,5,true,100,true);
+
+//        set bounding box for being based on animation
+        ConvexPolygon beingBoundBox = new ConvexPolygon((float)this.walkLeftAnim.getWidth(),(float)this.walkLeftAnim.getHeight());
+        this.addShape(beingBoundBox);
+    }
+
+    public void HitBeing(float attackValue){
+        setHealth(getHealth()*attackValue);
     }
 
     /**
