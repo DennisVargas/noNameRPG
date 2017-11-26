@@ -1,10 +1,12 @@
 package Project2;
 
+import jig.ConvexPolygon;
 import jig.Entity;
 import jig.Vector;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.geom.Rectangle;
 
 import static Project2.InputManager.InputCommands;
 
@@ -33,7 +35,7 @@ public class BasicBeing extends Entity{
     private Vector screenPosition;
 
     private Animation currentAnimation;
-    boolean isHit = false;
+
     private int worldPositionX;
 
 
@@ -53,6 +55,7 @@ public class BasicBeing extends Entity{
         InitAnimations(walkingSheet, attackingSheet);
         setCurrentAnimation(idleAnimLt);
         InitNextVectors();
+        this.debugThis = true;
     }
 
 
