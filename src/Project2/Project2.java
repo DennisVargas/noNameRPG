@@ -115,7 +115,7 @@ public class Project2 extends StateBasedGame {
 
 
     public void initStatesList(GameContainer gameContainer) throws SlickException {
-        Entity.setCoarseGrainedCollisionBoundary(Entity.CIRCLE);
+        Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
         Input input = gameContainer.getInput();
         input.initControllers();
         input.clearControlPressedRecord();
