@@ -37,19 +37,19 @@ public class TestStateBeingCollides extends BasicGameState {
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
 //        collides with mob1
-        hero1 = new Hero(new Vector(90,105), false, "localhost");
+        hero1 = new Hero(new Vector( 90,105f), false, "localhost");
 //        in hero1 prev location
-        hero2 = new Hero(new Vector(91,105), false, "jugHead");
+        hero2 = new Hero(new Vector(91, 105f), false, "jugHead");
 //        collides with hero1
-        mob1 = new Mob(new Vector(90,105), 1,"mob1");
+        mob1 = new Mob(new Vector(89f,105f), 1,"mob1");
         beingList = new ArrayList<BasicBeing>();
         beingList.add(hero1);
         beingList.add(hero2);
         beingList.add(mob1);
         Vector hero1Trans, hero2Trans, hero3Trans;
-        hero1Trans = new Vector(-1f*hero1.getSpeed()/32, 0f);
-        hero2Trans = new Vector(-1f*hero1.getSpeed()/32, 0f);
-        hero3Trans = new Vector(1f*hero1.getSpeed()/32, 0f);
+        hero1.setTranslation(new Vector(-1f*hero1.getSpeed(), 0f));
+        hero2.setTranslation(new Vector(-1f*hero1.getSpeed(), 0f));
+        mob1.setTranslation(new Vector(0, 0f));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
     }
 
