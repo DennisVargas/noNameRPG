@@ -17,6 +17,8 @@ public class Mob extends BasicBeing {
 
     public Mob(Vector worldPosition, int mobType, String name) {
         super( new Vector(-5000,-5000), worldPosition, mob1Walking, mob1Attacking);
+        setPosition(MovementCalc.CalcScreenPosition(new Vector((Project2.WIDTH * Project2.SCALE)/2f,(Project2.HEIGHT * Project2.SCALE)/2f),
+                this.getWorldPosition()));
         this.setName(name);
         setMobAnimation(mobType);
     }
