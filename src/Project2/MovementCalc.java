@@ -37,6 +37,8 @@ public class MovementCalc {
                 return new Vector(0,0);
             case attack:
                 return new Vector(0,0);
+            case death:
+                return new Vector(0,0);
         }
         return null;
     }
@@ -52,9 +54,9 @@ public class MovementCalc {
      * @return Vector representing the non-player being screen position
      */
     public static Vector CalcScreenPosition(Vector playerMapPosition, Vector beingMapPosition){
-        float scrnX = (beingMapPosition.getX() - playerMapPosition.getX())*32f + (Project2.WIDTH*Project2.SCALE)/2;
-        float scrnY = (beingMapPosition.getY()- playerMapPosition.getY() )*32f + (Project2.HEIGHT*Project2.SCALE)/2;
-        return new Vector(scrnX, scrnY);
+        float screenX = (beingMapPosition.getX() - playerMapPosition.getX())*32f + (Project2.WIDTH*Project2.SCALE)/2;
+        float screenY = (beingMapPosition.getY()- playerMapPosition.getY() )*32f + (Project2.HEIGHT*Project2.SCALE)/2;
+        return new Vector(screenX, screenY);
     }
 
 
