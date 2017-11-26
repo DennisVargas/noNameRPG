@@ -84,12 +84,12 @@ public class TestStateHero extends BasicGameState {
         Input input = container.getInput();
         InputCommands command = ProcessInput(input, getID());
         hero1.setCommand(command);
-        hero2.setCommand(InputCommands.up);
+        hero2.setCommand(InputCommands.death);
         mob1.setCommand(InputCommands.attack);
         UpdateBeings(beingList);
     }
 
-    private void UpdateBeings(ArrayList<BasicBeing> beings) {
+    public void UpdateBeings(ArrayList<BasicBeing> beings) {
 //        set the translation for each being.
 
         for(BasicBeing being: beings) {
@@ -102,10 +102,14 @@ public class TestStateHero extends BasicGameState {
 //          server can just do being.setNewWorldPosition()
 //          if swapping animation is unwanted extra computation cost
             being.UpdateBeing(being.getCommand(), newWorldPosition);
-//          if server write new world position to client packet
+
             if(being.getName() != Project2.getSettings().getIpAddress()){
 //                hero1 is taking the place of localhost
-                being.setScreenPosition(CalcScreenPosition(this.hero1.getWorldPosition(), being.getWorldPosition()));}
+                being.setScreenPosition(CalcScreenPosition(this.hero1.getWorldPosition(), being.getWorldPosition()));
+            }
+//            Allow Collision Manager to adjust for collisions.
+            CollisionManager.CheckCollisions(beings);
+//          if server write new world position to client packet
         }
     }
 }
