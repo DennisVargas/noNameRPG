@@ -99,6 +99,7 @@ public class BasicBeing extends Entity{
                 setCurrentAnimation(hitAnimLt);
                 break;
             case hitRt:
+                setCurrentAnimation(hitAnimRt);
                 break;
             case death:
                 setCurrentAnimation(deathAnim);
