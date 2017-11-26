@@ -13,18 +13,17 @@
 - **[17]** Create a Hero Class with two character types
 - **[33]** javadoc update Hero, MovementCalc, BasicBeing classes.
 - **[8]** Add mob class that extends BasicBeing
+- **[6]** Client/server networking system
 
 ## Claimed Issues ##
 - **[2]** Add art assets
-- **[6]** Client/server networking system
 - **[7]** Camera viewport that follows player
 - **[34]** BasicBeing/BasicBeing collisions
 - **[10]** BasicBeing hit function reduces health
+- **[9]** Add mob path finding
 
 
 ## Open Issues ##
-
-- **[9]** Add mob path finding
 - **[10]** Add mob death
 - **[11]** Add character death, basic lives counter, and game over screen
 - **[12]** Add additional animated mob types
