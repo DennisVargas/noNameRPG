@@ -280,16 +280,6 @@ public class BasicBeing extends Entity{
 
 
     /**
-     * Returns the value of <code>this.isHit</code> which is a flag
-     * denoting the Being has encountered a collision. This method may
-     * end up deprecated soon enough as it may not have a use.
-     * @return the field
-     */
-    public boolean IsHit() {
-        return isHit;
-    }
-
-    /**
      * Uses the Graphics parameter passed to it to render
      * the <code>BasicBeing</code>. <code>this.render(Graphics)</code>
      * is a method inherited from the JIG Entity class that
@@ -308,16 +298,6 @@ public class BasicBeing extends Entity{
      */
     public void setBeingID(int beingID) {
         this.beingID = beingID;
-    }
-
-
-    /**
-     * Sets the flag for isClient to the value passed
-     * into the argument of the method.
-     * @param client value to set isClient field
-     */
-    public void setIsClient(boolean client) {
-        isClient = client;
     }
 
     /**
@@ -340,14 +320,6 @@ public class BasicBeing extends Entity{
         this.health = health;
     }
 
-
-    /**
-     * Sets the <code>isHit</code> field with a boolean value.
-     * @param hit a boolean value that sets the hit flag
-     */
-    public void setHit(boolean hit) {
-        isHit = hit;
-    }
 
     /**
      * Sets the <code>BasicBeing</code> name field to the value passed in
