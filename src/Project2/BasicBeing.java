@@ -2,10 +2,12 @@ package Project2;
 
 import jig.ConvexPolygon;
 import jig.Entity;
+import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
 
 import static Project2.InputManager.InputCommands;
@@ -58,6 +60,14 @@ public class BasicBeing extends Entity{
         this.debugThis = true;
     }
 
+    //constructor for objects
+    public BasicBeing(Vector screenPosition, Vector worldPosition){
+        super(screenPosition);
+        setScreenPosition(screenPosition);
+        setWorldPosition(worldPosition);
+        InitNextVectors();
+        this.debugThis = true;
+    }
 
     /**
      * Sets the next animation dependent on
@@ -66,6 +76,8 @@ public class BasicBeing extends Entity{
      * the <code>InputManager.InputCommands</code> enumeration.
      */
     private void ProcessNextAnimation(InputCommands command) {
+        if(name.equals("doorH") | name.equals("doorV"))
+            return;
         switch(command){
             case up:
                 setCurrentAnimation(walkUpAnim);
@@ -241,6 +253,16 @@ public class BasicBeing extends Entity{
 //        set bounding box for being based on animation
         ConvexPolygon beingBoundBox = new ConvexPolygon((float)this.walkLeftAnim.getWidth(),(float)this.walkLeftAnim.getHeight());
         this.addShape(beingBoundBox);
+    }
+
+    protected void InitImage(boolean horizontal){
+        addImageWithBoundingBox(ResourceManager.getImage(Project2.DOORVSHEETRSC));
+//        ConvexPolygon objectBoundingBox;
+//        if(horizontal)
+//            objectBoundingBox = new ConvexPolygon(32, 32);
+//        else
+//            objectBoundingBox = new ConvexPolygon(32, 32);
+//        this.addShape(objectBoundingBox);
     }
 
     public void HitBeing(float attackValue){
