@@ -51,6 +51,7 @@ public class TestGameClient extends BasicGameState{
     private double x, y;
     private int mapX, mapY;
     public TiledMap map1 = null;
+    public Map tileMapping = null;
     private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
     private final String TILESHEETRSC = "resources/Levels";
 
@@ -73,6 +74,7 @@ public class TestGameClient extends BasicGameState{
         Mobs = new ArrayList<>();
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
+        Project2.settings.createTileMapping(map1, 1);
     }
 
     @Override

@@ -1,11 +1,13 @@
 package Project2;
 
 import jig.Vector;
+import org.newdawn.slick.tiled.TiledMap;
 
 /**
  * class which holds the settings for a players game instance.
  */
 public class PlaySettings {
+    private Map tilemapping;
     private String ipAddress;
     private Vector hostStartLevel1 = new Vector(90,105);
     private Vector guestStartLevel1 = new Vector(91,105);
@@ -18,6 +20,10 @@ public class PlaySettings {
      */
     public PlaySettings(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    public void createTileMapping(TiledMap map, int level){
+        this.tilemapping = new Map(map, level);
     }
 
     public Vector getGuestStartLevel1() {
