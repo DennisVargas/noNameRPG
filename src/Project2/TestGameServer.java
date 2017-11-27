@@ -38,6 +38,8 @@ public class TestGameServer {
     private int stateId;
     private int mapX, mapY;
     private ArrayList<BasicBeing> Players;
+    private MobList moblist;
+    private ArrayList<Mob> Mobs;
     private static int PlayerCount = 2;
     private String changes = "";
 
@@ -48,14 +50,17 @@ public class TestGameServer {
 
     // constructor sets port number and state ID for current level
     public TestGameServer(int stateId, int port) throws SlickException {
+        Mobs = new ArrayList<>();
+        moblist = new MobList();
         // Set game info based on what level was requested by host
         // TODO: eventually remove spritesheets
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
-        if (stateId == 23) {
+        if (stateId == 22) {
             ResourceManager.loadImage(WALKINGSHEETRSC);
             ResourceManager.loadImage(ATTACKINGSHEETRSC);
             mapX = 90;
             mapY = 104;
+            Mobs = moblist.getMobList(1);
         }
 
         // Set port info
@@ -84,6 +89,8 @@ public class TestGameServer {
 /** Server Functions */
     public void init () {
         Players = new ArrayList<>();
+        Mobs = new ArrayList<>();
+        moblist = new MobList();
         // try to open server socket, catch error if fails
         try {
             socket = new ServerSocket(port);
@@ -137,10 +144,12 @@ public class TestGameServer {
                 // check for player/wall collisions
 
                 // if movement was valid, add update to changes
-                changes += " " + player;
-                changes += " " + tokens[2];
-                changes += " " + x;
-                changes += " " + y;
+                String newChange  = " " + player;
+                newChange += " " + tokens[2];
+                newChange += " " + x;
+                newChange += " " + y;
+
+                changes += newChange;
                 // for use when IP is properly stored in player class
                 /*
                 for (int i = 0; i < Players.size(); i++) {
@@ -258,6 +267,7 @@ public class TestGameServer {
             if (changes != "") {
                 String msg = "UPDT" + changes;
                 changes = "";
+//                System.out.println(msg);
                 send(msg);
             }
         }

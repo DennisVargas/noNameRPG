@@ -43,6 +43,8 @@ public class TestGameClient extends BasicGameState{
     private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     private ArrayList<BasicBeing> Players;
+    private MobList moblist;
+    private ArrayList<BasicBeing> Mobs;
     private boolean isIdle = true;
 
     // MAP STUFF
@@ -68,6 +70,7 @@ public class TestGameClient extends BasicGameState{
         ResourceManager.loadImage(WALKINGSHEETRSC);
         ResourceManager.loadImage(ATTACKINGSHEETRSC);
         Players = new ArrayList<>();
+        Mobs = new ArrayList<>();
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
     }
@@ -112,15 +115,20 @@ public class TestGameClient extends BasicGameState{
             map1.render((int)displaceX, (int)displaceY,
                     (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
 
-            /*
-            g.drawString("displaceX: "+displaceX*-1
-                    +" displaceY:"+displaceY*-1, 200,200);
-            g.drawString("worldX: "+Players.get(0).getWorldPositionX()
-                    +"      worldY:"+Players.get(0).getWorldPositionY(), 200,230);
-            g.drawString("screenX: "+Players.get(0).getScreenPositionX()
-                    +" screenY:"+Players.get(0).getScreenPositionY(), 200,260);
-            */
+            
+//            g.drawString("displaceX: "+displaceX*-1
+//                    +" displaceY:"+displaceY*-1, 200,200);
+//            g.drawString("worldX: "+Players.get(0).getWorldPositionX()
+//                    +"      worldY:"+Players.get(0).getWorldPositionY(), 200,230);
+//            g.drawString("screenX: "+Players.get(0).getScreenPositionX()
+//                    +" screenY:"+Players.get(0).getScreenPositionY(), 200,260);
 
+
+            // convert all non-controlling player entities world to screen coords
+            // only set up to do mob list now
+            int viewportX = (int)((Players.get(0).getWorldPositionX()*32.0) - screenCenter.getX());
+            int viewportY = (int)((Players.get(0).getWorldPositionY()*32.0) - screenCenter.getY());
+            worldToScreen(viewportX, viewportY);
 
             // ENTITY STUFF
             // render players
@@ -129,6 +137,10 @@ public class TestGameClient extends BasicGameState{
             }
 
             // render mobs here when we have them
+//            System.out.println("moblist size = " + Mobs.size());
+            for (int i = 0; i < Mobs.size(); i++) {
+                Mobs.get(i).render(g);
+            }
         }
     }
 
@@ -155,8 +167,9 @@ public class TestGameClient extends BasicGameState{
 
 /** Game Functions */
 private void moveEntity(String entity, InputCommands input, Float posX, Float posY) {
+    int i = 0;
     // TODO: have some indication if entity is a mob so it loops through correct ArrayList
-    Players.get(0).UpdateBeing(input, new Vector(posX, posY));
+    Players.get(i).UpdateBeing(input, new Vector(posX, posY));
     // need to send input to figure out animation
 
     // for use when IP is properly stored in player class
@@ -165,17 +178,20 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
 //                Players.get(i).setPosition(posX, posY);
 //            }
 //        }
+
+    // Call pathfinding
     }
 
     private void loadLevel(int level) throws SlickException {
         System.out.println("executing loadLevel " + level);
-
+        moblist = new MobList();
         // should match info switch statement in TestGameServer constructor
         switch (level) {
             case 1:
                 map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
                 mapX = 90;
                 mapY = 104;
+                Mobs = moblist.getMobList(1);
                 break;
             default:
                 System.out.println("Client: unknown level");
@@ -207,6 +223,17 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
             case "idle": inputCommand = idle; break;
         }
         return inputCommand;
+    }
+
+
+    private void worldToScreen(int viewportX, int viewportY) {
+        for (int i = 0; i < Mobs.size(); i++) {
+            int entityX = (int)(Mobs.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(Mobs.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            Mobs.get(i).setPosition(newX, newY);
+        }
     }
 
 
@@ -298,8 +325,10 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
 //                System.out.println("Client: got UPDT response ");
                 // loop through tokens by fours (entity, input, velX, velY);
                 for (int i = 1; i < tokens.length; i += 4) {
+//                    System.out.println("UPDT loop: entering; length: " + tokens.length);
                     InputCommands input = getCommand(tokens[i+1]);
                     moveEntity(tokens[i], input, Float.parseFloat(tokens[1+2]), Float.parseFloat(tokens[i+3]));
+//                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
                 }
                 break;
             default:
