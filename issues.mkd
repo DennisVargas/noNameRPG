@@ -14,12 +14,12 @@
 - **[33]** javadoc update Hero, MovementCalc, BasicBeing classes.
 - **[8]** Add mob class that extends BasicBeing
 - **[6]** Client/server networking system
+- **[34]** BasicBeing/BasicBeing collisions
 
 ## Claimed Issues ##
 - **[2]** Add art assets
 - **[7]** Camera viewport that follows player
-- **[34]** BasicBeing/BasicBeing collisions
-- **[10]** BasicBeing hit function reduces health
+- **[35]** BasicBeing hit function reduces health
 - **[9]** Add mob path finding
 
 
