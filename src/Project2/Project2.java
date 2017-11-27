@@ -59,6 +59,8 @@ public class Project2 extends StateBasedGame {
     public static final String MOB4WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String MOB4ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String HOLDER_8 = "testAssets/spacer8sq.png";
+    public static final String DOORHSHEETRSC = "resources/Levels/doorH.png";
+    public static final String DOORVSHEETRSC = "resources/Levels/doorV.png";
 
     /**
      * instantiates the game name and then creates a
@@ -118,6 +120,8 @@ public class Project2 extends StateBasedGame {
         ResourceManager.loadImage(RANGEDHEROWALKINGSHEETRSC);
         ResourceManager.loadImage(RANGEDHEROATTACKINGSHEETRSC);
         ResourceManager.loadImage(HOLDER_8);
+        ResourceManager.loadImage(DOORHSHEETRSC);
+        ResourceManager.loadImage(DOORVSHEETRSC);
 
         if(this.testStatePlay) {
 //        test states init

@@ -21,7 +21,9 @@ public class TestStateBeingCollides extends BasicGameState {
     private Hero hero1;
     private Hero hero2;
     private Mob mob1;
+    private Door door1;
     private ArrayList<BasicBeing> beingList ;
+//    private ArrayList<BasicBeing> objectList;
     private TiledMap map1;
     private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
     private final String TILESHEETRSC = "resources/Levels";
@@ -44,10 +46,14 @@ public class TestStateBeingCollides extends BasicGameState {
         hero2 = new Hero(Project2.getSettings().getGuestStartLevel1(), false, "jugHead");
 //        collides with hero1
         mob1 = new Mob(new Vector(89f,105f), 1,"mob1");
+        door1 = new Door(new Vector(28.5f, 105.25f), "doorV");
         beingList = new ArrayList<BasicBeing>();
+//        objectList = new ArrayList<BasicBeing>();
         beingList.add(hero1);
-//        beingList.add(hero2);
-//        beingList.add(mob1);
+//        objectList.add(door1);
+        beingList.add(hero2);
+        beingList.add(mob1);
+        beingList.add(door1);
         Vector hero1Trans, hero2Trans, hero3Trans;
 //        hero1.setTranslation(new Vector(-1f*hero1.getSpeed(), 0f));
 //        hero2.setTranslation(new Vector(-1f*hero2.getSpeed(), 0f));
@@ -66,6 +72,9 @@ public class TestStateBeingCollides extends BasicGameState {
         for(BasicBeing being:beingList){
             being.render(g);
         }
+//        for(BasicBeing object:objectList){
+//            object.render(g);
+//        }
 
     }
 
@@ -102,7 +111,11 @@ public class TestStateBeingCollides extends BasicGameState {
     private void UpdateBeings(ArrayList<BasicBeing> beings) {
 //  make a move for each being when the "player" moves everybody must update their JIG Vector
         for(BasicBeing being: beings) {
-            Vector translation = CalcTranslation(CalcDirection(being.getCommand()), being.getSpeed());
+            Vector translation;
+            if(!being.getName().equals("doorH") & !being.getName().equals("doorV"))
+                translation = CalcTranslation(CalcDirection(being.getCommand()), being.getSpeed());
+            else
+                translation = CalcTranslation(CalcDirection(InputCommands.idle), 0f);
 //        a being's previous translation can be used to move them back from where they came if need be.
             being.setTranslation(translation);
             Vector newWorldPosition = CalcWorldPosition(translation,being.getWorldPosition());
@@ -110,11 +123,11 @@ public class TestStateBeingCollides extends BasicGameState {
 //          server can just do being.setNewWorldPosition()
 //          if swapping animation is unwanted extra computation cost
             being.UpdateBeing(being.getCommand(), newWorldPosition);
-            if(CollisionManager.CheckValidMove(being))
+            if (CollisionManager.CheckValidMove(being))
                 CollisionManager.CheckCollisions(being, beings);
 
 //          if server write new world position to client packet
-            if(being.getName() != Project2.getSettings().getIpAddress()){
+            if (being.getName() != Project2.getSettings().getIpAddress()) {
 //                hero1 is taking the place of localhost
                 being.setScreenPosition(CalcScreenPosition(Project2.getSettings().getPlayer().getWorldPosition(), being.getWorldPosition()));
             }
