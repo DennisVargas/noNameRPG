@@ -144,10 +144,12 @@ public class TestGameServer {
                 // check for player/wall collisions
 
                 // if movement was valid, add update to changes
-                changes += " " + player;
-                changes += " " + tokens[2];
-                changes += " " + x;
-                changes += " " + y;
+                String newChange  = " " + player;
+                newChange += " " + tokens[2];
+                newChange += " " + x;
+                newChange += " " + y;
+
+                changes += newChange;
                 // for use when IP is properly stored in player class
                 /*
                 for (int i = 0; i < Players.size(); i++) {
@@ -265,6 +267,7 @@ public class TestGameServer {
             if (changes != "") {
                 String msg = "UPDT" + changes;
                 changes = "";
+                System.out.println(msg);
                 send(msg);
             }
         }
