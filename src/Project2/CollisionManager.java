@@ -3,11 +3,17 @@ package Project2;
 import jig.Vector;
 
 import java.util.ArrayList;
+import Project2.InputManager.*;
+
+import static Project2.InputManager.InputCommands.*;
+import static java.lang.Math.abs;
 
 public class CollisionManager {
 
-    public static void CheckCollisions(ArrayList<BasicBeing>beings){
-        CheckBeingBeingCollisions(beings);
+    public static boolean CheckCollisions(BasicBeing being, ArrayList<BasicBeing>beings){
+
+//        while(collisionFound)
+            return CheckBeingBeingCollisions(being, beings);
     }
 
     public static void CheckBeingBeingCollisions(ArrayList<BasicBeing> beings) {
