@@ -8,7 +8,6 @@ class InputManagerTest {
 
     @Test
     void testEnumClassCompare() {
-        InputManager.InputDirections dir = InputManager.InputDirections.down;
 
         InputManager.InputCommands cmd = InputManager.InputCommands.up;
 

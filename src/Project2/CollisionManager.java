@@ -58,6 +58,38 @@ public class CollisionManager {
 //                the being is not a mob
                 if(!being.getName().contains("mob")){
                     if(being.getCommand() == InputCommands.attack){
+//                        beings
+                        switch(being.getLastDirectionCommand()){
+                            case up:
+//                                testBeing is above being
+                                if(testBeing.getWorldPositionY() < being.getWorldPositionY())
+                                    testBeing.HitBeing(being.getAttackPower());
+                                break;
+                            case down:
+                                break;
+                            case left:
+                                break;
+                            case right:
+                                break;
+                            case attack:
+                                break;
+                            case hit:
+                                break;
+                            case ulDiag:
+                                break;
+                            case dlDiag:
+                                break;
+                            case urDiag:
+                                break;
+                            case drDiag:
+                                break;
+                            case hitLt:
+                                break;
+                            case hitRt:
+                                break;
+                            case death:
+                                break;
+                        }
                     }
                 }
                 return true;
