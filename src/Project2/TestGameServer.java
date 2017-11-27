@@ -55,7 +55,7 @@ public class TestGameServer {
         // Set game info based on what level was requested by host
         // TODO: eventually remove spritesheets
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
-        if (stateId == 23) {
+        if (stateId == 22) {
             ResourceManager.loadImage(WALKINGSHEETRSC);
             ResourceManager.loadImage(ATTACKINGSHEETRSC);
             mapX = 90;
@@ -267,7 +267,7 @@ public class TestGameServer {
             if (changes != "") {
                 String msg = "UPDT" + changes;
                 changes = "";
-                System.out.println(msg);
+//                System.out.println(msg);
                 send(msg);
             }
         }

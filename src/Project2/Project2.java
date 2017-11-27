@@ -42,10 +42,9 @@ public class Project2 extends StateBasedGame {
     /**
      * these are defined test states for development purposes
      */
-    public static final int TESTSTATEBASICBEING = 20;
     public static final int MENUITEMTESTSTATE = 21;
-    public static final int TESTSTATEHERO = 22;
-    public static final int TESTGAMECLIENT = 23;
+    public static final int TESTGAMECLIENT = 22;
+    private static final int TESTSTATEBEINGCOLLIDES = 23;
 
 
 
@@ -74,7 +73,6 @@ public class Project2 extends StateBasedGame {
         if(testStatePlay) {
             this.testStatePlay = true;
 //          TEST STATES
-            this.addState(new TestStateHero(TESTSTATEHERO));
 //          this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
         }
 //      official states
@@ -88,7 +86,6 @@ public class Project2 extends StateBasedGame {
 //       TEST STATES
 //        this.addState(new TestGameServer(TESTGAMESERVER));
         this.addState(new TestGameClient(TESTGAMECLIENT));
-        this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
 
     }
 

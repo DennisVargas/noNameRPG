@@ -120,8 +120,6 @@ public class TestGameClient extends BasicGameState{
 //                    +" displaceY:"+displaceY*-1, 200,200);
 //            g.drawString("worldX: "+Players.get(0).getWorldPositionX()
 //                    +"      worldY:"+Players.get(0).getWorldPositionY(), 200,230);
-//            g.drawString("worldX: "+Mobs.get(0).getWorldPositionX()
-//                    +"      worldY:"+Mobs.get(0).getWorldPositionY(), 500,230);
 //            g.drawString("screenX: "+Players.get(0).getScreenPositionX()
 //                    +" screenY:"+Players.get(0).getScreenPositionY(), 200,260);
 
@@ -327,7 +325,7 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
 //                System.out.println("Client: got UPDT response ");
                 // loop through tokens by fours (entity, input, velX, velY);
                 for (int i = 1; i < tokens.length; i += 4) {
-                    System.out.println("UPDT loop: entering; length: " + tokens.length);
+//                    System.out.println("UPDT loop: entering; length: " + tokens.length);
                     InputCommands input = getCommand(tokens[i+1]);
                     moveEntity(tokens[i], input, Float.parseFloat(tokens[1+2]), Float.parseFloat(tokens[i+3]));
 //                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
