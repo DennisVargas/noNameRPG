@@ -46,8 +46,8 @@ public class TestStateBeingCollides extends BasicGameState {
         mob1 = new Mob(new Vector(89f,105f), 1,"mob1");
         beingList = new ArrayList<BasicBeing>();
         beingList.add(hero1);
-        beingList.add(hero2);
-        beingList.add(mob1);
+//        beingList.add(hero2);
+//        beingList.add(mob1);
         Vector hero1Trans, hero2Trans, hero3Trans;
 //        hero1.setTranslation(new Vector(-1f*hero1.getSpeed(), 0f));
 //        hero2.setTranslation(new Vector(-1f*hero2.getSpeed(), 0f));
@@ -110,7 +110,8 @@ public class TestStateBeingCollides extends BasicGameState {
 //          server can just do being.setNewWorldPosition()
 //          if swapping animation is unwanted extra computation cost
             being.UpdateBeing(being.getCommand(), newWorldPosition);
-            CollisionManager.CheckCollisions(being, beings);
+            if(CollisionManager.CheckValidMove(being))
+                CollisionManager.CheckCollisions(being, beings);
 
 //          if server write new world position to client packet
             if(being.getName() != Project2.getSettings().getIpAddress()){

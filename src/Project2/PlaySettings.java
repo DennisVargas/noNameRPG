@@ -26,6 +26,10 @@ public class PlaySettings {
         this.tilemapping = new Map(map, level);
     }
 
+    public String checkTile(int x, int y){
+        return tilemapping.tiles[x][y].getType();
+    }
+
     public Vector getGuestStartLevel1() {
         return guestStartLevel1;
     }

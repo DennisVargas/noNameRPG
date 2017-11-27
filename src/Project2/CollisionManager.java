@@ -7,6 +7,7 @@ import Project2.InputManager.*;
 
 import static Project2.InputManager.InputCommands.*;
 import static java.lang.Math.abs;
+import static java.lang.Math.floor;
 
 /**
  * manages all collisions between being/being and being/wall
@@ -63,6 +64,22 @@ public class CollisionManager {
             }
         }
         return false;
+    }
+
+    public static boolean CheckValidMove(BasicBeing being){
+//        System.out.println(Project2.settings.checkTile((int)floor(being.getWorldPositionX()),(int)floor(being.getWorldPositionY())));
+        if (Project2.settings.checkTile((int) Math.round(being.getWorldPositionX()-.5) + 20, (int) Math.round(being.getWorldPositionY()) + 11).equals("abyss") |
+                Project2.settings.checkTile((int) Math.round(being.getWorldPositionX()-.5) + 20, (int) Math.round(being.getWorldPositionY()) + 11).equals("wall")) {
+            being.setWorldPosition(MovementCalc.CalcWorldPosition(
+                    MovementCalc.CalcTranslation(
+                            MovementCalc.CalcDirection(
+                                    ReverseCommand(being.getCommand()))
+                            , being.getSpeed())
+                    , being.getWorldPosition()));
+            return false;
+        }
+        else
+            return true;
     }
 
     /**
