@@ -45,7 +45,6 @@ public class Project2 extends StateBasedGame {
     private static final int TESTSTATEBEINGCOLLIDES = 23;
 
 
-
     public static final String MELEEHEROATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String MELEEHEROWALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String RANGEDHEROWALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
@@ -78,7 +77,6 @@ public class Project2 extends StateBasedGame {
         this.addState(new NewMultiMenu(NEWMULTIMENUSTATE));
         this.addState(new OptionMenuState(OPTIONMENUSTATE));
         this.addState(new GamePlayState(GAMEPLAYSTATE));
-
 
 //       TEST STATES
         this.addState(new TestGameClient(TESTGAMECLIENT));
