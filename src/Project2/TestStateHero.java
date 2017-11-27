@@ -63,7 +63,7 @@ public class TestStateHero extends BasicGameState {
     private void RenderMap(Graphics g) {
         float displaceX, displaceY, worldPosX, worldPosY;
         worldPosX = (int)hero1.getWorldPositionX(); worldPosY = (int)hero1.getWorldPositionY();
-        displaceX = (hero1.getWorldPositionX()-worldPosX)*-32; displaceY = (hero1.getWorldPositionY()-worldPosY)*-32;
+        displaceX = (hero1.getWorldPositionX()-worldPosX)*-32; displaceY = ( hero1.getWorldPositionY()-worldPosY )*-32;
 
         //  render the map using the client displacement from tile center
         //  and current world position.
@@ -108,7 +108,7 @@ public class TestStateHero extends BasicGameState {
                 being.setScreenPosition(CalcScreenPosition(this.hero1.getWorldPosition(), being.getWorldPosition()));
             }
 //            Allow Collision Manager to adjust for collisions.
-            CollisionManager.CheckCollisions(beings);
+//            CollisionManager.CheckCollisions(beings);
 //          if server write new world position to client packet
         }
     }
