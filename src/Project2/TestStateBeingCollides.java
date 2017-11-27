@@ -49,9 +49,9 @@ public class TestStateBeingCollides extends BasicGameState {
         beingList.add(hero2);
         beingList.add(mob1);
         Vector hero1Trans, hero2Trans, hero3Trans;
-        hero1.setTranslation(new Vector(-1f*hero1.getSpeed(), 0f));
-        hero2.setTranslation(new Vector(-1f*hero1.getSpeed(), 0f));
-        mob1.setTranslation(new Vector(0, 0f));
+//        hero1.setTranslation(new Vector(-1f*hero1.getSpeed(), 0f));
+//        hero2.setTranslation(new Vector(-1f*hero2.getSpeed(), 0f));
+//        mob1.setTranslation(new Vector(0, 0f));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
     }
 
