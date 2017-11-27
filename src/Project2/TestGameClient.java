@@ -245,7 +245,7 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
         try {
             // open client socket
             socket = new Socket(ipAddress, port);
-
+            Project2.settings.setIpAddress(socket.getLocalSocketAddress().toString());
             // send message to initialize player on server (INIT PLAYERIP CLASS)
             send("INIT " + socket.getLocalSocketAddress() + " " + 1);
 
