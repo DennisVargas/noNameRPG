@@ -76,7 +76,7 @@ public class Project2 extends StateBasedGame {
             this.testStatePlay = true;
 //          TEST STATES
             this.addState(new TestStateBeingCollides(TESTSTATEBEINGCOLLIDES));
-            this.addState(new TestStateHero(TESTSTATEHERO));
+//            this.addState(new TestStateHero(TESTSTATEHERO));
 //          this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
         }
 //      official states
@@ -129,7 +129,7 @@ public class Project2 extends StateBasedGame {
         if(this.testStatePlay){
 //        test states init
 //        this.getState(TESTSTATEBASICBEING).init(gameContainer,this);
-          this.getState(TESTSTATEHERO).init(gameContainer,this);
+//          this.getState(TESTSTATEHERO).init(gameContainer,this);
             this.getState(TESTSTATEBEINGCOLLIDES).init(gameContainer,this);
         }
 
