@@ -38,6 +38,8 @@ public class TestGameServer {
     private int stateId;
     private int mapX, mapY;
     private ArrayList<BasicBeing> Players;
+    private MobList moblist;
+    private ArrayList<Mob> Mobs;
     private static int PlayerCount = 2;
     private String changes = "";
 
@@ -48,6 +50,8 @@ public class TestGameServer {
 
     // constructor sets port number and state ID for current level
     public TestGameServer(int stateId, int port) throws SlickException {
+        Mobs = new ArrayList<>();
+        moblist = new MobList();
         // Set game info based on what level was requested by host
         // TODO: eventually remove spritesheets
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
@@ -56,6 +60,7 @@ public class TestGameServer {
             ResourceManager.loadImage(ATTACKINGSHEETRSC);
             mapX = 90;
             mapY = 104;
+            Mobs = moblist.getMobList(1);
         }
 
         // Set port info
@@ -84,6 +89,8 @@ public class TestGameServer {
 /** Server Functions */
     public void init () {
         Players = new ArrayList<>();
+        Mobs = new ArrayList<>();
+        moblist = new MobList();
         // try to open server socket, catch error if fails
         try {
             socket = new ServerSocket(port);

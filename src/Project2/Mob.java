@@ -27,6 +27,9 @@ public class Mob extends BasicBeing {
 
     private void setMobAnimation(int mobType) {
         switch(mobType){
+            case 1:
+                InitAnimations(mob2Walking, mob2Attacking);
+                break;
             case 2:
                 InitAnimations(mob2Walking, mob2Attacking);
                 break;
