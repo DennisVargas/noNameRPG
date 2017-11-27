@@ -10,6 +10,11 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import static Project2.InputManager.InputCommands;
 
+/**
+ * Provides a user interface for transitioning
+ * into the single player menu, multi player menu,
+ * options menu, and quitting the game.
+ */
 public class MainMenuState extends BasicGameState {
     private int stateId;
 
@@ -24,7 +29,9 @@ public class MainMenuState extends BasicGameState {
     }
 
     /**
-     * MainMenuChoices in main menu
+     * defines the menu choices available.
+     * useful when switching the current
+     * selection from off to on.
      */
     private enum MainMenuChoices {NewSingle, NewMulti, Options, Quit}
     MainMenuChoices menuChoice;
@@ -39,15 +46,31 @@ public class MainMenuState extends BasicGameState {
     private static String quitOffImageRsc = "testAssets/quit3.png";
     private static String quitOnImageRsc = "testAssets/quit4.png";
 
+
+    /**
+     * constructor sets the stateId of the MainMenu instance.
+     * The stateId passed from Project2.java is constant but
+     * needs to be passed down so the ID is common and global.
+     * @param stateId int variable that is used to
+     *                designate that this is a MenuState
+     */
     public MainMenuState(int stateId) {
         this.stateId = stateId;
     }
 
+    /**
+     * returns the current state id variable.
+     * @return int value of the stateID.
+     */
     @Override
     public int getID() {
         return stateId;
     }
 
+    /**
+     * Initializes the <code>MainMenuState</code>; loads image resources,
+     * sets the initial menu choice.
+     */
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
         ResourceManager.loadImage(singlePlayerOffImageRsc);
@@ -61,6 +84,12 @@ public class MainMenuState extends BasicGameState {
         menuChoice = MainMenuChoices.NewSingle;
     }
 
+    /**
+     * upon entering the state the MenuItem objects are instantiated.
+     * Each menu choice is given a position, off image,
+     * on image and a name. These are arguments to the <code>MenuItem</code>
+     * constructor.
+     */
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
@@ -75,6 +104,13 @@ public class MainMenuState extends BasicGameState {
         menuChoice = MainMenuChoices.NewMulti;
     }
 
+
+    /**
+     * calls the <code>MenuItem.renderItem()</code> method for each of the
+     * items in main menu. A string is drawn to screen showing the accurate
+     * menu selection as opposed to the png currently being used which are
+     * placeholders till menu art is complete.
+     */
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         newSingleItem.renderItem(graphics);
@@ -84,6 +120,11 @@ public class MainMenuState extends BasicGameState {
         graphics.drawString(String.valueOf(menuChoice), 200,125);
     }
 
+
+    /**
+     * processes input with InputManager then uses the results in the
+     * <code>ProcessInputCommand()</code>.
+     */
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         Input input = gameContainer.getInput();
@@ -93,14 +134,8 @@ public class MainMenuState extends BasicGameState {
     }
 
     /**
-     * ProcessInputCommand takes a string and evaluates
-     * which menuitem to switch on and off based on the
-     * currently selected menuChoice. Once the MenuItem is
-     * toggled On or Off the menuChoice is iterated to the
-     * new choice. stateBasedGame is passed so this function
-     * can transition to another state if the command is "enter"
-     * @param inputCommand
-     * @param stateBasedGame
+     * Swaps the MenuItem image and sets the current menu choice with up and down input commands,
+     * confirms selection with 'hit' commands.
      */
     private void ProcessInputCommand(InputManager.InputCommands inputCommand, StateBasedGame stateBasedGame) {
         switch(inputCommand){
