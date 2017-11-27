@@ -100,23 +100,24 @@ public class TestStateBeingCollides extends BasicGameState {
     }
 
     private void UpdateBeings(ArrayList<BasicBeing> beings) {
-//        set the translation for each being.
-
+//  make a move for each being when the "player" moves everybody must update their JIG Vector
         for(BasicBeing being: beings) {
             Vector translation = CalcTranslation(CalcDirection(being.getCommand()), being.getSpeed());
 //        a being's previous translation can be used to move them back from where they came if need be.
             being.setTranslation(translation);
             Vector newWorldPosition = CalcWorldPosition(translation,being.getWorldPosition());
-
 //          updates the beings animation and world position.
 //          server can just do being.setNewWorldPosition()
 //          if swapping animation is unwanted extra computation cost
             being.UpdateBeing(being.getCommand(), newWorldPosition);
+            CollisionManager.CheckCollisions(being, beings);
+
 //          if server write new world position to client packet
-            
             if(being.getName() != Project2.getSettings().getIpAddress()){
 //                hero1 is taking the place of localhost
-                being.setScreenPosition(CalcScreenPosition(this.hero1.getWorldPosition(), being.getWorldPosition()));}
+                being.setScreenPosition(CalcScreenPosition(Project2.getSettings().getPlayer().getWorldPosition(), being.getWorldPosition()));
+            }
         }
+//        check their new position for collides
     }
 }
