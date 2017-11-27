@@ -69,6 +69,7 @@ public class TestGameClient extends BasicGameState{
         ResourceManager.loadImage(ATTACKINGSHEETRSC);
         Players = new ArrayList<>();
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
+        map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
     }
 
     @Override

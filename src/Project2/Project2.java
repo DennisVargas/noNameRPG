@@ -13,12 +13,9 @@ import org.newdawn.slick.state.StateBasedGame;
  * a Hammerwatch/Gauntlent slick2d <code>StateBasedGame</code>.
  */
 public class Project2 extends StateBasedGame {
-
     private boolean testStatePlay = false;
     public static final int WIDTH = 1280;
     public static final int HEIGHT = (WIDTH/16)*9;
-
-
 
     public static PlaySettings settings = new PlaySettings("localhost");
     /**
@@ -43,7 +40,6 @@ public class Project2 extends StateBasedGame {
     /**
      * these are defined test states for development purposes
      */
-    public static final int TESTSTATEBASICBEING = 20;
     public static final int MENUITEMTESTSTATE = 21;
     public static final int TESTSTATEHERO = 22;
     public static final int TESTGAMECLIENT = 23;
@@ -68,16 +64,13 @@ public class Project2 extends StateBasedGame {
      * instantiates the game name and then creates a
      * new instance of each of the states in the game.
      * MainMenu starts the order and New Single menu
-     * leads to <code>TestStateBasicBeing</code>
      */
     public Project2(boolean testStatePlay) {
         super(NAME);
         if(testStatePlay) {
             this.testStatePlay = true;
 //          TEST STATES
-            this.addState(new TestStateBeingCollides(TESTSTATEBEINGCOLLIDES));
-//            this.addState(new TestStateHero(TESTSTATEHERO));
-//          this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
+            this.addState(new TestStateHero(TESTSTATEHERO));
         }
 //      official states
         this.addState(new MainMenuState(MAINMENUSTATE));
@@ -88,9 +81,7 @@ public class Project2 extends StateBasedGame {
 
 
 //       TEST STATES
-//        this.addState(new TestGameServer(TESTGAMESERVER));
         this.addState(new TestGameClient(TESTGAMECLIENT));
-        this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
 
     }
 
@@ -126,9 +117,9 @@ public class Project2 extends StateBasedGame {
         ResourceManager.loadImage(MELEEHEROWALKINGSHEETRSC);
         ResourceManager.loadImage(RANGEDHEROWALKINGSHEETRSC);
         ResourceManager.loadImage(RANGEDHEROATTACKINGSHEETRSC);
+
         if(this.testStatePlay){
 //        test states init
-//        this.getState(TESTSTATEBASICBEING).init(gameContainer,this);
 //          this.getState(TESTSTATEHERO).init(gameContainer,this);
             this.getState(TESTSTATEBEINGCOLLIDES).init(gameContainer,this);
         }
