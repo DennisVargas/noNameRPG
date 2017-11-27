@@ -45,6 +45,29 @@ public class CollisionManager {
                 return true;
             }
         }
+        return false;
+    }
+
+    private static InputManager.InputCommands ReverseCommand(InputCommands command) {
+        switch (command){
+            case up:
+                return down;
+            case down:
+                return up;
+            case left:
+                return right;
+            case right:
+                return left;
+            case ulDiag:
+                return drDiag;
+            case dlDiag:
+                return urDiag;
+            case urDiag:
+                return dlDiag;
+            case drDiag:
+                return ulDiag;
+        }
+        return command;
     }
 
 }
