@@ -45,7 +45,7 @@ public class CollisionManager {
 
 //            if differences are less than one you've collided
             if(abs(diffX) < 1 && abs(diffY) < 1){
-                System.out.println("XY-Collide");
+//                System.out.println("XY-Collide");
 //              Reverse the being's last move by reversing the move command and creating a new world position vector
 //              alternatively we could store the being previous location
                 being.setWorldPosition(MovementCalc.CalcWorldPosition(
