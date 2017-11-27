@@ -117,8 +117,8 @@ public class Project2 extends StateBasedGame {
         ResourceManager.loadImage(MELEEHEROWALKINGSHEETRSC);
         ResourceManager.loadImage(RANGEDHEROWALKINGSHEETRSC);
         ResourceManager.loadImage(RANGEDHEROATTACKINGSHEETRSC);
-
         ResourceManager.loadImage(HOLDER_8);
+
         if(this.testStatePlay) {
 //        test states init
             this.getState(TESTGAMECLIENT).init(gameContainer, this);
