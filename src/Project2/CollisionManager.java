@@ -8,14 +8,31 @@ import Project2.InputManager.*;
 import static Project2.InputManager.InputCommands.*;
 import static java.lang.Math.abs;
 
+/**
+ * manages all collisions between being/being and being/wall
+ */
 public class CollisionManager {
 
+
+    /**
+     * iterates through all the collision checkers being and then wall.
+     * @param being
+     * @param beings
+     * @return
+     */
     public static boolean CheckCollisions(BasicBeing being, ArrayList<BasicBeing>beings){
 
 //        while(collisionFound)
             return CheckBeingBeingCollisions(being, beings);
     }
 
+
+    /**
+     * checks the collisions between a being and the rest of the beings on the map.
+     * @param being being to be adjusted if collision detected
+     * @param beings list of beings including the being to be adjusted
+     * @return true if a collision was detected
+     */
     public static boolean CheckBeingBeingCollisions(BasicBeing being, ArrayList<BasicBeing>beings) {
         ArrayList <BasicBeing> testList;
         testList = (ArrayList<BasicBeing>)beings.clone();
@@ -48,6 +65,11 @@ public class CollisionManager {
         return false;
     }
 
+    /**
+     * is given an InputCommands and reverses the order; Up goes to Down
+     * @param command
+     * @return
+     */
     private static InputManager.InputCommands ReverseCommand(InputCommands command) {
         switch (command){
             case up:

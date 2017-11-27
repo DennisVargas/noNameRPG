@@ -2,6 +2,9 @@ package Project2;
 
 import jig.Vector;
 
+/**
+ * class which holds the settings for a players game instance.
+ */
 public class PlaySettings {
     private String ipAddress;
     private Vector hostStartLevel1 = new Vector(90,105);
@@ -9,6 +12,10 @@ public class PlaySettings {
 
     private Hero player;
 
+    /**
+     * initializes the PlaySettings by passing the Players IP Address
+     * @param ipAddress String holding the players ipAddress
+     */
     public PlaySettings(String ipAddress) {
         this.ipAddress = ipAddress;
     }
@@ -16,6 +23,8 @@ public class PlaySettings {
     public Vector getGuestStartLevel1() {
         return guestStartLevel1;
     }
+
+
 
     public Vector getHostStartLevel1() {
         return hostStartLevel1;
