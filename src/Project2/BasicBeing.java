@@ -1,10 +1,12 @@
 package Project2;
 
+import jig.ConvexPolygon;
 import jig.Entity;
 import jig.Vector;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.geom.Rectangle;
 
 import static Project2.InputManager.InputCommands;
 
@@ -33,7 +35,7 @@ public class BasicBeing extends Entity{
     private Vector screenPosition;
 
     private Animation currentAnimation;
-    boolean isHit = false;
+
     private int worldPositionX;
 
 
@@ -53,6 +55,7 @@ public class BasicBeing extends Entity{
         InitAnimations(walkingSheet, attackingSheet);
         setCurrentAnimation(idleAnimLt);
         InitNextVectors();
+        this.debugThis = true;
     }
 
 
@@ -96,6 +99,7 @@ public class BasicBeing extends Entity{
                 setCurrentAnimation(hitAnimLt);
                 break;
             case hitRt:
+                setCurrentAnimation(hitAnimRt);
                 break;
             case death:
                 setCurrentAnimation(deathAnim);
@@ -233,6 +237,14 @@ public class BasicBeing extends Entity{
         this.deathAnim = new Animation(walkingSheet, 0,8,7,8,true,100,true);
         //  Attack and hit anim are the same except he shoots things when attacking.
         this.attackAnim = new Animation(walkingSheet, 0,5,1,5,true,100,true);
+
+//        set bounding box for being based on animation
+        ConvexPolygon beingBoundBox = new ConvexPolygon((float)this.walkLeftAnim.getWidth(),(float)this.walkLeftAnim.getHeight());
+        this.addShape(beingBoundBox);
+    }
+
+    public void HitBeing(float attackValue){
+        setHealth(getHealth()*attackValue);
     }
 
     /**
@@ -268,16 +280,6 @@ public class BasicBeing extends Entity{
 
 
     /**
-     * Returns the value of <code>this.isHit</code> which is a flag
-     * denoting the Being has encountered a collision. This method may
-     * end up deprecated soon enough as it may not have a use.
-     * @return the field
-     */
-    public boolean IsHit() {
-        return isHit;
-    }
-
-    /**
      * Uses the Graphics parameter passed to it to render
      * the <code>BasicBeing</code>. <code>this.render(Graphics)</code>
      * is a method inherited from the JIG Entity class that
@@ -296,16 +298,6 @@ public class BasicBeing extends Entity{
      */
     public void setBeingID(int beingID) {
         this.beingID = beingID;
-    }
-
-
-    /**
-     * Sets the flag for isClient to the value passed
-     * into the argument of the method.
-     * @param client value to set isClient field
-     */
-    public void setIsClient(boolean client) {
-        isClient = client;
     }
 
     /**
@@ -328,14 +320,6 @@ public class BasicBeing extends Entity{
         this.health = health;
     }
 
-
-    /**
-     * Sets the <code>isHit</code> field with a boolean value.
-     * @param hit a boolean value that sets the hit flag
-     */
-    public void setHit(boolean hit) {
-        isHit = hit;
-    }
 
     /**
      * Sets the <code>BasicBeing</code> name field to the value passed in

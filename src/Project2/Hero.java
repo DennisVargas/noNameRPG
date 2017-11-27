@@ -33,8 +33,11 @@ public class Hero extends BasicBeing{
             this.InitAnimations(rangedWalkingSheet,rangedAttackingSheet);
         }
 //        if the hero isn't a client then don't place them in center screen
-//        todo: when the world class is created change this to a comparison of the ip address and a name argument passed into the Hero constructor
         if(this.getName() != Project2.settings.getIpAddress())
-            this.setScreenPosition(new Vector(-5000,-5000));
+            this.setPosition(MovementCalc.CalcScreenPosition(
+                    Project2.getSettings().getPlayer().getWorldPosition(),
+                    this.getWorldPosition()));
+        else
+            Project2.getSettings().setPlayer(this);
     }
 }

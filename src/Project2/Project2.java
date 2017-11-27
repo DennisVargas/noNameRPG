@@ -13,6 +13,7 @@ import org.newdawn.slick.state.StateBasedGame;
  * a Hammerwatch/Gauntlent slick2d <code>StateBasedGame</code>.
  */
 public class Project2 extends StateBasedGame {
+
     private boolean testStatePlay = false;
     public static final int WIDTH = 1280;
     public static final int HEIGHT = (WIDTH/16)*9;
@@ -46,6 +47,7 @@ public class Project2 extends StateBasedGame {
     public static final int MENUITEMTESTSTATE = 21;
     public static final int TESTSTATEHERO = 22;
     public static final int TESTGAMECLIENT = 23;
+    private static final int TESTSTATEBEINGCOLLIDES = 24;
 
 
 
@@ -73,7 +75,8 @@ public class Project2 extends StateBasedGame {
         if(testStatePlay) {
             this.testStatePlay = true;
 //          TEST STATES
-            this.addState(new TestStateHero(TESTSTATEHERO));
+            this.addState(new TestStateBeingCollides(TESTSTATEBEINGCOLLIDES));
+//            this.addState(new TestStateHero(TESTSTATEHERO));
 //          this.addState(new TestStateBasicBeing(TESTSTATEBASICBEING));
         }
 //      official states
@@ -112,7 +115,7 @@ public class Project2 extends StateBasedGame {
 
 
     public void initStatesList(GameContainer gameContainer) throws SlickException {
-        Entity.setCoarseGrainedCollisionBoundary(Entity.CIRCLE);
+        Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
         Input input = gameContainer.getInput();
         input.initControllers();
         input.clearControlPressedRecord();
@@ -126,7 +129,8 @@ public class Project2 extends StateBasedGame {
         if(this.testStatePlay){
 //        test states init
 //        this.getState(TESTSTATEBASICBEING).init(gameContainer,this);
-          this.getState(TESTSTATEHERO).init(gameContainer,this);
+//          this.getState(TESTSTATEHERO).init(gameContainer,this);
+            this.getState(TESTSTATEBEINGCOLLIDES).init(gameContainer,this);
         }
 
 //        official state init
@@ -135,7 +139,6 @@ public class Project2 extends StateBasedGame {
         this.getState(NEWMULTIMENUSTATE).init(gameContainer, this);
         this.getState(OPTIONMENUSTATE).init(gameContainer, this);
         this.getState(GAMEPLAYSTATE).init(gameContainer, this);
-
 
     }
 

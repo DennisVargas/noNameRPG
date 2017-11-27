@@ -11,11 +11,11 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import java.util.ArrayList;
 
+import static Project2.InputManager.InputCommands;
 import static Project2.InputManager.ProcessInput;
 import static Project2.MovementCalc.*;
-import static Project2.InputManager.InputCommands;
 
-public class TestStateHero extends BasicGameState {
+public class TestStateBeingCollides extends BasicGameState {
 
     private int stateID;
     private Hero hero1;
@@ -25,7 +25,7 @@ public class TestStateHero extends BasicGameState {
     private TiledMap map1;
     private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
     private final String TILESHEETRSC = "resources/Levels";
-    public TestStateHero(int stateID) {
+    public TestStateBeingCollides(int stateID) {
         this.stateID = stateID;
     }
 
@@ -36,13 +36,22 @@ public class TestStateHero extends BasicGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        hero1 = new Hero(new Vector(90,105), false, "localhost");
-        hero2 = new Hero(new Vector(92,105), false, "jugHead");
-        mob1 = new Mob(new Vector(91,105), 1,"mob1");
+//        collides with mob1
+        hero1 = new Hero(Project2.getSettings().getHostStartLevel1(), false, "localhost");
+//        sets player to control hero1
+        Project2.getSettings().setPlayer(hero1);
+//        in hero1 prev location
+        hero2 = new Hero(Project2.getSettings().getGuestStartLevel1(), false, "jugHead");
+//        collides with hero1
+        mob1 = new Mob(new Vector(89f,105f), 1,"mob1");
         beingList = new ArrayList<BasicBeing>();
         beingList.add(hero1);
         beingList.add(hero2);
         beingList.add(mob1);
+        Vector hero1Trans, hero2Trans, hero3Trans;
+//        hero1.setTranslation(new Vector(-1f*hero1.getSpeed(), 0f));
+//        hero2.setTranslation(new Vector(-1f*hero2.getSpeed(), 0f));
+//        mob1.setTranslation(new Vector(0, 0f));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
     }
 
@@ -63,7 +72,7 @@ public class TestStateHero extends BasicGameState {
     private void RenderMap(Graphics g) {
         float displaceX, displaceY, worldPosX, worldPosY;
         worldPosX = (int)hero1.getWorldPositionX(); worldPosY = (int)hero1.getWorldPositionY();
-        displaceX = (hero1.getWorldPositionX()-worldPosX)*-32; displaceY = ( hero1.getWorldPositionY()-worldPosY )*-32;
+        displaceX = (hero1.getWorldPositionX()-worldPosX)*-32; displaceY = (hero1.getWorldPositionY()-worldPosY)*-32;
 
         //  render the map using the client displacement from tile center
         //  and current world position.
@@ -84,32 +93,31 @@ public class TestStateHero extends BasicGameState {
         Input input = container.getInput();
         InputCommands command = ProcessInput(input, getID());
         hero1.setCommand(command);
-        hero2.setCommand(InputCommands.death);
-        mob1.setCommand(InputCommands.attack);
+        hero2.setCommand(InputCommands.left);
+        mob1.setCommand(InputCommands.idle);
+//        CollisionManager.CheckCollisions(beingList);
         UpdateBeings(beingList);
     }
 
-    public void UpdateBeings(ArrayList<BasicBeing> beings) {
-//        set the translation for each being.
-
+    private void UpdateBeings(ArrayList<BasicBeing> beings) {
+//  make a move for each being when the "player" moves everybody must update their JIG Vector
         for(BasicBeing being: beings) {
             Vector translation = CalcTranslation(CalcDirection(being.getCommand()), being.getSpeed());
 //        a being's previous translation can be used to move them back from where they came if need be.
             being.setTranslation(translation);
             Vector newWorldPosition = CalcWorldPosition(translation,being.getWorldPosition());
-
 //          updates the beings animation and world position.
 //          server can just do being.setNewWorldPosition()
 //          if swapping animation is unwanted extra computation cost
             being.UpdateBeing(being.getCommand(), newWorldPosition);
+            CollisionManager.CheckCollisions(being, beings);
 
+//          if server write new world position to client packet
             if(being.getName() != Project2.getSettings().getIpAddress()){
 //                hero1 is taking the place of localhost
-                being.setScreenPosition(CalcScreenPosition(this.hero1.getWorldPosition(), being.getWorldPosition()));
+                being.setScreenPosition(CalcScreenPosition(Project2.getSettings().getPlayer().getWorldPosition(), being.getWorldPosition()));
             }
-//            Allow Collision Manager to adjust for collisions.
-//            CollisionManager.CheckCollisions(beings);
-//          if server write new world position to client packet
         }
+//        check their new position for collides
     }
 }
