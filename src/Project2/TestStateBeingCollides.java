@@ -93,9 +93,9 @@ public class TestStateBeingCollides extends BasicGameState {
         Input input = container.getInput();
         InputCommands command = ProcessInput(input, getID());
         hero1.setCommand(command);
-        hero2.setCommand(InputCommands.idle);
+        hero2.setCommand(InputCommands.left);
         mob1.setCommand(InputCommands.idle);
-        CollisionManager.CheckCollisions(beingList);
+//        CollisionManager.CheckCollisions(beingList);
         UpdateBeings(beingList);
     }
 
