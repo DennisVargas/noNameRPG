@@ -6,7 +6,6 @@ import jig.Vector;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.geom.Rectangle;
 
 import static Project2.InputManager.InputCommands;
 
@@ -20,6 +19,9 @@ public class BasicBeing extends Entity{
     private float health = 1f;
     private float speed = 2f;
     boolean isClient = false;
+
+
+    boolean isRanged = false;
 
     private Animation   walkRightAnim, walkLeftAnim, walkUpAnim,
             walkDnAnim, idleAnimLt, idleAnimRt, attackAnim,
@@ -218,6 +220,12 @@ public class BasicBeing extends Entity{
         return this.worldPosition.getY();
     }
 
+    public boolean isRanged() {
+        return isRanged;
+    }
+
+
+
     /**
      * Initializes the Being Animations for walking, idle, attacking, and death.
      * Sprite sheets are passed into the Basic Being Constructor.
@@ -320,6 +328,10 @@ public class BasicBeing extends Entity{
         this.health = health;
     }
 
+
+    public void setRanged(boolean ranged) {
+        isRanged = ranged;
+    }
 
     /**
      * Sets the <code>BasicBeing</code> name field to the value passed in
