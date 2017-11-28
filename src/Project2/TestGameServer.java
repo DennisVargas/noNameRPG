@@ -20,10 +20,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static Project2.InputManager.ProcessInput;
-import static Project2.MovementCalc.*;
 import static Project2.InputManager.InputCommands;
 import static Project2.InputManager.InputCommands.*;
+import static Project2.MovementCalc.*;
 
 
 public class TestGameServer {
@@ -75,6 +74,9 @@ public class TestGameServer {
         BasicBeing being1 = new BasicBeing(new Vector(mapX, mapY), new Vector(mapX, mapY), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
                 ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
         Players.add(being1);
+        Hero hero1 = new Hero(new Vector(mapX, mapY),false, playerID);
+        hero1.setPosition(new Vector(mapX,mapY));
+        Players.add(hero1);
     }
 
     // TODO: function for running dijkstra's
