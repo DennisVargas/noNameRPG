@@ -1,5 +1,6 @@
 package Project2;
 
+import jig.Collision;
 import jig.Vector;
 
 import java.util.ArrayList;
@@ -38,15 +39,11 @@ public class CollisionManager {
         ArrayList <BasicBeing> testList;
         testList = (ArrayList<BasicBeing>)beings.clone();
         testList.remove(being);
-        for(BasicBeing testBeing: testList){
-//          get the difference between the x coords
-            float diffX = being.getWorldPositionX() - testBeing.getWorldPositionX();
-//          get the difference between the y coords
-            float diffY = being.getWorldPositionY() - testBeing.getWorldPositionY();
 
-//            if differences are less than one you've collided
-            if(abs(diffX) < 1 && abs(diffY) < 1){
-//                System.out.println("XY-Collide");
+        for(BasicBeing testBeing: testList){
+
+            if(being.collides(testBeing)!= null){
+                System.out.println("XY-Collide");
 //              Reverse the being's last move by reversing the move command and creating a new world position vector
 //              alternatively we could store the being previous location
                 being.setWorldPosition(MovementCalc.CalcWorldPosition(
@@ -141,4 +138,39 @@ public class CollisionManager {
         return command;
     }
 
+    public static boolean CheckHeroMobCollisions(Hero hero, ArrayList<Mob> mobs) {
+        for(Mob mob: mobs){
+            Collision collides = null;
+            if((collides = hero.collides(mob))!=null){
+                hero.setWorldPosition(MovementCalc.CalcWorldPosition(
+                                        MovementCalc.CalcTranslation(
+                                            MovementCalc.CalcDirection(
+                                                    ReverseCommand(hero.getCommand())), hero.getSpeed())
+                                        , hero.getWorldPosition()));
+                hero.setPosition(new Vector(hero.getWorldPositionX()*32f,hero.getWorldPositionY()*32f));
+                System.out.println("we collided hero MOb style x,y hero "+hero.getPosition()+"x,y mob: "+mob.getPosition());
+                System.out.println("collision min penetration: "+collides.getMinPenetration());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean CheckMobHeroCollisions(Mob mob, ArrayList<Hero> heroes) {
+        for(Hero hero: heroes){
+            Collision collides = null;
+            if((collides = mob.collides(hero))!=null){
+                mob.setWorldPosition(MovementCalc.CalcWorldPosition(
+                        MovementCalc.CalcTranslation(
+                                MovementCalc.CalcDirection(
+                                        ReverseCommand(mob.getCommand())), mob.getSpeed())
+                        , mob.getWorldPosition()));
+                mob.setPosition(new Vector(mob.getWorldPositionX()*32f,mob.getWorldPositionY()*32f));
+                System.out.println("we collided MOb Hero style x,y mob "+mob.getPosition()+"x,y mob: "+hero.getPosition());
+                System.out.println("collision min penetration: "+collides.getMinPenetration());
+                return true;
+            }
+        }
+        return false;
+    }
 }
