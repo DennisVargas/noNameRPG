@@ -60,6 +60,9 @@ public class TestGameServer {
             mapX = 90;
             mapY = 104;
             Mobs = moblist.getMobList(1);
+            for(Mob mob: Mobs){
+                mob.setPosition(new Vector(mob.getWorldPositionX()*32f, mob.getWorldPositionY()*32f));
+            }
         }
 
         // Set port info
