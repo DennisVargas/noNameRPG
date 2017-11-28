@@ -274,14 +274,16 @@ public class TestGameServer {
             Mob mob = Mobs.get(0);
             try{mob.setCommand(InputCommands.right);}catch(Exception e){ System.out.println("emptyMOB ON SERvER");}
             Vector newMobPosition = MovementCalc.CalcWorldPosition(MovementCalc.CalcTranslation(
-                    MovementCalc.CalcDirection(mob.getCommand()),mob.getSpeed()),mob.getPosition());
-            mob.setPosition(newMobPosition);
+                    MovementCalc.CalcDirection(mob.getCommand()),mob.getSpeed()),mob.getWorldPosition());
+            mob.setWorldPosition(newMobPosition);
+            mob.setPosition(new Vector(newMobPosition.getX()*32f, newMobPosition.getY()*32f));
+            CollisionManager.CheckMobHeroCollisions(mob, Players);
 //            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
             //            // if movement was valid, add update to changes
             String newChange  = " " + Mobs.get(0).getName();
             newChange += " " + InputCommands.right;
-            newChange += " " + Mobs.get(0).getX();
-            newChange += " " + Mobs.get(0).getY();
+            newChange += " " + Mobs.get(0).getWorldPositionX();
+            newChange += " " + Mobs.get(0).getWorldPositionY();
 
             changes = changes.concat(newChange);
             System.out.println("seerver change: "+changes);
