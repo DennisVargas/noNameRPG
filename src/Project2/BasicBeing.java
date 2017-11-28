@@ -57,7 +57,7 @@ public class BasicBeing extends Entity{
         InitAnimations(walkingSheet, attackingSheet);
         setCurrentAnimation(idleAnimLt);
         InitNextVectors();
-        this.debugThis = true;
+        this.debugThis = false;
     }
 
 
