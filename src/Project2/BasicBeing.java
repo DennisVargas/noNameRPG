@@ -65,7 +65,7 @@ public class BasicBeing extends Entity{
         InitAnimations(walkingSheet, attackingSheet);
         setCurrentAnimation(idleAnimLt);
         InitNextVectors();
-        this.debugThis = false;
+        this.debugThis = true;
     }
 
     public InputManager.InputCommands getLastDirectionCommand() {
