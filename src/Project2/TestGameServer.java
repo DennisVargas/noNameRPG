@@ -36,7 +36,7 @@ public class TestGameServer {
     // GAME STUFF
     private int stateId;
     private int mapX, mapY;
-    private ArrayList<BasicBeing> Players;
+    private ArrayList<Hero> Players;
     private MobList moblist;
     private ArrayList<Mob> Mobs;
     private static int PlayerCount = 2;
