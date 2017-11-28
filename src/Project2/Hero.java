@@ -32,7 +32,8 @@ public class Hero extends BasicBeing{
             this.InitAnimations(rangedWalkingSheet,rangedAttackingSheet);
         }
 //        if the hero isn't a client then don't place them in center screen
-        if(this.getName() == Project2.settings.getIpAddress()) {
+        System.out.println(Project2.settings.getIpAddress());
+        if(Project2.settings.getIpAddress().equals(name)) {
             this.setPosition(new Vector(Project2.WIDTH/2f,Project2.HEIGHT/2f));
             Project2.getSettings().setPlayer(this);
         }
