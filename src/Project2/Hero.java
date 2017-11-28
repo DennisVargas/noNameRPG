@@ -2,7 +2,6 @@ package Project2;
 
 import jig.ResourceManager;
 import jig.Vector;
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.SpriteSheet;
 
 /**
@@ -25,19 +24,16 @@ public class Hero extends BasicBeing{
      */
     public Hero(Vector worldPosition, boolean isRanged, String name) {
 //        initialize the hero as if they are a client and a melee character
-        super(new Vector((Project2.WIDTH * Project2.SCALE)/2f,(Project2.HEIGHT * Project2.SCALE)/2f),
-                worldPosition, meleeWalkingSheet, meleeAttackingSheet);
+        super(worldPosition, worldPosition, meleeWalkingSheet, meleeAttackingSheet);
         this.setName(name);
 //        if the hero is ranged then set them to the ranged animation
         if (isRanged) {
             this.InitAnimations(rangedWalkingSheet,rangedAttackingSheet);
         }
 //        if the hero isn't a client then don't place them in center screen
-        if(this.getName() != Project2.settings.getIpAddress())
-            this.setPosition(MovementCalc.CalcScreenPosition(
-                    Project2.getSettings().getPlayer().getWorldPosition(),
-                    this.getWorldPosition()));
-        else
+        if(this.getName() == Project2.settings.getIpAddress()) {
+            this.setPosition(new Vector(Project2.WIDTH/2f,Project2.HEIGHT/2f));
             Project2.getSettings().setPlayer(this);
+        }
     }
 }
