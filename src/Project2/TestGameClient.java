@@ -205,9 +205,8 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
     private void addPlayer(String playerID, float xPos, float yPos) {
 //        System.out.println("executing addPlayer");
         // TODO: Add playerID and ClassID to Basic Being constructor or player constructor, whatever gets used here
-        BasicBeing being1 = new BasicBeing(screenCenter, new Vector(xPos, yPos), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
-                ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
-        Players.add(being1);
+        Hero hero1 = new Hero(new Vector(xPos,yPos),false, playerID);
+        Players.add(hero1);
     }
 
     private InputCommands getCommand(String rawCommand) {

@@ -71,9 +71,6 @@ public class TestGameServer {
     /** Game Functions */
     private void addPlayer(String playerID, int type) {
         // TODO: Add playerID and ClassID to Basic Being constructor or player constructor, whatever gets used here
-        BasicBeing being1 = new BasicBeing(new Vector(mapX, mapY), new Vector(mapX, mapY), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
-                ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
-        Players.add(being1);
         Hero hero1 = new Hero(new Vector(mapX, mapY),false, playerID);
         hero1.setPosition(new Vector(mapX,mapY));
         Players.add(hero1);
