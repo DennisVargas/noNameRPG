@@ -137,15 +137,19 @@ public class TestGameServer {
 
                 // TODO: fix this after IP is stored in player class
                 // process movement based on input
+                Players.get(0).setCommand(inputCommand);
                 Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(0).getSpeed()));
                 Players.get(0).setTranslation(velocity);
                 Vector newWorldPosition = CalcWorldPosition(velocity, Players.get(0).getWorldPosition());
+//                set map position
                 Players.get(0).setWorldPosition(newWorldPosition);
+//                set jig entity vector for collisions.
+                Players.get(0).setPosition(new Vector(newWorldPosition.getX()*32f,newWorldPosition.getY()*32f));
                 float x = Players.get(0).getWorldPositionX();
                 float y = Players.get(0).getWorldPositionY();
 
                 // check for player/wall collisions
-
+                CollisionManager.CheckHeroMobCollisions(Players.get(0), Mobs);
                 // if movement was valid, add update to changes
                 String newChange  = " " + player;
                 newChange += " " + tokens[2];
