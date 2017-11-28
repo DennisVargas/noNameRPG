@@ -171,7 +171,24 @@ public class TestGameClient extends BasicGameState{
 private void moveEntity(String entity, InputCommands input, Float posX, Float posY) {
     int i = 0;
     // TODO: have some indication if entity is a mob so it loops through correct ArrayList
-    Players.get(i).UpdateBeing(input, new Vector(posX, posY));
+
+    if(entity.contains("/")){
+        for(BasicBeing hero: Players){
+            if(entity.equals(hero.getName())){
+                hero.UpdateBeing(input, new Vector(posX, posY));
+                break;
+            }
+        }
+    }else if(entity.contains("mob")){
+        for(BasicBeing mob: Mobs){
+            if(entity.equals(mob.getName())){
+                mob.UpdateBeing(input, new Vector(posX, posY));
+                break;
+            }
+        }
+    }
+
+//    Players.get(i).UpdateBeing(input, new Vector(posX, posY));
     // need to send input to figure out animation
 
     // for use when IP is properly stored in player class
@@ -328,7 +345,7 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
                 for (int i = 1; i < tokens.length; i += 4) {
 //                    System.out.println("UPDT loop: entering; length: " + tokens.length);
                     InputCommands input = getCommand(tokens[i+1]);
-                    moveEntity(tokens[i], input, Float.parseFloat(tokens[1+2]), Float.parseFloat(tokens[i+3]));
+                    moveEntity(tokens[i], input, Float.parseFloat(tokens[i+2]), Float.parseFloat(tokens[i+3]));
 //                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
                 }
                 break;

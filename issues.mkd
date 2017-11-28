@@ -15,7 +15,7 @@
 - **[8]** Add mob class that extends BasicBeing
 - **[6]** Client/server networking system
 - **[34]** BasicBeing/BasicBeing collisions
-
+- **[36]** Update Mobs in server and Update move entities in Client
 
 ## Claimed Issues ##
 - **[2]** Add art assets

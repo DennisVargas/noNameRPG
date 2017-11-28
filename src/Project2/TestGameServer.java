@@ -88,8 +88,9 @@ public class TestGameServer {
 /** Server Functions */
     public void init () {
         Players = new ArrayList<>();
-        Mobs = new ArrayList<>();
-        moblist = new MobList();
+//        These are being initialized in constructor and this one sets them to zero again.
+//        Mobs = new ArrayList<>();
+//        moblist = new MobList();
         // try to open server socket, catch error if fails
         try {
             socket = new ServerSocket(port);
@@ -263,6 +264,20 @@ public class TestGameServer {
     // timer for update packets
     private Runnable sendUpdate = new Runnable() {
         public void run() {
+            Mob mob = Mobs.get(0);
+            try{mob.setCommand(InputCommands.right);}catch(Exception e){ System.out.println("emptyMOB ON SERvER");}
+            Vector newMobPosition = MovementCalc.CalcWorldPosition(MovementCalc.CalcTranslation(
+                    MovementCalc.CalcDirection(mob.getCommand()),mob.getSpeed()),mob.getPosition());
+            mob.setPosition(newMobPosition);
+//            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
+            //            // if movement was valid, add update to changes
+            String newChange  = " " + Mobs.get(0).getName();
+            newChange += " " + InputCommands.right;
+            newChange += " " + Mobs.get(0).getX();
+            newChange += " " + Mobs.get(0).getY();
+
+            changes = changes.concat(newChange);
+            System.out.println("seerver change: "+changes);
             if (changes != "") {
                 String msg = "UPDT" + changes;
                 changes = "";
