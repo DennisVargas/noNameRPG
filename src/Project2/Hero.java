@@ -26,8 +26,9 @@ public class Hero extends BasicBeing{
 //        initialize the hero as if they are a client and a melee character
         super(worldPosition, worldPosition, meleeWalkingSheet, meleeAttackingSheet);
         this.setName(name);
+        this.setRanged(isRanged);
 //        if the hero is ranged then set them to the ranged animation
-        if (isRanged) {
+        if (this.isRanged()) {
             this.InitAnimations(rangedWalkingSheet,rangedAttackingSheet);
         }
 //        if the hero isn't a client then don't place them in center screen
