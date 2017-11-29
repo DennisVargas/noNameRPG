@@ -16,4 +16,5 @@ public class Object extends BasicBeing {
     public void UpdateObject(Vector newWorldPos){
         super.setWorldPosition(newWorldPos);
     }
+    public Vector getWorldPosition() {return super.getWorldPosition(); }
 }
