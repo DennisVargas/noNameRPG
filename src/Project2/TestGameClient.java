@@ -116,12 +116,12 @@ public class TestGameClient extends BasicGameState{
                     (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
 
             
-//            g.drawString("displaceX: "+displaceX*-1
-//                    +" displaceY:"+displaceY*-1, 200,200);
-//            g.drawString("worldX: "+Players.get(0).getWorldPositionX()
-//                    +"      worldY:"+Players.get(0).getWorldPositionY(), 200,230);
-//            g.drawString("screenX: "+Players.get(0).getScreenPositionX()
-//                    +" screenY:"+Players.get(0).getScreenPositionY(), 200,260);
+            g.drawString("displaceX: "+displaceX*-1
+                    +" displaceY:"+displaceY*-1, 200,200);
+            g.drawString("worldX: "+Players.get(0).getWorldPositionX()
+                    +"      worldY:"+Players.get(0).getWorldPositionY(), 200,230);
+            g.drawString("screenX: "+Players.get(0).getScreenPositionX()
+                    +" screenY:"+Players.get(0).getScreenPositionY(), 200,260);
 
 
             // convert all non-controlling player entities world to screen coords

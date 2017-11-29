@@ -36,7 +36,7 @@ public class TestGameServer {
 
     // GAME STUFF
     private int stateId;
-    private int mapX, mapY;
+    private float mapX, mapY;
     private ArrayList<BasicBeing> Players;
     private MobList moblist;
     private ArrayList<Mob> Mobs;
@@ -58,8 +58,8 @@ public class TestGameServer {
         if (stateId == 22) {
             ResourceManager.loadImage(WALKINGSHEETRSC);
             ResourceManager.loadImage(ATTACKINGSHEETRSC);
-            mapX = 90;
-            mapY = 104;
+            mapX = 90.5f;
+            mapY = 104.5f;
             Mobs = moblist.getMobList(1);
         }
 
@@ -72,7 +72,7 @@ public class TestGameServer {
     /** Game Functions */
     private void addPlayer(String playerID, int type) {
         // TODO: Add playerID and ClassID to Basic Being constructor or player constructor, whatever gets used here
-        BasicBeing being1 = new BasicBeing(new Vector(mapX, mapY), new Vector(mapX, mapY), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
+        BasicBeing being1 = new BasicBeing(new Vector(mapX*32, mapY*32), new Vector(mapX, mapY), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
                 ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
         Players.add(being1);
     }
@@ -140,6 +140,7 @@ public class TestGameServer {
                 Players.get(0).setWorldPosition(newWorldPosition);
                 float x = Players.get(0).getWorldPositionX();
                 float y = Players.get(0).getWorldPositionY();
+                Players.get(0).setPosition(new Vector((int)(x*32),(int)(y*32)));
 
                 // check for player/wall collisions
 
@@ -192,8 +193,8 @@ public class TestGameServer {
         String msg = "INIT " + Integer.toString(1); // Integer.toString(LEVEL_NO)
         for (int i = 0; i < Players.size(); i++) {
             msg += " " + Players.get(i).getName();
-            msg += " " + Float.toString(Players.get(i).getX());
-            msg += " " + Float.toString(Players.get(i).getY());
+            msg += " " + Float.toString(Players.get(i).getWorldPositionX());
+            msg += " " + Float.toString(Players.get(i).getWorldPositionY());
         }
         send(msg);
     }
