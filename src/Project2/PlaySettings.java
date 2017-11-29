@@ -11,6 +11,10 @@ public class PlaySettings {
     private String ipAddress;
     private Vector hostStartLevel1 = new Vector(90,105);
     private Vector guestStartLevel1 = new Vector(91,105);
+    public InputManager.InputCommands [] randoCommands = {InputManager.InputCommands.up,
+                    InputManager.InputCommands.down, InputManager.InputCommands.right,InputManager.InputCommands.left,
+                    InputManager.InputCommands.ulDiag, InputManager.InputCommands.urDiag, InputManager.InputCommands.dlDiag,
+                    InputManager.InputCommands.drDiag};
 
     private Hero player;
 

@@ -18,17 +18,16 @@
 - **[7]** Camera viewport that follows player
 - **[36]** Update Mobs in server and Update move entities in Client
 - **[35]** BasicBeing hit function reduces health
+- **[37]** Attacks cause damage
 
 ## Claimed Issues ##
 - **[2]** Add art assets
-- **[37]** Attacks cause damage
+- **[10]** Trigger Death Animations upon Death
 - **[9]** Add mob path finding
 - **[14]** Design and implement level 1 mob & item locations
 
-
 ## Open Issues ##
-- **[10]** Add mob death
-- **[11]** Add character death, basic lives counter, and game over screen
+- **[11]** Add character death
 - **[12]** Add additional animated mob types
 - **[13]** UI design (health for each player, life pool, collectible items)
 - **[15]** Mob & destructible drop system
@@ -41,3 +40,5 @@
 - **[24]** Create functional MenuItem object in Single player menu
 - **[26]** Create functional MenuItems in Option Menu
 - **[29]** Create functional MenuItems in Multi-player Menu
+- **[38]** basic lives counter
+- **[39]** Create a game over screen

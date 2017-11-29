@@ -17,6 +17,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -287,20 +288,24 @@ public class TestGameServer {
     // timer for update packets
     private Runnable sendUpdate = new Runnable() {
         public void run() {
-            Mob mob = Mobs.get(0);
-            try{mob.setCommand(InputCommands.right);}catch(Exception e){ System.out.println("emptyMOB ON SERvER");}
-            Vector newMobPosition = MovementCalc.CalcWorldPosition(mob.getCommand(),mob.getWorldPosition(),mob.getSpeed());
-            mob.setWorldPosition(newMobPosition);
-            mob.setPosition(new Vector(newMobPosition.getX()*32f, newMobPosition.getY()*32f));
-            CollisionManager.CheckMobHeroCollisions(mob, Players);
+            Random random = new Random();
+            for(Mob mob: Mobs){
+                try{mob.setCommand(InputCommands.idle);}catch(Exception e){ System.out.println("emptyMOB ON SERvER");}
+                Vector newMobPosition = MovementCalc.CalcWorldPosition(mob.getCommand(),mob.getWorldPosition(),mob.getSpeed());
+                mob.setWorldPosition(newMobPosition);
+                mob.setPosition(new Vector(newMobPosition.getX()*32f, newMobPosition.getY()*32f));
+                CollisionManager.CheckMobHeroCollisions(mob, Players);
+                CollisionManager.CheckMobMobCollisions(mob, Mobs);
 //            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
-            //            // if movement was valid, add update to changes
-            String newChange  = " " + Mobs.get(0).getName();
-            newChange += " " + InputCommands.right;
-            newChange += " " + Mobs.get(0).getWorldPositionX();
-            newChange += " " + Mobs.get(0).getWorldPositionY();
+                //            // if movement was valid, add update to changes
+                String newChange  = " " + mob.getName();
+                newChange += " " + mob.getCommand();
+                newChange += " " + mob.getWorldPositionX();
+                newChange += " " + mob.getWorldPositionY();
 
-            changes = changes.concat(newChange);
+                changes = changes.concat(newChange);
+            }
+
 //            System.out.println("seerver change: "+changes);
             if (changes != "") {
                 String msg = "UPDT" + changes;

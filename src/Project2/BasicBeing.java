@@ -286,6 +286,7 @@ public class BasicBeing extends Entity{
         this.idleAnimLt = new Animation(walkingSheet, 0,7,5,7,true,100,true);
 
         this.deathAnim = new Animation(walkingSheet, 0,8,7,8,true,100,true);
+        deathAnim.setLooping(false);
         //  Attack and hit anim are the same except he shoots things when attacking.
         this.attackAnim = new Animation(walkingSheet, 0,5,1,5,true,100,true);
 
@@ -472,16 +473,19 @@ public class BasicBeing extends Entity{
     }
     
     public void setCommand(InputCommands cmd) {
-        if(cmd.equals(InputManager.InputCommands.down)
-                || cmd.equals(InputManager.InputCommands.up)
-                || cmd.equals(InputManager.InputCommands.left)
-                || cmd.equals(InputManager.InputCommands.right)
-                || cmd.equals(InputManager.InputCommands.dlDiag)
-                || cmd.equals(InputManager.InputCommands.drDiag)
-                || cmd.equals(InputManager.InputCommands.ulDiag)
-                || cmd.equals(InputManager.InputCommands.urDiag))
-            this.setLastDirectionCommand(cmd);
-        this.inputCommand = cmd;
+
+        if(this.inputCommand!= InputCommands.death) {
+            if (cmd.equals(InputManager.InputCommands.down)
+                    || cmd.equals(InputManager.InputCommands.up)
+                    || cmd.equals(InputManager.InputCommands.left)
+                    || cmd.equals(InputManager.InputCommands.right)
+                    || cmd.equals(InputManager.InputCommands.dlDiag)
+                    || cmd.equals(InputManager.InputCommands.drDiag)
+                    || cmd.equals(InputManager.InputCommands.ulDiag)
+                    || cmd.equals(InputManager.InputCommands.urDiag))
+                this.setLastDirectionCommand(cmd);
+            this.inputCommand = cmd;
+        }
     }
 
     public InputCommands getCommand(){
