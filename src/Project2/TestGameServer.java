@@ -13,6 +13,7 @@ import org.newdawn.slick.SlickException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.Object;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -43,6 +44,7 @@ public class TestGameServer {
     private DoorList doorList;
     private ArrayList<Mob> Mobs;
     private ArrayList<Door> Doors;
+    private ArrayList<Money> Money;
     private ArrayList<Money> MoneyDrops;
     private ArrayList<Mob> IgnoreList;
     private static int PlayerCount = 2;
@@ -57,7 +59,8 @@ public class TestGameServer {
     // constructor sets port number and state ID for current level
     public TestGameServer(int stateId, int port) throws SlickException {
         Mobs = new ArrayList<>();
-        Doors = new ArrayList<Door>();
+        Doors = new ArrayList<>();
+        Money = new ArrayList<>();
         moblist = new MobList();
         doorList = new DoorList();
         MoneyDrops = new ArrayList<Money>();
@@ -348,4 +351,5 @@ public class TestGameServer {
             }
         }
     };
+
 }
