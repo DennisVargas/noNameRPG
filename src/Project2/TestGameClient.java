@@ -248,12 +248,22 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
 
 
     private void worldToScreen(int viewportX, int viewportY) {
-        for (int i = 0; i < Mobs.size(); i++) {
-            int entityX = (int)(Mobs.get(i).getWorldPositionX()*32.0);
-            int entityY = (int)(Mobs.get(i).getWorldPositionY()*32.0);
+
+        for(Hero hero: Players){
+            if(!Project2.getSettings().getIpAddress().equals(hero.getName())){
+                int entityX = (int)(hero.getWorldPositionX()*32.0);
+                int entityY = (int)(hero.getWorldPositionY()*32.0);
+                int newX = entityX - viewportX;
+                int newY = entityY - viewportY;
+                hero.setPosition(newX, newY);
+            }
+        }
+        for (Mob mob:Mobs) {
+            int entityX = (int)(mob.getWorldPositionX()*32.0);
+            int entityY = (int)(mob.getWorldPositionY()*32.0);
             int newX = entityX - viewportX;
             int newY = entityY - viewportY;
-            Mobs.get(i).setPosition(newX, newY);
+            mob.setPosition(newX, newY);
         }
     }
 
