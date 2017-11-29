@@ -13,6 +13,7 @@ import org.newdawn.slick.SlickException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.Object;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -43,6 +44,7 @@ public class TestGameServer {
     private DoorList doorList;
     private ArrayList<Mob> Mobs;
     private ArrayList<Door> Doors;
+    private ArrayList<Money> Money;
     private static int PlayerCount = 2;
     private String changes = "";
 
@@ -54,7 +56,8 @@ public class TestGameServer {
     // constructor sets port number and state ID for current level
     public TestGameServer(int stateId, int port) throws SlickException {
         Mobs = new ArrayList<>();
-        Doors = new ArrayList<Door>();
+        Doors = new ArrayList<>();
+        Money = new ArrayList<>();
         moblist = new MobList();
         doorList = new DoorList();
         // Set game info based on what level was requested by host
@@ -307,6 +310,27 @@ public class TestGameServer {
             }
 
 //            System.out.println("seerver change: "+changes);
+            for (Mob mob1:Mobs){
+//                mob1.setHealth(0);
+                if(mob1.IsDead()){
+                    Vector position = mob1.getWorldPosition();
+                    Mobs.remove(mob1);
+                    random = new Random();
+                    int high = 21;
+                    int low = 1;
+                    try {
+                        Money.add(new Money(position, "money", (random.nextInt(high - low) + low)));
+                    } catch (SlickException e){
+                        System.out.println("Drop Failed");
+                    }
+                }
+            }
+            for (Money drop : Money){
+                newChange += " " + drop.getWorldPosition();
+            }
+
+            changes = changes.concat(newChange);
+            System.out.println("server change: "+changes);
             if (changes != "") {
                 String msg = "UPDT" + changes;
                 changes = "";
