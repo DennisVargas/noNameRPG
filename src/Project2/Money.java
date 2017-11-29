@@ -11,6 +11,7 @@ public class Money extends Object {
     public Money (Vector worldPosition, String name, int value) throws SlickException {
         super(worldPosition, name, value);
         InitImage();
+        this.value = value;
     }
 
     protected void InitImage(){

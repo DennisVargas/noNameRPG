@@ -13,7 +13,6 @@ import org.newdawn.slick.SlickException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.Object;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -44,9 +43,12 @@ public class TestGameServer {
     private DoorList doorList;
     private ArrayList<Mob> Mobs;
     private ArrayList<Door> Doors;
+    private ArrayList<Money> MoneyDrops;
+    private ArrayList<Mob> IgnoreList;
     private ArrayList<Money> Money;
     private static int PlayerCount = 2;
     private String changes = "";
+    private String changes2 = "";
 
     // TODO: eventually remove this
     private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
@@ -60,6 +62,7 @@ public class TestGameServer {
         Money = new ArrayList<>();
         moblist = new MobList();
         doorList = new DoorList();
+        MoneyDrops = new ArrayList<Money>();
         // Set game info based on what level was requested by host
         // TODO: eventually remove spritesheets
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
@@ -104,6 +107,7 @@ public class TestGameServer {
 /** Server Functions */
     public void init () {
         Players = new ArrayList<>();
+        IgnoreList = new ArrayList<Mob>();
 //        These are being initialized in constructor and this one sets them to zero again.
 //        Mobs = new ArrayList<>();
 //        moblist = new MobList();
@@ -303,6 +307,27 @@ public class TestGameServer {
                 //            // if movement was valid, add update to changes
                 String newChange  = " " + mob.getName();
                 newChange += " " + mob.getCommand();
+                if(mob.getCommand() == InputCommands.death) {
+//                    System.out.println(mob.getName() + " " + mob.getCommand());
+                    Vector position = mob.getWorldPosition();
+                    int value = random.nextInt((21 - 1) + 1);
+                    if (!IgnoreList.contains(mob)) {
+                        IgnoreList.add(mob);
+                        String newChanges = "";
+                        for(int i = 0; i < MoneyDrops.size(); i++){
+                            newChanges += " " + MoneyDrops.get(i).getName();
+                            newChanges += " " + MoneyDrops.get(i).getWorldPositionX();
+                            newChanges += " " + MoneyDrops.get(i).getWorldPositionY();
+                            newChanges += " " + MoneyDrops.get(i).value;
+                        }
+                        changes2 = newChanges;
+                        try {
+                            MoneyDrops.add(new Money(position, "money" + MoneyDrops.size(), value));
+                        } catch (SlickException e) {
+                            System.out.println("Failed to drop money off of " + mob.getName());
+                        }
+                    }
+                }
                 newChange += " " + mob.getWorldPositionX();
                 newChange += " " + mob.getWorldPositionY();
 
@@ -335,6 +360,13 @@ public class TestGameServer {
                 String msg = "UPDT" + changes;
                 changes = "";
 //                System.out.println(msg);
+                send(msg);
+            }
+
+
+            if (changes2 != "") {
+                String msg = "DROP" + changes2;
+                changes2 = "";
                 send(msg);
             }
         }
