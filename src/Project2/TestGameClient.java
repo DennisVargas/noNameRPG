@@ -131,8 +131,12 @@ public class TestGameClient extends BasicGameState{
 
             // ENTITY STUFF
             // render players
-            for (int i = 0; i < Players.size(); i++) {
-                Players.get(i).render(g);
+            for (Hero hero:Players) {
+                hero.render(g);
+                g.setColor(Color.red);
+                hero.UpdateHealthBarLocation();
+                g.fill(hero.getHealthBar());
+
             }
 
             // render mobs here when we have them
