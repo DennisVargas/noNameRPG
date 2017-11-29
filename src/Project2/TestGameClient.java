@@ -44,6 +44,7 @@ public class TestGameClient extends BasicGameState{
     private DoorList doorList;
     private ArrayList<Door> Doors;
     private ArrayList<Mob> Mobs;
+    private ArrayList<Money> MoneyDrops;
     private boolean isIdle = true;
 
     // MAP STUFF
@@ -72,6 +73,7 @@ public class TestGameClient extends BasicGameState{
         Players = new ArrayList<>();
         Mobs = new ArrayList<>();
         Doors = new ArrayList<>();
+        MoneyDrops = new ArrayList<>();
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
         Project2.settings.createTileMapping(map1, 1);
@@ -142,6 +144,8 @@ public class TestGameClient extends BasicGameState{
             for (int i = 0; i < Doors.size(); i++) {
                 Doors.get(i).render(g);
             }
+            for (int i = 0; i < MoneyDrops.size(); i++)
+                MoneyDrops.get(i).render(g);
             // ENTITY STUFF
             // render players
             for (Hero hero:Players) {
@@ -378,6 +382,12 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
                     InputCommands input = getCommand(tokens[i+1]);
                     moveEntity(tokens[i], input, Float.parseFloat(tokens[i+2]), Float.parseFloat(tokens[i+3]));
 //                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
+                }
+                break;
+            case "DROP":
+                for (int i = 1; i < tokens.length; i++) {
+                    if(tokens[i].contains("money"))
+                        MoneyDrops.add(new Money(new Vector(Float.parseFloat(tokens[i+1]), (Float.parseFloat(tokens[i+2]))), tokens[i], Integer.parseInt(tokens[i+3])));
                 }
                 break;
             default:
