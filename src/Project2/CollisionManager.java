@@ -67,6 +67,11 @@ public class CollisionManager {
 
                     mob.HitBeing(hero.getAttackPower());
                     System.out.println("hit MOB after health: "+mob.getHealth());
+                    if(mob.IsDead()){
+                        mob.setCommand(InputCommands.death);
+                        System.out.println("I'm Dead");
+                    }
+
                 }
 //              reverse the attack move
                 attackPos = MovementCalc.CalcWorldPosition(ReverseCommand(hero.getLastDirectionCommand()), hero.getWorldPosition(), hero.getSpeed());
