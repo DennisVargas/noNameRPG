@@ -250,6 +250,7 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
             case "drDiag": inputCommand = drDiag; break;
             case "attack": inputCommand = attack; break;
             case "idle": inputCommand = idle; break;
+            case "death": inputCommand = death; break;
         }
         return inputCommand;
     }
