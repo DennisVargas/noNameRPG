@@ -66,6 +66,23 @@ public class CollisionManager {
         return false;
     }
 
+    public static void CheckPlayerObjectCollision(Hero player, ArrayList<Object> objectList){
+        for(Object object: objectList){
+//          get the difference between the x coords
+            float diffX = player.getWorldPositionX() - object.getWorldPositionX();
+//          get the difference between the y coords
+            float diffY = player.getWorldPositionY() - object.getWorldPositionY();
+
+//          if differences are less than one you've collided
+            if(abs(diffX) < 1 && abs(diffY) < 1) {
+//              Remove object, add to player
+                if (object.getName().contains("money")) {
+                    player.increaseValue(object.getName(), object.value);
+                }
+            }
+        }
+    }
+
     public static boolean CheckValidMove(BasicBeing being){
 //        System.out.println(Project2.settings.checkTile((int)floor(being.getWorldPositionX()),(int)floor(being.getWorldPositionY())));
         if (Project2.settings.checkTile((int) Math.round(being.getWorldPositionX()-.5) + 20, (int) Math.round(being.getWorldPositionY()) + 11).equals("abyss") |

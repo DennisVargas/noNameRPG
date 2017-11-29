@@ -9,8 +9,8 @@ import org.newdawn.slick.tiled.TiledMap;
 public class PlaySettings {
     private Map tilemapping;
     private String ipAddress;
-    private Vector hostStartLevel1 = new Vector(90,105);
-    private Vector guestStartLevel1 = new Vector(91,105);
+    private Vector hostStartLevel1 = new Vector(45,105);
+    private Vector guestStartLevel1 = new Vector(46,105);
 
     private Hero player;
 

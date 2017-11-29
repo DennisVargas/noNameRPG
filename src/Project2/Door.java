@@ -7,17 +7,20 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
-public class Door extends BasicBeing {
+public class Door extends Object {
     public Door(Vector worldPosition, String name) throws SlickException{
-        super(new Vector(-5000, -5000), worldPosition);
-        this.setName(name);
+        super(worldPosition, name, 0);
         if(name.equals("doorH"))
-            super.InitImage(true);
+            InitImage(true);
         else
-            super.InitImage(false);
-        this.setPosition(MovementCalc.CalcScreenPosition(
-                Project2.getSettings().getPlayer().getWorldPosition(),
-                this.getWorldPosition()));
+            InitImage(false);
+    }
+
+    protected void InitImage(boolean horizontal){
+        if(horizontal == true)
+            addImageWithBoundingBox(ResourceManager.getImage(Project2.DOORHSHEETRSC));
+        else
+            addImageWithBoundingBox(ResourceManager.getImage(Project2.DOORVSHEETRSC));
     }
 
 }

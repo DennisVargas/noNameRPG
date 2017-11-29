@@ -76,7 +76,7 @@ public class BasicBeing extends Entity{
      * the <code>InputManager.InputCommands</code> enumeration.
      */
     private void ProcessNextAnimation(InputCommands command) {
-        if(name.equals("doorH") | name.equals("doorV"))
+        if(name.equals("doorH") | name.equals("doorV") | name.equals("money"))
             return;
         switch(command){
             case up:
@@ -253,16 +253,6 @@ public class BasicBeing extends Entity{
 //        set bounding box for being based on animation
         ConvexPolygon beingBoundBox = new ConvexPolygon((float)this.walkLeftAnim.getWidth(),(float)this.walkLeftAnim.getHeight());
         this.addShape(beingBoundBox);
-    }
-
-    protected void InitImage(boolean horizontal){
-        addImageWithBoundingBox(ResourceManager.getImage(Project2.DOORVSHEETRSC));
-//        ConvexPolygon objectBoundingBox;
-//        if(horizontal)
-//            objectBoundingBox = new ConvexPolygon(32, 32);
-//        else
-//            objectBoundingBox = new ConvexPolygon(32, 32);
-//        this.addShape(objectBoundingBox);
     }
 
     public void HitBeing(float attackValue){

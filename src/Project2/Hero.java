@@ -17,7 +17,7 @@ public class Hero extends BasicBeing{
     private static final SpriteSheet rangedAttackingSheet = ResourceManager.getSpriteSheet(Project2.RANGEDHEROATTACKINGSHEETRSC,32,32);
     private static final SpriteSheet meleeWalkingSheet = ResourceManager.getSpriteSheet(Project2.MELEEHEROWALKINGSHEETRSC,32,32);
     private static final SpriteSheet meleeAttackingSheet = ResourceManager.getSpriteSheet(Project2.MELEEHEROATTACKINGSHEETRSC,32,32);
-
+    private int money;
     /**
      * constructs a hero who is centered in screen position .
      * @param worldPosition starting world map tile position as a Vector
@@ -40,4 +40,15 @@ public class Hero extends BasicBeing{
         else
             Project2.getSettings().setPlayer(this);
     }
+
+    public void increaseValue(String type, int value){
+        if(type.equals("money")){
+            this.money += value;
+        }
+        else if(type.equals("health")){
+            super.setHealth(super.getHealth()+value);
+        }
+    }
+
+    public int getMoney(){ return this.money; }
 }
