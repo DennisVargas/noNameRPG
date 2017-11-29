@@ -81,22 +81,22 @@ public class TestGameClient extends BasicGameState{
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
 
-        // SERVER STUFF (if client is running server)
-        // TODO: determine level number and send as variable in place of stateId
-        if (true) { // should evaluate whether or not player is hosting the server
-            port = 1234;
+        if (!Project2.settings.getJoining()) { // launch server if hosting or singleplayer
+            // SERVER STUFF (if client is running server)
+            // TODO: determine level number and send as variable in place of stateId
             serverAddress = "localhost";
+            port = 1234;
             gameserver = new TestGameServer(stateId, port);
             Thread serverThread = new Thread(() -> gameserver.init(), "GameServer");
             serverThread.start();
-        }
-
-        // CLIENT STUFF
-        // TODO: connect to servername and port based on user input from previous screen
-        // parser for receiving in ip:port form is commented out below
-        if (true) {
-            serverAddress = "localhost";
-            int port = 1234;
+            // CLIENT STUFF
+            System.out.println("Client: connecting to " + serverAddress + " on port " + port);
+            connect();
+        } else {
+            // if joining, pull server info out of settings
+            // CLIENT STUFF
+            serverAddress = Project2.settings.getIpAddress();
+            port = Project2.settings.getPort();
             System.out.println("Client: connecting to " + serverAddress + " on port " + port);
             connect();
         }
@@ -272,6 +272,7 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
 
         } catch (IOException e) {
             e.printStackTrace();
+            // TODO: return client to ip entry screen if could not connect to server
             System.out.println("Client: client cannot connect");
             return false;
         }

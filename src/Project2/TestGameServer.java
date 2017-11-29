@@ -286,7 +286,7 @@ public class TestGameServer {
             newChange += " " + Mobs.get(0).getWorldPositionY();
 
             changes = changes.concat(newChange);
-            System.out.println("seerver change: "+changes);
+//            System.out.println("seerver change: "+changes);
             if (changes != "") {
                 String msg = "UPDT" + changes;
                 changes = "";

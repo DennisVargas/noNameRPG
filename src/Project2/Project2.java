@@ -67,7 +67,7 @@ public class Project2 extends StateBasedGame {
     public Project2(boolean testStatePlay) {
         super(NAME);
         if(testStatePlay) {
-            this.testStatePlay = true;
+            this.testStatePlay = false;
 //          TEST STATES
             this.addState(new TestStateBeingCollides(TESTSTATEBEINGCOLLIDES));
         }

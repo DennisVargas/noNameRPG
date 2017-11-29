@@ -23,6 +23,7 @@
 - **[35]** BasicBeing hit function reduces health
 - **[9]** Add mob path finding
 - **[14]** Design and implement level 1 mob & item locations
+- **[29]** Create functional MenuItems in Multi-player Menu
 
 
 ## Open Issues ##
@@ -39,4 +40,3 @@
 - **[23]** Add any missing mobs if less than four types implemented
 - **[24]** Create functional MenuItem object in Single player menu
 - **[26]** Create functional MenuItems in Option Menu
-- **[29]** Create functional MenuItems in Multi-player Menu

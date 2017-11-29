@@ -39,8 +39,8 @@ public class MainMenuState extends BasicGameState {
 //  image resource file paths that will be passed to MenuItem() constructor
     private static String singlePlayerOffImageRsc = "testAssets/new_game3.png";
     private static String singlePlayerOnImageRsc = "testAssets/new_game4.png";
-    private static String multiPlayerOffImageRsc = "testAssets/new_game3.png";
-    private static String multiPlayerOnImageRsc = "testAssets/new_game4.png";
+    private static String multiPlayerOffImageRsc = "testAssets/multi_1.png";
+    private static String multiPlayerOnImageRsc = "testAssets/multi_2.png";
     private static String optionsOffImageRsc = "testAssets/options3.png";
     private static String optionsOnImageRsc = "testAssets/options4.png";
     private static String quitOffImageRsc = "testAssets/quit3.png";
