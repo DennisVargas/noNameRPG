@@ -110,8 +110,8 @@ public class TestStateBeingCollides extends BasicGameState {
 //          server can just do being.setNewWorldPosition()
 //          if swapping animation is unwanted extra computation cost
             being.UpdateBeing(being.getCommand(), newWorldPosition);
-            if(CollisionManager.CheckValidMove(being))
-                CollisionManager.CheckCollisions(being, beings);
+//            if(CollisionManager.CheckValidMove(being))
+//                CollisionManager.CheckCollisions(being, beings);
 
 //          if server write new world position to client packet
             if(being.getName() != Project2.getSettings().getIpAddress()){
