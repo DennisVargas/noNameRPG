@@ -5,6 +5,7 @@ package Project2;
  * " " + ENTITY_ID + inputCommand + WorldPos_X + WorldPos_Y
  */
 
+import jig.Collision;
 import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.SlickException;
@@ -149,14 +150,16 @@ public class TestGameServer {
                 float y = Players.get(0).getWorldPositionY();
 
                 // check for player/wall collisions
-                CollisionManager.CheckHeroMobCollisions(Players.get(0), Mobs);
-                // if movement was valid, add update to changes
-                String newChange  = " " + player;
-                newChange += " " + tokens[2];
-                newChange += " " + x;
-                newChange += " " + y;
+                if(CollisionManager.CheckValidMove(Players.get(0))) {
+                    CollisionManager.CheckHeroMobCollisions(Players.get(0), Mobs);
+                    // if movement was valid, add update to changes
+                    String newChange = " " + player;
+                    newChange += " " + tokens[2];
+                    newChange += " " + x;
+                    newChange += " " + y;
 
-                changes += newChange;
+                    changes += newChange;
+                }
                 // for use when IP is properly stored in player class
                 /*
                 for (int i = 0; i < Players.size(); i++) {
