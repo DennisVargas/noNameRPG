@@ -164,6 +164,7 @@ public class TestGameClient extends BasicGameState{
                 isIdle = false;
                 inptMsg(inputCommand.toString());
             }
+
         }
     }
 
@@ -174,14 +175,15 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
     // TODO: have some indication if entity is a mob so it loops through correct ArrayList
 
     if(entity.contains("/")){
-        for(BasicBeing hero: Players){
+        for(Hero hero: Players){
             if(entity.equals(hero.getName())){
                 hero.UpdateBeing(input, new Vector(posX, posY));
+
                 break;
             }
         }
     }else if(entity.contains("mob")){
-        for(BasicBeing mob: Mobs){
+        for(Mob mob: Mobs){
             if(entity.equals(mob.getName())){
                 mob.UpdateBeing(input, new Vector(posX, posY));
                 break;
