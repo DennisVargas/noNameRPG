@@ -46,14 +46,14 @@ public class Project2 extends StateBasedGame {
     private static final int TESTSTATEBEINGCOLLIDES = 23;
 
 
-    public static final String MELEEHEROATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String MELEEHEROWALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String RANGEDHEROWALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String RANGEDHEROATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String MOB1WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String MOB1ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String MOB2WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String MOB2ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String MELEEHEROATTACKINGSHEETRSC = "resources/Characters/Lilith.png";
+    public static final String MELEEHEROWALKINGSHEETRSC = "resources/Characters/Lilith.png";
+    public static final String RANGEDHEROWALKINGSHEETRSC = "resources/Characters/Lilith.png";
+    public static final String RANGEDHEROATTACKINGSHEETRSC = "resources/Characters/Lilith.png";
+    public static final String MOB1WALKINGSHEETRSC = "resources/Characters/pencil.png";
+    public static final String MOB1ATTACKINGSHEETRSC = "resources/Characters/pencil.png";
+    public static final String MOB2WALKINGSHEETRSC = "resources/Characters/pencil.png";
+    public static final String MOB2ATTACKINGSHEETRSC = "resources/Characters/pencil.png";
     public static final String MOB3WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String MOB3ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String MOB4WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
