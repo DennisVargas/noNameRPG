@@ -350,6 +350,7 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
 //                System.out.println("Client: got INIT response ");
                 loadLevel(Integer.parseInt(tokens[1]));
                 addPlayer(tokens[2], Float.parseFloat(tokens[3]), Float.parseFloat(tokens[4]));
+//                addPlayer("/animalCrackers", 92f, 105f);
                 init = true;
                 break;
             case "UPDT":
