@@ -10,10 +10,7 @@ package Project2;
 
 import jig.ResourceManager;
 import jig.Vector;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
@@ -42,9 +39,9 @@ public class TestGameClient extends BasicGameState{
     private InputCommands inputCommand;
     private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    private ArrayList<BasicBeing> Players;
+    private ArrayList<Hero> Players;
     private MobList moblist;
-    private ArrayList<BasicBeing> Mobs;
+    private ArrayList<Mob> Mobs;
     private boolean isIdle = true;
 
     // MAP STUFF
