@@ -131,6 +131,8 @@ public class TestGameClient extends BasicGameState{
 
             
             g.drawString("Players Account: "+playersMoney, 200,200);
+//            g.drawString("displaceX: "+displaceX*-1
+//                    +" displaceY:"+displaceY*-1, 200,200);
 //            g.drawString("worldX: "+Players.get(0).getWorldPositionX()
 //                    +"      worldY:"+Players.get(0).getWorldPositionY(), 200,230);
 //            g.drawString("screenX: "+Players.get(0).getScreenPositionX()
