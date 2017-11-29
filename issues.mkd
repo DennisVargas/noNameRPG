@@ -19,12 +19,14 @@
 - **[36]** Update Mobs in server and Update move entities in Client
 - **[35]** BasicBeing hit function reduces health
 - **[37]** Attacks cause damage
+- **[10]** Trigger Death Animations upon Death
 
 ## Claimed Issues ##
 - **[2]** Add art assets
-- **[10]** Trigger Death Animations upon Death
+
 - **[9]** Add mob path finding
 - **[14]** Design and implement level 1 mob & item locations
+- **[40]** make dead beings walkable tiles.
 
 ## Open Issues ##
 - **[11]** Add character death
