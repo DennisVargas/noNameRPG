@@ -18,6 +18,8 @@ import org.newdawn.slick.tiled.TiledMap;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static Project2.InputManager.InputCommands;
 import static Project2.InputManager.InputCommands.*;
@@ -39,12 +41,12 @@ public class TestGameClient extends BasicGameState{
     private InputCommands inputCommand;
     private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    private ArrayList<Hero> Players;
+    private List<Hero> Players;
     private MobList moblist;
     private DoorList doorList;
-    private ArrayList<Door> Doors;
-    private ArrayList<Mob> Mobs;
-    private ArrayList<Money> MoneyDrops;
+    private List<Door> Doors;
+    private List<Mob> Mobs;
+    private List<Money> MoneyDrops;
     private boolean isIdle = true;
 
     // MAP STUFF
@@ -70,10 +72,14 @@ public class TestGameClient extends BasicGameState{
     public void init(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
         ResourceManager.loadImage(WALKINGSHEETRSC);
         ResourceManager.loadImage(ATTACKINGSHEETRSC);
-        Players = new ArrayList<>();
-        Mobs = new ArrayList<>();
-        Doors = new ArrayList<>();
-        MoneyDrops = new ArrayList<>();
+        Players = Collections.synchronizedList(new ArrayList<Hero>());
+//        Players = new ArrayList<>();
+        Mobs = Collections.synchronizedList(new ArrayList<>());
+//        Mobs = new ArrayList<>();
+        Doors = Collections.synchronizedList(new ArrayList<Door>());
+//        Doors = new ArrayList<>();
+        MoneyDrops = Collections.synchronizedList(new ArrayList<Money>());
+//        MoneyDrops = new ArrayList<>();
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
         Project2.settings.createTileMapping(map1, 1);
@@ -285,6 +291,13 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
             int newX = entityX - viewportX;
             int newY = entityY - viewportY;
             Doors.get(i).setPosition(newX, newY);
+        }
+        for (int i = 0; i < MoneyDrops.size(); i++){
+            int entityX = (int)(MoneyDrops.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(MoneyDrops.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            MoneyDrops.get(i).setPosition(newX, newY);
         }
     }
 
