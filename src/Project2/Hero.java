@@ -1,7 +1,9 @@
 package Project2;
 
+import jig.ConvexPolygon;
 import jig.ResourceManager;
 import jig.Vector;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
@@ -31,11 +33,12 @@ public class Hero extends BasicBeing{
         this.setName(name);
         this.setAttackPower(100f);
         this.setRanged(isRanged);
-
+        this.setCommand(InputManager.InputCommands.idle);
+        this.setLastDirectionCommand(InputManager.InputCommands.left);
 //        if the hero is ranged then set them to the ranged animation
-        if (this.isRanged()) {
-            this.InitAnimations(rangedWalkingSheet,rangedAttackingSheet);
-        }
+//        if (this.isRanged()) {
+//            InitHeroRangedAnimations(rangedWalkingSheet,rangedAttackingSheet);
+//        }
 //        if the hero isn't a client then don't place them in center screen
         System.out.println(Project2.settings.getIpAddress());
         if(Project2.settings.getIpAddress().equals(name)) {
