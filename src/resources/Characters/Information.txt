@@ -1,19 +1,40 @@
-CrystalBuddy
+Mob - CrystalBuddy - 32x32
 1- moving right
 2- moving left
 3- moving down
 4- moving up
-5- being hit
-6- idle
-7- death
-
-Zerg Drone
-1- moving right
-2- moving left
-3- moving down
-4- moving up
-5- attack right
-6- attack left
-7- attack down
-8- attack up
+5- being hit(right)
+6- being hit(left)
+7- idle right
+8- idle left
 9- death
+
+Mob - Penicl - 48x48
+1- moving right
+2- moving left
+3- moving down
+4- moving up
+5- being hit(right)
+6- being hit(left)
+7- idle right
+8- idle left
+9- death
+10- attack right
+11- attack left
+
+Mob - Wizoob - 32x32
+
+Mob -
+
+Player - Isaac/Lilith - 32x32
+1- moving right 
+2- moving left 
+3- moving down 
+4- moving up 
+5- being hit(right) 
+6- being hit(left) 
+7- idle right 
+8- idle left 
+9- death 
+
+Player - 
