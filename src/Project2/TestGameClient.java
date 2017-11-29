@@ -132,15 +132,7 @@ public class TestGameClient extends BasicGameState{
             int viewportY = (int)((Players.get(0).getWorldPositionY()*32.0) - screenCenter.getY());
             worldToScreen(viewportX, viewportY);
 
-            // ENTITY STUFF
-            // render players
-            for (Hero hero:Players) {
-                hero.render(g);
-                g.setColor(Color.red);
-                hero.UpdateHealthBarLocation();
-                g.fill(hero.getHealthBar());
 
-            }
 
             // render mobs here when we have them
 //            System.out.println("moblist size = " + Mobs.size());
@@ -149,6 +141,15 @@ public class TestGameClient extends BasicGameState{
             }
             for (int i = 0; i < Doors.size(); i++) {
                 Doors.get(i).render(g);
+            }
+            // ENTITY STUFF
+            // render players
+            for (Hero hero:Players) {
+                hero.render(g);
+                g.setColor(Color.red);
+                hero.UpdateHealthBarLocation();
+                g.fill(hero.getHealthBar());
+
             }
         }
     }
