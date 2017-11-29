@@ -19,7 +19,6 @@ public class MenuItem {
         ResourceManager.loadImage(notSelectedImage);
         ResourceManager.loadImage(selectedImage);
         //
-
     }
 
     private void setPosition(Vector position) {
