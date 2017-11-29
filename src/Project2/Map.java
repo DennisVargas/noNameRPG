@@ -14,7 +14,6 @@ public class Map {
             for (int i = 0; i < 150; i++){
                 try{
                     tiles[i][j] = new Tile(i,j, map.getTileProperty(map.getTileId(i, j, map.getLayerIndex("Main")), "type", "abyss"), level);
-                    System.out.println(tiles[i][j].getType() +" "+ i +" "+ j);
                 }
                 catch (NullPointerException e){
                     tiles[i][j] = new Tile(i,j,"abyss", level);
@@ -22,6 +21,6 @@ public class Map {
 
             }
         }
-        System.out.println("Finished making tilemapping");
+        //System.out.println("Finished making tilemapping");
     }
 }
