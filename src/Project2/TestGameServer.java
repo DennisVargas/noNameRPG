@@ -134,19 +134,20 @@ public class TestGameServer {
             case "INPT":
 //                System.out.println("Server: got INPT message: " + tokens[2]);
                 InputCommands inputCommand = getCommand(tokens[2]);
-
+                Hero hero1 = Players.get(0);
                 // TODO: fix this after IP is stored in player class
                 // process movement based on input
-                Players.get(0).setCommand(inputCommand);
-                Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(0).getSpeed()));
-                Players.get(0).setTranslation(velocity);
-                Vector newWorldPosition = CalcWorldPosition(velocity, Players.get(0).getWorldPosition());
+                hero1.setCommand(inputCommand);
+//                Players.get(0).UpdateAttackRect();
+//                Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(0).getSpeed()));
+//                hero1.setTranslation(velocity);
+                Vector newWorldPosition = CalcWorldPosition(hero1.getCommand(),hero1.getWorldPosition(),hero1.getSpeed());
 //                set map position
-                Players.get(0).setWorldPosition(newWorldPosition);
+                hero1.setWorldPosition(newWorldPosition);
 //                set jig entity vector for collisions.
-                Players.get(0).setPosition(new Vector(newWorldPosition.getX()*32f,newWorldPosition.getY()*32f));
-                float x = Players.get(0).getWorldPositionX();
-                float y = Players.get(0).getWorldPositionY();
+                hero1.setPosition(new Vector(newWorldPosition.getX()*32f,newWorldPosition.getY()*32f));
+                float x =  hero1.getWorldPositionX();
+                float y =  hero1.getWorldPositionY();
 
                 // check for player/wall collisions
                 CollisionManager.CheckHeroMobCollisions(Players.get(0), Mobs);
