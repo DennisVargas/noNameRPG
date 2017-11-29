@@ -10,8 +10,8 @@ public class Money extends Object {
     private static final SpriteSheet moneySheet = ResourceManager.getSpriteSheet(Project2.MONEYSHEETRSC,32,32);
     public Money(Vector worldPosition, String name, int value) throws SlickException {
         super(worldPosition, name, value);
-        InitImage();
         this.value = value;
+        InitImage();
     }
 
     protected void InitImage(){
