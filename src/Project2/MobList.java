@@ -17,7 +17,7 @@ public class MobList {
         Mob mob;
         if (level == 1) {
             // hallway 1
-//            mob = new Mob(new Vector(75f, 105.5f), 1, "mob1"); Mobs.add(mob);
+            mob = new Mob(new Vector(75f, 105.5f), 1, "mob1"); Mobs.add(mob);
 //            mob = new Mob(new Vector(74f, 104.5f), 1, "mob2"); Mobs.add(mob);
 //            mob = new Mob(new Vector(73f, 105f), 1, "mob3"); Mobs.add(mob);
 //
