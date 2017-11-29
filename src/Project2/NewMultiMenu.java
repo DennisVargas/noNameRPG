@@ -54,8 +54,8 @@ public class NewMultiMenu extends BasicGameState {
         hostGame = new MenuItem(new Vector(640f, 250f), hostGameOff, hostGameOn, "host-game");
         joinGame = new MenuItem(new Vector(640f, 300f), joinGameOff, joinGameOn, "join-game");
         backItem = new MenuItem(new Vector(640f,360f), backOffRsc, backOnRsc,"back-button");
-        backItem.setItemOn();
-        menuChoice = NewMultiMenuChoices.back;
+        hostGame.setItemOn();
+        menuChoice = NewMultiMenuChoices.host;
     }
 
     @Override
@@ -129,7 +129,7 @@ public class NewMultiMenu extends BasicGameState {
                     case join:
                         Project2.settings.setJoining(true);
                         // TODO: go to state where user can enter ip and server
-                        stateBasedGame.enterState(Project2.MAINMENUSTATE);
+                        stateBasedGame.enterState(Project2.JOINGAMESTATE);
                         break;
                     case back:
                         stateBasedGame.enterState(Project2.MAINMENUSTATE);
