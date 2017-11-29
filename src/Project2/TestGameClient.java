@@ -46,6 +46,8 @@ public class TestGameClient extends BasicGameState{
     private ArrayList<Mob> Mobs;
     private boolean isIdle = true;
 
+    private ArrayList<Mob>mobsToMove;
+
     // MAP STUFF
     private double x, y;
     private int mapX, mapY;
@@ -72,6 +74,7 @@ public class TestGameClient extends BasicGameState{
         Players = new ArrayList<>();
         Mobs = new ArrayList<>();
         Doors = new ArrayList<>();
+        mobsToMove = new ArrayList<>();
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
         Project2.settings.createTileMapping(map1, 1);
@@ -125,6 +128,21 @@ public class TestGameClient extends BasicGameState{
             g.drawString("screenX: "+Players.get(0).getScreenPositionX()
                     +" screenY:"+Players.get(0).getScreenPositionY(), 200,260);
 
+            //grid range
+            float xoff = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionX())-5);
+            float yoff = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionY())-5);
+            Vector offSet = MovementCalc.CalcScreenPosition(
+                    Players.get(0).getWorldPosition(),
+                    new Vector(xoff, yoff));
+            g.drawString("xoff:"+xoff+" yoff:"+yoff, 100, 280);
+            for (int i = 0; i < 11; i++){
+                for (int j = 0; j < 11; j++){
+                    g.drawString("0", (offSet.getX()+16)+(i*32), (offSet.getY()+16)+(j*32));
+                }
+            }
+            g.drawString("Mobs in range: "+mobsToMove.size(),100, 300 );
+
+
 
             // convert all non-controlling player entities world to screen coords
             // only set up to do mob list now
@@ -171,7 +189,21 @@ public class TestGameClient extends BasicGameState{
                 isIdle = false;
                 inptMsg(inputCommand.toString());
             }
+            float playerOffX = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionX())-5);
+            float playerOffY = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionY())-5);
+            Vector playerPosition = new Vector(playerOffX, playerOffY);
+            Pathfinding.Dijkstra();
+            for (int i = 0; i < Mobs.size(); i++) {
+                float mobX = (float)Math.floor(Mobs.get(i).getWorldPositionX());
+                float mobY = (float)Math.floor(Mobs.get(i).getWorldPositionY());
+                Vector mobPosition = new Vector(mobX, mobY);
 
+                if (Pathfinding.range(playerPosition, mobPosition) && !mobsToMove.contains(Mobs.get(i))){
+                    mobsToMove.add(Mobs.get(i));
+                } else if (!Pathfinding.range(playerPosition, mobPosition) && mobsToMove.contains(Mobs.get(i))){
+                    mobsToMove.remove(Mobs.get(i));
+                }
+            }
         }
     }
 
