@@ -129,6 +129,7 @@ public class TestGameServer {
             case "INIT":
 //                System.out.println("Server: got INIT message");
                 addPlayer(player, Integer.parseInt(tokens[2]));
+//                addPlayer("/animalCrackers", 1);
                 initPacket();
                 break;
             case "INPT":
@@ -148,9 +149,14 @@ public class TestGameServer {
                 hero1.setPosition(new Vector(newWorldPosition.getX()*32f,newWorldPosition.getY()*32f));
                 float x =  hero1.getWorldPositionX();
                 float y =  hero1.getWorldPositionY();
+                CollisionManager.CheckHeroMobCollisions(hero1, Mobs);
+                CollisionManager.CheckHeroHeroCollisions(hero1, Players);
+
 
                 // check for player/wall collisions
-                CollisionManager.CheckHeroMobCollisions(Players.get(0), Mobs);
+
+
+
                 // if movement was valid, add update to changes
                 String newChange  = " " + player;
                 newChange += " " + tokens[2];
@@ -274,8 +280,7 @@ public class TestGameServer {
         public void run() {
             Mob mob = Mobs.get(0);
             try{mob.setCommand(InputCommands.right);}catch(Exception e){ System.out.println("emptyMOB ON SERvER");}
-            Vector newMobPosition = MovementCalc.CalcWorldPosition(MovementCalc.CalcTranslation(
-                    MovementCalc.CalcDirection(mob.getCommand()),mob.getSpeed()),mob.getWorldPosition());
+            Vector newMobPosition = MovementCalc.CalcWorldPosition(mob.getCommand(),mob.getWorldPosition(),mob.getSpeed());
             mob.setWorldPosition(newMobPosition);
             mob.setPosition(new Vector(newMobPosition.getX()*32f, newMobPosition.getY()*32f));
             CollisionManager.CheckMobHeroCollisions(mob, Players);
@@ -287,7 +292,7 @@ public class TestGameServer {
             newChange += " " + Mobs.get(0).getWorldPositionY();
 
             changes = changes.concat(newChange);
-            System.out.println("seerver change: "+changes);
+//            System.out.println("seerver change: "+changes);
             if (changes != "") {
                 String msg = "UPDT" + changes;
                 changes = "";
@@ -296,5 +301,4 @@ public class TestGameServer {
             }
         }
     };
-
 }
