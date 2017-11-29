@@ -8,8 +8,12 @@ public class Object extends BasicBeing {
         super(new Vector(-5000, -5000), worldPosition);
         this.value = value;
         this.setName(name);
-        this.setPosition(MovementCalc.CalcScreenPosition(
-                Project2.getSettings().getPlayer().getWorldPosition(),
-                this.getWorldPosition()));
+//        this.setPosition(MovementCalc.CalcScreenPosition(
+//                Project2.getSettings().getPlayer().getWorldPosition(),
+//                this.getWorldPosition()));
+    }
+
+    public void UpdateObject(Vector newWorldPos){
+        super.setWorldPosition(newWorldPos);
     }
 }

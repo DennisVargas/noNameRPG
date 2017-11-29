@@ -12,6 +12,7 @@ import org.newdawn.slick.SlickException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -39,7 +40,9 @@ public class TestGameServer {
     private int mapX, mapY;
     private ArrayList<BasicBeing> Players;
     private MobList moblist;
+    private DoorList doorList;
     private ArrayList<Mob> Mobs;
+    private ArrayList<Door> Doors;
     private static int PlayerCount = 2;
     private String changes = "";
 
@@ -52,15 +55,18 @@ public class TestGameServer {
     public TestGameServer(int stateId, int port) throws SlickException {
         Mobs = new ArrayList<>();
         moblist = new MobList();
+        Doors = new ArrayList<Door>();
+        doorList = new DoorList();
         // Set game info based on what level was requested by host
         // TODO: eventually remove spritesheets
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
         if (stateId == 22) {
             ResourceManager.loadImage(WALKINGSHEETRSC);
             ResourceManager.loadImage(ATTACKINGSHEETRSC);
-            mapX = 90;
-            mapY = 104;
+            mapX = 45;
+            mapY = 105;
             Mobs = moblist.getMobList(1);
+            Doors = doorList.getDoorList(1);
         }
 
         // Set port info
@@ -81,6 +87,7 @@ public class TestGameServer {
         // to adjust mob positions, call in the sendUpdate runnable? may need a new name then
 
     // TODO: function for detecting collisions
+    //Done in CollisionManager
         // mob/player, mob/wall only, and player-object only
         // call in the sendUpdate runnable?
 
@@ -91,6 +98,8 @@ public class TestGameServer {
         Players = new ArrayList<>();
         Mobs = new ArrayList<>();
         moblist = new MobList();
+        Doors = new ArrayList<Door>();
+        doorList = new DoorList();
         // try to open server socket, catch error if fails
         try {
             socket = new ServerSocket(port);
@@ -134,6 +143,7 @@ public class TestGameServer {
 
                 // TODO: fix this after IP is stored in player class
                 // process movement based on input
+                Players.get(0).setCommand(inputCommand);
                 Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(0).getSpeed()));
                 Players.get(0).setTranslation(velocity);
                 Vector newWorldPosition = CalcWorldPosition(velocity, Players.get(0).getWorldPosition());
@@ -142,14 +152,17 @@ public class TestGameServer {
                 float y = Players.get(0).getWorldPositionY();
 
                 // check for player/wall collisions
+                for(BasicBeing plr : Players)
+                    if(CollisionManager.CheckValidMove(plr)) {
+                        // if movement was valid, add update to changes
+                        String newChange = " " + player;
+                        newChange += " " + tokens[2];
+                        newChange += " " + x;
+                        newChange += " " + y;
 
-                // if movement was valid, add update to changes
-                String newChange  = " " + player;
-                newChange += " " + tokens[2];
-                newChange += " " + x;
-                newChange += " " + y;
 
-                changes += newChange;
+                        changes += newChange;
+                    }
                 // for use when IP is properly stored in player class
                 /*
                 for (int i = 0; i < Players.size(); i++) {

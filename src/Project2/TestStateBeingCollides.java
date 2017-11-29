@@ -108,6 +108,7 @@ public class TestStateBeingCollides extends BasicGameState {
         mob1.setHealth((float)(mob1.getHealth() - 0.1f));
 //        CollisionManager.CheckCollisions(beingList);
         UpdateBeings(beingList);
+        UpdateObjects(objectList);
     }
 
     private void UpdateBeings(ArrayList<BasicBeing> beings) throws SlickException {
@@ -148,6 +149,35 @@ public class TestStateBeingCollides extends BasicGameState {
             beingList.remove(being);
         for (BasicBeing being : additions)
             beingList.add(being);
+        removals.clear();
+        additions.clear();
+//        check their new position for collides
+    }
+
+    private void UpdateObjects(ArrayList<Object> objects) throws SlickException {
+//  make a move for each Object when the "player" moves everybody must update their JIG Vector
+        ArrayList<Object> removals = new ArrayList<Object>();
+        ArrayList<Object> additions = new ArrayList<Object>();
+        for(Object object: objects) {
+            Vector translation;
+            translation = CalcTranslation(CalcDirection(InputCommands.idle), 0f);
+//        a object's previous translation can be used to move them back from where they came if need be.
+            object.setTranslation(translation);
+            Vector newWorldPosition = CalcWorldPosition(translation,object.getWorldPosition());
+//          updates the objects animation and world position.
+//          server can just do object.setNewWorldPosition()
+            object.UpdateObject(newWorldPosition);
+
+//          if server write new world position to client packet
+            if (object.getName() != Project2.getSettings().getIpAddress()) {
+//                hero1 is taking the place of localhost
+                object.setScreenPosition(CalcScreenPosition(Project2.getSettings().getPlayer().getWorldPosition(), object.getWorldPosition()));
+            }
+        }
+        for(Object object : removals)
+            objectList.remove(object);
+        for (Object object : additions)
+            objectList.add(object);
         removals.clear();
         additions.clear();
 //        check their new position for collides

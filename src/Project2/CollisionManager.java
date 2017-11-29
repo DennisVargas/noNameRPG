@@ -105,6 +105,8 @@ public class CollisionManager {
      * @return
      */
     private static InputManager.InputCommands ReverseCommand(InputCommands command) {
+        if(command == null)
+            return idle;
         switch (command){
             case up:
                 return down;
