@@ -14,6 +14,7 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
+import sun.plugin.perf.PluginRollup;
 
 import java.io.*;
 import java.net.Socket;
@@ -45,14 +46,13 @@ public class TestGameClient extends BasicGameState{
     private ArrayList<Door> Doors;
     private ArrayList<Mob> Mobs;
     private boolean isIdle = true;
-
+    private Map mapping = null;
     private ArrayList<Mob>mobsToMove;
 
     // MAP STUFF
     private double x, y;
     private int mapX, mapY;
     public TiledMap map1 = null;
-    public Map tileMapping = null;
     private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
     private final String TILESHEETRSC = "resources/Levels";
 
@@ -78,6 +78,7 @@ public class TestGameClient extends BasicGameState{
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
         Project2.settings.createTileMapping(map1, 1);
+        mapping = Project2.settings.getTilemapping();
     }
 
     @Override
@@ -192,7 +193,7 @@ public class TestGameClient extends BasicGameState{
             float playerOffX = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionX())-5);
             float playerOffY = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionY())-5);
             Vector playerPosition = new Vector(playerOffX, playerOffY);
-            Pathfinding.Dijkstra();
+            Pathfinding.Dijkstra(mapping, playerPosition);
             for (int i = 0; i < Mobs.size(); i++) {
                 float mobX = (float)Math.floor(Mobs.get(i).getWorldPositionX());
                 float mobY = (float)Math.floor(Mobs.get(i).getWorldPositionY());
