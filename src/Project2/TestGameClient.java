@@ -44,7 +44,9 @@ public class TestGameClient extends BasicGameState{
     private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     private ArrayList<BasicBeing> Players;
     private MobList moblist;
+    private DoorList doorList;
     private ArrayList<BasicBeing> Mobs;
+    private ArrayList<Door> Doors;
     private boolean isIdle = true;
 
     // MAP STUFF
@@ -72,6 +74,7 @@ public class TestGameClient extends BasicGameState{
         ResourceManager.loadImage(ATTACKINGSHEETRSC);
         Players = new ArrayList<>();
         Mobs = new ArrayList<>();
+        Doors = new ArrayList<>();
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
         Project2.settings.createTileMapping(map1, 1);
@@ -143,6 +146,9 @@ public class TestGameClient extends BasicGameState{
             for (int i = 0; i < Mobs.size(); i++) {
                 Mobs.get(i).render(g);
             }
+            for (int i = 0; i < Doors.size(); i++) {
+                Doors.get(i).render(g);
+            }
         }
     }
 
@@ -204,6 +210,7 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
     private void loadLevel(int level) throws SlickException {
         System.out.println("executing loadLevel " + level);
         moblist = new MobList();
+        doorList = new DoorList();
         // should match info switch statement in TestGameServer constructor
         switch (level) {
             case 1:
@@ -211,6 +218,7 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
                 mapX = 90;
                 mapY = 104;
                 Mobs = moblist.getMobList(1);
+                Doors = doorList.getDoorList(1);
                 break;
             default:
                 System.out.println("Client: unknown level");
@@ -251,6 +259,13 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
             int newX = entityX - viewportX;
             int newY = entityY - viewportY;
             Mobs.get(i).setPosition(newX, newY);
+        }
+        for (int i = 0; i < Doors.size(); i++){
+            int entityX = (int)(Doors.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(Doors.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            Doors.get(i).setPosition(newX, newY);
         }
     }
 

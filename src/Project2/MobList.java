@@ -17,23 +17,23 @@ public class MobList {
         Mob mob;
         if (level == 1) {
             // hallway 1
-            mob = new Mob(new Vector(75f, 105.5f), 1, "mob1"); Mobs.add(mob);
-            mob = new Mob(new Vector(74f, 104.5f), 1, "mob2"); Mobs.add(mob);
-            mob = new Mob(new Vector(73f, 105f), 1, "mob3"); Mobs.add(mob);
-
-            mob = new Mob(new Vector(65f, 104.5f), 1, "mob4"); Mobs.add(mob);
-            mob = new Mob(new Vector(64f, 105.5f), 1, "mob5"); Mobs.add(mob);
-            mob = new Mob(new Vector(63f, 104f), 1, "mob6"); Mobs.add(mob);
-            mob = new Mob(new Vector(62.5f, 106f), 1, "mob7"); Mobs.add(mob);
-
-            mob = new Mob(new Vector(50f, 104f), 1, "mob8"); Mobs.add(mob);
-            mob = new Mob(new Vector(49f, 105f), 1, "mob9"); Mobs.add(mob);
-            mob = new Mob(new Vector(51.5f, 105f), 1, "mob10"); Mobs.add(mob);
-            mob = new Mob(new Vector(50f, 106f), 1, "mob11"); Mobs.add(mob);
-
-            mob = new Mob(new Vector(31f, 104.5f), 1, "mob12"); Mobs.add(mob);
-            mob = new Mob(new Vector(30f, 105f), 1, "mob13"); Mobs.add(mob);
-            mob = new Mob(new Vector(31f, 105.5f), 1, "mob14"); Mobs.add(mob);
+//            mob = new Mob(new Vector(75f, 105.5f), 1, "mob1"); Mobs.add(mob);
+//            mob = new Mob(new Vector(74f, 104.5f), 1, "mob2"); Mobs.add(mob);
+//            mob = new Mob(new Vector(73f, 105f), 1, "mob3"); Mobs.add(mob);
+//
+//            mob = new Mob(new Vector(65f, 104.5f), 1, "mob4"); Mobs.add(mob);
+//            mob = new Mob(new Vector(64f, 105.5f), 1, "mob5"); Mobs.add(mob);
+//            mob = new Mob(new Vector(63f, 104f), 1, "mob6"); Mobs.add(mob);
+//            mob = new Mob(new Vector(62.5f, 106f), 1, "mob7"); Mobs.add(mob);
+//
+//            mob = new Mob(new Vector(50f, 104f), 1, "mob8"); Mobs.add(mob);
+//            mob = new Mob(new Vector(49f, 105f), 1, "mob9"); Mobs.add(mob);
+//            mob = new Mob(new Vector(51.5f, 105f), 1, "mob10"); Mobs.add(mob);
+//            mob = new Mob(new Vector(50f, 106f), 1, "mob11"); Mobs.add(mob);
+//
+//            mob = new Mob(new Vector(31f, 104.5f), 1, "mob12"); Mobs.add(mob);
+//            mob = new Mob(new Vector(30f, 105f), 1, "mob13"); Mobs.add(mob);
+//            mob = new Mob(new Vector(31f, 105.5f), 1, "mob14"); Mobs.add(mob);
 
             // room 1
             mob = new Mob(new Vector(22.5f, 104f), 1, "mob15"); Mobs.add(mob);
