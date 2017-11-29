@@ -20,10 +20,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static Project2.InputManager.ProcessInput;
-import static Project2.MovementCalc.*;
 import static Project2.InputManager.InputCommands;
 import static Project2.InputManager.InputCommands.*;
+import static Project2.MovementCalc.*;
 
 
 public class TestGameServer {
@@ -37,7 +36,7 @@ public class TestGameServer {
     // GAME STUFF
     private int stateId;
     private int mapX, mapY;
-    private ArrayList<BasicBeing> Players;
+    private ArrayList<Hero> Players;
     private MobList moblist;
     private ArrayList<Mob> Mobs;
     private static int PlayerCount = 2;
@@ -61,6 +60,9 @@ public class TestGameServer {
             mapX = 90;
             mapY = 104;
             Mobs = moblist.getMobList(1);
+            for(Mob mob: Mobs){
+                mob.setPosition(new Vector(mob.getWorldPositionX()*32f, mob.getWorldPositionY()*32f));
+            }
         }
 
         // Set port info
@@ -72,9 +74,9 @@ public class TestGameServer {
     /** Game Functions */
     private void addPlayer(String playerID, int type) {
         // TODO: Add playerID and ClassID to Basic Being constructor or player constructor, whatever gets used here
-        BasicBeing being1 = new BasicBeing(new Vector(mapX, mapY), new Vector(mapX, mapY), ResourceManager.getSpriteSheet(WALKINGSHEETRSC,32,32),
-                ResourceManager.getSpriteSheet(ATTACKINGSHEETRSC,32,32));
-        Players.add(being1);
+        Hero hero1 = new Hero(new Vector(mapX, mapY),false, playerID);
+        hero1.setPosition(new Vector(mapX,mapY));
+        Players.add(hero1);
     }
 
     // TODO: function for running dijkstra's
@@ -89,8 +91,9 @@ public class TestGameServer {
 /** Server Functions */
     public void init () {
         Players = new ArrayList<>();
-        Mobs = new ArrayList<>();
-        moblist = new MobList();
+//        These are being initialized in constructor and this one sets them to zero again.
+//        Mobs = new ArrayList<>();
+//        moblist = new MobList();
         // try to open server socket, catch error if fails
         try {
             socket = new ServerSocket(port);
@@ -134,15 +137,19 @@ public class TestGameServer {
 
                 // TODO: fix this after IP is stored in player class
                 // process movement based on input
+                Players.get(0).setCommand(inputCommand);
                 Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(0).getSpeed()));
                 Players.get(0).setTranslation(velocity);
                 Vector newWorldPosition = CalcWorldPosition(velocity, Players.get(0).getWorldPosition());
+//                set map position
                 Players.get(0).setWorldPosition(newWorldPosition);
+//                set jig entity vector for collisions.
+                Players.get(0).setPosition(new Vector(newWorldPosition.getX()*32f,newWorldPosition.getY()*32f));
                 float x = Players.get(0).getWorldPositionX();
                 float y = Players.get(0).getWorldPositionY();
 
                 // check for player/wall collisions
-
+                CollisionManager.CheckHeroMobCollisions(Players.get(0), Mobs);
                 // if movement was valid, add update to changes
                 String newChange  = " " + player;
                 newChange += " " + tokens[2];
@@ -264,6 +271,22 @@ public class TestGameServer {
     // timer for update packets
     private Runnable sendUpdate = new Runnable() {
         public void run() {
+            Mob mob = Mobs.get(0);
+            try{mob.setCommand(InputCommands.right);}catch(Exception e){ System.out.println("emptyMOB ON SERvER");}
+            Vector newMobPosition = MovementCalc.CalcWorldPosition(MovementCalc.CalcTranslation(
+                    MovementCalc.CalcDirection(mob.getCommand()),mob.getSpeed()),mob.getWorldPosition());
+            mob.setWorldPosition(newMobPosition);
+            mob.setPosition(new Vector(newMobPosition.getX()*32f, newMobPosition.getY()*32f));
+            CollisionManager.CheckMobHeroCollisions(mob, Players);
+//            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
+            //            // if movement was valid, add update to changes
+            String newChange  = " " + Mobs.get(0).getName();
+            newChange += " " + InputCommands.right;
+            newChange += " " + Mobs.get(0).getWorldPositionX();
+            newChange += " " + Mobs.get(0).getWorldPositionY();
+
+            changes = changes.concat(newChange);
+            System.out.println("seerver change: "+changes);
             if (changes != "") {
                 String msg = "UPDT" + changes;
                 changes = "";

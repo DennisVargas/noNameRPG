@@ -16,35 +16,36 @@ public class Mob extends BasicBeing {
     private static final SpriteSheet mob4Attacking = ResourceManager.getSpriteSheet(Project2.MOB4ATTACKINGSHEETRSC,32,32);
 
     public Mob(Vector worldPosition, int mobType, String name) {
-        super( new Vector(-5000,-5000), worldPosition, mob1Walking, mob1Attacking);
-//        setPosition(MovementCalc.CalcScreenPosition(Project2.getSettings().getPlayer().getWorldPosition(),
-//                this.getWorldPosition()));
+        super(worldPosition, worldPosition, mob1Walking, mob1Attacking);
         this.setName(name);
-        setMobAnimation(mobType);
+        setMobType(mobType);
     }
 
     public int getMobType(){
         return this.mobType;
     }
 
-    private void setMobAnimation(int mobType) {
+    private void setMobType(int mobType) {
         switch(mobType){
             case 1:
                 InitAnimations(mob2Walking, mob2Attacking);
+                this.setRanged(false);
                 break;
             case 2:
                 InitAnimations(mob2Walking, mob2Attacking);
+                this.setRanged(false);
                 break;
             case 3:
                 InitAnimations(mob3Walking, mob3Attacking);
+                this.setRanged(true);
                 break;
             case 4:
                 InitAnimations(mob4Walking, mob4Attacking);
+                this.setRanged(true);
                 break;
         }
-    }
-
-    public void setMobType(int mobType){
         this.mobType = mobType;
     }
+
+
 }

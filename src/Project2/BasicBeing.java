@@ -6,7 +6,6 @@ import jig.Vector;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.geom.Rectangle;
 
 import static Project2.InputManager.InputCommands;
 
@@ -17,9 +16,16 @@ import static Project2.InputManager.InputCommands;
  */
 public class BasicBeing extends Entity{
 
+
+
+
+    private float attackPower = 0.5f;
     private float health = 1f;
     private float speed = 2f;
     boolean isClient = false;
+
+
+    boolean isRanged = false;
 
     private Animation   walkRightAnim, walkLeftAnim, walkUpAnim,
             walkDnAnim, idleAnimLt, idleAnimRt, attackAnim,
@@ -30,6 +36,10 @@ public class BasicBeing extends Entity{
 
 
     private InputCommands inputCommand;
+
+
+
+    private InputCommands lastDirectionCommand;
     private Vector worldPosition;
     private Vector translation;
     private Vector screenPosition;
@@ -58,6 +68,13 @@ public class BasicBeing extends Entity{
         this.debugThis = true;
     }
 
+    public InputManager.InputCommands getLastDirectionCommand() {
+        return lastDirectionCommand;
+    }
+
+    public void setLastDirectionCommand(InputManager.InputCommands lastDirectionCommand) {
+        this.lastDirectionCommand = lastDirectionCommand;
+    }
 
     /**
      * Sets the next animation dependent on
@@ -107,6 +124,23 @@ public class BasicBeing extends Entity{
         }
     }
 
+
+    /**
+     * attack power is used in hit method for reducing another being's health.
+     * @return float value for the being attack power
+     */
+    public float getAttackPower() {
+        return attackPower;
+    }
+
+    /**
+     * attack power is used in hit method for reducing another being's health.
+     * @param attackPower float that denotes the amount a beings health is reduced
+     */
+    public void setAttackPower(float attackPower) {
+        this.attackPower = attackPower;
+    }
+
     /**
      * Gets the int value of the being id
      * @return  the value of beingID that has been set
@@ -141,7 +175,7 @@ public class BasicBeing extends Entity{
      * A separate identifier in string format. This name
      * field may serve as an identifier for clients to the
      * server.
-     * @return
+     * @return string identification for the being
      */
     public String getName() {
         return name;
@@ -218,6 +252,12 @@ public class BasicBeing extends Entity{
         return this.worldPosition.getY();
     }
 
+    public boolean isRanged() {
+        return isRanged;
+    }
+
+
+
     /**
      * Initializes the Being Animations for walking, idle, attacking, and death.
      * Sprite sheets are passed into the Basic Being Constructor.
@@ -243,8 +283,13 @@ public class BasicBeing extends Entity{
         this.addShape(beingBoundBox);
     }
 
+    /**
+     * subtracts a percentage of the current health from the current health.
+     * @param attackValue float that
+     */
     public void HitBeing(float attackValue){
-        setHealth(getHealth()*attackValue);
+//        reduces attack value by a percentage of its health
+        setHealth(getHealth() - getHealth()*attackValue);
     }
 
     /**
@@ -320,6 +365,10 @@ public class BasicBeing extends Entity{
         this.health = health;
     }
 
+
+    public void setRanged(boolean ranged) {
+        isRanged = ranged;
+    }
 
     /**
      * Sets the <code>BasicBeing</code> name field to the value passed in
