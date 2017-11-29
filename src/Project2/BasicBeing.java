@@ -19,7 +19,7 @@ public class BasicBeing extends Entity{
 
 
 
-    private float attackPower = 0.5f;
+    private float attackPower = 20f;
     private float health = 1f;
     private float speed = 2f;
     boolean isClient = false;
