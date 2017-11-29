@@ -60,7 +60,6 @@ public class Project2 extends StateBasedGame {
     public static final String MOB3ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String MOB4WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String MOB4ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String HOLDER_8 = "testAssets/spacer8sq.png";
 
     /**
      * instantiates the game name and then creates a
@@ -121,7 +120,7 @@ public class Project2 extends StateBasedGame {
         ResourceManager.loadImage(MELEEHEROWALKINGSHEETRSC);
         ResourceManager.loadImage(RANGEDHEROWALKINGSHEETRSC);
         ResourceManager.loadImage(RANGEDHEROATTACKINGSHEETRSC);
-        ResourceManager.loadImage(HOLDER_8);
+
         if(this.testStatePlay){
 //        test states init
             this.getState(TESTGAMECLIENT).init(gameContainer,this);
