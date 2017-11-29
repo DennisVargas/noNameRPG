@@ -163,6 +163,21 @@ public class CollisionManager {
     public static boolean CheckMobHeroCollisions(Mob mob, ArrayList<Hero> heroes) {
         for(Hero hero: heroes){
             Collision collides = null;
+            if(mob.getCommand() == InputCommands.attack){
+//                make an attack move so you collide in the direction moving if you don't collide go back.
+                Vector attackPos = MovementCalc.CalcWorldPosition(mob.getLastDirectionCommand(), mob.getWorldPosition(), mob.getSpeed());
+                mob.setPosition(new Vector (attackPos.getX()*32f,attackPos.getY()*32f));
+
+                if ((collides = mob.collides(hero))!= null){
+                    System.out.println("hit Hero before health: "+hero.getHealth());
+
+                    hero.HitBeing(mob.getAttackPower());
+                    System.out.println("hit Hero after health: "+hero.getHealth());
+                }
+//              reverse the attack move
+                attackPos = MovementCalc.CalcWorldPosition(ReverseCommand(mob.getLastDirectionCommand()), mob.getWorldPosition(), mob.getSpeed());
+                mob.setPosition(new Vector (attackPos.getX()*32f,attackPos.getY()*32f));
+            }
             if((collides = mob.collides(hero))!=null){
                 mob.setWorldPosition(MovementCalc.CalcWorldPosition(ReverseCommand(mob.getCommand()), mob.getWorldPosition(), mob.getSpeed()));
                 mob.setPosition(new Vector(mob.getWorldPositionX()*32f,mob.getWorldPositionY()*32f));
