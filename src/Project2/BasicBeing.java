@@ -39,7 +39,7 @@ public class BasicBeing extends Entity{
 
 
 
-    private InputCommands lastDirectionCommand;
+    private InputCommands lastDirectionCommand = InputCommands.left;
     private Vector worldPosition;
     private Vector translation;
     private Vector screenPosition;
@@ -63,6 +63,8 @@ public class BasicBeing extends Entity{
         setScreenPosition(screenPosition);
         setWorldPosition(worldPosition);
         InitAnimations(walkingSheet, attackingSheet);
+        setCommand(InputCommands.idle);
+        setLastDirectionCommand(InputCommands.left);
         setCurrentAnimation(idleAnimLt);
         InitNextVectors();
         this.debugThis = true;
@@ -83,6 +85,7 @@ public class BasicBeing extends Entity{
      * the <code>InputManager.InputCommands</code> enumeration.
      */
     private void ProcessNextAnimation(InputCommands command) {
+
         switch(command){
             case up:
                 setCurrentAnimation(walkUpAnim);
@@ -289,7 +292,7 @@ public class BasicBeing extends Entity{
      */
     public void HitBeing(float attackValue){
 //        reduces attack value by a percentage of its health
-        setHealth(getHealth() - getHealth()*attackValue);
+        setHealth(getHealth() - attackValue/100);
     }
 
     /**
