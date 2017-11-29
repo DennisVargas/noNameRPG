@@ -38,7 +38,7 @@ public class PlaySettings {
         return guestStartLevel1;
     }
 
-
+    public Map getTilemapping(){return tilemapping;}
 
     public Vector getHostStartLevel1() {
         return hostStartLevel1;
