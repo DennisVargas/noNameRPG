@@ -21,7 +21,7 @@ public class InputManager {
 
 //  boolean that stores the value of when a GamePad button
 //  has been pressed once so that it will not repeat.
-    private static boolean buttonBeenPressed;
+    private static boolean buttonBeenPressed = false;
 
     /**
      * Based on the stateID current input key pressed returns a <code>InputCommands</code>.
@@ -84,10 +84,14 @@ public class InputManager {
                     curCommand = right;
             }
 //            test for the attack action which stops movement.
-            if (input.isKeyDown(Input.KEY_UP)
-                    || input.isButton3Pressed(0)) {
-                curCommand = attack;}
-
+            if (input.isKeyPressed(Input.KEY_UP)
+                    || (input.isButton3Pressed(0))){
+                if(!buttonBeenPressed){
+                    buttonBeenPressed = true;
+                    curCommand = attack;
+                }
+            }else
+                buttonBeenPressed = false;
             return curCommand;
         }
     }

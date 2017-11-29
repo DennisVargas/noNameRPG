@@ -75,9 +75,10 @@ public class MovementCalc {
      * Calculates the world position given arguments translation and current world position.
      * new world position = "current world position" + (translation)/32
      */
-    public static Vector CalcWorldPosition(Vector translation, Vector curWorldPos) {
+    public static Vector CalcWorldPosition(InputCommands command, Vector curWorldPos, float speed) {
         float x = curWorldPos.getX();
         float y = curWorldPos.getY();
+        Vector translation = CalcTranslation(CalcDirection(command),speed);
         x += (translation.getX()/32f);
         y += (translation.getY()/32f);
         return new Vector(x, y);

@@ -17,10 +17,11 @@
 - **[34]** BasicBeing/BasicBeing collisions
 - **[7]** Camera viewport that follows player
 - **[36]** Update Mobs in server and Update move entities in Client
+- **[35]** BasicBeing hit function reduces health
 
 ## Claimed Issues ##
 - **[2]** Add art assets
-- **[35]** BasicBeing hit function reduces health
+- **[37]** Attacks cause damage
 - **[9]** Add mob path finding
 - **[14]** Design and implement level 1 mob & item locations
 
