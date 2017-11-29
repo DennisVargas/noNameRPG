@@ -17,7 +17,7 @@ public class Pathfinding {
         return false;
     }
 
-    public static void Dijkstra(){
+    public static void Dijkstra(Map tiles, Vector player){
 
     }
 
