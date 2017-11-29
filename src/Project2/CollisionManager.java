@@ -55,36 +55,38 @@ public class CollisionManager {
     }
 
     public static boolean CheckHeroMobCollisions(Hero hero, ArrayList<Mob> mobs) {
-        for(Mob mob: mobs){
+        for(Mob mob: mobs) {
             Collision collides = null;
-            if(hero.getCommand() == InputCommands.attack){
+            if (!mob.IsDead()) {
+                if (hero.getCommand() == InputCommands.attack) {
 //                make an attack move so you collide in the direction moving if you don't collide go back.
-                Vector attackPos = MovementCalc.CalcWorldPosition(hero.getLastDirectionCommand(), hero.getWorldPosition(), hero.getSpeed());
-                hero.setPosition(new Vector (attackPos.getX()*32f,attackPos.getY()*32f));
+                    Vector attackPos = MovementCalc.CalcWorldPosition(hero.getLastDirectionCommand(), hero.getWorldPosition(), hero.getSpeed());
+                    hero.setPosition(new Vector(attackPos.getX() * 32f, attackPos.getY() * 32f));
 
-                if ((collides = hero.collides(mob))!= null){
-                    System.out.println("hit MOB before health: "+mob.getHealth());
+                    if ((collides = hero.collides(mob)) != null) {
+                        System.out.println("hit MOB before health: " + mob.getHealth());
 
-                    mob.HitBeing(hero.getAttackPower());
-                    System.out.println("hit MOB after health: "+mob.getHealth());
-                    if(mob.IsDead()){
-                        mob.setCommand(InputCommands.death);
-                        System.out.println("I'm Dead");
+                        mob.HitBeing(hero.getAttackPower());
+                        System.out.println("hit MOB after health: " + mob.getHealth());
+                        if (mob.IsDead()) {
+                            mob.setCommand(InputCommands.death);
+                            System.out.println("I'm Dead");
+                        }
+
                     }
-
-                }
 //              reverse the attack move
-                attackPos = MovementCalc.CalcWorldPosition(ReverseCommand(hero.getLastDirectionCommand()), hero.getWorldPosition(), hero.getSpeed());
-                hero.setPosition(new Vector (attackPos.getX()*32f,attackPos.getY()*32f));
-            }
-            if((collides = hero.collides(mob))!=null){
+                    attackPos = MovementCalc.CalcWorldPosition(ReverseCommand(hero.getLastDirectionCommand()), hero.getWorldPosition(), hero.getSpeed());
+                    hero.setPosition(new Vector(attackPos.getX() * 32f, attackPos.getY() * 32f));
+                }
+                if ((collides = hero.collides(mob)) != null) {
 
-                hero.setWorldPosition(MovementCalc.CalcWorldPosition(ReverseCommand(hero.getCommand()), hero.getWorldPosition(), hero.getSpeed()));
+                    hero.setWorldPosition(MovementCalc.CalcWorldPosition(ReverseCommand(hero.getCommand()), hero.getWorldPosition(), hero.getSpeed()));
 
-                hero.setPosition(new Vector(hero.getWorldPositionX() * 32f, hero.getWorldPositionY() * 32f));
+                    hero.setPosition(new Vector(hero.getWorldPositionX() * 32f, hero.getWorldPositionY() * 32f));
 //                System.out.println("we collided Hero mob style x,y hero " + hero.getPosition() + "x,y mob: " + mob.getPosition());
 //                System.out.println("collision min penetration: " + collides.getMinPenetration());
-                return true;
+                    return true;
+                }
             }
         }
         return false;
