@@ -13,7 +13,6 @@ import org.newdawn.slick.SlickException;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.Object;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -44,9 +43,11 @@ public class TestGameServer {
     private DoorList doorList;
     private ArrayList<Mob> Mobs;
     private ArrayList<Door> Doors;
-    private ArrayList<Money> Money;
+    private ArrayList<Money> MoneyDrops;
+    private ArrayList<Mob> IgnoreList;
     private static int PlayerCount = 2;
     private String changes = "";
+    private String changes2 = "";
 
     // TODO: eventually remove this
     private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
@@ -56,10 +57,10 @@ public class TestGameServer {
     // constructor sets port number and state ID for current level
     public TestGameServer(int stateId, int port) throws SlickException {
         Mobs = new ArrayList<>();
-        Doors = new ArrayList<>();
-        Money = new ArrayList<>();
+        Doors = new ArrayList<Door>();
         moblist = new MobList();
         doorList = new DoorList();
+        MoneyDrops = new ArrayList<Money>();
         // Set game info based on what level was requested by host
         // TODO: eventually remove spritesheets
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
@@ -104,6 +105,7 @@ public class TestGameServer {
 /** Server Functions */
     public void init () {
         Players = new ArrayList<>();
+        IgnoreList = new ArrayList<Mob>();
 //        These are being initialized in constructor and this one sets them to zero again.
 //        Mobs = new ArrayList<>();
 //        moblist = new MobList();
@@ -142,24 +144,29 @@ public class TestGameServer {
             case "INIT":
 //                System.out.println("Server: got INIT message");
                 addPlayer(player, Integer.parseInt(tokens[2]));
+//                addPlayer("/animalCrackers", 1);
                 initPacket();
                 break;
             case "INPT":
 //                System.out.println("Server: got INPT message: " + tokens[2]);
                 InputCommands inputCommand = getCommand(tokens[2]);
-
+                Hero hero1 = Players.get(0);
                 // TODO: fix this after IP is stored in player class
                 // process movement based on input
-                Players.get(0).setCommand(inputCommand);
-                Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(0).getSpeed()));
-                Players.get(0).setTranslation(velocity);
-                Vector newWorldPosition = CalcWorldPosition(velocity, Players.get(0).getWorldPosition());
+                hero1.setCommand(inputCommand);
+//                Players.get(0).UpdateAttackRect();
+//                Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(0).getSpeed()));
+//                hero1.setTranslation(velocity);
+                Vector newWorldPosition = CalcWorldPosition(hero1.getCommand(),hero1.getWorldPosition(),hero1.getSpeed());
 //                set map position
-                Players.get(0).setWorldPosition(newWorldPosition);
+                hero1.setWorldPosition(newWorldPosition);
 //                set jig entity vector for collisions.
-                Players.get(0).setPosition(new Vector(newWorldPosition.getX()*32f,newWorldPosition.getY()*32f));
-                float x = Players.get(0).getWorldPositionX();
-                float y = Players.get(0).getWorldPositionY();
+                hero1.setPosition(new Vector(newWorldPosition.getX()*32f,newWorldPosition.getY()*32f));
+                float x =  hero1.getWorldPositionX();
+                float y =  hero1.getWorldPositionY();
+                CollisionManager.CheckHeroMobCollisions(hero1, Mobs);
+                CollisionManager.CheckHeroHeroCollisions(hero1, Players);
+
 
                 // check for player/wall collisions
                 if(CollisionManager.CheckValidMove(Players.get(0))) {
@@ -286,48 +293,59 @@ public class TestGameServer {
     // timer for update packets
     private Runnable sendUpdate = new Runnable() {
         public void run() {
-            Mob mob = Mobs.get(0);
-            try{mob.setCommand(InputCommands.right);}catch(Exception e){ System.out.println("emptyMOB ON SERvER");}
-            Vector newMobPosition = MovementCalc.CalcWorldPosition(MovementCalc.CalcTranslation(
-                    MovementCalc.CalcDirection(mob.getCommand()),mob.getSpeed()),mob.getWorldPosition());
-            mob.setWorldPosition(newMobPosition);
-            mob.setPosition(new Vector(newMobPosition.getX()*32f, newMobPosition.getY()*32f));
-            CollisionManager.CheckMobHeroCollisions(mob, Players);
+            Random random = new Random();
+            for(Mob mob: Mobs){
+                try{mob.setCommand(InputCommands.idle);}catch(Exception e){ System.out.println("emptyMOB ON SERvER");}
+                Vector newMobPosition = MovementCalc.CalcWorldPosition(mob.getCommand(),mob.getWorldPosition(),mob.getSpeed());
+                mob.setWorldPosition(newMobPosition);
+                mob.setPosition(new Vector(newMobPosition.getX()*32f, newMobPosition.getY()*32f));
+                CollisionManager.CheckMobHeroCollisions(mob, Players);
+                CollisionManager.CheckMobMobCollisions(mob, Mobs);
 //            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
-            //            // if movement was valid, add update to changes
-            String newChange  = " " + Mobs.get(0).getName();
-            newChange += " " + InputCommands.right;
-            newChange += " " + Mobs.get(0).getWorldPositionX();
-            newChange += " " + Mobs.get(0).getWorldPositionY();
-
-            for (Mob mob1:Mobs){
-//                mob1.setHealth(0);
-                if(mob1.IsDead()){
-                    Vector position = mob1.getWorldPosition();
-                    Mobs.remove(mob1);
-                    Random random = new Random();
-                    int high = 21;
-                    int low = 1;
-                    try {
-                        Money.add(new Money(position, "money", (random.nextInt(high - low) + low)));
-                    } catch (SlickException e){
-                        System.out.println("Drop Failed");
+                //            // if movement was valid, add update to changes
+                String newChange  = " " + mob.getName();
+                newChange += " " + mob.getCommand();
+                if(mob.getCommand() == InputCommands.death) {
+//                    System.out.println(mob.getName() + " " + mob.getCommand());
+                    Vector position = mob.getWorldPosition();
+                    int value = random.nextInt((21 - 1) + 1);
+                    if (!IgnoreList.contains(mob)) {
+                        IgnoreList.add(mob);
+                        String newChanges = "";
+                        for(int i = 0; i < MoneyDrops.size(); i++){
+                            newChanges += " " + MoneyDrops.get(i).getName();
+                            newChanges += " " + MoneyDrops.get(i).getWorldPositionX();
+                            newChanges += " " + MoneyDrops.get(i).getWorldPositionY();
+                            newChanges += " " + MoneyDrops.get(i).value;
+                        }
+                        changes2 = newChanges;
+                        try {
+                            MoneyDrops.add(new Money(position, "money" + MoneyDrops.size(), value));
+                        } catch (SlickException e) {
+                            System.out.println("Failed to drop money off of " + mob.getName());
+                        }
                     }
                 }
-            }
-            for (Money drop : Money){
-                newChange += " " + drop.getWorldPosition();
+                newChange += " " + mob.getWorldPositionX();
+                newChange += " " + mob.getWorldPositionY();
+
+                changes = changes.concat(newChange);
             }
 
-            changes = changes.concat(newChange);
-            System.out.println("server change: "+changes);
+//            System.out.println("seerver change: "+changes);
             if (changes != "") {
                 String msg = "UPDT" + changes;
                 changes = "";
 //                System.out.println(msg);
                 send(msg);
             }
+
+
+            if (changes2 != "") {
+                String msg = "DROP" + changes2;
+                changes2 = "";
+                send(msg);
+            }
         }
     };
-
 }

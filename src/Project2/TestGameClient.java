@@ -10,10 +10,7 @@ package Project2;
 
 import jig.ResourceManager;
 import jig.Vector;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.tiled.TiledMap;
@@ -42,11 +39,12 @@ public class TestGameClient extends BasicGameState{
     private InputCommands inputCommand;
     private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    private ArrayList<BasicBeing> Players;
+    private ArrayList<Hero> Players;
     private MobList moblist;
     private DoorList doorList;
-    private ArrayList<BasicBeing> Mobs;
     private ArrayList<Door> Doors;
+    private ArrayList<Mob> Mobs;
+    private ArrayList<Money> MoneyDrops;
     private boolean isIdle = true;
 
     // MAP STUFF
@@ -75,6 +73,7 @@ public class TestGameClient extends BasicGameState{
         Players = new ArrayList<>();
         Mobs = new ArrayList<>();
         Doors = new ArrayList<>();
+        MoneyDrops = new ArrayList<>();
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
         Project2.settings.createTileMapping(map1, 1);
@@ -135,11 +134,7 @@ public class TestGameClient extends BasicGameState{
             int viewportY = (int)((Players.get(0).getWorldPositionY()*32.0) - screenCenter.getY());
             worldToScreen(viewportX, viewportY);
 
-            // ENTITY STUFF
-            // render players
-            for (int i = 0; i < Players.size(); i++) {
-                Players.get(i).render(g);
-            }
+
 
             // render mobs here when we have them
 //            System.out.println("moblist size = " + Mobs.size());
@@ -148,6 +143,17 @@ public class TestGameClient extends BasicGameState{
             }
             for (int i = 0; i < Doors.size(); i++) {
                 Doors.get(i).render(g);
+            }
+            for (int i = 0; i < MoneyDrops.size(); i++)
+                MoneyDrops.get(i).render(g);
+            // ENTITY STUFF
+            // render players
+            for (Hero hero:Players) {
+                hero.render(g);
+                g.setColor(Color.red);
+                hero.UpdateHealthBarLocation();
+                g.fill(hero.getHealthBar());
+
             }
         }
     }
@@ -169,6 +175,7 @@ public class TestGameClient extends BasicGameState{
                 isIdle = false;
                 inptMsg(inputCommand.toString());
             }
+
         }
     }
 
@@ -179,14 +186,15 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
     // TODO: have some indication if entity is a mob so it loops through correct ArrayList
 
     if(entity.contains("/")){
-        for(BasicBeing hero: Players){
+        for(Hero hero: Players){
             if(entity.equals(hero.getName())){
                 hero.UpdateBeing(input, new Vector(posX, posY));
+
                 break;
             }
         }
     }else if(entity.contains("mob")){
-        for(BasicBeing mob: Mobs){
+        for(Mob mob: Mobs){
             if(entity.equals(mob.getName())){
                 mob.UpdateBeing(input, new Vector(posX, posY));
                 break;
@@ -247,18 +255,29 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
             case "drDiag": inputCommand = drDiag; break;
             case "attack": inputCommand = attack; break;
             case "idle": inputCommand = idle; break;
+            case "death": inputCommand = death; break;
         }
         return inputCommand;
     }
 
 
     private void worldToScreen(int viewportX, int viewportY) {
-        for (int i = 0; i < Mobs.size(); i++) {
-            int entityX = (int)(Mobs.get(i).getWorldPositionX()*32.0);
-            int entityY = (int)(Mobs.get(i).getWorldPositionY()*32.0);
+
+        for(Hero hero: Players){
+            if(!Project2.getSettings().getIpAddress().equals(hero.getName())){
+                int entityX = (int)(hero.getWorldPositionX()*32.0);
+                int entityY = (int)(hero.getWorldPositionY()*32.0);
+                int newX = entityX - viewportX;
+                int newY = entityY - viewportY;
+                hero.setPosition(newX, newY);
+            }
+        }
+        for (Mob mob:Mobs) {
+            int entityX = (int)(mob.getWorldPositionX()*32.0);
+            int entityY = (int)(mob.getWorldPositionY()*32.0);
             int newX = entityX - viewportX;
             int newY = entityY - viewportY;
-            Mobs.get(i).setPosition(newX, newY);
+            mob.setPosition(newX, newY);
         }
         for (int i = 0; i < Doors.size(); i++){
             int entityX = (int)(Doors.get(i).getWorldPositionX()*32.0);
@@ -352,6 +371,7 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
 //                System.out.println("Client: got INIT response ");
                 loadLevel(Integer.parseInt(tokens[1]));
                 addPlayer(tokens[2], Float.parseFloat(tokens[3]), Float.parseFloat(tokens[4]));
+//                addPlayer("/animalCrackers", 92f, 105f);
                 init = true;
                 break;
             case "UPDT":
@@ -362,6 +382,12 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
                     InputCommands input = getCommand(tokens[i+1]);
                     moveEntity(tokens[i], input, Float.parseFloat(tokens[i+2]), Float.parseFloat(tokens[i+3]));
 //                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
+                }
+                break;
+            case "DROP":
+                for (int i = 1; i < tokens.length; i++) {
+                    if(tokens[i].contains("money"))
+                        MoneyDrops.add(new Money(new Vector(Float.parseFloat(tokens[i+1]), (Float.parseFloat(tokens[i+2]))), tokens[i], Integer.parseInt(tokens[i+3])));
                 }
                 break;
             default:

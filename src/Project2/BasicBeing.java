@@ -19,7 +19,7 @@ public class BasicBeing extends Entity{
 
 
 
-    private float attackPower = 0.5f;
+    private float attackPower = 20f;
     private float health = 1f;
     private float speed = 2f;
     boolean isClient = false;
@@ -39,7 +39,7 @@ public class BasicBeing extends Entity{
 
 
 
-    private InputCommands lastDirectionCommand;
+    private InputCommands lastDirectionCommand = InputCommands.left;
     private Vector worldPosition;
     private Vector translation;
     private Vector screenPosition;
@@ -63,6 +63,8 @@ public class BasicBeing extends Entity{
         setScreenPosition(screenPosition);
         setWorldPosition(worldPosition);
         InitAnimations(walkingSheet, attackingSheet);
+        setCommand(InputCommands.idle);
+        setLastDirectionCommand(InputCommands.left);
         setCurrentAnimation(idleAnimLt);
         InitNextVectors();
         this.debugThis = true;
@@ -91,6 +93,7 @@ public class BasicBeing extends Entity{
      * the <code>InputManager.InputCommands</code> enumeration.
      */
     private void ProcessNextAnimation(InputCommands command) {
+
         switch(command){
             case up:
                 setCurrentAnimation(walkUpAnim);
@@ -283,6 +286,7 @@ public class BasicBeing extends Entity{
         this.idleAnimLt = new Animation(walkingSheet, 0,7,5,7,true,100,true);
 
         this.deathAnim = new Animation(walkingSheet, 0,8,7,8,true,100,true);
+        deathAnim.setLooping(false);
         //  Attack and hit anim are the same except he shoots things when attacking.
         this.attackAnim = new Animation(walkingSheet, 0,5,1,5,true,100,true);
 
@@ -297,7 +301,7 @@ public class BasicBeing extends Entity{
      */
     public void HitBeing(float attackValue){
 //        reduces attack value by a percentage of its health
-        setHealth(getHealth() - getHealth()*attackValue);
+        setHealth(getHealth() - attackValue/100);
     }
 
     /**
@@ -467,9 +471,21 @@ public class BasicBeing extends Entity{
         ProcessNextAnimation(command);
         setWorldPosition(newWorldPos);
     }
+    
+    public void setCommand(InputCommands cmd) {
 
-    public void setCommand(InputCommands command) {
-        this.inputCommand = command;
+        if(this.inputCommand!= InputCommands.death) {
+            if (cmd.equals(InputManager.InputCommands.down)
+                    || cmd.equals(InputManager.InputCommands.up)
+                    || cmd.equals(InputManager.InputCommands.left)
+                    || cmd.equals(InputManager.InputCommands.right)
+                    || cmd.equals(InputManager.InputCommands.dlDiag)
+                    || cmd.equals(InputManager.InputCommands.drDiag)
+                    || cmd.equals(InputManager.InputCommands.ulDiag)
+                    || cmd.equals(InputManager.InputCommands.urDiag))
+                this.setLastDirectionCommand(cmd);
+            this.inputCommand = cmd;
+        }
     }
 
     public InputCommands getCommand(){
