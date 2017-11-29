@@ -164,14 +164,10 @@ public class CollisionManager {
         for(Hero hero: heroes){
             Collision collides = null;
             if((collides = mob.collides(hero))!=null){
-                mob.setWorldPosition(MovementCalc.CalcWorldPosition(
-                        MovementCalc.CalcTranslation(
-                                MovementCalc.CalcDirection(
-                                        ReverseCommand(mob.getCommand())), mob.getSpeed())
-                        , mob.getWorldPosition()));
+                mob.setWorldPosition(MovementCalc.CalcWorldPosition(ReverseCommand(mob.getCommand()), mob.getWorldPosition(), mob.getSpeed()));
                 mob.setPosition(new Vector(mob.getWorldPositionX()*32f,mob.getWorldPositionY()*32f));
-                System.out.println("we collided MOb Hero style x,y mob "+mob.getPosition()+"x,y mob: "+hero.getPosition());
-                System.out.println("collision min penetration: "+collides.getMinPenetration());
+//                System.out.println("we collided Mob hero style x,y mob "+mob.getPosition()+"x,y mob: "+hero.getPosition());
+//                System.out.println("collision min penetration: "+collides.getMinPenetration());
                 return true;
             }
         }
