@@ -188,4 +188,32 @@ public class CollisionManager {
         }
         return false;
     }
+
+    public static boolean CheckHeroHeroCollisions(Hero hero, ArrayList<Hero> heroes) {
+        ArrayList<Hero> testList = (ArrayList<Hero>)heroes.clone();
+        testList.remove(hero);
+        for(Hero testHero: testList){
+            Collision collides = null;
+            if((collides = hero.collides(testHero))!=null){
+                hero.setWorldPosition(MovementCalc.CalcWorldPosition(ReverseCommand(hero.getCommand()), hero.getWorldPosition(), hero.getSpeed()));
+                hero.setPosition(new Vector(hero.getWorldPositionX()*32f,hero.getWorldPositionY()*32f));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean CheckMobMobCollisions(Mob mob, ArrayList<Mob> mobs) {
+        ArrayList<Mob> testList = (ArrayList<Mob>)mobs.clone();
+        testList.remove(mob);
+        for(Mob testMob: testList){
+            Collision collides = null;
+            if((collides = mob.collides(testMob))!=null){
+                mob.setWorldPosition(MovementCalc.CalcWorldPosition(ReverseCommand(mob.getCommand()), mob.getWorldPosition(), mob.getSpeed()));
+                mob.setPosition(new Vector(mob.getWorldPositionX()*32f,mob.getWorldPositionY()*32f));
+                return true;
+            }
+        }
+        return false;
+    }
 }
