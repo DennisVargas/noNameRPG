@@ -47,6 +47,9 @@ public class Hero extends BasicBeing{
             Project2.getSettings().setPlayer(this);
         }
         InitHealthBarRect();
+        InitHeroRangedAnimations(rangedWalkingSheet,rangedAttackingSheet);
+        this.setCurrentAnimation(idleAnimLt);
+
     }
 
     public void InitHealthBarRect() {
@@ -71,5 +74,26 @@ public class Hero extends BasicBeing{
 
     public Shape getHealthBar() {
         return healthBar;
+    }
+
+    private void InitHeroRangedAnimations(SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
+        this.walkRightAnim = new Animation(walkingSheet, 0,0,9,0,true,100,true);
+        this.walkLeftAnim = new Animation(walkingSheet, 0,1,9,1,true,100,true);
+        this.walkDnAnim = new Animation(walkingSheet, 0,2,9,2,true,100,true);
+        this.walkUpAnim = new Animation(walkingSheet, 0,3,9,3,true,100,true);
+        this.hitAnimRt = new Animation(walkingSheet, 0,4,1,4,true,100,true);
+        this.hitAnimLt = new Animation(walkingSheet, 0,5,1,5,true,100,true);
+        this.idleAnimRt = new Animation(walkingSheet, 0,6,0,6,true,100,true);
+        idleAnimRt.setLooping(false);
+        this.idleAnimLt = new Animation(walkingSheet, 0,7,0,7,true,100,true);
+        idleAnimLt.setLooping(true);
+        this.deathAnim = new Animation(walkingSheet, 0,8,0,8,true,100,true);
+        deathAnim.setLooping(true);
+        //  Attack and hit anim are the same except he shoots things when attacking.
+        this.attackAnim = new Animation(walkingSheet, 0,5,1,5,true,100,true);
+
+//        set bounding box for being based on animation
+        ConvexPolygon beingBoundBox = new ConvexPolygon((float)this.walkLeftAnim.getWidth(),(float)this.walkLeftAnim.getHeight());
+        this.addShape(beingBoundBox);
     }
 }
