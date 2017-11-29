@@ -63,6 +63,7 @@ public class Project2 extends StateBasedGame {
     public static final String DOORVSHEETRSC = "resources/levels/doorV.png";
     public static final String DOORHSHEETRSC = "resources/levels/doorH.png";
 
+
     /**
      * instantiates the game name and then creates a
      * new instance of each of the states in the game.
