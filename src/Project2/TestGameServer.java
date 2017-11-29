@@ -288,24 +288,29 @@ public class TestGameServer {
     private Runnable sendUpdate = new Runnable() {
         public void run() {
             Random random = new Random();
-            for(Mob mob: Mobs){
-                try{mob.setCommand(InputCommands.idle);}catch(Exception e){ System.out.println("emptyMOB ON SERvER");}
-                Vector newMobPosition = MovementCalc.CalcWorldPosition(mob.getCommand(),mob.getWorldPosition(),mob.getSpeed());
-                mob.setWorldPosition(newMobPosition);
-                mob.setPosition(new Vector(newMobPosition.getX()*32f, newMobPosition.getY()*32f));
-                CollisionManager.CheckMobHeroCollisions(mob, Players);
-                CollisionManager.CheckMobMobCollisions(mob, Mobs);
+            for (int i = 0; i < Mobs.size(); i++) {
+                try{Mobs.get(i).setCommand(InputCommands.idle);}catch(Exception e){ System.out.println("emptyMOB ON SERvER");}
+                Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(),Mobs.get(i).getWorldPosition(),Mobs.get(i).getSpeed());
+                Mobs.get(i).setWorldPosition(newMobPosition);
+                Mobs.get(i).setPosition(new Vector(newMobPosition.getX()*32f, newMobPosition.getY()*32f));
+                CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
+                CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
 //            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
                 //            // if movement was valid, add update to changes
-                String newChange  = " " + mob.getName();
-                newChange += " " + mob.getCommand();
-                newChange += " " + mob.getWorldPositionX();
-                newChange += " " + mob.getWorldPositionY();
-
-                changes = changes.concat(newChange);
+                if (Mobs.get(i).getCommand() != idle) {
+                    String newChange = " " + Mobs.get(i).getName();
+                    newChange += " " + Mobs.get(i).getCommand();
+                    newChange += " " + Mobs.get(i).getWorldPositionX();
+                    newChange += " " + Mobs.get(i).getWorldPositionY();
+                    changes = changes.concat(newChange);
+//                    System.out.println("server changes: "+changes);
+                }
+                if (Mobs.get(i).getCommand() == death) {
+                    Mobs.remove(Mobs.get(i));
+                }
             }
 
-//            System.out.println("seerver change: "+changes);
+//            System.out.println("server change: "+changes);
             if (changes != "") {
                 String msg = "UPDT" + changes;
                 changes = "";
