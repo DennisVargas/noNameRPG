@@ -465,6 +465,17 @@ public class BasicBeing extends Entity{
 
     public void setCommand(InputCommands command) {
         this.inputCommand = command;
+    public void setCommand(InputCommands cmd) {
+        if(cmd.equals(InputManager.InputCommands.down)
+                || cmd.equals(InputManager.InputCommands.up)
+                || cmd.equals(InputManager.InputCommands.left)
+                || cmd.equals(InputManager.InputCommands.right)
+                || cmd.equals(InputManager.InputCommands.dlDiag)
+                || cmd.equals(InputManager.InputCommands.drDiag)
+                || cmd.equals(InputManager.InputCommands.ulDiag)
+                || cmd.equals(InputManager.InputCommands.urDiag))
+            this.setLastDirectionCommand(cmd);
+        this.inputCommand = cmd;
     }
 
     public InputCommands getCommand(){
