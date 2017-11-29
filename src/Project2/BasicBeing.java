@@ -462,9 +462,7 @@ public class BasicBeing extends Entity{
         ProcessNextAnimation(command);
         setWorldPosition(newWorldPos);
     }
-
-    public void setCommand(InputCommands command) {
-        this.inputCommand = command;
+    
     public void setCommand(InputCommands cmd) {
         if(cmd.equals(InputManager.InputCommands.down)
                 || cmd.equals(InputManager.InputCommands.up)
