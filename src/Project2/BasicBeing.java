@@ -68,6 +68,14 @@ public class BasicBeing extends Entity{
         this.debugThis = true;
     }
 
+    public BasicBeing(Vector screenPosition, Vector worldPosition){
+        super(screenPosition);
+        setScreenPosition(screenPosition);
+        setWorldPosition(worldPosition);
+        InitNextVectors();
+        this.debugThis = true;
+    }
+
     public InputManager.InputCommands getLastDirectionCommand() {
         return lastDirectionCommand;
     }

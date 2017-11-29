@@ -1,5 +1,6 @@
 package Project2;
 
+import com.sun.org.apache.regexp.internal.RE;
 import jig.Entity;
 import jig.ResourceManager;
 import org.newdawn.slick.AppGameContainer;
@@ -58,6 +59,9 @@ public class Project2 extends StateBasedGame {
     public static final String MOB4WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String MOB4ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String HOLDER_8 = "testAssets/spacer8sq.png";
+    public static final String MONEYSHEETRSC = "resources/Other/shiny_treasure_icons_16x16/money.png";
+    public static final String DOORVSHEETRSC = "resources/levels/doorV.png";
+    public static final String DOORHSHEETRSC = "resources/levels/doorH.png";
 
     /**
      * instantiates the game name and then creates a
@@ -116,6 +120,9 @@ public class Project2 extends StateBasedGame {
         ResourceManager.loadImage(RANGEDHEROWALKINGSHEETRSC);
         ResourceManager.loadImage(RANGEDHEROATTACKINGSHEETRSC);
         ResourceManager.loadImage(HOLDER_8);
+        ResourceManager.loadImage(MONEYSHEETRSC);
+        ResourceManager.loadImage(DOORHSHEETRSC);
+        ResourceManager.loadImage(DOORVSHEETRSC);
 
         if(this.testStatePlay) {
 //        test states init

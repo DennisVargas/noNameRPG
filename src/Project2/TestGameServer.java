@@ -39,7 +39,9 @@ public class TestGameServer {
     private int mapX, mapY;
     private ArrayList<Hero> Players;
     private MobList moblist;
+    private DoorList doorList;
     private ArrayList<Mob> Mobs;
+    private ArrayList<Door> Doors;
     private static int PlayerCount = 2;
     private String changes = "";
 
@@ -51,7 +53,9 @@ public class TestGameServer {
     // constructor sets port number and state ID for current level
     public TestGameServer(int stateId, int port) throws SlickException {
         Mobs = new ArrayList<>();
+        Doors = new ArrayList<Door>();
         moblist = new MobList();
+        doorList = new DoorList();
         // Set game info based on what level was requested by host
         // TODO: eventually remove spritesheets
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
@@ -61,8 +65,12 @@ public class TestGameServer {
             mapX = 90;
             mapY = 104;
             Mobs = moblist.getMobList(1);
+            Doors = doorList.getDoorList(1);
             for(Mob mob: Mobs){
                 mob.setPosition(new Vector(mob.getWorldPositionX()*32f, mob.getWorldPositionY()*32f));
+            }
+            for(Door door: Doors){
+                door.setPosition(new Vector(door.getWorldPositionX()*32, door.getWorldPositionY()*32));
             }
         }
 
