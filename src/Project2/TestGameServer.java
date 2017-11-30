@@ -42,7 +42,7 @@ public class TestGameServer {
     private ArrayList<Hero> Players;
     private MobList moblist;
     private DoorList doorList;
-    private ArrayList<Mob> Mobs;                                                                                                
+    private ArrayList<Mob> Mobs;
     private ArrayList<Door> Doors;
     private ArrayList<Money> Money;
     private ArrayList<Money> MoneyDrops;
