@@ -46,10 +46,13 @@ public class TestGameServer {
     private ArrayList<Door> Doors;
     private ArrayList<Money> Money;
     private ArrayList<Money> MoneyDrops;
+    private ArrayList<Money> NewMoneyDrops;
     private ArrayList<Mob> IgnoreList;
     private static int PlayerCount = 2;
-    private String changes = "";
-    private String changes2 = "";
+    private String mobChanges = "";
+    private String moneyDropChanges = "";
+    private String moneyPickupChanges = "";
+    int playersMoney;
 
     // TODO: eventually remove this
     private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
@@ -64,6 +67,8 @@ public class TestGameServer {
         moblist = new MobList();
         doorList = new DoorList();
         MoneyDrops = new ArrayList<Money>();
+        NewMoneyDrops = new ArrayList<>();
+        playersMoney = 0;
         // Set game info based on what level was requested by host
         // TODO: eventually remove spritesheets
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
@@ -180,7 +185,7 @@ public class TestGameServer {
                     newChange += " " + x;
                     newChange += " " + y;
 
-                    changes += newChange;
+                    mobChanges += newChange;
                 }
                 // for use when IP is properly stored in player class
                 /*
@@ -304,49 +309,70 @@ public class TestGameServer {
                 mob.setPosition(new Vector(newMobPosition.getX()*32f, newMobPosition.getY()*32f));
                 CollisionManager.CheckMobHeroCollisions(mob, Players);
                 CollisionManager.CheckMobMobCollisions(mob, Mobs);
+                Money money;
+                money = CollisionManager.CheckHeroMoneyCollision(Players.get(0),MoneyDrops);
+                if (money != null) {
+                    for(int i = 0; i < MoneyDrops.size(); i++){
+                        if(MoneyDrops.get(i).getName().contains(money.getName())){
+                            playersMoney += money.value;
+                            moneyPickupChanges += " " + money.getName();
+                            MoneyDrops.remove(MoneyDrops.get(i));
+                        }
+                    }
+                }
 //            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
                 //            // if movement was valid, add update to changes
-                String newChange  = " " + mob.getName();
-                newChange += " " + mob.getCommand();
+                String mobChange  = " " + mob.getName();
+                mobChange += " " + mob.getCommand();
                 if(mob.getCommand() == InputCommands.death) {
 //                    System.out.println(mob.getName() + " " + mob.getCommand());
                     Vector position = mob.getWorldPosition();
                     int value = random.nextInt((21 - 1) + 1);
                     if (!IgnoreList.contains(mob)) {
                         IgnoreList.add(mob);
-                        String newChanges = "";
-                        for(int i = 0; i < MoneyDrops.size(); i++){
-                            newChanges += " " + MoneyDrops.get(i).getName();
-                            newChanges += " " + MoneyDrops.get(i).getWorldPositionX();
-                            newChanges += " " + MoneyDrops.get(i).getWorldPositionY();
-                            newChanges += " " + MoneyDrops.get(i).value;
-                        }
-                        changes2 = newChanges;
+                        String moneyChange = "";
+                        NewMoneyDrops.clear();
                         try {
-                            MoneyDrops.add(new Money(position, "money" + MoneyDrops.size(), value));
+                            if(value > 0) {
+                                NewMoneyDrops.add(new Money(position, "money" + MoneyDrops.size(), value));
+                            }
                         } catch (SlickException e) {
                             System.out.println("Failed to drop money off of " + mob.getName());
                         }
+                        for(int i = 0; i < NewMoneyDrops.size(); i++){
+                            moneyChange += " " + NewMoneyDrops.get(i).getName();
+                            moneyChange += " " + NewMoneyDrops.get(i).getWorldPositionX();
+                            moneyChange += " " + NewMoneyDrops.get(i).getWorldPositionY();
+                            moneyChange += " " + NewMoneyDrops.get(i).value;
+                        }
+                        MoneyDrops.addAll(NewMoneyDrops);
+                        moneyDropChanges = moneyChange;
                     }
                 }
-                newChange += " " + mob.getWorldPositionX();
-                newChange += " " + mob.getWorldPositionY();
+                mobChange += " " + mob.getWorldPositionX();
+                mobChange += " " + mob.getWorldPositionY();
 
-                changes = changes.concat(newChange);
+                mobChanges = mobChanges.concat(mobChange);
             }
 
 //            System.out.println("seerver change: "+changes);
-            if (changes != "") {
-                String msg = "UPDT" + changes;
-                changes = "";
+            if (mobChanges != "") {
+                String msg = "UPDT" + mobChanges;
+                mobChanges = "";
 //                System.out.println(msg);
                 send(msg);
             }
 
 
-            if (changes2 != "") {
-                String msg = "DROP" + changes2;
-                changes2 = "";
+            if (moneyDropChanges != "") {
+                String msg = "DROP" + moneyDropChanges;
+                moneyDropChanges = "";
+                send(msg);
+            }
+
+            if (moneyPickupChanges != "") {
+                String msg = "PCKUP " + playersMoney + " " + moneyPickupChanges;
+                moneyPickupChanges = "";
                 send(msg);
             }
         }

@@ -12,6 +12,7 @@ public class Money extends Object {
         super(worldPosition, name, value);
         this.value = value;
         InitImage();
+        setPosition(worldPosition.getX()*32, worldPosition.getY()*32);
     }
 
     protected void InitImage(){
@@ -25,6 +26,8 @@ public class Money extends Object {
             addImageWithBoundingBox(moneySheet.getSprite(3,0));
         else
             addImageWithBoundingBox(moneySheet.getSprite(4,0));
+        System.out.println(getCoarseGrainedCollisionBoundary());
+
     }
     public Vector getWorldPosition(){return super.getWorldPosition();}
 }

@@ -148,4 +148,14 @@ public class CollisionManager {
         }
         return false;
     }
+
+    public static Money CheckHeroMoneyCollision(BasicBeing player, ArrayList<Money> moneys) {
+        for(Money money: moneys) {
+            Collision collides = null;
+            if ((collides = money.collides(player)) != null) {
+                return money;
+            }
+        }
+        return null;
+    }
 }
