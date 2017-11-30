@@ -48,6 +48,7 @@ public class TestGameClient extends BasicGameState{
     private List<Mob> Mobs;
     private List<Money> MoneyDrops;
     private boolean isIdle = true;
+    private int playersMoney;
 
     // MAP STUFF
     private double x, y;
@@ -60,6 +61,7 @@ public class TestGameClient extends BasicGameState{
 
     public TestGameClient(int state_id) {
         this.stateId = state_id;
+        playersMoney = 0;
     }
 
 
@@ -112,7 +114,7 @@ public class TestGameClient extends BasicGameState{
 
 
     @Override
-    public void render(GameContainer container, StateBasedGame stateBasedGame, Graphics g) throws SlickException {
+    public synchronized void render(GameContainer container, StateBasedGame stateBasedGame, Graphics g) throws SlickException {
         if (init) {
             // VIEWPORT STUFF
             // TODO: loop through Player array until beingID == socket.getLocalSocketAddress()
@@ -126,8 +128,7 @@ public class TestGameClient extends BasicGameState{
                     (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
 
             
-//            g.drawString("displaceX: "+displaceX*-1
-//                    +" displaceY:"+displaceY*-1, 200,200);
+            g.drawString("Players Account: "+playersMoney, 200,200);
 //            g.drawString("worldX: "+Players.get(0).getWorldPositionX()
 //                    +"      worldY:"+Players.get(0).getWorldPositionY(), 200,230);
 //            g.drawString("screenX: "+Players.get(0).getScreenPositionX()
@@ -187,7 +188,7 @@ public class TestGameClient extends BasicGameState{
 
 
 /** Game Functions */
-private void moveEntity(String entity, InputCommands input, Float posX, Float posY) {
+private synchronized void moveEntity(String entity, InputCommands input, Float posX, Float posY) {
     int i = 0;
     // TODO: have some indication if entity is a mob so it loops through correct ArrayList
 
@@ -403,6 +404,15 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
                         MoneyDrops.add(new Money(new Vector(Float.parseFloat(tokens[i+1]), (Float.parseFloat(tokens[i+2]))), tokens[i], Integer.parseInt(tokens[i+3])));
                 }
                 break;
+            case "PCKUP":
+                playersMoney = Integer.parseInt(tokens[1]);
+                for (int i = 2; i < tokens.length; i++) {
+                    for(int j = 0; j < MoneyDrops.size(); j++){
+                        if(MoneyDrops.get(j).getName().equals(tokens[i])){
+                            MoneyDrops.remove(MoneyDrops.get(j));
+                        }
+                    }
+                }
             default:
                 System.out.println("Server: unknown message received");
                 break;
