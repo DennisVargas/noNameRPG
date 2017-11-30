@@ -158,4 +158,16 @@ public class CollisionManager {
         }
         return null;
     }
+
+    public static Health CheckHeroHealthCollision(BasicBeing player, ArrayList<Health> healths) {
+        if(player.getHealth() == 2)
+            return null;
+        for (Health health: healths) {
+            Collision collides = null;
+            if ((collides = health.collides(player)) != null) {
+                return health;
+            }
+        }
+        return null;
+    }
 }

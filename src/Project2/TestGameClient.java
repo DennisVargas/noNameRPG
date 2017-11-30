@@ -47,6 +47,7 @@ public class TestGameClient extends BasicGameState{
     private List<Door> Doors;
     private List<Mob> Mobs;
     private List<Money> MoneyDrops;
+    private List<Health> HealthDrops;
     private boolean isIdle = true;
     private int playersMoney;
 
@@ -81,6 +82,7 @@ public class TestGameClient extends BasicGameState{
         Doors = Collections.synchronizedList(new ArrayList<Door>());
 //        Doors = new ArrayList<>();
         MoneyDrops = Collections.synchronizedList(new ArrayList<Money>());
+        HealthDrops = Collections.synchronizedList(new ArrayList<Health>());
 //        MoneyDrops = new ArrayList<>();
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
@@ -153,6 +155,8 @@ public class TestGameClient extends BasicGameState{
             }
             for (int i = 0; i < MoneyDrops.size(); i++)
                 MoneyDrops.get(i).render(g);
+            for (int i = 0; i < HealthDrops.size(); i++)
+                HealthDrops.get(i).render(g);
             // ENTITY STUFF
             // render players
             for (Hero hero:Players) {
@@ -300,6 +304,13 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             int newY = entityY - viewportY;
             MoneyDrops.get(i).setPosition(newX, newY);
         }
+        for (int i = 0; i < HealthDrops.size(); i++){
+            int entityX = (int)(HealthDrops.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(HealthDrops.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            HealthDrops.get(i).setPosition(newX, newY);
+        }
     }
 
 
@@ -398,18 +409,33 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
 //                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
                 }
                 break;
-            case "DROP":
+            case "DROPM":
                 for (int i = 1; i < tokens.length; i++) {
                     if(tokens[i].contains("money"))
                         MoneyDrops.add(new Money(new Vector(Float.parseFloat(tokens[i+1]), (Float.parseFloat(tokens[i+2]))), tokens[i], Integer.parseInt(tokens[i+3])));
                 }
                 break;
-            case "PCKUP":
+            case "PCKUPM":
                 playersMoney = Integer.parseInt(tokens[1]);
                 for (int i = 2; i < tokens.length; i++) {
                     for(int j = 0; j < MoneyDrops.size(); j++){
                         if(MoneyDrops.get(j).getName().equals(tokens[i])){
                             MoneyDrops.remove(MoneyDrops.get(j));
+                        }
+                    }
+                }
+            case "DROPH":
+                for (int i = 1; i < tokens.length; i++) {
+                    if(tokens[i].contains("health"))
+                        HealthDrops.add(new Health(new Vector(Float.parseFloat(tokens[i+1]), (Float.parseFloat(tokens[i+2]))), tokens[i], Integer.parseInt(tokens[i+3])));
+                }
+                break;
+            case "PCKUPH":
+                Players.get(0).setHealth(Players.get(0).getHealth() + 1);
+                for (int i = 2; i < tokens.length; i++) {
+                    for(int j = 0; j < HealthDrops.size(); j++){
+                        if(HealthDrops.get(j).getName().equals(tokens[i])){
+                            HealthDrops.remove(HealthDrops.get(j));
                         }
                     }
                 }
