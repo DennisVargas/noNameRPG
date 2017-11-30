@@ -42,7 +42,8 @@ public class TestGameServer {
     private MobList moblist;
     private DoorList doorList;
     private ArrayList<Mob> Mobs;                                                                                                
-    private ArrayList<Door> Doors;                                                                                              
+    private ArrayList<Door> Doors;
+    private ArrayList<Money> Money;
     private ArrayList<Money> MoneyDrops;
     private ArrayList<Health> HealthDrops;
     private ArrayList<Money> NewMoneyDrops;
