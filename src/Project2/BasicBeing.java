@@ -23,6 +23,7 @@ public class BasicBeing extends Entity{
     private float health = 1f;
     private float speed = 2f;
     boolean isClient = false;
+    boolean dead = false;
 
 
     boolean isRanged = false;
@@ -300,7 +301,9 @@ public class BasicBeing extends Entity{
      */
     public void HitBeing(float attackValue){
 //        reduces attack value by a percentage of its health
-        setHealth(getHealth() - attackValue/100);
+        this.setHealth(this.getHealth() - attackValue/100);
+        if (this.getHealth()<=0)
+            this.dead = true;
     }
 
     /**
@@ -331,7 +334,7 @@ public class BasicBeing extends Entity{
      * @return true if health less than or equal zero
      */
     public boolean IsDead(){
-        return health <= 0;
+        return dead;
     }
 
 

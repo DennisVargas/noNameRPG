@@ -198,10 +198,16 @@ public class TestGameClient extends BasicGameState{
                 float mobX = (float)Math.floor(Mobs.get(i).getWorldPositionX());
                 float mobY = (float)Math.floor(Mobs.get(i).getWorldPositionY());
                 Vector mobPosition = new Vector(mobX, mobY);
-
-                if (Pathfinding.range(playerPosition, mobPosition) && !mobsToMove.contains(Mobs.get(i))){
-                    mobsToMove.add(Mobs.get(i));
-                } else if (!Pathfinding.range(playerPosition, mobPosition) && mobsToMove.contains(Mobs.get(i))){
+                if (Pathfinding.range(playerPosition, mobPosition) &&
+                        !mobsToMove.contains(Mobs.get(i))){
+                    if (!Mobs.get(i).IsDead()) {
+                        mobsToMove.add(Mobs.get(i));
+                    }
+                    System.out.println(Mobs.get(i).IsDead());
+                } if (Mobs.get(i).IsDead()){
+                  mobsToMove.remove(Mobs.get(i));
+                } else if (!Pathfinding.range(playerPosition, mobPosition) &&
+                        mobsToMove.contains(Mobs.get(i))){
                     mobsToMove.remove(Mobs.get(i));
                 }
             }
