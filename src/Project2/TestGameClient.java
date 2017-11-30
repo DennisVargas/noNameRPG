@@ -223,14 +223,15 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
     if(entity.contains("/")){
         for(Hero hero: Players){
             if(entity.equals(hero.getName())){
+                hero.setCommand(input);
                 hero.UpdateBeing(input, new Vector(posX, posY));
-
                 break;
             }
         }
     }else if(entity.contains("mob")){
         for(Mob mob: Mobs){
             if(entity.equals(mob.getName())){
+                mob.setCommand(input);
                 mob.UpdateBeing(input, new Vector(posX, posY));
                 break;
             }
