@@ -334,7 +334,10 @@ public class BasicBeing extends Entity{
      * @return true if health less than or equal zero
      */
     public boolean IsDead(){
-        return dead;
+        if(dead || this.getCommand().equals(InputCommands.death))
+            return true;
+        else
+            return false;
     }
 
 
