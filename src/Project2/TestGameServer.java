@@ -319,22 +319,22 @@ public class TestGameServer {
                 Money money;
                 money = CollisionManager.CheckHeroMoneyCollision(Players.get(0),MoneyDrops);
                 if (money != null) {
-                    for(int i = 0; i < MoneyDrops.size(); i++){
-                        if(MoneyDrops.get(i).getName().contains(money.getName())){
+                    for(int j = 0; j < MoneyDrops.size(); j++){
+                        if(MoneyDrops.get(j).getName().contains(money.getName())){
                             playersMoney += money.value;
                             moneyPickupChanges += " " + money.getName();
-                            MoneyDrops.remove(MoneyDrops.get(i));
+                            MoneyDrops.remove(MoneyDrops.get(j));
                         }
                     }
                 }
                 Health health;
                 health = CollisionManager.CheckHeroHealthCollision(Players.get(0), HealthDrops);
                 if (health != null) {
-                    for (int i = 0; i < HealthDrops.size(); i++){
-                        if (HealthDrops.get(i).getName().contains(health.getName()) & Players.get(0).getHealth() < 10){
+                    for (int j = 0; i < HealthDrops.size(); j++){
+                        if (HealthDrops.get(j).getName().contains(health.getName()) & Players.get(0).getHealth() < 10){
                             Players.get(0).setHealth(Players.get(0).getHealth()+1);
                             healthPickupChanges += " " + health.getName();
-                            HealthDrops.remove(HealthDrops.get(i));
+                            HealthDrops.remove(HealthDrops.get(j));
                         }
                     }
                 }
@@ -356,13 +356,13 @@ public class TestGameServer {
                                     NewMoneyDrops.add(new Money(position, "money" + MoneyDrops.size(), value));
                                 }
                             } catch (SlickException e) {
-                                System.out.println("Failed to drop money off of " + mob.getName());
+                                System.out.println("Failed to drop money off of " + Mobs.get(i).getName());
                             }
-                            for (int i = 0; i < NewMoneyDrops.size(); i++) {
-                                moneyChange += " " + NewMoneyDrops.get(i).getName();
-                                moneyChange += " " + NewMoneyDrops.get(i).getWorldPositionX();
-                                moneyChange += " " + NewMoneyDrops.get(i).getWorldPositionY();
-                                moneyChange += " " + NewMoneyDrops.get(i).value;
+                            for (int j = 0; j < NewMoneyDrops.size(); j++) {
+                                moneyChange += " " + NewMoneyDrops.get(j).getName();
+                                moneyChange += " " + NewMoneyDrops.get(j).getWorldPositionX();
+                                moneyChange += " " + NewMoneyDrops.get(j).getWorldPositionY();
+                                moneyChange += " " + NewMoneyDrops.get(j).value;
                             }
                             MoneyDrops.addAll(NewMoneyDrops);
                             moneyDropChanges = moneyChange;
@@ -377,13 +377,13 @@ public class TestGameServer {
                                     NewHealthDrops.add(new Health(position, "health" + MoneyDrops.size(), value));
                                 }
                             } catch (SlickException e) {
-                                System.out.println("Failed to drop money off of " + mob.getName());
+                                System.out.println("Failed to drop money off of " + Mobs.get(i).getName());
                             }
-                            for (int i = 0; i < NewHealthDrops.size(); i++) {
-                                healthChange += " " + NewHealthDrops.get(i).getName();
-                                healthChange += " " + NewHealthDrops.get(i).getWorldPositionX();
-                                healthChange += " " + NewHealthDrops.get(i).getWorldPositionY();
-                                healthChange += " " + NewHealthDrops.get(i).value;
+                            for (int j = 0; j < NewHealthDrops.size(); j++) {
+                                healthChange += " " + NewHealthDrops.get(j).getName();
+                                healthChange += " " + NewHealthDrops.get(j).getWorldPositionX();
+                                healthChange += " " + NewHealthDrops.get(j).getWorldPositionY();
+                                healthChange += " " + NewHealthDrops.get(j).value;
                             }
                             HealthDrops.addAll(NewHealthDrops);
                             healthDropChanges = healthChange;
