@@ -41,14 +41,13 @@ public class TestGameServer {
     private ArrayList<Hero> Players;
     private MobList moblist;
     private DoorList doorList;
-    private ArrayList<Mob> Mobs;
-    private ArrayList<Door> Doors;
+    private ArrayList<Mob> Mobs;                                                                                                
+    private ArrayList<Door> Doors;                                                                                              
     private ArrayList<Money> MoneyDrops;
     private ArrayList<Health> HealthDrops;
     private ArrayList<Money> NewMoneyDrops;
     private ArrayList<Health> NewHealthDrops;
     private ArrayList<Mob> IgnoreList;
-    private ArrayList<Money> Money;
     private static int PlayerCount = 2;
     private String mobChanges = "";
     private String moneyDropChanges = "";
@@ -400,30 +399,6 @@ public class TestGameServer {
             if (mobChanges != "") {
                 String msg = "UPDT" + mobChanges;
                 mobChanges = "";
-            for (Mob mob1:Mobs){
-//                mob1.setHealth(0);
-                if(mob1.IsDead()){
-                    Vector position = mob1.getWorldPosition();
-                    Mobs.remove(mob1);
-                    random = new Random();
-                    int high = 21;
-                    int low = 1;
-                    try {
-                        Money.add(new Money(position, "money", (random.nextInt(high - low) + low)));
-                    } catch (SlickException e){
-                        System.out.println("Drop Failed");
-                    }
-                }
-            }
-            for (Money drop : Money){
-                newChange += " " + drop.getWorldPosition();
-            }
-
-            changes = changes.concat(newChange);
-            System.out.println("server change: "+changes);
-            if (changes != "") {
-                msg = "UPDT" + changes;
-                changes = "";
 //                System.out.println(msg);
                 send(msg);
             }
@@ -440,15 +415,13 @@ public class TestGameServer {
             }
 
             if (moneyDropChanges != "") {
-//                String msg = "DROPM " + moneyDropChanges;
-                msg = "DROP" + moneyDropChanges;
+                String msg = "DROPM " + moneyDropChanges;
                 moneyDropChanges = "";
                 send(msg);
             }
 
             if (moneyPickupChanges != "") {
-//                String msg = "PCKUPM " + playersMoney + " " + moneyPickupChanges;
-                msg = "PCKUP " + playersMoney + " " + moneyPickupChanges;
+                String msg = "PCKUPM " + playersMoney + " " + moneyPickupChanges;
                 moneyPickupChanges = "";
                 send(msg);
             }
