@@ -161,11 +161,11 @@ public class TestGameClient extends BasicGameState{
                 HealthDrops.get(i).render(g);
             // ENTITY STUFF
             // render players
-            for (Hero hero:Players) {
-                hero.render(g);
+            for (int i = 0; i < Players.size(); i++) {
+                Players.get(i).render(g);
                 g.setColor(Color.red);
-                hero.UpdateHealthBarLocation();
-                g.fill(hero.getHealthBar());
+                Players.get(i).UpdateHealthBarLocation();
+                g.fill(Players.get(i).getHealthBar());
 
             }
         }
@@ -229,7 +229,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
     }
 
     private void loadLevel(int level) throws SlickException {
-        System.out.println("executing loadLevel " + level);
+//        System.out.println("executing loadLevel " + level);
         moblist = new MobList();
         doorList = new DoorList();
         // should match info switch statement in TestGameServer constructor

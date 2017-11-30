@@ -64,13 +64,13 @@ public class CollisionManager {
                     hero.setPosition(new Vector(attackPos.getX() * 32f, attackPos.getY() * 32f));
 
                     if ((collides = hero.collides(mob)) != null) {
-                        System.out.println("hit MOB before health: " + mob.getHealth());
+//                        System.out.println("hit MOB before health: " + mob.getHealth());
 
                         mob.HitBeing(hero.getAttackPower());
-                        System.out.println("hit MOB after health: " + mob.getHealth());
+//                        System.out.println("hit MOB after health: " + mob.getHealth());
                         if (mob.IsDead()) {
                             mob.setCommand(InputCommands.death);
-                            System.out.println("I'm Dead");
+//                            System.out.println("I'm Dead");
                         }
 
                     }
@@ -101,10 +101,10 @@ public class CollisionManager {
                 mob.setPosition(new Vector (attackPos.getX()*32f,attackPos.getY()*32f));
 
                 if ((collides = mob.collides(hero))!= null){
-                    System.out.println("hit Hero before health: "+hero.getHealth());
+//                    System.out.println("hit Hero before health: "+hero.getHealth());
 
                     hero.HitBeing(mob.getAttackPower());
-                    System.out.println("hit Hero after health: "+hero.getHealth());
+//                    System.out.println("hit Hero after health: "+hero.getHealth());
                 }
 //              reverse the attack move
                 attackPos = MovementCalc.CalcWorldPosition(ReverseCommand(mob.getLastDirectionCommand()), mob.getWorldPosition(), mob.getSpeed());

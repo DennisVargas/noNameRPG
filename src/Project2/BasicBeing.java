@@ -27,7 +27,7 @@ public class BasicBeing extends Entity{
 
     boolean isRanged = false;
 
-    private Animation   walkRightAnim, walkLeftAnim, walkUpAnim,
+    protected Animation   walkRightAnim, walkLeftAnim, walkUpAnim,
             walkDnAnim, idleAnimLt, idleAnimRt, attackAnim,
             hitAnimLt, hitAnimRt, deathAnim, currentAnim;
 
@@ -65,17 +65,16 @@ public class BasicBeing extends Entity{
         InitAnimations(walkingSheet, attackingSheet);
         setCommand(InputCommands.idle);
         setLastDirectionCommand(InputCommands.left);
-        setCurrentAnimation(idleAnimLt);
-        InitNextVectors();
-        this.debugThis = true;
+//        InitNextVectors();
+        this.debugThis = false;
     }
 
     public BasicBeing(Vector screenPosition, Vector worldPosition){
         super(screenPosition);
         setScreenPosition(screenPosition);
         setWorldPosition(worldPosition);
-        InitNextVectors();
-        this.debugThis = true;
+//        InitNextVectors();
+        this.debugThis = false;
     }
 
     public InputManager.InputCommands getLastDirectionCommand() {

@@ -38,7 +38,7 @@ public class TestGameServer {
 
     // GAME STUFF
     private int stateId;
-    private int mapX, mapY;
+    private float mapX, mapY;
     private ArrayList<Hero> Players;
     private MobList moblist;
     private DoorList doorList;
@@ -82,8 +82,8 @@ public class TestGameServer {
         if (stateId == 22) {
             ResourceManager.loadImage(WALKINGSHEETRSC);
             ResourceManager.loadImage(ATTACKINGSHEETRSC);
-            mapX = 90;
-            mapY = 104;
+            mapX = 90.5f;
+            mapY = 104.5f;
             Mobs = moblist.getMobList(1);
             Doors = doorList.getDoorList(1);
             for(Mob mob: Mobs){
@@ -102,7 +102,6 @@ public class TestGameServer {
 
     /** Game Functions */
     private void addPlayer(String playerID, int type) {
-        // TODO: Add playerID and ClassID to Basic Being constructor or player constructor, whatever gets used here
         Hero hero1 = new Hero(new Vector(mapX, mapY),false, playerID);
         hero1.setPosition(new Vector(mapX,mapY));
         Players.add(hero1);
@@ -236,8 +235,8 @@ public class TestGameServer {
         String msg = "INIT " + Integer.toString(1); // Integer.toString(LEVEL_NO)
         for (int i = 0; i < Players.size(); i++) {
             msg += " " + Players.get(i).getName();
-            msg += " " + Float.toString(Players.get(i).getX());
-            msg += " " + Float.toString(Players.get(i).getY());
+            msg += " " + Float.toString(Players.get(i).getWorldPositionX());
+            msg += " " + Float.toString(Players.get(i).getWorldPositionY());
         }
         send(msg);
     }
@@ -309,13 +308,14 @@ public class TestGameServer {
     private Runnable sendUpdate = new Runnable() {
         public void run() {
             Random random = new Random();
-            for(Mob mob: Mobs){
-                try{mob.setCommand(InputCommands.idle);}catch(Exception e){ System.out.println("emptyMOB ON SERvER");}
-                Vector newMobPosition = MovementCalc.CalcWorldPosition(mob.getCommand(),mob.getWorldPosition(),mob.getSpeed());
-                mob.setWorldPosition(newMobPosition);
-                mob.setPosition(new Vector(newMobPosition.getX()*32f, newMobPosition.getY()*32f));
-                CollisionManager.CheckMobHeroCollisions(mob, Players);
-                CollisionManager.CheckMobMobCollisions(mob, Mobs);
+            for (int i = 0; i < Mobs.size(); i++) {
+                try{Mobs.get(i).setCommand(InputCommands.idle);}catch(Exception e){ System.out.println("emptyMOB ON SERvER");}
+                Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(),Mobs.get(i).getWorldPosition(),Mobs.get(i).getSpeed());
+                Mobs.get(i).setWorldPosition(newMobPosition);
+                Mobs.get(i).setPosition(new Vector(newMobPosition.getX()*32f, newMobPosition.getY()*32f));
+                CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
+                CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
+//            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
                 Money money;
                 money = CollisionManager.CheckHeroMoneyCollision(Players.get(0),MoneyDrops);
                 if (money != null) {
@@ -340,16 +340,15 @@ public class TestGameServer {
                 }
 //              CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
                 //            // if movement was valid, add update to changes
-                String mobChange  = " " + mob.getName();
-                mobChange += " " + mob.getCommand();
-                if(mob.getCommand() == InputCommands.death) {
+
+                if(Mobs.get(i).getCommand() == InputCommands.death) {
 //                    System.out.println(mob.getName() + " " + mob.getCommand());
-                    Vector position = mob.getWorldPosition();
+                    Vector position = Mobs.get(i).getWorldPosition();
                     int value = random.nextInt((21 - 1) + 1);
                     int coinFlip = random.nextInt((2-1) + 1);
                     if (coinFlip == 1) {
-                        if (!IgnoreList.contains(mob)) {
-                            IgnoreList.add(mob);
+                        if (!IgnoreList.contains(Mobs.get(i))) {
+                            IgnoreList.add(Mobs.get(i));
                             String moneyChange = "";
                             NewMoneyDrops.clear();
                             try {
@@ -369,8 +368,8 @@ public class TestGameServer {
                             moneyDropChanges = moneyChange;
                         }
                     } else {
-                        if (!IgnoreList.contains(mob)) {
-                            IgnoreList.add(mob);
+                        if (!IgnoreList.contains(Mobs.get(i))) {
+                            IgnoreList.add(Mobs.get(i));
                             String healthChange = "";
                             NewHealthDrops.clear();
                             try {
@@ -391,8 +390,10 @@ public class TestGameServer {
                         }
                     }
                 }
-                mobChange += " " + mob.getWorldPositionX();
-                mobChange += " " + mob.getWorldPositionY();
+                String mobChange  = " " + Mobs.get(i).getName();
+                mobChange += " " + Mobs.get(i).getCommand();
+                mobChange += " " + Mobs.get(i).getWorldPositionX();
+                mobChange += " " + Mobs.get(i).getWorldPositionY();
 
                 mobChanges = mobChanges.concat(mobChange);
             }
