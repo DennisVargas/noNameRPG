@@ -148,8 +148,8 @@ public class CollisionManager {
                                                     ReverseCommand(hero.getCommand())), hero.getSpeed())
                                         , hero.getWorldPosition()));
                 hero.setPosition(new Vector(hero.getWorldPositionX()*32f,hero.getWorldPositionY()*32f));
-                System.out.println("we collided hero MOb style x,y hero "+hero.getPosition()+"x,y mob: "+mob.getPosition());
-                System.out.println("collision min penetration: "+collides.getMinPenetration());
+//                System.out.println("we collided hero MOb style x,y hero "+hero.getPosition()+"x,y mob: "+mob.getPosition());
+//                System.out.println("collision min penetration: "+collides.getMinPenetration());
                 return true;
             }
         }
@@ -166,8 +166,8 @@ public class CollisionManager {
                                         ReverseCommand(mob.getCommand())), mob.getSpeed())
                         , mob.getWorldPosition()));
                 mob.setPosition(new Vector(mob.getWorldPositionX()*32f,mob.getWorldPositionY()*32f));
-                System.out.println("we collided MOb Hero style x,y mob "+mob.getPosition()+"x,y mob: "+hero.getPosition());
-                System.out.println("collision min penetration: "+collides.getMinPenetration());
+//                System.out.println("we collided MOb Hero style x,y mob "+mob.getPosition()+"x,y mob: "+hero.getPosition());
+//                System.out.println("collision min penetration: "+collides.getMinPenetration());
                 return true;
             }
         }

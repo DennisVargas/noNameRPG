@@ -105,6 +105,10 @@ public class InputManager {
             return InputCommands.down;
         } else if (input.isKeyPressed(Input.KEY_UP)) {
             return up;
+        } else if (input.isKeyPressed(Input.KEY_LEFT)) {
+            return InputCommands.left;
+        } else if (input.isKeyPressed(Input.KEY_RIGHT)) {
+            return InputCommands.right;
         } else if (input.isKeyPressed(Input.KEY_ENTER)) {
             return InputCommands.enter;
         }

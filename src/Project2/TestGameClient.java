@@ -85,19 +85,19 @@ public class TestGameClient extends BasicGameState{
             // SERVER STUFF (if client is running server)
             // TODO: determine level number and send as variable in place of stateId
             serverAddress = "localhost";
-            port = 1234;
+            port = Project2.settings.getPort();
             gameserver = new TestGameServer(stateId, port);
             Thread serverThread = new Thread(() -> gameserver.init(), "GameServer");
             serverThread.start();
             // CLIENT STUFF
-            System.out.println("Client: connecting to " + serverAddress + " on port " + port);
+            System.out.println("Host/Single Client: connecting to " + serverAddress + " on port " + port);
             connect();
         } else {
             // if joining, pull server info out of settings
             // CLIENT STUFF
             serverAddress = Project2.settings.getIpAddress();
             port = Project2.settings.getPort();
-            System.out.println("Client: connecting to " + serverAddress + " on port " + port);
+            System.out.println("Joining Client: connecting to " + serverAddress + " on port " + port);
             connect();
         }
     }
@@ -118,12 +118,9 @@ public class TestGameClient extends BasicGameState{
                     (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
 
             
-//            g.drawString("displaceX: "+displaceX*-1
-//                    +" displaceY:"+displaceY*-1, 200,200);
-//            g.drawString("worldX: "+Players.get(0).getWorldPositionX()
-//                    +"      worldY:"+Players.get(0).getWorldPositionY(), 200,230);
-//            g.drawString("screenX: "+Players.get(0).getScreenPositionX()
-//                    +" screenY:"+Players.get(0).getScreenPositionY(), 200,260);
+//            g.drawString("displaceX: "+displaceX*-1 + " displaceY:"+displaceY*-1, 200,200);
+//            g.drawString("worldX: "+Players.get(0).getWorldPositionX() + "      worldY:"+Players.get(0).getWorldPositionY(), 200,230);
+//            g.drawString("screenX: "+Players.get(0).getScreenPositionX() + " screenY:"+Players.get(0).getScreenPositionY(), 200,260);
 
 
             // convert all non-controlling player entities world to screen coords

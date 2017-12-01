@@ -120,6 +120,7 @@ public class NewMultiMenu extends BasicGameState {
                         break;
                 }
                 break;
+            // TODO: Player needs way of choosing ranged or melee
             case enter:
                 switch (menuChoice) {
                     case host:
