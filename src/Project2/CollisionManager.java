@@ -1,14 +1,12 @@
 package Project2;
 
+import Project2.InputManager.InputCommands;
 import jig.Collision;
 import jig.Vector;
 
 import java.util.ArrayList;
-import Project2.InputManager.*;
 
 import static Project2.InputManager.InputCommands.*;
-import static java.lang.Math.abs;
-import static java.lang.Math.floor;
 
 /**
  * manages all collisions between being/being and being/wall
@@ -83,8 +81,8 @@ public class CollisionManager {
                     hero.setWorldPosition(MovementCalc.CalcWorldPosition(ReverseCommand(hero.getCommand()), hero.getWorldPosition(), hero.getSpeed()));
 
                     hero.setPosition(new Vector(hero.getWorldPositionX() * 32f, hero.getWorldPositionY() * 32f));
-//                System.out.println("we collided Hero mob style x,y hero " + hero.getPosition() + "x,y mob: " + mob.getPosition());
-//                System.out.println("collision min penetration: " + collides.getMinPenetration());
+                System.out.println("we collided Hero mob style x,y hero " + hero.getPosition() + "x,y mob: " + mob.getPosition());
+                System.out.println("collision min penetration: " + collides.getMinPenetration());
                     return true;
                 }
             }
