@@ -10,6 +10,8 @@ public class Tile {
     boolean d,  e;
     boolean f,g,h;
 
+    private int tileCost;
+
     Tile(int x, int y, String type, int level) {
         this.coordX = x;
         this.coordY = y;
@@ -50,4 +52,7 @@ public class Tile {
                 this.room = 8;
         }
     }
+
+    void setTileCost(int cost){tileCost = cost;}
+    int getTileCost(){return tileCost;}
 }

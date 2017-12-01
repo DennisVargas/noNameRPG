@@ -48,5 +48,19 @@ public class Map {
         }
     }
 
+    public void setStaticTileCost(){
+        for (int i = 0; i < 150; i++){
+            for (int j = 0; j < 150; j++){
+                if(tiles[i][j].getType().equalsIgnoreCase("abyss")){
+                    tiles[i][j].setTileCost(100);
+                } else {
+                    tiles[i][j].setTileCost(1);
+                }
+            }
+        }
+    }
 
+    public int getTileCost(int i, int j){
+        return tiles[i][j].getTileCost();
+    }
 }

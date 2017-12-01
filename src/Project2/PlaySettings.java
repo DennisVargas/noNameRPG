@@ -29,6 +29,7 @@ public class PlaySettings {
     public void createTileMapping(TiledMap map, int level){
         this.tilemapping = new Map(map, level);
         tilemapping.setNeighbors();
+        tilemapping.setStaticTileCost();
     }
 
     public String checkTile(int x, int y){
