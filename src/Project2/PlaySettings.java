@@ -9,6 +9,7 @@ import org.newdawn.slick.tiled.TiledMap;
 public class PlaySettings {
     private Map tilemapping;
     private String ipAddress;
+    private String serverIP = "localhost";
     private int port = 1234;
     private boolean hosting = false; // true if player is hosting multiplayer (so server allows other players)
     private boolean joining = false; // true if player is joining multiplayer (to block singleplayer server launch)
@@ -41,6 +42,14 @@ public class PlaySettings {
 
     public Vector getHostStartLevel1() {
         return hostStartLevel1;
+    }
+
+    public String getserverIP() {
+        return serverIP;
+    }
+
+    public void setserverIP(String serverIP) {
+        this.serverIP = serverIP;
     }
 
     public String getIpAddress() {

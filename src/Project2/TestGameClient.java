@@ -165,17 +165,21 @@ public class TestGameClient extends BasicGameState{
 
 
 /** Game Functions */
-private void moveEntity(String entity, InputCommands input, Float posX, Float posY) {
+private void moveEntity(String entity, InputCommands input, float posX, float posY) {
     int i = 0;
     // TODO: have some indication if entity is a mob so it loops through correct ArrayList
 
     if(entity.contains("/")){
+        boolean found = false;
         for(BasicBeing hero: Players){
             if(entity.equals(hero.getName())){
+                found = true;
                 hero.UpdateBeing(input, new Vector(posX, posY));
                 break;
             }
         }
+        if (!found)
+            addPlayer(entity, posX, posY);
     }else if(entity.contains("mob")){
         for(BasicBeing mob: Mobs){
             if(entity.equals(mob.getName())){
@@ -185,8 +189,6 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
         }
     }
 
-//    Players.get(i).UpdateBeing(input, new Vector(posX, posY));
-    // need to send input to figure out animation
 
     // for use when IP is properly stored in player class
 //        for (int i = 0; i < Players.size(); i++) {
@@ -257,9 +259,11 @@ private void moveEntity(String entity, InputCommands input, Float posX, Float po
         // TCP
         try {
             // open client socket
-            socket = new Socket(ipAddress, port);
+            socket = new Socket(serverAddress, port);
             Project2.settings.setIpAddress(socket.getLocalSocketAddress().toString());
-            // send message to initialize player on server (INIT PLAYERIP CLASS)
+
+//             send message to initialize player on server (INIT PLAYERIP CLASS)
+            System.out.println("Sending init message to server");
             send("INIT " + socket.getLocalSocketAddress() + " " + 1);
 
             // set up listening thread for client listener

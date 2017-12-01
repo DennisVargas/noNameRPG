@@ -131,7 +131,7 @@ public class JoinGameMenu extends BasicGameState {
             case enter:
                 switch(menuChoice){
                     case start:
-                        Project2.settings.setIpAddress(textfield.getText());
+                        Project2.settings.setserverIP(textfield.getText());
                         stateBasedGame.enterState(Project2.TESTGAMECLIENT);
                         break;
                     case back:

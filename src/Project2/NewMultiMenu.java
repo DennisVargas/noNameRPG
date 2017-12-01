@@ -125,9 +125,12 @@ public class NewMultiMenu extends BasicGameState {
                 switch (menuChoice) {
                     case host:
                         Project2.settings.setHosting(true);
+                        Project2.settings.setJoining(false);
+                        Project2.settings.setserverIP("localhost");
                         stateBasedGame.enterState(Project2.TESTGAMECLIENT);
                         break;
                     case join:
+                        Project2.settings.setHosting(false);
                         Project2.settings.setJoining(true);
                         // TODO: go to state where user can enter ip and server
                         stateBasedGame.enterState(Project2.JOINGAMESTATE);

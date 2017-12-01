@@ -28,10 +28,12 @@ import static Project2.MovementCalc.*;
 public class TestGameServer {
     // SERVER STUFF
     private int port;
-    private Thread listeningThread;
+    private Thread timerThread;
     private boolean listening = false;
     private ServerSocket socket;
     private Socket server;
+    private ArrayList<Socket> clients;
+    ScheduledExecutorService executor;
 
     // GAME STUFF
     private int stateId;
@@ -51,6 +53,7 @@ public class TestGameServer {
     public TestGameServer(int stateId, int port) throws SlickException {
         Mobs = new ArrayList<>();
         moblist = new MobList();
+        clients = new ArrayList<>();
         // Set game info based on what level was requested by host
         // TODO: eventually remove spritesheets
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
@@ -74,18 +77,16 @@ public class TestGameServer {
     /** Game Functions */
     private void addPlayer(String playerID, int type) {
         // TODO: Add playerID and ClassID to Basic Being constructor or player constructor, whatever gets used here
-        Hero hero1 = new Hero(new Vector(mapX, mapY),false, playerID);
-        hero1.setPosition(new Vector(mapX,mapY));
-        Players.add(hero1);
+        Hero hero = new Hero(new Vector(mapX, mapY),false, playerID);
+        hero.setPosition(new Vector(mapX,mapY));
+        Players.add(hero);
+        String newChange  = " " + playerID;
+        newChange += " " + idle;
+        newChange += " " + hero.getWorldPositionX();
+        newChange += " " + hero.getWorldPositionY();
+
+        changes += newChange;
     }
-
-    // TODO: function for running dijkstra's
-        // to adjust mob positions, call in the sendUpdate runnable? may need a new name then
-
-    // TODO: function for detecting collisions
-        // mob/player, mob/wall only, and player-object only
-        // call in the sendUpdate runnable?
-
 
 
 /** Server Functions */
@@ -103,10 +104,25 @@ public class TestGameServer {
             System.out.println("Server: cannot create ServerSocket");
         }
 
-        // creates new thread to listen on so server can do other things while waiting
-        listening = true;
-        listeningThread = new Thread(() -> listen(), "GameServerListener");
-        listeningThread.start();
+//        timerThread = new Thread(updateTimer).start();
+        executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(sendUpdate, 0, 15, TimeUnit.MILLISECONDS);
+
+        while (true) {
+            System.out.println("Server: waiting for client on port " + socket.getLocalPort() + "...");
+            try {
+                server = socket.accept();
+                clients.add(server);
+            } catch (IOException e) {
+                System.out.println("Server: server has a problem listening");
+            }
+            // creates new thread to listen on so server can do other things while waiting
+            listening = true;
+            new Thread(() -> listen(), "GameServerListener").start();
+
+//            ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+//            executor.scheduleAtFixedRate(sendUpdate, 0, 15, TimeUnit.MILLISECONDS);
+        }
     }
 
 
@@ -127,9 +143,11 @@ public class TestGameServer {
 
         switch (command) {
             case "INIT":
-//                System.out.println("Server: got INIT message");
-                addPlayer(player, Integer.parseInt(tokens[2]));
-                initPacket();
+                System.out.println("Server: got INIT message");
+                if (Players.size() < PlayerCount) {
+                    addPlayer(player, Integer.parseInt(tokens[2]));
+                    initPacket();
+                }
                 break;
             case "INPT":
 //                System.out.println("Server: got INPT message: " + tokens[2]);
@@ -196,6 +214,7 @@ public class TestGameServer {
 
     private void initPacket() {
         // TODO: send proper level info, currently hardcoded to level 1
+        System.out.println("Server: sending INIT message");
         String msg = "INIT " + Integer.toString(1); // Integer.toString(LEVEL_NO)
         for (int i = 0; i < Players.size(); i++) {
             msg += " " + Players.get(i).getName();
@@ -207,18 +226,8 @@ public class TestGameServer {
 
     // listen on port for client connections
     private void listen() {
-        // listen while socket is open
         while(listening) {
             try {
-                System.out.println("Server: waiting for client on port " + socket.getLocalPort() + "...");
-
-                // Connect a client
-                server = socket.accept();
-                connectClient(server);
-
-                ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-                executor.scheduleAtFixedRate(sendUpdate, 0, 15, TimeUnit.MILLISECONDS);
-
                 DataInputStream in = new DataInputStream(server.getInputStream());
                 String msg;
 
@@ -227,11 +236,10 @@ public class TestGameServer {
                     processMessage(msg);
                 }
 
-            } catch (SocketTimeoutException t) {
-                System.out.println("Server: socket timed out");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Server: server has a problem listening");
+                listening = false;
             }
         }
         try {
@@ -240,6 +248,40 @@ public class TestGameServer {
             e.printStackTrace();
         }
     }
+//    private void listen() {
+//        // listen while socket is open
+//        while(listening) {
+//            try {
+//                System.out.println("Server: waiting for client on port " + socket.getLocalPort() + "...");
+//
+//                // Connect a client
+//                server = socket.accept();
+//                connectClient(server);
+//
+////                ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+////                executor.scheduleAtFixedRate(sendUpdate, 0, 15, TimeUnit.MILLISECONDS);
+//
+//                DataInputStream in = new DataInputStream(server.getInputStream());
+//                String msg;
+//
+//                // listen for incoming messages
+//                while ((msg = in.readUTF()) != null) {
+//                    processMessage(msg);
+//                }
+//
+//            } catch (SocketTimeoutException t) {
+//                System.out.println("Server: socket timed out");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                System.out.println("Server: server has a problem listening");
+//            }
+//        }
+//        try {
+//            server.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     private void connectClient(Socket server) {
@@ -260,13 +302,22 @@ public class TestGameServer {
 
     private void send(String msg) {
         // send an outgoing message
-        try {
-            DataOutputStream out = new DataOutputStream(server.getOutputStream());
-            out.writeUTF(msg);
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (int i = 0; i < clients.size(); i++) {
+            try {
+                DataOutputStream out = new DataOutputStream(server.getOutputStream());
+                out.writeUTF(msg);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
+
+    private Runnable updateTimer = new Runnable() {
+        public void run() {
+            ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+            executor.scheduleAtFixedRate(sendUpdate, 0, 15, TimeUnit.MILLISECONDS);
+        }
+    };
 
     // timer for update packets
     private Runnable sendUpdate = new Runnable() {

@@ -197,6 +197,7 @@ public class MainMenuState extends BasicGameState {
                     case NewSingle:
                         Project2.settings.setHosting(false);
                         Project2.settings.setJoining(false);
+                        Project2.settings.setserverIP("localhost");
                         stateBasedGame.enterState(Project2.TESTGAMECLIENT);
                         break;
                     case NewMulti:
