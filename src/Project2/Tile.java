@@ -4,6 +4,7 @@ public class Tile {
     private int coordX;
     private int coordY;
     private String type;
+    private int levelNum;
     private int room;
 
     boolean a,b,c;
@@ -16,6 +17,7 @@ public class Tile {
         this.coordX = x;
         this.coordY = y;
         this.type = type;
+        this.levelNum = level;
         setupRoomNumber(x,y,level);
     }
     int getCoordX(){
@@ -27,6 +29,7 @@ public class Tile {
     int getRoom(){
         return this.room;
     }
+    int getLevel(){return this.levelNum;}
     String getType(){
         return this.type;
     }
@@ -55,4 +58,15 @@ public class Tile {
 
     void setTileCost(int cost){tileCost = cost;}
     int getTileCost(){return tileCost;}
+
+    void neighbors(Tile temp){
+        this.a = temp.a;
+        this.b = temp.b;
+        this.c = temp.c;
+        this.d = temp.d;
+        this.e = temp.e;
+        this.f = temp.f;
+        this.g = temp.g;
+        this.h = temp.h;
+    }
 }

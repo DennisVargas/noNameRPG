@@ -140,7 +140,8 @@ public class TestGameClient extends BasicGameState{
             if (temp == 1){
                 for (int i = 0; i < 11; i++){
                     for (int j = 0; j < 11; j++){
-                        int cost = mapping.getTileCost((int)xoff+i+20, (int)yoff+j+11);
+                        Vector temp = worldOffset(xoff, yoff);
+                        int cost = mapping.getTileCost((int)temp.getX()+i, (int)temp.getY()+j);
                         g.setColor(Color.white);
                         g.drawString(String.valueOf(cost), (offSet.getX())+(i*32), (offSet.getY())+(j*32));
                     }
@@ -351,6 +352,9 @@ public class TestGameClient extends BasicGameState{
         }
     }
 
+    private Vector worldOffset(float x, float y){
+        return new Vector(x+20, y+11);
+    }
 
 /** Client Functions */
     public boolean connect() {
