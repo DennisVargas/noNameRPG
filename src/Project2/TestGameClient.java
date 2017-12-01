@@ -49,6 +49,8 @@ public class TestGameClient extends BasicGameState{
     private Map mapping = null;
     private ArrayList<Mob>mobsToMove;
 
+    private int temp = 1;
+
     // MAP STUFF
     private double x, y;
     private int mapX, mapY;
@@ -135,11 +137,22 @@ public class TestGameClient extends BasicGameState{
             Vector offSet = MovementCalc.CalcScreenPosition(
                     Players.get(0).getWorldPosition(),
                     new Vector(xoff, yoff));
-            for (int i = 0; i < 11; i++){
-                for (int j = 0; j < 11; j++){
-                    int cost = mapping.getTileCost((int)xoff+i+20, (int)yoff+j+11);
-                    g.setColor(Color.white);
-                    g.drawString(String.valueOf(cost), (offSet.getX())+(i*32), (offSet.getY())+(j*32));
+            if (temp == 1){
+                for (int i = 0; i < 11; i++){
+                    for (int j = 0; j < 11; j++){
+                        int cost = mapping.getTileCost((int)xoff+i+20, (int)yoff+j+11);
+                        g.setColor(Color.white);
+                        g.drawString(String.valueOf(cost), (offSet.getX())+(i*32), (offSet.getY())+(j*32));
+                    }
+                }
+            }
+            if (temp == 2){
+                for (int i = 0; i < 11; i++){
+                    for (int j = 0; j < 11; j++){
+                        float distance = Pathfinding.distanceFromPlayer[(int)xoff+i][(int)yoff+j];
+                        g.setColor(Color.white);
+                        g.drawString(String.valueOf((int)distance), (offSet.getX())+(i*32), (offSet.getY())+(j*32));
+                    }
                 }
             }
             g.setColor(Color.red);
@@ -192,8 +205,8 @@ public class TestGameClient extends BasicGameState{
                 isIdle = false;
                 inptMsg(inputCommand.toString());
             }
-            float playerOffX = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionX())-5);
-            float playerOffY = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionY())-5);
+            float playerOffX = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionX()));
+            float playerOffY = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionY()));
             Vector playerPosition = new Vector(playerOffX, playerOffY);
             //constant player graph update
             Pathfinding.Dijkstra(mapping, playerPosition);
@@ -213,6 +226,16 @@ public class TestGameClient extends BasicGameState{
                         mobsToMove.contains(Mobs.get(i))){
                     mobsToMove.remove(Mobs.get(i));
                 }
+            }
+            //</editor-fold
+
+
+            //<editor-fold desc="Debug printout"
+            if (input.isKeyPressed(Input.KEY_1)){
+                temp = 1;
+            }
+            if (input.isKeyPressed(Input.KEY_2)){
+                temp = 2;
             }
             //</editor-fold
         }
