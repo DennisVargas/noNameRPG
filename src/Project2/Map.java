@@ -21,6 +21,32 @@ public class Map {
 
             }
         }
-        //System.out.println("Finished making tilemapping");
     }
+
+    public void setNeighbors(){
+        for (int i = 0; i < 150; i++){
+            for (int j = 0; j < 150; j++){
+                if (!tiles[i][j].getType().equalsIgnoreCase("abyss")){
+                    if (!tiles[i-1][j-1].getType().equalsIgnoreCase("abyss"))
+                        tiles[i][j].a = true;
+                    if (!tiles[i][j-1].getType().equalsIgnoreCase("abyss"))
+                        tiles[i][j].b = true;
+                    if (!tiles[i+1][j-1].getType().equalsIgnoreCase("abyss"))
+                        tiles[i][j].c = true;
+                    if (!tiles[i-1][j].getType().equalsIgnoreCase("abyss"))
+                        tiles[i][j].d = true;
+                    if (!tiles[i+1][j].getType().equalsIgnoreCase("abyss"))
+                        tiles[i][j].e = true;
+                    if (!tiles[i-1][j+1].getType().equalsIgnoreCase("abyss"))
+                        tiles[i][j].f = true;
+                    if (!tiles[i][j+1].getType().equalsIgnoreCase("abyss"))
+                        tiles[i][j].g = true;
+                    if (!tiles[i+1][j+1].getType().equalsIgnoreCase("abyss"))
+                        tiles[i][j].h = true;
+                }
+            }
+        }
+    }
+
+
 }

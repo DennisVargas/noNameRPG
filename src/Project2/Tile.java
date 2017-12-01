@@ -6,6 +6,10 @@ public class Tile {
     private String type;
     private int room;
 
+    boolean a,b,c;
+    boolean d,  e;
+    boolean f,g,h;
+
     Tile(int x, int y, String type, int level) {
         this.coordX = x;
         this.coordY = y;
