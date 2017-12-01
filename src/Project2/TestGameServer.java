@@ -82,7 +82,7 @@ public class TestGameServer {
         if (stateId == 22) {
             ResourceManager.loadImage(WALKINGSHEETRSC);
             ResourceManager.loadImage(ATTACKINGSHEETRSC);
-            mapX = 90.5f;
+            mapX = 45.5f;
             mapY = 104.5f;
             Mobs = moblist.getMobList(1);
             Doors = doorList.getDoorList(1);

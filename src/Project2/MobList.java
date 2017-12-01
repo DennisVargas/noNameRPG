@@ -19,14 +19,14 @@ public class MobList {
         String mobName = "mob" + mobNum;
         if (level == 1) {
             // hallway 1
-            mob = new Mob(new Vector(75f, 105.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(74f, 104.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(73f, 105f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(75f, 105.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(74f, 104.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(73f, 105f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
-            mob = new Mob(new Vector(65f, 104.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(64f, 105.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(63f, 104f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(62.5f, 106f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(65f, 104.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(64f, 105.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(63f, 104f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(62.5f, 106f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(50f, 104f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(49f, 105f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
