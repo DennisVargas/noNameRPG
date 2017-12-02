@@ -63,6 +63,7 @@ public class Project2 extends StateBasedGame {
     public static final String DOORVSHEETRSC = "resources/levels/doorV.png";
     public static final String DOORHSHEETRSC = "resources/levels/doorH.png";
     public static final String HEALTHSHEETRSC = "resources/Other/heart_icon.png";
+    public static final String KEYSHEETRSC = "resources/Other/key.png";
 
     /**
      * instantiates the game name and then creates a
@@ -125,6 +126,7 @@ public class Project2 extends StateBasedGame {
         ResourceManager.loadImage(DOORHSHEETRSC);
         ResourceManager.loadImage(DOORVSHEETRSC);
         ResourceManager.loadImage(HEALTHSHEETRSC);
+        ResourceManager.loadImage(KEYSHEETRSC);
 
         if(this.testStatePlay) {
 //        test states init
