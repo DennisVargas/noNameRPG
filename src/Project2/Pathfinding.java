@@ -23,14 +23,100 @@ public class Pathfinding {
     public static void Dijkstra(Map tiles, Vector playerPosition){
         initialize(playerPosition.getX(), playerPosition.getY());
         makeGraphCopy(tiles);
+
+        while(mapCopy.size() > 0){
+            float lowValue =1000;
+            int lowSpot = 0;
+
+            for (int i =0; i < mapCopy.size(); i++){
+                int x = mapCopy.get(i).getXoff();
+                int y = mapCopy.get(i).getYoff();
+                if (distanceFromPlayer[x][y] < lowValue){
+                    lowValue = distanceFromPlayer[x][y];
+                    lowSpot = i;
+                }
+                //System.out.println("i:"+i+" lowValue:"+lowValue);
+            }
+
+            if (lowValue < 100){
+                int neighborX, neighborY;
+                 /*  a[x-1,y-1] b[x,y-1] c[x+1,y-1]
+                 *  d[x-1,y]   [x,y]   e[x+1,y]
+                 *  f[x-1,y+1] g[x,y+1] h[x+1,y+1]
+                 * */
+                if (mapCopy.get(lowSpot).a){
+                    neighborX = (mapCopy.get(lowSpot).getXoff())-1;
+                    neighborY = (mapCopy.get(lowSpot).getYoff())-1;
+                    evaluate(mapCopy.get(lowSpot).getXoff(),
+                            mapCopy.get(lowSpot).getYoff(),
+                            neighborX, neighborY);
+                }
+                if (mapCopy.get(lowSpot).b){
+                    neighborX = (mapCopy.get(lowSpot).getXoff());
+                    neighborY = (mapCopy.get(lowSpot).getYoff())-1;
+                    evaluate(mapCopy.get(lowSpot).getXoff(),
+                            mapCopy.get(lowSpot).getYoff(),
+                            neighborX, neighborY);
+                }
+                if (mapCopy.get(lowSpot).c){
+                    neighborX = (mapCopy.get(lowSpot).getXoff())+1;
+                    neighborY = (mapCopy.get(lowSpot).getYoff())-1;
+                    evaluate(mapCopy.get(lowSpot).getXoff(),
+                            mapCopy.get(lowSpot).getYoff(),
+                            neighborX, neighborY);
+                }
+                if (mapCopy.get(lowSpot).d){
+                    neighborX = (mapCopy.get(lowSpot).getXoff())-1;
+                    neighborY = (mapCopy.get(lowSpot).getYoff());
+                    evaluate(mapCopy.get(lowSpot).getXoff(),
+                            mapCopy.get(lowSpot).getYoff(),
+                            neighborX, neighborY);
+                }
+                if (mapCopy.get(lowSpot).e){
+                    neighborX = (mapCopy.get(lowSpot).getXoff())+1;
+                    neighborY = (mapCopy.get(lowSpot).getYoff());
+                    evaluate(mapCopy.get(lowSpot).getXoff(),
+                            mapCopy.get(lowSpot).getYoff(),
+                            neighborX, neighborY);
+                }
+                if (mapCopy.get(lowSpot).f){
+                    neighborX = (mapCopy.get(lowSpot).getXoff())-1;
+                    neighborY = (mapCopy.get(lowSpot).getYoff())+1;
+                    evaluate(mapCopy.get(lowSpot).getXoff(),
+                            mapCopy.get(lowSpot).getYoff(),
+                            neighborX, neighborY);
+                }
+                if (mapCopy.get(lowSpot).g){
+                    neighborX = (mapCopy.get(lowSpot).getXoff());
+                    neighborY = (mapCopy.get(lowSpot).getYoff())+1;
+                    evaluate(mapCopy.get(lowSpot).getXoff(),
+                            mapCopy.get(lowSpot).getYoff(),
+                            neighborX, neighborY);
+                }
+                if (mapCopy.get(lowSpot).h){
+                    neighborX = (mapCopy.get(lowSpot).getXoff())+1;
+                    neighborY = (mapCopy.get(lowSpot).getYoff())+1;
+                    evaluate(mapCopy.get(lowSpot).getXoff(),
+                            mapCopy.get(lowSpot).getYoff(),
+                            neighborX, neighborY);
+                }
+            }
+            mapCopy.remove(lowSpot);
+        }
     }
 
     /*public static Vector getPath(){
 
     }*/
 
-    public static void evaluate(){
-        //double something = Math.hypot()
+    public static void evaluate(int x, int y, int nx, int ny){
+        double something = Math.hypot(nx-x, ny-y);
+
+        if (distanceFromPlayer[nx][ny] > distanceFromPlayer[x][y]+something){
+            distanceFromPlayer[nx][ny] = (float)(distanceFromPlayer[x][y]+something);
+            path[nx][ny] = new Vector(x, y);
+        }
+
     }
 
     public static void initialize(float x, float y){
@@ -62,5 +148,8 @@ public class Pathfinding {
                 }
             }
         }
+    }
+    private static Vector worldOffset(int x, int y){
+        return new Vector(x+20, y+11);
     }
 }

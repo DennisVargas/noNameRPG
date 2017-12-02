@@ -124,13 +124,13 @@ public class TestGameClient extends BasicGameState{
                     (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
 
             
-            g.drawString("displaceX: "+displaceX*-1
+            /*g.drawString("displaceX: "+displaceX*-1
                     +" displaceY:"+displaceY*-1, 100,200);
             g.drawString("worldX: "+Players.get(0).getWorldPositionX()
                     +"      worldY:"+Players.get(0).getWorldPositionY(), 100,230);
             g.drawString("screenX: "+Players.get(0).getScreenPositionX()
                     +" screenY:"+Players.get(0).getScreenPositionY(), 100,260);
-
+*/
             //grid range
             float xoff = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionX())-5);
             float yoff = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionY())-5);
@@ -157,8 +157,7 @@ public class TestGameClient extends BasicGameState{
                 }
             }
             g.setColor(Color.red);
-            g.drawString("Mobs in range: "+mobsToMove.size(),100, 300 );
-
+            //g.drawString("Mobs in range: "+mobsToMove.size(),100, 300 );
 
 
             // convert all non-controlling player entities world to screen coords
@@ -206,8 +205,8 @@ public class TestGameClient extends BasicGameState{
                 isIdle = false;
                 inptMsg(inputCommand.toString());
             }
-            float playerOffX = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionX()));
-            float playerOffY = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionY()));
+            float playerOffX = (float)Math.floor(Players.get(0).getWorldPositionX());
+            float playerOffY = (float)Math.floor(Players.get(0).getWorldPositionY());
             Vector playerPosition = new Vector(playerOffX, playerOffY);
             //constant player graph update
             Pathfinding.Dijkstra(mapping, playerPosition);
@@ -237,6 +236,9 @@ public class TestGameClient extends BasicGameState{
             }
             if (input.isKeyPressed(Input.KEY_2)){
                 temp = 2;
+            }
+            if (input.isKeyPressed(Input.KEY_3)){
+                temp = 3;
             }
             //</editor-fold
         }

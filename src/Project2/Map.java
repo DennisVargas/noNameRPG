@@ -6,10 +6,6 @@ public class Map {
 
     Map(TiledMap map, int level){
         tiles  = new Tile[150][150];
-        for (int j = 0; j < 150; j++) {
-            for(int i = 0; i < 150; i++)
-                tiles[i][j] = null;
-        }
         for (int j = 0; j < 150; j++){
             for (int i = 0; i < 150; i++){
                 try{
