@@ -82,8 +82,8 @@ public class TestGameServer {
         if (stateId == 22) {
             ResourceManager.loadImage(WALKINGSHEETRSC);
             ResourceManager.loadImage(ATTACKINGSHEETRSC);
-            mapX = 45.5f;
-            mapY = 104.5f;
+            mapX = 45f;
+            mapY = 105f;
             Mobs = moblist.getMobList(1);
             Doors = doorList.getDoorList(1);
             for(Mob mob: Mobs){
@@ -184,6 +184,7 @@ public class TestGameServer {
 
                 // check for player/wall collisions
                 if(CollisionManager.CheckValidMove(Players.get(0))) {
+//                if(true){
                     CollisionManager.CheckHeroMobCollisions(Players.get(0), Mobs);
                     // if movement was valid, add update to changes
                     String newChange = " " + player;
