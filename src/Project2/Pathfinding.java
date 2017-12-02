@@ -21,7 +21,7 @@ public class Pathfinding {
     }
 
     public static void Dijkstra(Map tiles, Vector playerPosition){
-        initialize(playerPosition.getX(), playerPosition.getY());
+        initialize(playerPosition.getX(), playerPosition.getY() );
         makeGraphCopy(tiles);
 
         while(mapCopy.size() > 0){

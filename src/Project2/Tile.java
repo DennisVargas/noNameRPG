@@ -18,8 +18,10 @@ public class Tile {
     Tile(int x, int y, String type, int level) {
         this.coordX = x;
         this.coordY = y;
-        this.xoff = x+20;
-        this.yoff = y+11;
+        this.xoff = x-20;
+        this.yoff = y-11;
+//        this.xoff = x+20;
+//        this.yoff = y+11;
         this.type = type;
         this.levelNum = level;
         setupRoomNumber(x,y,level);
