@@ -17,7 +17,6 @@ public class Health extends Object {
 
     protected void InitImage(){
         addImageWithBoundingBox(healthSheet.getSprite(0,0));
-        System.out.println(getCoarseGrainedCollisionBoundary());
 
     }
     public Vector getWorldPosition(){return super.getWorldPosition();}
