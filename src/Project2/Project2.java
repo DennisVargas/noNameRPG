@@ -65,7 +65,6 @@ public class Project2 extends StateBasedGame {
     public static final String HEALTHSHEETRSC = "resources/Other/heart_icon.png";
     public static final String KEYSHEETRSC = "resources/Other/key.png";
 
-
     /**
      * instantiates the game name and then creates a
      * new instance of each of the states in the game.
