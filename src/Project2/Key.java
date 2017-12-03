@@ -14,8 +14,7 @@ public class Key extends Object {
     }
 
     protected void InitImage(){
-            addImageWithBoundingBox(keySheet.getSprite(0,0));
-
+        addImageWithBoundingBox(keySheet.getSprite(0,0));
     }
     public Vector getWorldPosition(){return super.getWorldPosition();}
 }

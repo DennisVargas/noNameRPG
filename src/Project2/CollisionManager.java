@@ -170,4 +170,25 @@ public class CollisionManager {
         }
         return null;
     }
+
+    public static Key CheckHeroKeyCollision(BasicBeing player, ArrayList<Key> keys) {
+        for (Key key : keys) {
+            Collision collides = null;
+            if ((collides = key.collides(player)) != null) {
+                return key;
+            }
+        }
+        return null;
+    }
+
+    public static Door CheckHeroDoorCollision(BasicBeing player, ArrayList<Door> doors){
+        for (Door door: doors) {
+            Collision collides = null;
+            if ((collides = door.collides(player)) != null) {
+                Project2.settings.editTileMapping(door.getWorldPositionX(), door.getWorldPositionY(), "path");
+                return door;
+            }
+        }
+        return null;
+    }
 }

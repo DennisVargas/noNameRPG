@@ -22,4 +22,7 @@ public class Map {
             }
         }
     }
+    public void setTile(int x, int y, String type){
+        tiles[x][y].setType(type);
+    }
 }

@@ -44,12 +44,15 @@ public class TestGameClient extends BasicGameState{
     private List<Hero> Players;
     private MobList moblist;
     private DoorList doorList;
+    private KeyList keyList;
     private List<Door> Doors;
     private List<Mob> Mobs;
+    private List<Key> Keys;
     private List<Money> MoneyDrops;
     private List<Health> HealthDrops;
     private boolean isIdle = true;
     private int playersMoney;
+    private int playersKey;
 
     // MAP STUFF
     private double x, y;
@@ -84,6 +87,7 @@ public class TestGameClient extends BasicGameState{
         MoneyDrops = Collections.synchronizedList(new ArrayList<Money>());
         HealthDrops = Collections.synchronizedList(new ArrayList<Health>());
 //        MoneyDrops = new ArrayList<>();
+        Keys = Collections.synchronizedList(new ArrayList<Key>());
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
         Project2.settings.createTileMapping(map1, 1);
@@ -131,6 +135,7 @@ public class TestGameClient extends BasicGameState{
 
             
             g.drawString("Players Account: "+playersMoney, 200,200);
+            g.drawString("Players Keys: " + playersKey, 200, 210);
 //            g.drawString("displaceX: "+displaceX*-1
 //                    +" displaceY:"+displaceY*-1, 200,200);
 //            g.drawString("worldX: "+Players.get(0).getWorldPositionX()
@@ -159,6 +164,8 @@ public class TestGameClient extends BasicGameState{
                 MoneyDrops.get(i).render(g);
             for (int i = 0; i < HealthDrops.size(); i++)
                 HealthDrops.get(i).render(g);
+            for (int i = 0; i < Keys.size(); i++)
+                Keys.get(i).render(g);
             // ENTITY STUFF
             // render players
             for (int i = 0; i < Players.size(); i++) {
@@ -232,14 +239,16 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
 //        System.out.println("executing loadLevel " + level);
         moblist = new MobList();
         doorList = new DoorList();
+        keyList = new KeyList();
         // should match info switch statement in TestGameServer constructor
         switch (level) {
             case 1:
                 map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
-                mapX = 90;
-                mapY = 104;
+                mapX = 45;
+                mapY = 105;
                 Mobs = moblist.getMobList(1);
                 Doors = doorList.getDoorList(1);
+                Keys = keyList.getKeyList(1);
                 break;
             default:
                 System.out.println("Client: unknown level");
@@ -312,6 +321,13 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             int newX = entityX - viewportX;
             int newY = entityY - viewportY;
             HealthDrops.get(i).setPosition(newX, newY);
+        }
+        for (int i = 0; i < Keys.size(); i++){
+            int entityX = (int)(Keys.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(Keys.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            Keys.get(i).setPosition(newX, newY);
         }
     }
 
@@ -441,6 +457,27 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                         }
                     }
                 }
+                break;
+            case "PCKUPK":
+                playersKey = Integer.parseInt(tokens[1]);
+                for(int i = 2; i < tokens.length; i++){
+                    for(int j = 0; j < Keys.size(); j++) {
+                        if (Keys.get(j).getName().equals(tokens[i])){
+                            Keys.remove(Keys.get(j));
+                        }
+                    }
+                }
+                break;
+            case "OPEND":
+                playersKey = Integer.parseInt(tokens[1]);
+                for(int i = 2; i < tokens.length; i++){
+                    for(int j = 0; j < Doors.size(); j++) {
+                        if (Doors.get(j).getName().equals(tokens[i])){
+                            Doors.remove(Doors.get(j));
+                        }
+                    }
+                }
+                break;
             default:
                 System.out.println("Server: unknown message received");
                 break;

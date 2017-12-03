@@ -59,4 +59,10 @@ public class PlaySettings {
     public void setPlayer(Hero player) {
         this.player = player;
     }
+
+    public void editTileMapping(float x, float y, String type) {
+        int ix = (int) Math.round(x-.5) + 20;
+        int iy = (int) Math.round(y) + 11;
+        tilemapping.tiles[ix][iy].setType(type);
+    }
 }

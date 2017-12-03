@@ -10,7 +10,7 @@ import org.newdawn.slick.SpriteSheet;
 public class Door extends Object {
     public Door(Vector worldPosition, String name) throws SlickException{
         super(worldPosition, name, 0);
-        if(name.equals("doorH"))
+        if(name.contains("doorH"))
             InitImage(true);
         else
             InitImage(false);

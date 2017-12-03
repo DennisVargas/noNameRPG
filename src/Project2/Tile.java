@@ -46,4 +46,7 @@ public class Tile {
                 this.room = 8;
         }
     }
+    public void setType(String type){
+        this.type = type;
+    }
 }
