@@ -117,14 +117,11 @@ public class JoinGameMenu extends BasicGameState {
                 }
                 break;
             case right:
-                System.out.println("right press with " + menuChoice.toString());
                 switch(menuChoice){
                     case start:
-                        System.out.println("proper right press");
                         startItem.setItemOff();
                         backItem.setItemOn();
                         menuChoice = MenuChoices.back;
-                        System.out.println("set to " + menuChoice.toString());
                         break;
                 }
                 break;

@@ -6,6 +6,8 @@ package Project2;
  *
  * Need to fix every hardcoded ipaddress and port once menus are done
  *
+ * If server disconnects, need to kick joined client out to "disconnected" screen, then main menu
+ *
  * */
 
 import jig.ResourceManager;
@@ -109,19 +111,21 @@ public class TestGameClient extends BasicGameState{
             // VIEWPORT STUFF
             // TODO: loop through Player array until beingID == socket.getLocalSocketAddress()
             float displaceX, displaceY, worldPosX, worldPosY;
-            worldPosX = (int)Players.get(0).getWorldPositionX();
-            worldPosY = (int)Players.get(0).getWorldPositionY();
-            displaceX = (Players.get(0).getWorldPositionX()-worldPosX)*-32;
-            displaceY = (Players.get(0).getWorldPositionY()-worldPosY)*-32;
+            for (int i = 0; i < Players.size(); i++) {
+                if (Players.get(i).getName().equals(socket.getLocalSocketAddress().toString())) {
+                    worldPosX = (int) Players.get(i).getWorldPositionX();
+                    worldPosY = (int) Players.get(i).getWorldPositionY();
+                    displaceX = (Players.get(i).getWorldPositionX() - worldPosX) * -32;
+                    displaceY = (Players.get(i).getWorldPositionY() - worldPosY) * -32;
+                    map1.render((int)displaceX, (int)displaceY,
+                            (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
 
-            map1.render((int)displaceX, (int)displaceY,
-                    (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
-
-            
-//            g.drawString("displaceX: "+displaceX*-1 + " displaceY:"+displaceY*-1, 200,200);
-//            g.drawString("worldX: "+Players.get(0).getWorldPositionX() + "      worldY:"+Players.get(0).getWorldPositionY(), 200,230);
-//            g.drawString("screenX: "+Players.get(0).getScreenPositionX() + " screenY:"+Players.get(0).getScreenPositionY(), 200,260);
-
+                    g.drawString("player name: "+Players.get(i).getName(), 200,170);
+                    g.drawString("displaceX: "+displaceX*-1 + " displaceY:"+displaceY*-1, 200,200);
+                    g.drawString("worldX: "+Players.get(i).getWorldPositionX() + "      worldY:"+Players.get(i).getWorldPositionY(), 200,230);
+                    g.drawString("screenX: "+Players.get(i).getScreenPositionX() + " screenY:"+Players.get(i).getScreenPositionY(), 200,260);
+                }
+            }
 
             // convert all non-controlling player entities world to screen coords
             // only set up to do mob list now
@@ -165,39 +169,33 @@ public class TestGameClient extends BasicGameState{
 
 
 /** Game Functions */
-private void moveEntity(String entity, InputCommands input, float posX, float posY) {
-    int i = 0;
-    // TODO: have some indication if entity is a mob so it loops through correct ArrayList
-
-    if(entity.contains("/")){
-        boolean found = false;
-        for(BasicBeing hero: Players){
-            if(entity.equals(hero.getName())){
-                found = true;
-                hero.UpdateBeing(input, new Vector(posX, posY));
-                break;
+    private void moveEntity(String entity, InputCommands input, float posX, float posY) {
+        if(entity.contains("/")){
+            boolean found = false;
+            System.out.println("Players.size = " + Players.size());
+            for (int i=0; i < Players.size(); i++) {
+                if(entity.equals(Players.get(i).getName())){
+                    found = true;
+                    if (input == dc)
+                        Players.remove(i);
+                    else {
+                        Players.get(i).UpdateBeing(input, new Vector(posX, posY));
+                        System.out.println("Client: updated player: " + entity + " to " + Float.toString(posX) + ", " + Float.toString(posY));
+                    }
+                    break;
+                }
+            }
+            if (!found)
+                addPlayer(entity, posX, posY);
+        }else if(entity.contains("mob")){
+            for(BasicBeing mob: Mobs){
+                if(entity.equals(mob.getName())){
+                    mob.UpdateBeing(input, new Vector(posX, posY));
+                    break;
+                }
             }
         }
-        if (!found)
-            addPlayer(entity, posX, posY);
-    }else if(entity.contains("mob")){
-        for(BasicBeing mob: Mobs){
-            if(entity.equals(mob.getName())){
-                mob.UpdateBeing(input, new Vector(posX, posY));
-                break;
-            }
-        }
-    }
 
-
-    // for use when IP is properly stored in player class
-//        for (int i = 0; i < Players.size(); i++) {
-//            if (Players.get(i).getName() == entity) {
-//                Players.get(i).setPosition(posX, posY);
-//            }
-//        }
-
-    // Call pathfinding
     }
 
     private void loadLevel(int level) throws SlickException {
@@ -219,7 +217,7 @@ private void moveEntity(String entity, InputCommands input, float posX, float po
 
 
     private void addPlayer(String playerID, float xPos, float yPos) {
-//        System.out.println("executing addPlayer");
+        System.out.println("Adding Player at " + xPos + ", " + yPos);
         // TODO: Add playerID and ClassID to Basic Being constructor or player constructor, whatever gets used here
         Hero hero1 = new Hero(new Vector(xPos,yPos),false, playerID);
         Players.add(hero1);
@@ -238,13 +236,25 @@ private void moveEntity(String entity, InputCommands input, float posX, float po
             case "drDiag": inputCommand = drDiag; break;
             case "attack": inputCommand = attack; break;
             case "idle": inputCommand = idle; break;
+            case "dc": inputCommand = dc; break;
         }
         return inputCommand;
     }
 
 
     private void worldToScreen(int viewportX, int viewportY) {
-        for (int i = 0; i < Mobs.size(); i++) {
+        for (int i = 0; i < Players.size(); i++) {
+            if (!Players.get(i).getName().equals(socket.getLocalSocketAddress().toString())) {
+                System.out.println("Updating screen position of " + Players.get(i).getName());
+                int entityX = (int)(Players.get(i).getWorldPositionX()*32.0);
+                int entityY = (int)(Players.get(i).getWorldPositionY()*32.0);
+                int newX = entityX - viewportX;
+                int newY = entityY - viewportY;
+                Players.get(i).setPosition(newX, newY);
+            }
+        }
+
+            for (int i = 0; i < Mobs.size(); i++) {
             int entityX = (int)(Mobs.get(i).getWorldPositionX()*32.0);
             int entityY = (int)(Mobs.get(i).getWorldPositionY()*32.0);
             int newX = entityX - viewportX;
@@ -315,7 +325,7 @@ private void moveEntity(String entity, InputCommands input, float posX, float po
 
     // process incoming messages from clients
     private void processMessage(DataInputStream in) throws SlickException {
-        String msg = null;
+        String msg = "";
         // converts data steam into string
         try {
             msg = in.readUTF();
@@ -331,29 +341,34 @@ private void moveEntity(String entity, InputCommands input, float posX, float po
         // sets empty space as delimiter
         String delims = "[ ]";
         // splits message into tokens at every space
-        String[] tokens = msg.split(delims);
-        String command = tokens[0];
+        if (msg.length() >= 0) {
 
-        switch (command) {
-            case "INIT":
-//                System.out.println("Client: got INIT response ");
-                loadLevel(Integer.parseInt(tokens[1]));
-                addPlayer(tokens[2], Float.parseFloat(tokens[3]), Float.parseFloat(tokens[4]));
-                init = true;
-                break;
-            case "UPDT":
-//                System.out.println("Client: got UPDT response ");
-                // loop through tokens by fours (entity, input, velX, velY);
-                for (int i = 1; i < tokens.length; i += 4) {
-//                    System.out.println("UPDT loop: entering; length: " + tokens.length);
-                    InputCommands input = getCommand(tokens[i+1]);
-                    moveEntity(tokens[i], input, Float.parseFloat(tokens[i+2]), Float.parseFloat(tokens[i+3]));
-//                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
-                }
-                break;
-            default:
-                System.out.println("Server: unknown message received");
-                break;
+            String[] tokens = msg.split(delims);
+            String command = tokens[0];
+
+            switch (command) {
+                case "INIT":
+                    System.out.println("Client: got INIT response ");
+                    loadLevel(Integer.parseInt(tokens[1]));
+                    for (int i = 2; i < tokens.length; i += 3) {
+                        addPlayer(tokens[i], Float.parseFloat(tokens[i + 1]), Float.parseFloat(tokens[i + 2]));
+                        init = true;
+                    }
+                    break;
+                case "UPDT":
+                    System.out.println("Client: got UPDT response " + msg);
+                    // loop through tokens by fours (entity, input, velX, velY);
+                    for (int i = 1; i < tokens.length; i += 4) {
+    //                    System.out.println("UPDT loop: entering; length: " + tokens.length);
+                        InputCommands input = getCommand(tokens[i + 1]);
+                        moveEntity(tokens[i], input, Float.parseFloat(tokens[i + 2]), Float.parseFloat(tokens[i + 3]));
+    //                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
+                    }
+                    break;
+                default:
+                    System.out.println("Server: unknown message received");
+                    break;
+            }
         }
     }
 
