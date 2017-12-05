@@ -19,77 +19,77 @@ public class MobList {
         String mobName = "mob" + mobNum;
         if (level == 1) {
             // hallway 1
-            mob = new Mob(new Vector(75f, 105.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(74f, 104.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(73f, 105f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(75f, 105.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(74f, 104.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(73f, 105f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
-            mob = new Mob(new Vector(65f, 104.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(64f, 105.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(63f, 104f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(62.5f, 106f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(65f, 104.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(64f, 105.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(63f, 104f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(62.5f, 106f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
-            mob = new Mob(new Vector(50f, 104f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(50f, 104f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(49f, 105f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(51.5f, 105f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(50f, 106f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(50f, 106f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
-            mob = new Mob(new Vector(31f, 104.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(31f, 104.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(30f, 105f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(31f, 105.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(31f, 105.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             // room 1
-            mob = new Mob(new Vector(22.5f, 104f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(22f, 105f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(23f, 105.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(23f, 104f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(22f, 105f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(23.5f, 105.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
-            mob = new Mob(new Vector(15.5f, 102f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(15.5f, 102f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(16.5f, 102f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(15f, 103f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(15f, 103f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(16f, 103f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(19f, 97f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(20f, 97.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(18f, 98f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(20f, 97.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(18f, 98f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(19f, 99f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
-            mob = new Mob(new Vector(25f, 98.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(24f, 99f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(25f, 99.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(25f, 98.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(24f, 99f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(25f, 99.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(23f, 100f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(24f, 100f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
-            mob = new Mob(new Vector(15f, 94f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(14f, 95f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(15f, 94f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(14f, 95f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(16f, 95.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
-            mob = new Mob(new Vector(24f, 93f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(24f, 94f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(24f, 93f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(24f, 94f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(26f, 94f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(23f, 95f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(25f, 95f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
-            mob = new Mob(new Vector(18f, 90f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(18f, 90f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(20f, 90f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(17f, 91f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(17f, 91f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(19f, 91.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(18f, 92f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
-            mob = new Mob(new Vector(15f, 83f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(16f, 84f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(15f, 83f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(16f, 84f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(17f, 84.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(15f, 85f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(15f, 85f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(16f, 86f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
-            mob = new Mob(new Vector(24f, 84f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(25f, 84.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(24f, 84f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(25f, 84.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(23f, 85f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(25.5f, 85.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(24f, 86f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             // small hallway off room 1
-            mob = new Mob(new Vector(31f, 99f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(30f, 99.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(32f, 99.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+/*            mob = new Mob(new Vector(31f, 99f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(30f, 99.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(32f, 99.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             // room 2
             mob = new Mob(new Vector(21.5f, 22.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
@@ -169,43 +169,43 @@ public class MobList {
             mob = new Mob(new Vector(43.5f, 44.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(45.5f, 45f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(41.5f, 45.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-
+*/
             // room 3
             mob = new Mob(new Vector(33f, 64.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(32.5f, 63.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(33.5f, 63.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(32.5f, 63.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(33.5f, 63.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(32f, 62.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(38.5f, 68.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(36.5f, 69.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(38f, 69.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(38f, 69.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(37.5f, 70.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(38.5f, 70.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(38.5f, 70.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(34.5f, 73.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(33.5f, 74.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(33.5f, 74.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(34.5f, 75f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(33.5f, 75.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(33.5f, 75.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(37.5f, 77.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(35.5f, 78.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(36.5f, 78.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(37.5f, 79.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(36.5f, 80f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(36.5f, 78.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(37.5f, 79.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(36.5f, 80f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(32.5f, 81.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(33.5f, 81.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(33.5f, 81.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(32.5f, 86.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(33.5f, 87f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(38.5f, 86.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(37.5f, 87f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(38.5f, 87.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(39.5f, 87.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(38.5f, 87.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(39.5f, 87.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             // room 4
-            mob = new Mob(new Vector(56.5f, 39.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+/*            mob = new Mob(new Vector(56.5f, 39.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(58.5f, 39.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(57f, 40.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
@@ -263,27 +263,27 @@ public class MobList {
             mob = new Mob(new Vector(68.5f, 33.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(71.5f, 33.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(73.5f, 32.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-
+*/
             // room 5
             mob = new Mob(new Vector(62.5f, 75.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(65.5f, 76.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(67.5f, 76.6f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(65.5f, 76.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(67.5f, 76.6f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(64f, 77f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(63.5f, 78.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
-            mob = new Mob(new Vector(67f, 80.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(67f, 80.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(68.5f, 81.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(66f, 82f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(67.5f, 82.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(67.5f, 82.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(66f, 85.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(64.5f, 86.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(64.5f, 86.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(67.5f, 86.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(62.5f, 87.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(62.5f, 87.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(66.5f, 87.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             // room 6
-            mob = new Mob(new Vector(91f, 39f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+/*            mob = new Mob(new Vector(91f, 39f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(90f, 40f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(92f, 40f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(90f, 41f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
@@ -322,38 +322,38 @@ public class MobList {
             mob = new Mob(new Vector(87.5f, 62.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(86f, 63f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(87f, 64f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-
+*/
             // room 7
             mob = new Mob(new Vector(49f, 81.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(51f, 81.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(50f, 82.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(51f, 81.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(50f, 82.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(49f, 83.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(50.5f, 83.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(44.5f, 86.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(45.5f, 87.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(45.5f, 87.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(44.5f, 88.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
-            mob = new Mob(new Vector(50.5f, 87.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(49.5f, 88f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(50.5f, 87.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(49.5f, 88f),3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(50.5f, 89f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(48.5f, 89.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(50.5f, 90.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(45.5f, 93.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(46.5f, 94.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(44.5f, 95f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(44.5f, 95f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(48f, 95f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(49.5f, 95.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(49.5f, 95.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(50.5f, 95.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(47.5f, 96.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(47.5f, 96.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(44.5f, 98.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(47f, 99f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(47f, 99f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(45.5f, 99.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             // room 8
-            mob = new Mob(new Vector(80.5f, 69.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+/*            mob = new Mob(new Vector(80.5f, 69.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(81f, 69.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(79.5f, 71f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum; // 2
 
@@ -377,7 +377,7 @@ public class MobList {
 
             // sm hallway off room 8
             mob = new Mob(new Vector(88.5f, 81.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-
+*/
             // hallway from 2-3
             mob = new Mob(new Vector(17.5f, 51.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(19.5f, 51f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
@@ -405,40 +405,41 @@ public class MobList {
 
             // hallway from 3-5
             mob = new Mob(new Vector(44.5f, 60.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(45f, 62.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(45f, 62.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(48.5f, 64f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(50.5f, 63.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(50.5f, 63.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(51.5f, 63.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(61.5f, 64f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(62.5f, 63.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(62.5f, 63.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(65f, 63f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(68f, 64f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(68f, 64f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(69f, 65f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(56f, 67f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(57f, 68f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(57f, 68f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(56.5f, 69.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(68f, 70f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(69f, 70f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(68f, 70f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(69f, 70f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             // hallway from 3-7-5
             mob = new Mob(new Vector(50.5f, 72.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(50f, 74.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(50f, 74.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(51.5f, 75.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(57f, 84f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(56f, 85.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(57f, 86.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(57f, 95.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(57f, 86.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+
+            mob = new Mob(new Vector(57f, 95.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(56f, 96.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(56.5f, 98f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             mob = new Mob(new Vector(62f, 96.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(62.5f, 98f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            mob = new Mob(new Vector(62.5f, 98f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(62.5f, 99.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             // hallway from 5-4
-            mob = new Mob(new Vector(75f, 61.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+/*            mob = new Mob(new Vector(75f, 61.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(74.5f, 62.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(74f, 67f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(74f, 71f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
@@ -478,6 +479,7 @@ public class MobList {
             mob = new Mob(new Vector(98.5f, 31.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(98f, 36.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(99f, 37.5f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+*/
         }
         return Mobs;
     }

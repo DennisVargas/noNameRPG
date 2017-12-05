@@ -64,13 +64,13 @@ public class CollisionManager {
                     hero.setPosition(new Vector(attackPos.getX() * 32f, attackPos.getY() * 32f));
 
                     if ((collides = hero.collides(mob)) != null) {
-                        System.out.println("hit MOB before health: " + mob.getHealth());
+//                        System.out.println("hit MOB before health: " + mob.getHealth());
 
                         mob.HitBeing(hero.getAttackPower());
-                        System.out.println("hit MOB after health: " + mob.getHealth());
+//                        System.out.println("hit MOB after health: " + mob.getHealth());
                         if (mob.IsDead()) {
                             mob.setCommand(InputCommands.death);
-                            System.out.println("I'm Dead");
+//                            System.out.println("I'm Dead");
                         }
 
                     }
@@ -101,10 +101,10 @@ public class CollisionManager {
                 mob.setPosition(new Vector (attackPos.getX()*32f,attackPos.getY()*32f));
 
                 if ((collides = mob.collides(hero))!= null){
-                    System.out.println("hit Hero before health: "+hero.getHealth());
+//                    System.out.println("hit Hero before health: "+hero.getHealth());
 
                     hero.HitBeing(mob.getAttackPower());
-                    System.out.println("hit Hero after health: "+hero.getHealth());
+//                    System.out.println("hit Hero after health: "+hero.getHealth());
                 }
 //              reverse the attack move
                 attackPos = MovementCalc.CalcWorldPosition(ReverseCommand(mob.getLastDirectionCommand()), mob.getWorldPosition(), mob.getSpeed());
@@ -147,5 +147,27 @@ public class CollisionManager {
             }
         }
         return false;
+    }
+
+    public static Money CheckHeroMoneyCollision(BasicBeing player, ArrayList<Money> moneys) {
+        for(Money money: moneys) {
+            Collision collides = null;
+            if ((collides = money.collides(player)) != null) {
+                return money;
+            }
+        }
+        return null;
+    }
+
+    public static Health CheckHeroHealthCollision(BasicBeing player, ArrayList<Health> healths) {
+        if(player.getHealth() == 2)
+            return null;
+        for (Health health: healths) {
+            Collision collides = null;
+            if ((collides = health.collides(player)) != null) {
+                return health;
+            }
+        }
+        return null;
     }
 }

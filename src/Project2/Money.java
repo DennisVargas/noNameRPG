@@ -8,9 +8,11 @@ import org.newdawn.slick.SpriteSheet;
 public class Money extends Object {
     int value;
     private static final SpriteSheet moneySheet = ResourceManager.getSpriteSheet(Project2.MONEYSHEETRSC,32,32);
-    public Money(Vector worldPosition, String name, int value) throws SlickException {
+    public Money (Vector worldPosition, String name, int value) throws SlickException {
         super(worldPosition, name, value);
+        this.value = value;
         InitImage();
+        setPosition(worldPosition.getX()*32, worldPosition.getY()*32);
     }
 
     protected void InitImage(){
@@ -25,4 +27,5 @@ public class Money extends Object {
         else
             addImageWithBoundingBox(moneySheet.getSprite(4,0));
     }
+    public Vector getWorldPosition(){return super.getWorldPosition();}
 }

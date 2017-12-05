@@ -19,6 +19,8 @@ import sun.plugin.perf.PluginRollup;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static Project2.InputManager.InputCommands;
 import static Project2.InputManager.InputCommands.*;
@@ -40,14 +42,17 @@ public class TestGameClient extends BasicGameState{
     private InputCommands inputCommand;
     private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    private ArrayList<Hero> Players;
+    private List<Hero> Players;
     private MobList moblist;
     private DoorList doorList;
-    private ArrayList<Door> Doors;
-    private ArrayList<Mob> Mobs;
+    private List<Door> Doors;
+    private List<Mob> Mobs;
+    private List<Money> MoneyDrops;
+    private List<Health> HealthDrops;
     private boolean isIdle = true;
     private Map mapping = null;
     private ArrayList<Mob>mobsToMove;
+    private int playersMoney;
 
     private int temp = 1;
 
@@ -61,6 +66,7 @@ public class TestGameClient extends BasicGameState{
 
     public TestGameClient(int state_id) {
         this.stateId = state_id;
+        playersMoney = 0;
     }
 
 
@@ -73,9 +79,11 @@ public class TestGameClient extends BasicGameState{
     public void init(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
         ResourceManager.loadImage(WALKINGSHEETRSC);
         ResourceManager.loadImage(ATTACKINGSHEETRSC);
-        Players = new ArrayList<>();
-        Mobs = new ArrayList<>();
-        Doors = new ArrayList<>();
+        Players = Collections.synchronizedList(new ArrayList<Hero>());
+        Mobs = Collections.synchronizedList(new ArrayList<>());
+        Doors = Collections.synchronizedList(new ArrayList<Door>());
+        MoneyDrops = Collections.synchronizedList(new ArrayList<Money>());
+        HealthDrops = Collections.synchronizedList(new ArrayList<Health>());
         mobsToMove = new ArrayList<>();
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
@@ -110,7 +118,7 @@ public class TestGameClient extends BasicGameState{
 
 
     @Override
-    public void render(GameContainer container, StateBasedGame stateBasedGame, Graphics g) throws SlickException {
+    public synchronized void render(GameContainer container, StateBasedGame stateBasedGame, Graphics g) throws SlickException {
         if (init) {
             // VIEWPORT STUFF
             // TODO: loop through Player array until beingID == socket.getLocalSocketAddress()
@@ -158,6 +166,7 @@ public class TestGameClient extends BasicGameState{
             }
             g.setColor(Color.red);
             //g.drawString("Mobs in range: "+mobsToMove.size(),100, 300 );
+            g.drawString("Players Account: "+playersMoney, 200,200);
 
 
             // convert all non-controlling player entities world to screen coords
@@ -176,6 +185,10 @@ public class TestGameClient extends BasicGameState{
             for (int i = 0; i < Doors.size(); i++) {
                 Doors.get(i).render(g);
             }
+            for (int i = 0; i < MoneyDrops.size(); i++)
+                MoneyDrops.get(i).render(g);
+            for (int i = 0; i < HealthDrops.size(); i++)
+                HealthDrops.get(i).render(g);
             // ENTITY STUFF
             // render players
             for (int i = 0; i < Players.size(); i++) {
@@ -248,7 +261,7 @@ public class TestGameClient extends BasicGameState{
 
 
 /** Game Functions */
-    private void moveEntity(String entity, InputCommands input, Float posX, Float posY) {
+private synchronized void moveEntity(String entity, InputCommands input, Float posX, Float posY) {
     int i = 0;
     // TODO: have some indication if entity is a mob so it loops through correct ArrayList
 
@@ -284,7 +297,7 @@ public class TestGameClient extends BasicGameState{
     }
 
     private void loadLevel(int level) throws SlickException {
-        System.out.println("executing loadLevel " + level);
+//        System.out.println("executing loadLevel " + level);
         moblist = new MobList();
         doorList = new DoorList();
         // should match info switch statement in TestGameServer constructor
@@ -353,6 +366,20 @@ public class TestGameClient extends BasicGameState{
             int newX = entityX - viewportX;
             int newY = entityY - viewportY;
             Doors.get(i).setPosition(newX, newY);
+        }
+        for (int i = 0; i < MoneyDrops.size(); i++){
+            int entityX = (int)(MoneyDrops.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(MoneyDrops.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            MoneyDrops.get(i).setPosition(newX, newY);
+        }
+        for (int i = 0; i < HealthDrops.size(); i++){
+            int entityX = (int)(HealthDrops.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(HealthDrops.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            HealthDrops.get(i).setPosition(newX, newY);
         }
     }
 
@@ -455,6 +482,36 @@ public class TestGameClient extends BasicGameState{
 //                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
                 }
                 break;
+            case "DROPM":
+                for (int i = 1; i < tokens.length; i++) {
+                    if(tokens[i].contains("money"))
+                        MoneyDrops.add(new Money(new Vector(Float.parseFloat(tokens[i+1]), (Float.parseFloat(tokens[i+2]))), tokens[i], Integer.parseInt(tokens[i+3])));
+                }
+                break;
+            case "PCKUPM":
+                playersMoney = Integer.parseInt(tokens[1]);
+                for (int i = 2; i < tokens.length; i++) {
+                    for(int j = 0; j < MoneyDrops.size(); j++){
+                        if(MoneyDrops.get(j).getName().equals(tokens[i])){
+                            MoneyDrops.remove(MoneyDrops.get(j));
+                        }
+                    }
+                }
+            case "DROPH":
+                for (int i = 1; i < tokens.length; i++) {
+                    if(tokens[i].contains("health"))
+                        HealthDrops.add(new Health(new Vector(Float.parseFloat(tokens[i+1]), (Float.parseFloat(tokens[i+2]))), tokens[i], Integer.parseInt(tokens[i+3])));
+                }
+                break;
+            case "PCKUPH":
+                Players.get(0).setHealth(Players.get(0).getHealth() + 1);
+                for (int i = 2; i < tokens.length; i++) {
+                    for(int j = 0; j < HealthDrops.size(); j++){
+                        if(HealthDrops.get(j).getName().equals(tokens[i])){
+                            HealthDrops.remove(HealthDrops.get(j));
+                        }
+                    }
+                }
             default:
                 System.out.println("Server: unknown message received");
                 break;
