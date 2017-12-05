@@ -16,7 +16,7 @@ import static Project2.InputManager.InputCommands;
  */
 public class BasicBeing extends Entity{
 
-
+    //translation = velocity
 
 
     private float attackPower = 20f;

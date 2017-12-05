@@ -8,6 +8,7 @@ public class Pathfinding {
     public static float [][] distanceFromPlayer = new float[150][150];
     public static Vector [][] path = new Vector[150][150];
     public static ArrayList<Tile> mapCopy = new ArrayList<>();
+    public static boolean print = true;
 
     public static boolean range(Vector player, Vector mob){
         float playerXMax = player.getX()+10;
@@ -22,7 +23,8 @@ public class Pathfinding {
 
     public static void Dijkstra(Map tiles, Vector playerPosition){
         initialize(playerPosition.getX(), playerPosition.getY() );
-        makeGraphCopy(tiles);
+        makeGraphCopy(tiles, playerPosition.getX(), playerPosition.getY());
+
 
         while(mapCopy.size() > 0){
             float lowValue =1000;
@@ -35,9 +37,10 @@ public class Pathfinding {
                     lowValue = distanceFromPlayer[x][y];
                     lowSpot = i;
                 }
-                //System.out.println("i:"+i+" lowValue:"+lowValue);
+                if (print)
+                    System.out.println("i:"+i+" lowValue:"+(int)lowValue+ " x:"+x+" y:"+y);
             }
-
+            print = false;
             if (lowValue < 100){
                 int neighborX, neighborY;
                  /*  a[x-1,y-1] b[x,y-1] c[x+1,y-1]
@@ -120,6 +123,9 @@ public class Pathfinding {
     }
 
     public static void initialize(float x, float y){
+        //float xmin = x-5; float ymin = y-5;
+        //float xmax = x+5; float ymax = y+5;
+
         for (int i = 0; i < 150; i++){
             for (int j = 0; j < 150; j++){
                 distanceFromPlayer[i][j] = 100;
@@ -132,11 +138,16 @@ public class Pathfinding {
         }
         distanceFromPlayer[(int)x][(int)y] = 0;
         path[(int)x][(int)y] = new Vector(x, y);
+
     }
-    public static void makeGraphCopy(Map map){
+    public static void makeGraphCopy(Map map, float x, float y){
         //use mapCopy
-        for (int i = 0; i < 150; i++){
-            for (int j = 0; j < 150; j++){
+        x = x+20; y = y+11;
+        float xmin = x-5; float ymin = y-5;
+        float xmax = x+5; float ymax = y+5;
+
+        for (int i = (int)xmin; i < (int)xmax; i++){
+            for (int j = (int)ymin; j < (int)ymax; j++){
                 if(!map.tiles[i][j].getType().equalsIgnoreCase("abyss")){
                     // Tile(int x, int y, String type, int level)
                     Tile tempTile = new Tile(map.tiles[i][j].getCoordX(),
@@ -148,8 +159,5 @@ public class Pathfinding {
                 }
             }
         }
-    }
-    private static Vector worldOffset(int x, int y){
-        return new Vector(x+20, y+11);
     }
 }
