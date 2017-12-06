@@ -18,6 +18,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.EmptyTransition;
 import org.newdawn.slick.state.transition.HorizontalSplitTransition;
 import org.newdawn.slick.tiled.TiledMap;
+import sun.plugin.perf.PluginRollup;
 
 import java.io.*;
 import java.net.Socket;
@@ -51,13 +52,16 @@ public class TestGameClient extends BasicGameState{
     private List<Money> MoneyDrops;
     private List<Health> HealthDrops;
     private boolean isIdle = true;
+    private Map mapping = null;
+    private ArrayList<Mob>mobsToMove;
     private int playersMoney;
+
+    private int temp = 1;
 
     // MAP STUFF
     private double x, y;
     private int mapX, mapY;
     public TiledMap map1 = null;
-    public Map tileMapping = null;
     private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
     private final String TILESHEETRSC = "resources/Levels";
 
@@ -76,17 +80,15 @@ public class TestGameClient extends BasicGameState{
     @Override
     public void init(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
         Players = Collections.synchronizedList(new ArrayList<Hero>());
-//        Players = new ArrayList<>();
         Mobs = Collections.synchronizedList(new ArrayList<>());
-//        Mobs = new ArrayList<>();
         Doors = Collections.synchronizedList(new ArrayList<Door>());
-//        Doors = new ArrayList<>();
         MoneyDrops = Collections.synchronizedList(new ArrayList<Money>());
         HealthDrops = Collections.synchronizedList(new ArrayList<Health>());
-//        MoneyDrops = new ArrayList<>();
+        mobsToMove = new ArrayList<>();
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
         map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
         Project2.settings.createTileMapping(map1, 1);
+        mapping = Project2.settings.getTilemapping();
     }
 
     @Override
@@ -137,6 +139,43 @@ public class TestGameClient extends BasicGameState{
 //                    g.drawString("worldX: "+Players.get(i).getWorldPositionX() + "      worldY:"+Players.get(i).getWorldPositionY(), 200,230);
 //                    g.drawString("screenX: "+Players.get(i).getScreenPositionX() + " screenY:"+Players.get(i).getScreenPositionY(), 200,260);
 
+            
+            /*g.drawString("displaceX: "+displaceX*-1
+                    +" displaceY:"+displaceY*-1, 100,200);
+            g.drawString("worldX: "+Players.get(0).getWorldPositionX()
+                    +"      worldY:"+Players.get(0).getWorldPositionY(), 100,230);
+            g.drawString("screenX: "+Players.get(0).getScreenPositionX()
+                    +" screenY:"+Players.get(0).getScreenPositionY(), 100,260);
+*/
+            //<editor-fold desc ="Grid STUFF do NOT touch"
+            float xoff = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionX())-5);
+            float yoff = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionY())-5);
+            Vector offSet = MovementCalc.CalcScreenPosition(
+                    Players.get(0).getWorldPosition(),
+                    new Vector(xoff, yoff));
+            if (temp == 1){
+                for (int x = 0; x < 11; x++){
+                    for (int j = 0; j < 11; j++){
+                        Vector temp = worldOffset(xoff, yoff);
+                        int cost = mapping.getTileCost((int)temp.getX()+x, (int)temp.getY()+j);
+                        g.setColor(Color.white);
+                        g.drawString(String.valueOf(cost), (offSet.getX())+(x*32), (offSet.getY())+(j*32));
+                    }
+                }
+            }
+            if (temp == 2){
+                for (int x = 0; x < 11; x++){
+                    for (int j = 0; j < 11; j++){
+                        float distance = Pathfinding.distanceFromPlayer[(int)xoff+x][(int)yoff+j];
+                        g.setColor(Color.white);
+                        g.drawString(String.valueOf((int)distance), (offSet.getX())+(x*32), (offSet.getY())+(j*32));
+                    }
+                }
+            }
+            g.setColor(Color.red);
+            //</editor-fold
+            //g.drawString("Mobs in range: "+mobsToMove.size(),100, 300 );
+            //g.drawString("Players Account: "+playersMoney, 200,200);
                     // only set up to do mob list now
                     viewportX = (int)((Players.get(i).getWorldPositionX()*32.0) - screenCenter.getX());
                     viewportY = (int)((Players.get(i).getWorldPositionY()*32.0) - screenCenter.getY());
@@ -187,7 +226,42 @@ public class TestGameClient extends BasicGameState{
                 isIdle = false;
                 inptMsg(inputCommand.toString());
             }
+            float playerOffX = (float)Math.floor(Players.get(0).getWorldPositionX());
+            float playerOffY = (float)Math.floor(Players.get(0).getWorldPositionY());
+            Vector playerPosition = new Vector(playerOffX, playerOffY);
+            //constant player graph update
+            //Pathfinding.Dijkstra(mapping, playerPosition);
+            //<editor-fold desc="Mobs in range"
+            /*for (int i = 0; i < Mobs.size(); i++) {
+                float mobX = (float)Math.floor(Mobs.get(i).getWorldPositionX());
+                float mobY = (float)Math.floor(Mobs.get(i).getWorldPositionY());
+                Vector mobPosition = new Vector(mobX, mobY);
+                if (Pathfinding.range(playerPosition, mobPosition) &&
+                        !mobsToMove.contains(Mobs.get(i))){
+                    if (!Mobs.get(i).IsDead()) {
+                        mobsToMove.add(Mobs.get(i));
+                    }
+                } if (Mobs.get(i).IsDead()){
+                  mobsToMove.remove(Mobs.get(i));
+                } else if (!Pathfinding.range(playerPosition, mobPosition) &&
+                        mobsToMove.contains(Mobs.get(i))){
+                    mobsToMove.remove(Mobs.get(i));
+                }
+            }*/
+            //</editor-fold
 
+
+            //<editor-fold desc="Debug printout"
+            if (input.isKeyPressed(Input.KEY_1)){
+                temp = 1;
+            }
+            if (input.isKeyPressed(Input.KEY_2)){
+                temp = 2;
+            }
+            if (input.isKeyPressed(Input.KEY_3)){
+                temp = 3;
+            }
+            //</editor-fold
         }
     }
 
@@ -313,6 +387,9 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
         }
     }
 
+    private Vector worldOffset(float x, float y){
+        return new Vector(x+20, y+11);
+    }
 
 /** Client Functions */
     public boolean connect(StateBasedGame game) {
@@ -401,6 +478,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
         if (msg.length() >= 0) {
             String[] tokens = msg.split(delims);
             String command = tokens[0];
+//            System.out.println("Client" + msg);
 
             switch (command) {
                 case "INIT":

@@ -37,6 +37,8 @@ public class PlaySettings {
 
     public void createTileMapping(TiledMap map, int level){
         this.tilemapping = new Map(map, level);
+        tilemapping.setNeighbors();
+        tilemapping.setStaticTileCost();
     }
 
     public String checkTile(int x, int y){
@@ -47,7 +49,7 @@ public class PlaySettings {
         return guestStartLevel1;
     }
 
-
+    public Map getTilemapping(){return tilemapping;}
 
     public Vector getHostStartLevel1() {
         return hostStartLevel1;
