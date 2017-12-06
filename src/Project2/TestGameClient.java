@@ -220,9 +220,9 @@ public class TestGameClient extends BasicGameState{
             float playerOffY = (float)Math.floor(Players.get(0).getWorldPositionY());
             Vector playerPosition = new Vector(playerOffX, playerOffY);
             //constant player graph update
-            Pathfinding.Dijkstra(mapping, playerPosition);
+            //Pathfinding.Dijkstra(mapping, playerPosition);
             //<editor-fold desc="Mobs in range"
-            for (int i = 0; i < Mobs.size(); i++) {
+            /*for (int i = 0; i < Mobs.size(); i++) {
                 float mobX = (float)Math.floor(Mobs.get(i).getWorldPositionX());
                 float mobY = (float)Math.floor(Mobs.get(i).getWorldPositionY());
                 Vector mobPosition = new Vector(mobX, mobY);
@@ -237,7 +237,7 @@ public class TestGameClient extends BasicGameState{
                         mobsToMove.contains(Mobs.get(i))){
                     mobsToMove.remove(Mobs.get(i));
                 }
-            }
+            }*/
             //</editor-fold
 
 

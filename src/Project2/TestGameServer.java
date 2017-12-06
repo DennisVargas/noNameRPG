@@ -310,7 +310,16 @@ public class TestGameServer {
                     Vector cheesyMobs = new Vector(mobX, mobY);
                     if (Pathfinding.range(playerPosition, cheesyMobs) &&
                             !Mobs.get(i).IsDead()){
-                        
+                        String command = Pathfinding.getPath((int)mobX, (int)mobY);
+                        /*up, down, left, right, ulDiag, dlDiag, urDiag, drDiag*/
+                        if (command.equalsIgnoreCase("up")){Mobs.get(i).setCommand(InputCommands.up);}
+                        else if (command.equalsIgnoreCase("down")){Mobs.get(i).setCommand(InputCommands.down);}
+                        else if (command.equalsIgnoreCase("left")){Mobs.get(i).setCommand(InputCommands.left);}
+                        else if (command.equalsIgnoreCase("right")){Mobs.get(i).setCommand(InputCommands.right);}
+                        else if (command.equalsIgnoreCase("ulDiag")){Mobs.get(i).setCommand(InputCommands.ulDiag);}
+                        else if (command.equalsIgnoreCase("dlDiag")){Mobs.get(i).setCommand(InputCommands.dlDiag);}
+                        else if (command.equalsIgnoreCase("urDiag")){Mobs.get(i).setCommand(InputCommands.urDiag);}
+                        else if (command.equalsIgnoreCase("drDiag")){Mobs.get(i).setCommand(InputCommands.drDiag);}
                     } else {
                         Mobs.get(i).setCommand(InputCommands.idle);
                     }

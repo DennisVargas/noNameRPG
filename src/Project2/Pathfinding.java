@@ -8,14 +8,16 @@ public class Pathfinding {
     public static float [][] distanceFromPlayer = new float[150][150];
     public static Vector [][] path = new Vector[150][150];
     public static ArrayList<Tile> mapCopy = new ArrayList<>();
-    public static boolean print = true;
+    //public static boolean print = true;
 
     public static boolean range(Vector player, Vector mob){
-        float playerXMax = player.getX()+10;
-        float playerYMax = player.getY()+10;
+        float playerXMin =  player.getX()-5;
+        float playerYMin = player.getY()-5;
+        float playerXMax = player.getX()+5;
+        float playerYMax = player.getY()+5;
 
-        if (mob.getX() >= player.getX() && mob.getX() <= playerXMax &&
-                mob.getY() >= player.getY() && mob.getY() <= playerYMax)
+        if (mob.getX() >= playerXMin && mob.getX() <= playerXMax &&
+                mob.getY() >= playerYMin && mob.getY() <= playerYMax)
             return true;
 
         return false;
@@ -37,10 +39,10 @@ public class Pathfinding {
                     lowValue = distanceFromPlayer[x][y];
                     lowSpot = i;
                 }
-                if (print)
-                    System.out.println("i:"+i+" lowValue:"+(int)lowValue+ " x:"+x+" y:"+y);
+                /*if (print)
+                    System.out.println("i:"+i+" lowValue:"+(int)lowValue+ " x:"+x+" y:"+y);*/
             }
-            print = false;
+            //print = false;
             if (lowValue < 100){
                 int neighborX, neighborY;
                  /*  a[x-1,y-1] b[x,y-1] c[x+1,y-1]
@@ -108,9 +110,25 @@ public class Pathfinding {
         }
     }
 
-    /*public static Vector getPath(){
+    public static String getPath(int x, int y){
+        int pathX = (int)path[x][y].getX();
+        int pathY = (int)path[x][y].getY();
+        /*
+        * a, b, c
+        * d,  , e
+        * f, g, h
+        * */
 
-    }*/
+        if (pathX == x-1 && pathY == y-1){ return "ulDiag";}
+        else if (pathX == x && pathY == y-1){return "up";}
+        else if (pathX == x+1 && pathY == y-1){return "urDiag";}
+        else if (pathX == x-1 && pathY == y){return "left";}
+        else if (pathX == x+1 && pathY == y){return "right";}
+        else if (pathX == x-1 && pathY == y+1){return "dlDiag";}
+        else if (pathX == x && pathY == y+1){return "down";}
+        else if (pathX == x+1 && pathY == y+1){return "drDiag";}
+        else return "idle";
+    }
 
     public static void evaluate(int x, int y, int nx, int ny){
         double something = Math.hypot(nx-x, ny-y);
@@ -140,6 +158,7 @@ public class Pathfinding {
         path[(int)x][(int)y] = new Vector(x, y);
 
     }
+
     public static void makeGraphCopy(Map map, float x, float y){
         //use mapCopy
         x = x+20; y = y+11;
