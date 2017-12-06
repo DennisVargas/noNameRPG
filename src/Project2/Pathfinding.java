@@ -130,6 +130,10 @@ public class Pathfinding {
         else return "idle";
     }
 
+    public static Vector nextTile(int x, int y, String cmd){
+        return new Vector(path[x][y].getX(), path[x][y].getY());
+    }
+
     public static void evaluate(int x, int y, int nx, int ny){
         double something = Math.hypot(nx-x, ny-y);
 

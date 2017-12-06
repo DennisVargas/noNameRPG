@@ -311,6 +311,7 @@ public class TestGameServer {
                     if (Pathfinding.range(playerPosition, cheesyMobs) &&
                             !Mobs.get(i).IsDead()){
                         String command = Pathfinding.getPath((int)mobX, (int)mobY);
+                        Vector whatever = Pathfinding.nextTile((int)mobX, (int)mobY, command);
                         /*up, down, left, right, ulDiag, dlDiag, urDiag, drDiag*/
                         if (command.equalsIgnoreCase("up")){Mobs.get(i).setCommand(InputCommands.up);}
                         else if (command.equalsIgnoreCase("down")){Mobs.get(i).setCommand(InputCommands.down);}
@@ -320,12 +321,15 @@ public class TestGameServer {
                         else if (command.equalsIgnoreCase("dlDiag")){Mobs.get(i).setCommand(InputCommands.dlDiag);}
                         else if (command.equalsIgnoreCase("urDiag")){Mobs.get(i).setCommand(InputCommands.urDiag);}
                         else if (command.equalsIgnoreCase("drDiag")){Mobs.get(i).setCommand(InputCommands.drDiag);}
+                        Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(), whatever, Mobs.get(i).getSpeed());
+                        Mobs.get(i).setWorldPosition(newMobPosition);
+                        Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
                     } else {
                         Mobs.get(i).setCommand(InputCommands.idle);
+                        Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(), Mobs.get(i).getWorldPosition(), Mobs.get(i).getSpeed());
+                        Mobs.get(i).setWorldPosition(newMobPosition);
+                        Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
                     }
-                    Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(), Mobs.get(i).getWorldPosition(), Mobs.get(i).getSpeed());
-                    Mobs.get(i).setWorldPosition(newMobPosition);
-                    Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
                     CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
                     CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
     //            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);

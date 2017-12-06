@@ -137,7 +137,7 @@ public class TestGameClient extends BasicGameState{
             g.drawString("screenX: "+Players.get(0).getScreenPositionX()
                     +" screenY:"+Players.get(0).getScreenPositionY(), 100,260);
 */
-            //grid range
+            //<editor-fold desc ="Grid STUFF do NOT touch"
             float xoff = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionX())-5);
             float yoff = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionY())-5);
             Vector offSet = MovementCalc.CalcScreenPosition(
@@ -163,8 +163,9 @@ public class TestGameClient extends BasicGameState{
                 }
             }
             g.setColor(Color.red);
+            //</editor-fold
             //g.drawString("Mobs in range: "+mobsToMove.size(),100, 300 );
-            g.drawString("Players Account: "+playersMoney, 200,200);
+            //g.drawString("Players Account: "+playersMoney, 200,200);
 
 
             // convert all non-controlling player entities world to screen coords
@@ -475,7 +476,8 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
 //                    System.out.println("UPDT loop: entering; length: " + tokens.length);
                     InputCommands input = getCommand(tokens[i+1]);
                     moveEntity(tokens[i], input, Float.parseFloat(tokens[i+2]), Float.parseFloat(tokens[i+3]));
-//                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
+//                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; mobId = " + tokens[i] + " input = " + tokens[i+1]+
+//                    " x = " + tokens[i+2] + "y = " +tokens[i+3]);
                 }
                 break;
             case "DROPM":
