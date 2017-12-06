@@ -58,11 +58,7 @@ public class TestGameServer {
     private String healthPickupChanges = "";
     private String e = "";
     int playersMoney;
-
-    // TODO: eventually remove this
-    private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-
+    private Map mapping = null;
 
     // constructor sets port number and state ID for current level
     public TestGameServer(int stateId, int port) throws SlickException {
@@ -77,11 +73,8 @@ public class TestGameServer {
         NewHealthDrops = new ArrayList<Health>();
         playersMoney = 0;
         // Set game info based on what level was requested by host
-        // TODO: eventually remove spritesheets
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
         if (stateId == 22) {
-            ResourceManager.loadImage(WALKINGSHEETRSC);
-            ResourceManager.loadImage(ATTACKINGSHEETRSC);
             mapX = 45f;
             mapY = 105f;
             Mobs = moblist.getMobList(1);
@@ -92,6 +85,7 @@ public class TestGameServer {
             for(Door door: Doors){
                 door.setPosition(new Vector(door.getWorldPositionX()*32, door.getWorldPositionY()*32));
             }
+            mapping = Project2.settings.getTilemapping();
         }
 
         // Set port info
@@ -106,14 +100,6 @@ public class TestGameServer {
         hero1.setPosition(new Vector(mapX,mapY));
         Players.add(hero1);
     }
-
-    // TODO: function for running dijkstra's
-        // to adjust mob positions, call in the sendUpdate runnable? may need a new name then
-
-    // TODO: function for detecting collisions
-        // mob/player, mob/wall only, and player-object only
-        // call in the sendUpdate runnable?
-
 
 
 /** Server Functions */
@@ -309,97 +295,120 @@ public class TestGameServer {
     private Runnable sendUpdate = new Runnable() {
         public void run() {
             Random random = new Random();
-            for (int i = 0; i < Mobs.size(); i++) {
-                try{Mobs.get(i).setCommand(InputCommands.idle);}catch(Exception e){ System.out.println("emptyMOB ON SERvER");}
-                Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(),Mobs.get(i).getWorldPosition(),Mobs.get(i).getSpeed());
-                Mobs.get(i).setWorldPosition(newMobPosition);
-                Mobs.get(i).setPosition(new Vector(newMobPosition.getX()*32f, newMobPosition.getY()*32f));
-                CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
-                CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
-//            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
-                Money money;
-                money = CollisionManager.CheckHeroMoneyCollision(Players.get(0),MoneyDrops);
-                if (money != null) {
-                    for(int j = 0; j < MoneyDrops.size(); j++){
-                        if(MoneyDrops.get(j).getName().contains(money.getName())){
-                            playersMoney += money.value;
-                            moneyPickupChanges += " " + money.getName();
-                            MoneyDrops.remove(MoneyDrops.get(j));
-                        }
-                    }
-                }
-                Health health;
-                health = CollisionManager.CheckHeroHealthCollision(Players.get(0), HealthDrops);
-                if (health != null) {
-                    for (int j = 0; i < HealthDrops.size(); j++){
-                        if (HealthDrops.get(j).getName().contains(health.getName()) & Players.get(0).getHealth() < 10){
-                            Players.get(0).setHealth(Players.get(0).getHealth()+1);
-                            healthPickupChanges += " " + health.getName();
-                            HealthDrops.remove(HealthDrops.get(j));
-                        }
-                    }
-                }
-//              CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
-                //            // if movement was valid, add update to changes
+            for (int bubbles = 0; bubbles < Players.size(); bubbles++) {
+                //<editor-fold desc="Dijkstra stuffs">
+                float playerX = (float)Math.floor(Players.get(bubbles).getWorldPositionX());
+                float playerY = (float)Math.floor(Players.get(bubbles).getWorldPositionY());
+                Vector playerPosition = new Vector(playerX,playerY);
+                Pathfinding.Dijkstra(mapping, playerPosition);
+                //</editor-fold>
+                for (int i = 0; i < Mobs.size(); i++) {
+                    //TODO: if mob is within player range, give it a path
+                    //TODO: check which direction the mob should move in
+                    float mobX = (float)Math.floor(Mobs.get(i).getWorldPositionX());
+                    float mobY = (float)Math.floor(Mobs.get(i).getWorldPositionY());
+                    Vector cheesyMobs = new Vector(mobX, mobY);
+                    if (Pathfinding.range(playerPosition, cheesyMobs)){
 
-                if(Mobs.get(i).getCommand() == InputCommands.death) {
-//                    System.out.println(mob.getName() + " " + mob.getCommand());
-                    Vector position = Mobs.get(i).getWorldPosition();
-                    int value = random.nextInt((21 - 1) + 1);
-                    int coinFlip = random.nextInt((2-1) + 1);
-                    if (coinFlip == 1) {
-                        if (!IgnoreList.contains(Mobs.get(i))) {
-                            IgnoreList.add(Mobs.get(i));
-                            String moneyChange = "";
-                            NewMoneyDrops.clear();
-                            try {
-                                if (value > 0) {
-                                    NewMoneyDrops.add(new Money(position, "money" + MoneyDrops.size(), value));
-                                }
-                            } catch (SlickException e) {
-                                System.out.println("Failed to drop money off of " + Mobs.get(i).getName());
+                    }
+
+
+                    //pretty sure this is not needed
+                    /*try {
+                        Mobs.get(i).setCommand(InputCommands.idle);
+                    } catch (Exception e) {
+                        System.out.println("emptyMOB ON SERvER");
+                    }*/
+                    Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(), Mobs.get(i).getWorldPosition(), Mobs.get(i).getSpeed());
+                    Mobs.get(i).setWorldPosition(newMobPosition);
+                    Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
+                    CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
+                    CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
+    //            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
+                    Money money;
+                    money = CollisionManager.CheckHeroMoneyCollision(Players.get(0), MoneyDrops);
+                    if (money != null) {
+                        for (int j = 0; j < MoneyDrops.size(); j++) {
+                            if (MoneyDrops.get(j).getName().contains(money.getName())) {
+                                playersMoney += money.value;
+                                moneyPickupChanges += " " + money.getName();
+                                MoneyDrops.remove(MoneyDrops.get(j));
                             }
-                            for (int j = 0; j < NewMoneyDrops.size(); j++) {
-                                moneyChange += " " + NewMoneyDrops.get(j).getName();
-                                moneyChange += " " + NewMoneyDrops.get(j).getWorldPositionX();
-                                moneyChange += " " + NewMoneyDrops.get(j).getWorldPositionY();
-                                moneyChange += " " + NewMoneyDrops.get(j).value;
-                            }
-                            MoneyDrops.addAll(NewMoneyDrops);
-                            moneyDropChanges = moneyChange;
-                        }
-                    } else {
-                        if (!IgnoreList.contains(Mobs.get(i))) {
-                            IgnoreList.add(Mobs.get(i));
-                            String healthChange = "";
-                            NewHealthDrops.clear();
-                            try {
-                                if (value > 0) {
-                                    NewHealthDrops.add(new Health(position, "health" + MoneyDrops.size(), value));
-                                }
-                            } catch (SlickException e) {
-                                System.out.println("Failed to drop money off of " + Mobs.get(i).getName());
-                            }
-                            for (int j = 0; j < NewHealthDrops.size(); j++) {
-                                healthChange += " " + NewHealthDrops.get(j).getName();
-                                healthChange += " " + NewHealthDrops.get(j).getWorldPositionX();
-                                healthChange += " " + NewHealthDrops.get(j).getWorldPositionY();
-                                healthChange += " " + NewHealthDrops.get(j).value;
-                            }
-                            HealthDrops.addAll(NewHealthDrops);
-                            healthDropChanges = healthChange;
                         }
                     }
-                }
-                String mobChange  = " " + Mobs.get(i).getName();
-                mobChange += " " + Mobs.get(i).getCommand();
-                mobChange += " " + Mobs.get(i).getWorldPositionX();
-                mobChange += " " + Mobs.get(i).getWorldPositionY();
+                    Health health;
+                    health = CollisionManager.CheckHeroHealthCollision(Players.get(0), HealthDrops);
+                    if (health != null) {
+                        for (int j = 0; i < HealthDrops.size(); j++) {
+                            if (HealthDrops.get(j).getName().contains(health.getName()) & Players.get(0).getHealth() < 10) {
+                                Players.get(0).setHealth(Players.get(0).getHealth() + 1);
+                                healthPickupChanges += " " + health.getName();
+                                HealthDrops.remove(HealthDrops.get(j));
+                            }
+                        }
+                    }
+    //              CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
+                    //            // if movement was valid, add update to changes
 
-                mobChanges = mobChanges.concat(mobChange);
+                    if (Mobs.get(i).getCommand() == InputCommands.death) {
+    //                    System.out.println(mob.getName() + " " + mob.getCommand());
+                        Vector position = Mobs.get(i).getWorldPosition();
+                        int value = random.nextInt((21 - 1) + 1);
+                        int coinFlip = random.nextInt((2 - 1) + 1);
+                        if (coinFlip == 1) {
+                            if (!IgnoreList.contains(Mobs.get(i))) {
+                                IgnoreList.add(Mobs.get(i));
+                                String moneyChange = "";
+                                NewMoneyDrops.clear();
+                                try {
+                                    if (value > 0) {
+                                        NewMoneyDrops.add(new Money(position, "money" + MoneyDrops.size(), value));
+                                    }
+                                } catch (SlickException e) {
+                                    System.out.println("Failed to drop money off of " + Mobs.get(i).getName());
+                                }
+                                for (int j = 0; j < NewMoneyDrops.size(); j++) {
+                                    moneyChange += " " + NewMoneyDrops.get(j).getName();
+                                    moneyChange += " " + NewMoneyDrops.get(j).getWorldPositionX();
+                                    moneyChange += " " + NewMoneyDrops.get(j).getWorldPositionY();
+                                    moneyChange += " " + NewMoneyDrops.get(j).value;
+                                }
+                                MoneyDrops.addAll(NewMoneyDrops);
+                                moneyDropChanges = moneyChange;
+                            }
+                        } else {
+                            if (!IgnoreList.contains(Mobs.get(i))) {
+                                IgnoreList.add(Mobs.get(i));
+                                String healthChange = "";
+                                NewHealthDrops.clear();
+                                try {
+                                    if (value > 0) {
+                                        NewHealthDrops.add(new Health(position, "health" + MoneyDrops.size(), value));
+                                    }
+                                } catch (SlickException e) {
+                                    System.out.println("Failed to drop money off of " + Mobs.get(i).getName());
+                                }
+                                for (int j = 0; j < NewHealthDrops.size(); j++) {
+                                    healthChange += " " + NewHealthDrops.get(j).getName();
+                                    healthChange += " " + NewHealthDrops.get(j).getWorldPositionX();
+                                    healthChange += " " + NewHealthDrops.get(j).getWorldPositionY();
+                                    healthChange += " " + NewHealthDrops.get(j).value;
+                                }
+                                HealthDrops.addAll(NewHealthDrops);
+                                healthDropChanges = healthChange;
+                            }
+                        }
+                    }
+                    String mobChange = " " + Mobs.get(i).getName();
+                    mobChange += " " + Mobs.get(i).getCommand();
+                    mobChange += " " + Mobs.get(i).getWorldPositionX();
+                    mobChange += " " + Mobs.get(i).getWorldPositionY();
+
+                    mobChanges = mobChanges.concat(mobChange);
+                }
             }
 
-//            System.out.println("seerver change: "+changes);
+//            System.out.println("server change: "+changes);
             if (mobChanges != "") {
                 String msg = "UPDT" + mobChanges;
                 mobChanges = "";
