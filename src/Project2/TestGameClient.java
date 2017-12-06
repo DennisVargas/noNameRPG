@@ -77,8 +77,6 @@ public class TestGameClient extends BasicGameState{
 
     @Override
     public void init(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
-        ResourceManager.loadImage(WALKINGSHEETRSC);
-        ResourceManager.loadImage(ATTACKINGSHEETRSC);
         Players = Collections.synchronizedList(new ArrayList<Hero>());
         Mobs = Collections.synchronizedList(new ArrayList<>());
         Doors = Collections.synchronizedList(new ArrayList<Door>());
@@ -220,8 +218,6 @@ public class TestGameClient extends BasicGameState{
             }
             float playerOffX = (float)Math.floor(Players.get(0).getWorldPositionX());
             float playerOffY = (float)Math.floor(Players.get(0).getWorldPositionY());
-//            float playerOffX = Math.round(Players.get(0).getWorldPositionX()-.5) + 20;
-//            float playerOffY = Math.round(Players.get(0).getWorldPositionY()) + 11;
             Vector playerPosition = new Vector(playerOffX, playerOffY);
             //constant player graph update
             Pathfinding.Dijkstra(mapping, playerPosition);
