@@ -154,21 +154,21 @@ public class TestGameClient extends BasicGameState{
                     Players.get(0).getWorldPosition(),
                     new Vector(xoff, yoff));
             if (temp == 1){
-                for (int i = 0; i < 11; i++){
+                for (int x = 0; x < 11; x++){
                     for (int j = 0; j < 11; j++){
                         Vector temp = worldOffset(xoff, yoff);
-                        int cost = mapping.getTileCost((int)temp.getX()+i, (int)temp.getY()+j);
+                        int cost = mapping.getTileCost((int)temp.getX()+x, (int)temp.getY()+j);
                         g.setColor(Color.white);
-                        g.drawString(String.valueOf(cost), (offSet.getX())+(i*32), (offSet.getY())+(j*32));
+                        g.drawString(String.valueOf(cost), (offSet.getX())+(x*32), (offSet.getY())+(j*32));
                     }
                 }
             }
             if (temp == 2){
-                for (int i = 0; i < 11; i++){
+                for (int x = 0; x < 11; x++){
                     for (int j = 0; j < 11; j++){
-                        float distance = Pathfinding.distanceFromPlayer[(int)xoff+i][(int)yoff+j];
+                        float distance = Pathfinding.distanceFromPlayer[(int)xoff+x][(int)yoff+j];
                         g.setColor(Color.white);
-                        g.drawString(String.valueOf((int)distance), (offSet.getX())+(i*32), (offSet.getY())+(j*32));
+                        g.drawString(String.valueOf((int)distance), (offSet.getX())+(x*32), (offSet.getY())+(j*32));
                     }
                 }
             }
@@ -478,6 +478,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
         if (msg.length() >= 0) {
             String[] tokens = msg.split(delims);
             String command = tokens[0];
+//            System.out.println("Client" + msg);
 
             switch (command) {
                 case "INIT":

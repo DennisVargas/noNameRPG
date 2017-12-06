@@ -355,6 +355,7 @@ public class TestGameServer {
     // timer for update packets
     private Runnable sendUpdate = new Runnable() {
         public void run() {
+            System.out.println("Running fine");
             Random random = new Random();
             for (int bubbles = 0; bubbles < Players.size(); bubbles++) {
                 //<editor-fold desc="Dijkstra stuffs">
@@ -372,7 +373,7 @@ public class TestGameServer {
                     if (Pathfinding.range(playerPosition, cheesyMobs) &&
                             !Mobs.get(i).IsDead()){
                         String command = Pathfinding.getPath((int)mobX, (int)mobY);
-                        Vector whatever = Pathfinding.nextTile((int)mobX, (int)mobY, command);
+                        //Vector whatever = Pathfinding.nextTile((int)mobX, (int)mobY, command);
                         /*up, down, left, right, ulDiag, dlDiag, urDiag, drDiag*/
                         if (command.equalsIgnoreCase("up")){Mobs.get(i).setCommand(InputCommands.up);}
                         else if (command.equalsIgnoreCase("down")){Mobs.get(i).setCommand(InputCommands.down);}
@@ -382,17 +383,14 @@ public class TestGameServer {
                         else if (command.equalsIgnoreCase("dlDiag")){Mobs.get(i).setCommand(InputCommands.dlDiag);}
                         else if (command.equalsIgnoreCase("urDiag")){Mobs.get(i).setCommand(InputCommands.urDiag);}
                         else if (command.equalsIgnoreCase("drDiag")){Mobs.get(i).setCommand(InputCommands.drDiag);}
-                        Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(), whatever, Mobs.get(i).getSpeed());
-                        Mobs.get(i).setWorldPosition(newMobPosition);
-                        Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
                     } else {
                         Mobs.get(i).setCommand(InputCommands.idle);
-                        Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(), Mobs.get(i).getWorldPosition(), Mobs.get(i).getSpeed());
-                        Mobs.get(i).setWorldPosition(newMobPosition);
-                        Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
                     }
+                    Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(), Mobs.get(i).getWorldPosition(), Mobs.get(i).getSpeed());
+                    Mobs.get(i).setWorldPosition(newMobPosition);
+                    Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
                     CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
-                    CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
+                    //CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
     //            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
                     Money money;
                     money = CollisionManager.CheckHeroMoneyCollision(Players.get(0), MoneyDrops);
@@ -468,26 +466,21 @@ public class TestGameServer {
                             }
                         }
                     }
-                    String mobChange = " " + Mobs.get(i).getName();
+
+                    String mobChange  = " " + Mobs.get(i).getName();
                     mobChange += " " + Mobs.get(i).getCommand();
                     mobChange += " " + Mobs.get(i).getWorldPositionX();
                     mobChange += " " + Mobs.get(i).getWorldPositionY();
 
-                    mobChanges = mobChanges.concat(mobChange);
+                    changes = changes.concat(mobChange);
                 }
-                String mobChange  = " " + Mobs.get(i).getName();
-                mobChange += " " + Mobs.get(i).getCommand();
-                mobChange += " " + Mobs.get(i).getWorldPositionX();
-                mobChange += " " + Mobs.get(i).getWorldPositionY();
-
-                changes = changes.concat(mobChange);
             }
 
 
             if (changes != "") {
                 String msg = "UPDT" + changes;
                 changes = "";
-//                System.out.println(msg);
+//                System.out.println("Server: "+msg);
                 send(msg);
             }
             if (healthDropChanges != "") {
