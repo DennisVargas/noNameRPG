@@ -105,13 +105,13 @@ public class TestStateBeingCollides extends BasicGameState {
             Vector translation = CalcTranslation(CalcDirection(being.getCommand()), being.getSpeed());
 //        a being's previous translation can be used to move them back from where they came if need be.
             being.setTranslation(translation);
-            Vector newWorldPosition = CalcWorldPosition(translation,being.getWorldPosition());
+            Vector newWorldPosition = CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed());
 //          updates the beings animation and world position.
 //          server can just do being.setNewWorldPosition()
 //          if swapping animation is unwanted extra computation cost
             being.UpdateBeing(being.getCommand(), newWorldPosition);
-            if(CollisionManager.CheckValidMove(being))
-                CollisionManager.CheckCollisions(being, beings);
+//            if(CollisionManager.CheckValidMove(being))
+//                CollisionManager.CheckCollisions(being, beings);
 
 //          if server write new world position to client packet
             if(being.getName() != Project2.getSettings().getIpAddress()){

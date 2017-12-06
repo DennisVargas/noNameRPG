@@ -1,5 +1,6 @@
 package Project2;
 
+import com.sun.org.apache.regexp.internal.RE;
 import jig.Entity;
 import jig.ResourceManager;
 import org.newdawn.slick.AppGameContainer;
@@ -35,7 +36,9 @@ public class Project2 extends StateBasedGame {
     public static int NEWSINGLEMENUSTATE = 1;
     public static final int NEWMULTIMENUSTATE = 2;
     public static final int OPTIONMENUSTATE = 3;
-    public static final int GAMEPLAYSTATE = 4;
+    public static final int JOINGAMESTATE = 4;
+    public static final int GAMEPLAYSTATE = 5;
+    public static final int DISCONNECTED = 6;
 
     /**
      * these are defined test states for development purposes
@@ -44,20 +47,26 @@ public class Project2 extends StateBasedGame {
     public static final int TESTGAMECLIENT = 22;
     private static final int TESTSTATEBEINGCOLLIDES = 23;
 
-
-    public static final String MELEEHEROATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String MELEEHEROWALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String RANGEDHEROWALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String RANGEDHEROATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String MOB1WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String MOB1ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String MOB2WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String MOB2ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String MELEEHEROATTACKINGSHEETRSC = "resources/Characters/Lilith.png";
+    public static final String MELEEHEROWALKINGSHEETRSC = "resources/Characters/Lilith.png";
+    public static final String RANGEDHEROWALKINGSHEETRSC = "resources/Characters/Lilith.png";
+    public static final String RANGEDHEROATTACKINGSHEETRSC = "resources/Characters/Lilith.png";
+    public static final String MOB1WALKINGSHEETRSC = "resources/Characters/pencil.png";
+    public static final String MOB1ATTACKINGSHEETRSC = "resources/Characters/pencil.png";
+    public static final String MOB2WALKINGSHEETRSC = "resources/Characters/pencil.png";
+    public static final String MOB2ATTACKINGSHEETRSC = "resources/Characters/pencil.png";
     public static final String MOB3WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String MOB3ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String MOB4WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String MOB4ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String HOLDER_8 = "testAssets/spacer8sq.png";
+    public static final String MONEYSHEETRSC = "resources/Other/shiny_treasure_icons_16x16/money.png";
+    public static final String DOORVSHEETRSC = "resources/levels/doorV.png";
+    public static final String DOORHSHEETRSC = "resources/levels/doorH.png";
+    public static final String HEALTHSHEETRSC = "resources/Other/heart_icon.png";
+
 
     /**
      * instantiates the game name and then creates a
@@ -67,7 +76,7 @@ public class Project2 extends StateBasedGame {
     public Project2(boolean testStatePlay) {
         super(NAME);
         if(testStatePlay) {
-            this.testStatePlay = true;
+            this.testStatePlay = false;
 //          TEST STATES
             this.addState(new TestStateBeingCollides(TESTSTATEBEINGCOLLIDES));
         }
@@ -76,7 +85,9 @@ public class Project2 extends StateBasedGame {
         this.addState(new NewSingleMenu(NEWSINGLEMENUSTATE));
         this.addState(new NewMultiMenu(NEWMULTIMENUSTATE));
         this.addState(new OptionMenuState(OPTIONMENUSTATE));
+        this.addState(new JoinGameMenu());
         this.addState(new GamePlayState(GAMEPLAYSTATE));
+        this.addState(new Disconnect());
 
 //       TEST STATES
         this.addState(new TestGameClient(TESTGAMECLIENT));
@@ -109,6 +120,8 @@ public class Project2 extends StateBasedGame {
         input.initControllers();
         input.clearControlPressedRecord();
 
+        ResourceManager.loadImage(WALKINGSHEETRSC);
+        ResourceManager.loadImage(ATTACKINGSHEETRSC);
         ResourceManager.loadImage(MOB1WALKINGSHEETRSC);
         ResourceManager.loadImage(MOB1ATTACKINGSHEETRSC);
         ResourceManager.loadImage(MELEEHEROATTACKINGSHEETRSC);
@@ -116,6 +129,10 @@ public class Project2 extends StateBasedGame {
         ResourceManager.loadImage(RANGEDHEROWALKINGSHEETRSC);
         ResourceManager.loadImage(RANGEDHEROATTACKINGSHEETRSC);
         ResourceManager.loadImage(HOLDER_8);
+        ResourceManager.loadImage(MONEYSHEETRSC);
+        ResourceManager.loadImage(DOORHSHEETRSC);
+        ResourceManager.loadImage(DOORVSHEETRSC);
+        ResourceManager.loadImage(HEALTHSHEETRSC);
 
         if(this.testStatePlay) {
 //        test states init
@@ -127,6 +144,7 @@ public class Project2 extends StateBasedGame {
         this.getState(NEWSINGLEMENUSTATE).init(gameContainer, this);
         this.getState(NEWMULTIMENUSTATE).init(gameContainer, this);
         this.getState(OPTIONMENUSTATE).init(gameContainer, this);
+        this.getState(JOINGAMESTATE).init(gameContainer, this);
         this.getState(GAMEPLAYSTATE).init(gameContainer, this);
 
     }
