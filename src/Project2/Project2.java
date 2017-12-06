@@ -47,7 +47,8 @@ public class Project2 extends StateBasedGame {
     public static final int TESTGAMECLIENT = 22;
     private static final int TESTSTATEBEINGCOLLIDES = 23;
 
-
+    public static final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String MELEEHEROATTACKINGSHEETRSC = "resources/Characters/Lilith.png";
     public static final String MELEEHEROWALKINGSHEETRSC = "resources/Characters/Lilith.png";
     public static final String RANGEDHEROWALKINGSHEETRSC = "resources/Characters/Lilith.png";
@@ -119,6 +120,8 @@ public class Project2 extends StateBasedGame {
         input.initControllers();
         input.clearControlPressedRecord();
 
+        ResourceManager.loadImage(WALKINGSHEETRSC);
+        ResourceManager.loadImage(ATTACKINGSHEETRSC);
         ResourceManager.loadImage(MOB1WALKINGSHEETRSC);
         ResourceManager.loadImage(MOB1ATTACKINGSHEETRSC);
         ResourceManager.loadImage(MELEEHEROATTACKINGSHEETRSC);

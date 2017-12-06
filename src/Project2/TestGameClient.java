@@ -132,10 +132,10 @@ public class TestGameClient extends BasicGameState{
                     map1.render((int)displaceX, (int)displaceY,
                             (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
 
-                    g.drawString("player name: "+Players.get(i).getName(), 200,170);
-                    g.drawString("displaceX: "+displaceX*-1 + " displaceY:"+displaceY*-1, 200,200);
-                    g.drawString("worldX: "+Players.get(i).getWorldPositionX() + "      worldY:"+Players.get(i).getWorldPositionY(), 200,230);
-                    g.drawString("screenX: "+Players.get(i).getScreenPositionX() + " screenY:"+Players.get(i).getScreenPositionY(), 200,260);
+//                    g.drawString("player name: "+Players.get(i).getName(), 200,170);
+//                    g.drawString("displaceX: "+displaceX*-1 + " displaceY:"+displaceY*-1, 200,200);
+//                    g.drawString("worldX: "+Players.get(i).getWorldPositionX() + "      worldY:"+Players.get(i).getWorldPositionY(), 200,230);
+//                    g.drawString("screenX: "+Players.get(i).getScreenPositionX() + " screenY:"+Players.get(i).getScreenPositionY(), 200,260);
 
                     // only set up to do mob list now
                     viewportX = (int)((Players.get(i).getWorldPositionX()*32.0) - screenCenter.getX());

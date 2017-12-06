@@ -14,19 +14,13 @@ package Project2;
  */
 
 
-import jig.Collision;
-import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.SlickException;
-//import sun.net.ConnectionResetException;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.Object;
 import java.net.ServerSocket;
 import java.net.Socket;
-//import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -41,11 +35,10 @@ import static Project2.MovementCalc.*;
 public class TestGameServer {
     // SERVER STUFF
     private int port;
-//    private Thread timerThread;
     private ServerSocket socket;
     private Socket server;
     private ArrayList<Socket> clients;
-    ScheduledExecutorService executor;
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
     // GAME STUFF
     private int stateId;
@@ -67,7 +60,6 @@ public class TestGameServer {
     private String healthDropChanges = "";
     private String moneyPickupChanges = "";
     private String healthPickupChanges = "";
-    private String e = "";
     int playersMoney;
 
 
@@ -86,7 +78,6 @@ public class TestGameServer {
         clients = new ArrayList<>();
 
         // Set game info based on what level was requested by host
-        // TODO: eventually remove spritesheets
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
         if (stateId == 22) {
             mapX = 45f;
@@ -224,6 +215,29 @@ public class TestGameServer {
                         newChange += " " + y;
 
                         changes += newChange;
+
+                        Money money;
+                        money = CollisionManager.CheckHeroMoneyCollision(Players.get(i),MoneyDrops);
+                        if (money != null) {
+                            for(int j = 0; j < MoneyDrops.size(); j++){
+                                if(MoneyDrops.get(j).getName().contains(money.getName())){
+                                    playersMoney += money.value;
+                                    moneyPickupChanges += " " + money.getName();
+                                    MoneyDrops.remove(MoneyDrops.get(j));
+                                }
+                            }
+                        }
+                        Health health;
+                        health = CollisionManager.CheckHeroHealthCollision(Players.get(i), HealthDrops);
+                        if (health != null) {
+                            for (int j = 0; j < HealthDrops.size(); j++){
+                                if (HealthDrops.get(j).getName().contains(health.getName()) & Players.get(i).getHealth() < 10){
+                                    Players.get(i).setHealth(Players.get(i).getHealth()+1);
+                                    healthPickupChanges += " " + health.getName();
+                                    HealthDrops.remove(HealthDrops.get(j));
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -348,30 +362,6 @@ public class TestGameServer {
                 CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
                 CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
 //            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
-                Money money;
-                money = CollisionManager.CheckHeroMoneyCollision(Players.get(0),MoneyDrops);
-                if (money != null) {
-                    for(int j = 0; j < MoneyDrops.size(); j++){
-                        if(MoneyDrops.get(j).getName().contains(money.getName())){
-                            playersMoney += money.value;
-                            moneyPickupChanges += " " + money.getName();
-                            MoneyDrops.remove(MoneyDrops.get(j));
-                        }
-                    }
-                }
-                Health health;
-                health = CollisionManager.CheckHeroHealthCollision(Players.get(0), HealthDrops);
-                if (health != null) {
-                    for (int j = 0; i < HealthDrops.size(); j++){
-                        if (HealthDrops.get(j).getName().contains(health.getName()) & Players.get(0).getHealth() < 10){
-                            Players.get(0).setHealth(Players.get(0).getHealth()+1);
-                            healthPickupChanges += " " + health.getName();
-                            HealthDrops.remove(HealthDrops.get(j));
-                        }
-                    }
-                }
-//              CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
-                //            // if movement was valid, add update to changes
 
                 if(Mobs.get(i).getCommand() == InputCommands.death) {
 //                    System.out.println(mob.getName() + " " + mob.getCommand());

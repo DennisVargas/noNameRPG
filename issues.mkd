@@ -20,15 +20,15 @@
 - **[35]** BasicBeing hit function reduces health
 - **[37]** Attacks cause damage
 - **[10]** Trigger Death Animations upon Death
+- **[29]** Create functional MenuItems in Multi-player Menu
+
 
 ## Claimed Issues ##
 - **[2]** Add art assets
 - **[12]** Add additional animated mob types 1 and hero type 1
 - **[9]** Add mob path finding
-- **[14]** Design and implement level 1 mob & item locations
+- **[14]** Design and implement level 1 mob & item locations - waiting on item img
 - **[40]** make dead beings walkable tiles.
-- **[29]** Create functional MenuItems in Multi-player Menu
-
 
 
 ## Open Issues ##
