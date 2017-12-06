@@ -198,23 +198,26 @@ public class TestGameServer {
                         // process movement based on input
                         Players.get(i).setCommand(inputCommand);
                         Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(i).getSpeed()));
-                        Players.get(i).setTranslation(velocity);
                         Vector newWorldPosition = CalcWorldPosition(Players.get(i).getCommand(),Players.get(i).getWorldPosition(),Players.get(i).getSpeed());
+                        
+                        Players.get(i).setTranslation(velocity);
                         // set map position
                         Players.get(i).setWorldPosition(newWorldPosition);
                         // set jig entity vector for collisions.
-                        Players.get(i).setPosition(new Vector(newWorldPosition.getX()*32f,newWorldPosition.getY()*32f));
+                        Players.get(i).setPosition(new Vector(newWorldPosition.getX() * 32f, newWorldPosition.getY() * 32f));
                         float x = Players.get(i).getWorldPositionX();
                         float y = Players.get(i).getWorldPositionY();
                         // check for player/wall collisions
                         CollisionManager.CheckHeroMobCollisions(Players.get(i), Mobs);
-                        // if movement was valid, add update to changes
-                        String newChange  = " " + player;
-                        newChange += " " + tokens[2];
-                        newChange += " " + x;
-                        newChange += " " + y;
+                        if(CollisionManager.CheckValidMove(Players.get(i))) {
+                            // if movement was valid, add update to changes
+                            String newChange = " " + player;
+                            newChange += " " + tokens[2];
+                            newChange += " " + x;
+                            newChange += " " + y;
 
-                        changes += newChange;
+                            changes += newChange;
+                        }
 
                         Money money;
                         money = CollisionManager.CheckHeroMoneyCollision(Players.get(i),MoneyDrops);
@@ -243,7 +246,7 @@ public class TestGameServer {
 
                 break;
             default:
-                System.out.println("Server: unknown message received");
+                System.out.println("Server: unknown message received: " + msg);
                 break;
         }
     }
