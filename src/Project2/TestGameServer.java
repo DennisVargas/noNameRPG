@@ -145,20 +145,21 @@ public class TestGameServer {
 
         switch (command) {
             case "INIT":
-                System.out.println("Server: got INIT message");
+//                System.out.println("Server: got INIT message");
                 if (Players.size() < PlayerCount) {
                     addPlayer(player, Integer.parseInt(tokens[2]));
                     msg = initPacket();
 
+                    // loop through player list, find player that sent init message
                     for (int i = 0; i < Players.size(); i++) {
                         if (Players.get(i).getName().equals(player)) {
+                            // find matching client thread for player
                             for (int j = 0; j < clients.size(); j++) {
                                 String address = clients.get(j).getInetAddress().getHostAddress();
                                 int port = clients.get(j).getPort();
                                 String test = "/" + address + ":" + port;
-                                System.out.println("Server INIT checking client: " + test);
+                                // only sent init response to player that sent init request
                                 if (test.equals(player)) {
-                                    System.out.println("Server INIT Found correct player");
                                     try {
                                         DataOutputStream out = new DataOutputStream(clients.get(j).getOutputStream());
                                         out.writeUTF(msg);
@@ -178,15 +179,14 @@ public class TestGameServer {
 
                 for (int i = 0; i < Players.size(); i++) {
                     if (Players.get(i).getName().equals(player)) {
-                        System.out.println("Server INPT: " + player + " = " + Players.get(i).getName() + " == " + i);
                         // process movement based on input
                         Players.get(i).setCommand(inputCommand);
                         Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(i).getSpeed()));
                         Players.get(i).setTranslation(velocity);
                         Vector newWorldPosition = CalcWorldPosition(velocity, Players.get(i).getWorldPosition());
-//                set map position
+                        // set map position
                         Players.get(i).setWorldPosition(newWorldPosition);
-//                set jig entity vector for collisions.
+                        // set jig entity vector for collisions.
                         Players.get(i).setPosition(new Vector(newWorldPosition.getX()*32f,newWorldPosition.getY()*32f));
                         float x = Players.get(i).getWorldPositionX();
                         float y = Players.get(i).getWorldPositionY();
@@ -197,7 +197,6 @@ public class TestGameServer {
                         newChange += " " + tokens[2];
                         newChange += " " + x;
                         newChange += " " + y;
-                        System.out.println("Server built change string: " + newChange);
 
                         changes += newChange;
                     }
@@ -230,7 +229,7 @@ public class TestGameServer {
 
     private String initPacket() {
         // TODO: send proper level info, currently hardcoded to level 1
-        System.out.println("Server: sending INIT message");
+//        System.out.println("Server: sending INIT message");
         String msg = "INIT " + Integer.toString(1); // Integer.toString(LEVEL_NO)
         for (int i = 0; i < Players.size(); i++) {
             msg += " " + Players.get(i).getName();
@@ -256,12 +255,6 @@ public class TestGameServer {
                     msg = in.readUTF();
                 }
 
-                // TODO: I think crash is happening here
-                // listen for incoming messages
-//                while ((msg = in.readUTF()) != null) {
-//                    processMessage(msg);
-//                }
-
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Server: server has a problem listening");
@@ -274,63 +267,33 @@ public class TestGameServer {
             e.printStackTrace();
         }
 
+        // only going to reach this point if client disconnected
         for (int i = 0; i < clients.size(); i++) {
+            // find client in client list
             if (listener == clients.get(i)) {
-                System.out.println("Server removed client");
                 String address = clients.get(i).getInetAddress().getHostAddress();
                 int port = clients.get(i).getPort();
                 String player = "/" + address + ":" + port;
-                for (int j = 0; i < Players.size(); i++) {
+
+                for (int j = 0; j < Players.size(); j++) {
+                    // find corresponding player in player list and remove
                     if (player.equals(Players.get(j).getName())) {
                         String newChange  = " " + Players.get(j).getName();
                         newChange += " " + InputCommands.dc;
                         newChange += " " + Players.get(j).getWorldPositionX();
                         newChange += " " + Players.get(j).getWorldPositionY();
                         changes += newChange;
+                        Players.remove(j);
+                        System.out.println("Server removed player, player size = " + Players.size());
                     }
                 }
-                System.out.println("Server: Disconnected client " + player);
+                // remove player's client from client list
                 clients.remove(i);
+                System.out.println("Server: Disconnected client, client count = " + clients.size());
             }
         }
-        System.out.println("Client Count: " + clients.size());
-
-        return;
     }
-//    private void listen() {
-//        // listen while socket is open
-//        while(listening) {
-//            try {
-//                System.out.println("Server: waiting for client on port " + socket.getLocalPort() + "...");
-//
-//                // Connect a client
-//                server = socket.accept();
-//                connectClient(server);
-//
-////                ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-////                executor.scheduleAtFixedRate(sendUpdate, 0, 15, TimeUnit.MILLISECONDS);
-//
-//                DataInputStream in = new DataInputStream(server.getInputStream());
-//                String msg;
-//
-//                // listen for incoming messages
-//                while ((msg = in.readUTF()) != null) {
-//                    processMessage(msg);
-//                }
-//
-//            } catch (SocketTimeoutException t) {
-//                System.out.println("Server: socket timed out");
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                System.out.println("Server: server has a problem listening");
-//            }
-//        }
-//        try {
-//            server.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+
 
     // send message to all clients
     private void send(String msg) {

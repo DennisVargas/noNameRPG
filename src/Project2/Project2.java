@@ -37,6 +37,7 @@ public class Project2 extends StateBasedGame {
     public static final int OPTIONMENUSTATE = 3;
     public static final int JOINGAMESTATE = 4;
     public static final int GAMEPLAYSTATE = 5;
+    public static final int DISCONNECTED = 6;
 
     /**
      * these are defined test states for development purposes
@@ -79,6 +80,7 @@ public class Project2 extends StateBasedGame {
         this.addState(new OptionMenuState(OPTIONMENUSTATE));
         this.addState(new JoinGameMenu());
         this.addState(new GamePlayState(GAMEPLAYSTATE));
+        this.addState(new Disconnect());
 
 //       TEST STATES
         this.addState(new TestGameClient(TESTGAMECLIENT));

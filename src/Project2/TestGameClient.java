@@ -18,6 +18,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.EmptyTransition;
+import org.newdawn.slick.state.transition.HorizontalSplitTransition;
 import org.newdawn.slick.tiled.TiledMap;
 
 import java.io.*;
@@ -42,8 +44,6 @@ public class TestGameClient extends BasicGameState{
     private Vector screenCenter;
     private int stateId;
     private InputCommands inputCommand;
-    private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     private ArrayList<BasicBeing> Players;
     private MobList moblist;
     private ArrayList<BasicBeing> Mobs;
@@ -70,8 +70,6 @@ public class TestGameClient extends BasicGameState{
 
     @Override
     public void init(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
-        ResourceManager.loadImage(WALKINGSHEETRSC);
-        ResourceManager.loadImage(ATTACKINGSHEETRSC);
         Players = new ArrayList<>();
         Mobs = new ArrayList<>();
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
@@ -82,6 +80,7 @@ public class TestGameClient extends BasicGameState{
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
+        Players.clear();
 
         if (!Project2.settings.getJoining()) { // launch server if hosting or singleplayer
             // SERVER STUFF (if client is running server)
@@ -93,20 +92,21 @@ public class TestGameClient extends BasicGameState{
             serverThread.start();
             // CLIENT STUFF
             System.out.println("Host/Single Client: connecting to " + serverAddress + " on port " + port);
-            connect();
+            connect(game);
         } else {
             // if joining, pull server info out of settings
             // CLIENT STUFF
             serverAddress = Project2.settings.getIpAddress();
             port = Project2.settings.getPort();
             System.out.println("Joining Client: connecting to " + serverAddress + " on port " + port);
-            connect();
+            connect(game);
         }
     }
 
 
     @Override
     public void render(GameContainer container, StateBasedGame stateBasedGame, Graphics g) throws SlickException {
+        int viewportX = 0; int viewportY = 0;
         if (init) {
             // VIEWPORT STUFF
             // TODO: loop through Player array until beingID == socket.getLocalSocketAddress()
@@ -124,13 +124,14 @@ public class TestGameClient extends BasicGameState{
                     g.drawString("displaceX: "+displaceX*-1 + " displaceY:"+displaceY*-1, 200,200);
                     g.drawString("worldX: "+Players.get(i).getWorldPositionX() + "      worldY:"+Players.get(i).getWorldPositionY(), 200,230);
                     g.drawString("screenX: "+Players.get(i).getScreenPositionX() + " screenY:"+Players.get(i).getScreenPositionY(), 200,260);
+
+                    // only set up to do mob list now
+                    viewportX = (int)((Players.get(i).getWorldPositionX()*32.0) - screenCenter.getX());
+                    viewportY = (int)((Players.get(i).getWorldPositionY()*32.0) - screenCenter.getY());
                 }
             }
 
             // convert all non-controlling player entities world to screen coords
-            // only set up to do mob list now
-            int viewportX = (int)((Players.get(0).getWorldPositionX()*32.0) - screenCenter.getX());
-            int viewportY = (int)((Players.get(0).getWorldPositionY()*32.0) - screenCenter.getY());
             worldToScreen(viewportX, viewportY);
 
             // ENTITY STUFF
@@ -172,15 +173,16 @@ public class TestGameClient extends BasicGameState{
     private void moveEntity(String entity, InputCommands input, float posX, float posY) {
         if(entity.contains("/")){
             boolean found = false;
-            System.out.println("Players.size = " + Players.size());
             for (int i=0; i < Players.size(); i++) {
                 if(entity.equals(Players.get(i).getName())){
                     found = true;
-                    if (input == dc)
+                    if (input == dc) {
                         Players.remove(i);
+//                        System.out.println("Client removed player, player size = " + Players.size());
+                    }
                     else {
                         Players.get(i).UpdateBeing(input, new Vector(posX, posY));
-                        System.out.println("Client: updated player: " + entity + " to " + Float.toString(posX) + ", " + Float.toString(posY));
+//                        System.out.println("Client: updated player: " + entity + " to " + Float.toString(posX) + ", " + Float.toString(posY));
                     }
                     break;
                 }
@@ -217,8 +219,8 @@ public class TestGameClient extends BasicGameState{
 
 
     private void addPlayer(String playerID, float xPos, float yPos) {
-        System.out.println("Adding Player at " + xPos + ", " + yPos);
-        // TODO: Add playerID and ClassID to Basic Being constructor or player constructor, whatever gets used here
+//        System.out.println("Adding Player at " + xPos + ", " + yPos);
+        // TODO: Add ClassID to player constructor, whatever gets used here
         Hero hero1 = new Hero(new Vector(xPos,yPos),false, playerID);
         Players.add(hero1);
     }
@@ -245,7 +247,7 @@ public class TestGameClient extends BasicGameState{
     private void worldToScreen(int viewportX, int viewportY) {
         for (int i = 0; i < Players.size(); i++) {
             if (!Players.get(i).getName().equals(socket.getLocalSocketAddress().toString())) {
-                System.out.println("Updating screen position of " + Players.get(i).getName());
+//                System.out.println("Updating screen position of " + Players.get(i).getName());
                 int entityX = (int)(Players.get(i).getWorldPositionX()*32.0);
                 int entityY = (int)(Players.get(i).getWorldPositionY()*32.0);
                 int newX = entityX - viewportX;
@@ -254,7 +256,7 @@ public class TestGameClient extends BasicGameState{
             }
         }
 
-            for (int i = 0; i < Mobs.size(); i++) {
+        for (int i = 0; i < Mobs.size(); i++) {
             int entityX = (int)(Mobs.get(i).getWorldPositionX()*32.0);
             int entityY = (int)(Mobs.get(i).getWorldPositionY()*32.0);
             int newX = entityX - viewportX;
@@ -265,20 +267,20 @@ public class TestGameClient extends BasicGameState{
 
 
 /** Client Functions */
-    public boolean connect() {
+    public boolean connect(StateBasedGame game) {
         // TCP
         try {
             // open client socket
             socket = new Socket(serverAddress, port);
             Project2.settings.setIpAddress(socket.getLocalSocketAddress().toString());
 
-//             send message to initialize player on server (INIT PLAYERIP CLASS)
-            System.out.println("Sending init message to server");
+            // send message to initialize player on server (INIT PLAYERIP CLASS)
+//            System.out.println("Sending init message to server");
             send("INIT " + socket.getLocalSocketAddress() + " " + 1);
 
             // set up listening thread for client listener
             listening = true;
-            Thread clientThread = new Thread(() -> listen(), "ClientListener");
+            Thread clientThread = new Thread(() -> listen(game), "ClientListener");
             clientThread.start();
 
         } catch (IOException e) {
@@ -290,13 +292,15 @@ public class TestGameClient extends BasicGameState{
         return true;
     }
 
-    private void listen() {
+    private void listen(StateBasedGame game) {
         // listen while socket is open
         while(listening) {
             try {
                 InputStream inFromServer = socket.getInputStream();
                 DataInputStream in = new DataInputStream(inFromServer);
-                processMessage(in);
+                if (in != null) {
+                    processMessage(in);
+                }
 //                System.out.println("Client: server sent message: " + in.readUTF());
 //                send("Client: still connected");
             } catch (IOException e) {
@@ -306,10 +310,13 @@ public class TestGameClient extends BasicGameState{
             } catch (SlickException s) {
                 s.printStackTrace();
                 System.out.println("Client: problem in listen() calling processMessage()");
+                listening = false;
             }
         }
         try {
             socket.close();
+            System.out.println("Client: Host has closed connection");
+            game.enterState(Project2.DISCONNECTED, new EmptyTransition(), new HorizontalSplitTransition() );
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -330,7 +337,9 @@ public class TestGameClient extends BasicGameState{
         try {
             msg = in.readUTF();
         } catch (IOException e) {
+            listening = false;
             e.printStackTrace();
+            System.out.println("Error in processMessage");
         }
 
         /*
@@ -348,7 +357,7 @@ public class TestGameClient extends BasicGameState{
 
             switch (command) {
                 case "INIT":
-                    System.out.println("Client: got INIT response ");
+//                    System.out.println("Client: got INIT response ");
                     loadLevel(Integer.parseInt(tokens[1]));
                     for (int i = 2; i < tokens.length; i += 3) {
                         addPlayer(tokens[i], Float.parseFloat(tokens[i + 1]), Float.parseFloat(tokens[i + 2]));
@@ -356,7 +365,7 @@ public class TestGameClient extends BasicGameState{
                     }
                     break;
                 case "UPDT":
-                    System.out.println("Client: got UPDT response " + msg);
+//                    System.out.println("Client: got UPDT response " + msg);
                     // loop through tokens by fours (entity, input, velX, velY);
                     for (int i = 1; i < tokens.length; i += 4) {
     //                    System.out.println("UPDT loop: entering; length: " + tokens.length);
