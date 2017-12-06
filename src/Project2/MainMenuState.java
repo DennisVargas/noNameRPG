@@ -39,8 +39,8 @@ public class MainMenuState extends BasicGameState {
 //  image resource file paths that will be passed to MenuItem() constructor
     private static String singlePlayerOffImageRsc = "testAssets/new_game3.png";
     private static String singlePlayerOnImageRsc = "testAssets/new_game4.png";
-    private static String multiPlayerOffImageRsc = "testAssets/new_game3.png";
-    private static String multiPlayerOnImageRsc = "testAssets/new_game4.png";
+    private static String multiPlayerOffImageRsc = "testAssets/multi_1.png";
+    private static String multiPlayerOnImageRsc = "testAssets/multi_2.png";
     private static String optionsOffImageRsc = "testAssets/options3.png";
     private static String optionsOnImageRsc = "testAssets/options4.png";
     private static String quitOffImageRsc = "testAssets/quit3.png";
@@ -195,7 +195,10 @@ public class MainMenuState extends BasicGameState {
             case enter:
                 switch(menuChoice){
                     case NewSingle:
-                        stateBasedGame.enterState(Project2.NEWSINGLEMENUSTATE);
+                        Project2.settings.setHosting(false);
+                        Project2.settings.setJoining(false);
+                        Project2.settings.setserverIP("localhost");
+                        stateBasedGame.enterState(Project2.TESTGAMECLIENT);
                         break;
                     case NewMulti:
                         stateBasedGame.enterState(Project2.NEWMULTIMENUSTATE);

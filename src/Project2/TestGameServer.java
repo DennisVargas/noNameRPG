@@ -1,14 +1,24 @@
 package Project2;
+/**
+ * Need to fix player creation and init packet - pass player's socket so init only goes to new player
+ * clean up remaining server errors that are referencing server and not client list loop
+ * find way to tell client that player disconnected and is gone
+ * player 2 resets position to player 1's position when window loses and regains focus - possibly referencing (0) somewhere
+ *
+ * Once player 2 disconnects, is unable to reconnect, possible server thinks two clients still connected
+ */
 
 /**
  * When changes made, add change to changes string
  * " " + ENTITY_ID + inputCommand + WorldPos_X + WorldPos_Y
  */
 
+
 import jig.Collision;
 import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.SlickException;
+//import sun.net.ConnectionResetException;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -16,7 +26,7 @@ import java.io.IOException;
 import java.lang.Object;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
+//import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -31,10 +41,11 @@ import static Project2.MovementCalc.*;
 public class TestGameServer {
     // SERVER STUFF
     private int port;
-    private Thread listeningThread;
-    private boolean listening = false;
+//    private Thread timerThread;
     private ServerSocket socket;
     private Socket server;
+    private ArrayList<Socket> clients;
+    ScheduledExecutorService executor;
 
     // GAME STUFF
     private int stateId;
@@ -51,17 +62,13 @@ public class TestGameServer {
     private ArrayList<Health> NewHealthDrops;
     private ArrayList<Mob> IgnoreList;
     private static int PlayerCount = 2;
-    private String mobChanges = "";
+    private String changes = "";
     private String moneyDropChanges = "";
     private String healthDropChanges = "";
     private String moneyPickupChanges = "";
     private String healthPickupChanges = "";
     private String e = "";
     int playersMoney;
-
-    // TODO: eventually remove this
-    private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
 
 
     // constructor sets port number and state ID for current level
@@ -76,12 +83,12 @@ public class TestGameServer {
         HealthDrops = new ArrayList<Health>();
         NewHealthDrops = new ArrayList<Health>();
         playersMoney = 0;
+        clients = new ArrayList<>();
+
         // Set game info based on what level was requested by host
         // TODO: eventually remove spritesheets
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
         if (stateId == 22) {
-            ResourceManager.loadImage(WALKINGSHEETRSC);
-            ResourceManager.loadImage(ATTACKINGSHEETRSC);
             mapX = 45f;
             mapY = 105f;
             Mobs = moblist.getMobList(1);
@@ -102,18 +109,16 @@ public class TestGameServer {
 
     /** Game Functions */
     private void addPlayer(String playerID, int type) {
-        Hero hero1 = new Hero(new Vector(mapX, mapY),false, playerID);
-        hero1.setPosition(new Vector(mapX,mapY));
-        Players.add(hero1);
+        Hero hero = new Hero(new Vector(mapX, mapY),false, playerID);
+        hero.setPosition(new Vector(mapX,mapY));
+        Players.add(hero);
+        String newChange  = " " + playerID;
+        newChange += " " + idle;
+        newChange += " " + hero.getWorldPositionX();
+        newChange += " " + hero.getWorldPositionY();
+
+        changes += newChange;
     }
-
-    // TODO: function for running dijkstra's
-        // to adjust mob positions, call in the sendUpdate runnable? may need a new name then
-
-    // TODO: function for detecting collisions
-        // mob/player, mob/wall only, and player-object only
-        // call in the sendUpdate runnable?
-
 
 
 /** Server Functions */
@@ -126,16 +131,25 @@ public class TestGameServer {
         // try to open server socket, catch error if fails
         try {
             socket = new ServerSocket(port);
-            socket.setSoTimeout(10000);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Server: cannot create ServerSocket");
         }
 
-        // creates new thread to listen on so server can do other things while waiting
-        listening = true;
-        listeningThread = new Thread(() -> listen(), "GameServerListener");
-        listeningThread.start();
+        executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(sendUpdate, 0, 15, TimeUnit.MILLISECONDS);
+
+        while (true) {
+            System.out.println("Server: waiting for client on port " + socket.getLocalPort() + "...");
+            try {
+                server = socket.accept();
+                clients.add(server);
+                // creates new thread to listen on so server can do other things while waiting
+                new Thread(() -> listen(server), "GameServerListener").start();
+            } catch (IOException e) {
+                System.out.println("Server: server has a problem listening");
+            }
+        }
     }
 
 
@@ -157,55 +171,62 @@ public class TestGameServer {
         switch (command) {
             case "INIT":
 //                System.out.println("Server: got INIT message");
-                addPlayer(player, Integer.parseInt(tokens[2]));
-//                addPlayer("/animalCrackers", 1);
-                initPacket();
-                break;
-            case "INPT":
-//                System.out.println("Server: got INPT message: " + tokens[2]);
-                InputCommands inputCommand = getCommand(tokens[2]);
-                Hero hero1 = Players.get(0);
-                // TODO: fix this after IP is stored in player class
-                // process movement based on input
-                hero1.setCommand(inputCommand);
-//                Players.get(0).UpdateAttackRect();
-//                Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(0).getSpeed()));
-//                hero1.setTranslation(velocity);
-                Vector newWorldPosition = CalcWorldPosition(hero1.getCommand(),hero1.getWorldPosition(),hero1.getSpeed());
-//                set map position
-                hero1.setWorldPosition(newWorldPosition);
-//                set jig entity vector for collisions.
-                hero1.setPosition(new Vector(newWorldPosition.getX()*32f,newWorldPosition.getY()*32f));
-                float x =  hero1.getWorldPositionX();
-                float y =  hero1.getWorldPositionY();
-                CollisionManager.CheckHeroMobCollisions(hero1, Mobs);
-                CollisionManager.CheckHeroHeroCollisions(hero1, Players);
+                if (Players.size() < PlayerCount) {
+                    addPlayer(player, Integer.parseInt(tokens[2]));
+                    msg = initPacket();
 
+                    // loop through player list, find player that sent init message
+                    for (int i = 0; i < Players.size(); i++) {
+                        if (Players.get(i).getName().equals(player)) {
+                            // find matching client thread for player
+                            for (int j = 0; j < clients.size(); j++) {
+                                String address = clients.get(j).getInetAddress().getHostAddress();
+                                int port = clients.get(j).getPort();
+                                String test = "/" + address + ":" + port;
+                                // only sent init response to player that sent init request
+                                if (test.equals(player)) {
+                                    try {
+                                        DataOutputStream out = new DataOutputStream(clients.get(j).getOutputStream());
+                                        out.writeUTF(msg);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
 
-                // check for player/wall collisions
-                if(CollisionManager.CheckValidMove(Players.get(0))) {
-//                if(true){
-                    CollisionManager.CheckHeroMobCollisions(Players.get(0), Mobs);
-                    // if movement was valid, add update to changes
-                    String newChange = " " + player;
-                    newChange += " " + tokens[2];
-                    newChange += " " + x;
-                    newChange += " " + y;
-
-                    mobChanges += newChange;
-                }
-                // for use when IP is properly stored in player class
-                /*
-                for (int i = 0; i < Players.size(); i++) {
-                    if (Players.get(i).getName() == player) {
-                        Players.get(i).GenerateNextMove(inputCommand);
-                        Players.get(i).UpdateBeingPosition();
-                        changes += " " + player;
-                        changes += " " + Players.get(i).getX();
-                        changes += " " + Players.get(i).getY();
+                                }
+                            }
+                        }
                     }
                 }
-                */
+                break;
+            case "INPT":
+//                System.out.println("Server: got INPT message from: " + player);
+                InputCommands inputCommand = getCommand(tokens[2]);
+
+                for (int i = 0; i < Players.size(); i++) {
+                    if (Players.get(i).getName().equals(player)) {
+                        // process movement based on input
+                        Players.get(i).setCommand(inputCommand);
+                        Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(i).getSpeed()));
+                        Players.get(i).setTranslation(velocity);
+                        Vector newWorldPosition = CalcWorldPosition(Players.get(i).getCommand(),Players.get(i).getWorldPosition(),Players.get(i).getSpeed());
+                        // set map position
+                        Players.get(i).setWorldPosition(newWorldPosition);
+                        // set jig entity vector for collisions.
+                        Players.get(i).setPosition(new Vector(newWorldPosition.getX()*32f,newWorldPosition.getY()*32f));
+                        float x = Players.get(i).getWorldPositionX();
+                        float y = Players.get(i).getWorldPositionY();
+                        // check for player/wall collisions
+                        CollisionManager.CheckHeroMobCollisions(Players.get(i), Mobs);
+                        // if movement was valid, add update to changes
+                        String newChange  = " " + player;
+                        newChange += " " + tokens[2];
+                        newChange += " " + x;
+                        newChange += " " + y;
+
+                        changes += newChange;
+                    }
+                }
+
                 break;
             default:
                 System.out.println("Server: unknown message received");
@@ -231,79 +252,89 @@ public class TestGameServer {
         return inputCommand;
     }
 
-    private void initPacket() {
+    private String initPacket() {
         // TODO: send proper level info, currently hardcoded to level 1
+//        System.out.println("Server: sending INIT message");
         String msg = "INIT " + Integer.toString(1); // Integer.toString(LEVEL_NO)
         for (int i = 0; i < Players.size(); i++) {
             msg += " " + Players.get(i).getName();
             msg += " " + Float.toString(Players.get(i).getWorldPositionX());
             msg += " " + Float.toString(Players.get(i).getWorldPositionY());
         }
-        send(msg);
+        return msg;
     }
 
     // listen on port for client connections
-    private void listen() {
-        // listen while socket is open
+    private void listen(Socket listener) {
+        boolean listening = true;
+
         while(listening) {
             try {
-                System.out.println("Server: waiting for client on port " + socket.getLocalPort() + "...");
-
-                // Connect a client
-                server = socket.accept();
-                connectClient(server);
-
-                ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-                executor.scheduleAtFixedRate(sendUpdate, 0, 15, TimeUnit.MILLISECONDS);
-
-                DataInputStream in = new DataInputStream(server.getInputStream());
+                DataInputStream in = new DataInputStream(listener.getInputStream());
                 String msg;
 
-                // listen for incoming messages
-                while ((msg = in.readUTF()) != null) {
+                msg = in.readUTF();
+
+                while (listener.isConnected()) {
                     processMessage(msg);
+                    msg = in.readUTF();
                 }
 
-            } catch (SocketTimeoutException t) {
-                System.out.println("Server: socket timed out");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Server: server has a problem listening");
+                listening = false;
             }
         }
         try {
-            server.close();
+            listener.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        // only going to reach this point if client disconnected
+        for (int i = 0; i < clients.size(); i++) {
+            // find client in client list
+            if (listener == clients.get(i)) {
+                String address = clients.get(i).getInetAddress().getHostAddress();
+                int port = clients.get(i).getPort();
+                String player = "/" + address + ":" + port;
+
+                for (int j = 0; j < Players.size(); j++) {
+                    // find corresponding player in player list and remove
+                    if (player.equals(Players.get(j).getName())) {
+                        String newChange  = " " + Players.get(j).getName();
+                        newChange += " " + InputCommands.dc;
+                        newChange += " " + Players.get(j).getWorldPositionX();
+                        newChange += " " + Players.get(j).getWorldPositionY();
+                        changes += newChange;
+                        Players.remove(j);
+                        System.out.println("Server removed player, player size = " + Players.size());
+                    }
+                }
+                // remove player's client from client list
+                clients.remove(i);
+                System.out.println("Server: Disconnected client, client count = " + clients.size());
+            }
         }
     }
 
 
-    private void connectClient(Socket server) {
-        try {
-            // prints connect message to server's console window
-            System.out.println("Server: just connected to client " + server.getRemoteSocketAddress());
-            // collects incoming data from data stream
-            DataInputStream in = new DataInputStream(server.getInputStream());
-            // converts data steam into string
-            String initMsg = in.readUTF();
-            // sends string to processMessage()
-            processMessage(initMsg);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
+    // send message to all clients
     private void send(String msg) {
         // send an outgoing message
-        try {
-            DataOutputStream out = new DataOutputStream(server.getOutputStream());
-            out.writeUTF(msg);
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (int i = 0; i < clients.size(); i++) {
+            try {
+                DataOutputStream out = new DataOutputStream(clients.get(i).getOutputStream());
+                out.writeUTF(msg);
+            } catch (IOException e) {
+                System.out.println("Server sending to player that doesn't exist");
+                clients.remove(i);
+                e.printStackTrace();
+            }
         }
     }
+
 
     // timer for update packets
     private Runnable sendUpdate = new Runnable() {
@@ -396,13 +427,13 @@ public class TestGameServer {
                 mobChange += " " + Mobs.get(i).getWorldPositionX();
                 mobChange += " " + Mobs.get(i).getWorldPositionY();
 
-                mobChanges = mobChanges.concat(mobChange);
+                changes = changes.concat(mobChange);
             }
 
-//            System.out.println("seerver change: "+changes);
-            if (mobChanges != "") {
-                String msg = "UPDT" + mobChanges;
-                mobChanges = "";
+
+            if (changes != "") {
+                String msg = "UPDT" + changes;
+                changes = "";
 //                System.out.println(msg);
                 send(msg);
             }

@@ -27,10 +27,12 @@
 - **[9]** Add mob path finding
 - **[14]** Design and implement level 1 mob & item locations
 - **[40]** make dead beings walkable tiles.
+- **[29]** Create functional MenuItems in Multi-player Menu
+
+
 
 ## Open Issues ##
 - **[11]** Add character death
-
 - **[13]** UI design (health for each player, life pool, collectible items)
 - **[15]** Mob & destructible drop system
 - **[16]** Add money-to-lives system
@@ -41,8 +43,8 @@
 - **[23]** Add hero type melee animations
 - **[24]** Create functional MenuItem object in Single player menu
 - **[26]** Create functional MenuItems in Option Menu
-- **[29]** Create functional MenuItems in Multi-player Menu
 - **[38]** basic lives counter
 - **[39]** Create a game over screen
 - **[40]** Add animated mob type 2
 - **[41]** Add animated mob type 4
+
