@@ -308,17 +308,12 @@ public class TestGameServer {
                     float mobX = (float)Math.floor(Mobs.get(i).getWorldPositionX());
                     float mobY = (float)Math.floor(Mobs.get(i).getWorldPositionY());
                     Vector cheesyMobs = new Vector(mobX, mobY);
-                    if (Pathfinding.range(playerPosition, cheesyMobs)){
-
-                    }
-
-
-                    //pretty sure this is not needed
-                    /*try {
+                    if (Pathfinding.range(playerPosition, cheesyMobs) &&
+                            !Mobs.get(i).IsDead()){
+                        
+                    } else {
                         Mobs.get(i).setCommand(InputCommands.idle);
-                    } catch (Exception e) {
-                        System.out.println("emptyMOB ON SERvER");
-                    }*/
+                    }
                     Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(), Mobs.get(i).getWorldPosition(), Mobs.get(i).getSpeed());
                     Mobs.get(i).setWorldPosition(newMobPosition);
                     Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
