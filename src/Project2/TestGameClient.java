@@ -6,6 +6,8 @@ package Project2;
  *
  * Need to fix every hardcoded ipaddress and port once menus are done
  *
+ * If server disconnects, need to kick joined client out to "disconnected" screen, then main menu
+ *
  * */
 
 import jig.ResourceManager;
@@ -13,6 +15,8 @@ import jig.Vector;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.EmptyTransition;
+import org.newdawn.slick.state.transition.HorizontalSplitTransition;
 import org.newdawn.slick.tiled.TiledMap;
 import sun.plugin.perf.PluginRollup;
 
@@ -40,8 +44,6 @@ public class TestGameClient extends BasicGameState{
     private Vector screenCenter;
     private int stateId;
     private InputCommands inputCommand;
-    private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     private List<Hero> Players;
     private MobList moblist;
     private DoorList doorList;
@@ -92,42 +94,50 @@ public class TestGameClient extends BasicGameState{
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
+        Players.clear();
 
-        // SERVER STUFF (if client is running server)
-        // TODO: determine level number and send as variable in place of stateId
-        if (true) { // should evaluate whether or not player is hosting the server
-            port = 1234;
+        if (!Project2.settings.getJoining()) { // launch server if hosting or singleplayer
+            // SERVER STUFF (if client is running server)
+            // TODO: determine level number and send as variable in place of stateId
             serverAddress = "localhost";
+            port = Project2.settings.getPort();
             gameserver = new TestGameServer(stateId, port);
             Thread serverThread = new Thread(() -> gameserver.init(), "GameServer");
             serverThread.start();
-        }
-
-        // CLIENT STUFF
-        // TODO: connect to servername and port based on user input from previous screen
-        // parser for receiving in ip:port form is commented out below
-        if (true) {
-            serverAddress = "localhost";
-            int port = 1234;
-            System.out.println("Client: connecting to " + serverAddress + " on port " + port);
-            connect();
+            // CLIENT STUFF
+            System.out.println("Host/Single Client: connecting to " + serverAddress + " on port " + port);
+            connect(game);
+        } else {
+            // if joining, pull server info out of settings
+            // CLIENT STUFF
+            serverAddress = Project2.settings.getIpAddress();
+            port = Project2.settings.getPort();
+            System.out.println("Joining Client: connecting to " + serverAddress + " on port " + port);
+            connect(game);
         }
     }
 
 
     @Override
     public synchronized void render(GameContainer container, StateBasedGame stateBasedGame, Graphics g) throws SlickException {
+        int viewportX = 0; int viewportY = 0;
+
         if (init) {
             // VIEWPORT STUFF
-            // TODO: loop through Player array until beingID == socket.getLocalSocketAddress()
             float displaceX, displaceY, worldPosX, worldPosY;
-            worldPosX = (int)Players.get(0).getWorldPositionX();
-            worldPosY = (int)Players.get(0).getWorldPositionY();
-            displaceX = (Players.get(0).getWorldPositionX()-worldPosX)*-32;
-            displaceY = (Players.get(0).getWorldPositionY()-worldPosY)*-32;
+            for (int i = 0; i < Players.size(); i++) {
+                if (Players.get(i).getName().equals(socket.getLocalSocketAddress().toString())) {
+                    worldPosX = (int) Players.get(i).getWorldPositionX();
+                    worldPosY = (int) Players.get(i).getWorldPositionY();
+                    displaceX = (Players.get(i).getWorldPositionX() - worldPosX) * -32;
+                    displaceY = (Players.get(i).getWorldPositionY() - worldPosY) * -32;
+                    map1.render((int)displaceX, (int)displaceY,
+                            (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
 
-            map1.render((int)displaceX, (int)displaceY,
-                    (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
+//                    g.drawString("player name: "+Players.get(i).getName(), 200,170);
+//                    g.drawString("displaceX: "+displaceX*-1 + " displaceY:"+displaceY*-1, 200,200);
+//                    g.drawString("worldX: "+Players.get(i).getWorldPositionX() + "      worldY:"+Players.get(i).getWorldPositionY(), 200,230);
+//                    g.drawString("screenX: "+Players.get(i).getScreenPositionX() + " screenY:"+Players.get(i).getScreenPositionY(), 200,260);
 
             
             /*g.drawString("displaceX: "+displaceX*-1
@@ -166,15 +176,14 @@ public class TestGameClient extends BasicGameState{
             //</editor-fold
             //g.drawString("Mobs in range: "+mobsToMove.size(),100, 300 );
             //g.drawString("Players Account: "+playersMoney, 200,200);
-
+                    // only set up to do mob list now
+                    viewportX = (int)((Players.get(i).getWorldPositionX()*32.0) - screenCenter.getX());
+                    viewportY = (int)((Players.get(i).getWorldPositionY()*32.0) - screenCenter.getY());
+                }
+            }
 
             // convert all non-controlling player entities world to screen coords
-            // only set up to do mob list now
-            int viewportX = (int)((Players.get(0).getWorldPositionX()*32.0) - screenCenter.getX());
-            int viewportY = (int)((Players.get(0).getWorldPositionY()*32.0) - screenCenter.getY());
             worldToScreen(viewportX, viewportY);
-
-
 
             // render mobs here when we have them
 //            System.out.println("moblist size = " + Mobs.size());
@@ -258,39 +267,35 @@ public class TestGameClient extends BasicGameState{
 
 
 /** Game Functions */
+
 private synchronized void moveEntity(String entity, InputCommands input, Float posX, Float posY) {
-    int i = 0;
-    // TODO: have some indication if entity is a mob so it loops through correct ArrayList
-
-    if(entity.contains("/")){
-        for(Hero hero: Players){
-            if(entity.equals(hero.getName())){
-                hero.setCommand(input);
-                hero.UpdateBeing(input, new Vector(posX, posY));
-                break;
+        if(entity.contains("/")){
+            boolean found = false;
+            for (int i=0; i < Players.size(); i++) {
+                if(entity.equals(Players.get(i).getName())){
+                    found = true;
+                    if (input == dc) {
+                        Players.remove(i);
+//                        System.out.println("Client removed player, player size = " + Players.size());
+                    }
+                    else {
+                        Players.get(i).UpdateBeing(input, new Vector(posX, posY));
+//                        System.out.println("Client: updated player: " + entity + " to " + Float.toString(posX) + ", " + Float.toString(posY));
+                    }
+                    break;
+                }
+            }
+            if (!found)
+                addPlayer(entity, posX, posY);
+        }else if(entity.contains("mob")){
+            for(BasicBeing mob: Mobs){
+                if(entity.equals(mob.getName())){
+                    mob.UpdateBeing(input, new Vector(posX, posY));
+                    break;
+                }
             }
         }
-    }else if(entity.contains("mob")){
-        for(Mob mob: Mobs){
-            if(entity.equals(mob.getName())){
-                mob.setCommand(input);
-                mob.UpdateBeing(input, new Vector(posX, posY));
-                break;
-            }
-        }
-    }
 
-//    Players.get(i).UpdateBeing(input, new Vector(posX, posY));
-    // need to send input to figure out animation
-
-    // for use when IP is properly stored in player class
-//        for (int i = 0; i < Players.size(); i++) {
-//            if (Players.get(i).getName() == entity) {
-//                Players.get(i).setPosition(posX, posY);
-//            }
-//        }
-
-    // Call pathfinding
     }
 
     private void loadLevel(int level) throws SlickException {
@@ -314,8 +319,8 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
 
 
     private void addPlayer(String playerID, float xPos, float yPos) {
-//        System.out.println("executing addPlayer");
-        // TODO: Add playerID and ClassID to Basic Being constructor or player constructor, whatever gets used here
+//        System.out.println("Adding Player at " + xPos + ", " + yPos);
+        // TODO: Add ClassID to player constructor, whatever gets used here
         Hero hero1 = new Hero(new Vector(xPos,yPos),false, playerID);
         Players.add(hero1);
     }
@@ -334,28 +339,30 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             case "attack": inputCommand = attack; break;
             case "idle": inputCommand = idle; break;
             case "death": inputCommand = death; break;
+            case "dc": inputCommand = dc; break;
         }
         return inputCommand;
     }
 
 
     private void worldToScreen(int viewportX, int viewportY) {
-
-        for(Hero hero: Players){
-            if(!Project2.getSettings().getIpAddress().equals(hero.getName())){
-                int entityX = (int)(hero.getWorldPositionX()*32.0);
-                int entityY = (int)(hero.getWorldPositionY()*32.0);
+        for (int i = 0; i < Players.size(); i++) {
+            if (!Players.get(i).getName().equals(socket.getLocalSocketAddress().toString())) {
+//                System.out.println("Updating screen position of " + Players.get(i).getName());
+                int entityX = (int)(Players.get(i).getWorldPositionX()*32.0);
+                int entityY = (int)(Players.get(i).getWorldPositionY()*32.0);
                 int newX = entityX - viewportX;
                 int newY = entityY - viewportY;
-                hero.setPosition(newX, newY);
+                Players.get(i).setPosition(newX, newY);
             }
         }
-        for (Mob mob:Mobs) {
-            int entityX = (int)(mob.getWorldPositionX()*32.0);
-            int entityY = (int)(mob.getWorldPositionY()*32.0);
+
+        for (int i = 0; i < Mobs.size(); i++) {
+            int entityX = (int)(Mobs.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(Mobs.get(i).getWorldPositionY()*32.0);
             int newX = entityX - viewportX;
             int newY = entityY - viewportY;
-            mob.setPosition(newX, newY);
+            Mobs.get(i).setPosition(newX, newY);
         }
         for (int i = 0; i < Doors.size(); i++){
             int entityX = (int)(Doors.get(i).getWorldPositionX()*32.0);
@@ -385,35 +392,40 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
     }
 
 /** Client Functions */
-    public boolean connect() {
+    public boolean connect(StateBasedGame game) {
         // TCP
         try {
             // open client socket
-            socket = new Socket(ipAddress, port);
+            socket = new Socket(serverAddress, port);
             Project2.settings.setIpAddress(socket.getLocalSocketAddress().toString());
+
             // send message to initialize player on server (INIT PLAYERIP CLASS)
+//            System.out.println("Sending init message to server");
             send("INIT " + socket.getLocalSocketAddress() + " " + 1);
 
             // set up listening thread for client listener
             listening = true;
-            Thread clientThread = new Thread(() -> listen(), "ClientListener");
+            Thread clientThread = new Thread(() -> listen(game), "ClientListener");
             clientThread.start();
 
         } catch (IOException e) {
             e.printStackTrace();
+            // TODO: return client to ip entry screen if could not connect to server
             System.out.println("Client: client cannot connect");
             return false;
         }
         return true;
     }
 
-    private void listen() {
+    private void listen(StateBasedGame game) {
         // listen while socket is open
         while(listening) {
             try {
                 InputStream inFromServer = socket.getInputStream();
                 DataInputStream in = new DataInputStream(inFromServer);
-                processMessage(in);
+                if (in != null) {
+                    processMessage(in);
+                }
 //                System.out.println("Client: server sent message: " + in.readUTF());
 //                send("Client: still connected");
             } catch (IOException e) {
@@ -423,10 +435,13 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             } catch (SlickException s) {
                 s.printStackTrace();
                 System.out.println("Client: problem in listen() calling processMessage()");
+                listening = false;
             }
         }
         try {
             socket.close();
+            System.out.println("Client: Host has closed connection");
+            game.enterState(Project2.DISCONNECTED, new EmptyTransition(), new HorizontalSplitTransition() );
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -442,12 +457,14 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
 
     // process incoming messages from clients
     private void processMessage(DataInputStream in) throws SlickException {
-        String msg = null;
+        String msg = "";
         // converts data steam into string
         try {
             msg = in.readUTF();
         } catch (IOException e) {
+            listening = false;
             e.printStackTrace();
+            System.out.println("Error in processMessage");
         }
 
         /*
@@ -458,61 +475,62 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
         // sets empty space as delimiter
         String delims = "[ ]";
         // splits message into tokens at every space
-        String[] tokens = msg.split(delims);
-        String command = tokens[0];
+        if (msg.length() >= 0) {
+            String[] tokens = msg.split(delims);
+            String command = tokens[0];
 
-        switch (command) {
-            case "INIT":
-//                System.out.println("Client: got INIT response ");
-                loadLevel(Integer.parseInt(tokens[1]));
-                addPlayer(tokens[2], Float.parseFloat(tokens[3]), Float.parseFloat(tokens[4]));
-//                addPlayer("/animalCrackers", 92f, 105f);
-                init = true;
-                break;
-            case "UPDT":
-//                System.out.println("Client: got UPDT response ");
-                // loop through tokens by fours (entity, input, velX, velY);
-                for (int i = 1; i < tokens.length; i += 4) {
-//                    System.out.println("UPDT loop: entering; length: " + tokens.length);
-                    InputCommands input = getCommand(tokens[i+1]);
-                    moveEntity(tokens[i], input, Float.parseFloat(tokens[i+2]), Float.parseFloat(tokens[i+3]));
-//                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; mobId = " + tokens[i] + " input = " + tokens[i+1]+
-//                    " x = " + tokens[i+2] + "y = " +tokens[i+3]);
-                }
-                break;
-            case "DROPM":
-                for (int i = 1; i < tokens.length; i++) {
-                    if(tokens[i].contains("money"))
-                        MoneyDrops.add(new Money(new Vector(Float.parseFloat(tokens[i+1]), (Float.parseFloat(tokens[i+2]))), tokens[i], Integer.parseInt(tokens[i+3])));
-                }
-                break;
-            case "PCKUPM":
-                playersMoney = Integer.parseInt(tokens[1]);
-                for (int i = 2; i < tokens.length; i++) {
-                    for(int j = 0; j < MoneyDrops.size(); j++){
-                        if(MoneyDrops.get(j).getName().equals(tokens[i])){
-                            MoneyDrops.remove(MoneyDrops.get(j));
+            switch (command) {
+                case "INIT":
+    //                System.out.println("Client: got INIT response ");
+                    loadLevel(Integer.parseInt(tokens[1]));
+                    addPlayer(tokens[2], Float.parseFloat(tokens[3]), Float.parseFloat(tokens[4]));
+    //                addPlayer("/animalCrackers", 92f, 105f);
+                    init = true;
+                    break;
+                case "UPDT":
+    //                System.out.println("Client: got UPDT response ");
+                    // loop through tokens by fours (entity, input, velX, velY);
+                    for (int i = 1; i < tokens.length; i += 4) {
+    //                    System.out.println("UPDT loop: entering; length: " + tokens.length);
+                        InputCommands input = getCommand(tokens[i + 1]);
+                        moveEntity(tokens[i], input, Float.parseFloat(tokens[i + 2]), Float.parseFloat(tokens[i + 3]));
+    //                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
+                    }
+                    break;
+                case "DROPM":
+                    for (int i = 1; i < tokens.length; i++) {
+                        if (tokens[i].contains("money"))
+                            MoneyDrops.add(new Money(new Vector(Float.parseFloat(tokens[i + 1]), (Float.parseFloat(tokens[i + 2]))), tokens[i], Integer.parseInt(tokens[i + 3])));
+                    }
+                    break;
+                case "PCKUPM":
+                    playersMoney = Integer.parseInt(tokens[1]);
+                    for (int i = 2; i < tokens.length; i++) {
+                        for (int j = 0; j < MoneyDrops.size(); j++) {
+                            if (MoneyDrops.get(j).getName().equals(tokens[i])) {
+                                MoneyDrops.remove(MoneyDrops.get(j));
+                            }
                         }
                     }
-                }
-            case "DROPH":
-                for (int i = 1; i < tokens.length; i++) {
-                    if(tokens[i].contains("health"))
-                        HealthDrops.add(new Health(new Vector(Float.parseFloat(tokens[i+1]), (Float.parseFloat(tokens[i+2]))), tokens[i], Integer.parseInt(tokens[i+3])));
-                }
-                break;
-            case "PCKUPH":
-                Players.get(0).setHealth(Players.get(0).getHealth() + 1);
-                for (int i = 2; i < tokens.length; i++) {
-                    for(int j = 0; j < HealthDrops.size(); j++){
-                        if(HealthDrops.get(j).getName().equals(tokens[i])){
-                            HealthDrops.remove(HealthDrops.get(j));
+                case "DROPH":
+                    for (int i = 1; i < tokens.length; i++) {
+                        if (tokens[i].contains("health"))
+                            HealthDrops.add(new Health(new Vector(Float.parseFloat(tokens[i + 1]), (Float.parseFloat(tokens[i + 2]))), tokens[i], Integer.parseInt(tokens[i + 3])));
+                    }
+                    break;
+                case "PCKUPH":
+                    Players.get(0).setHealth(Players.get(0).getHealth() + 1);
+                    for (int i = 2; i < tokens.length; i++) {
+                        for (int j = 0; j < HealthDrops.size(); j++) {
+                            if (HealthDrops.get(j).getName().equals(tokens[i])) {
+                                HealthDrops.remove(HealthDrops.get(j));
+                            }
                         }
                     }
-                }
-            default:
-                System.out.println("Server: unknown message received");
-                break;
+                default:
+                    System.out.println("Server: unknown message received");
+                    break;
+            }
         }
     }
 

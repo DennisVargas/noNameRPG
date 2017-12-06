@@ -36,7 +36,9 @@ public class Project2 extends StateBasedGame {
     public static int NEWSINGLEMENUSTATE = 1;
     public static final int NEWMULTIMENUSTATE = 2;
     public static final int OPTIONMENUSTATE = 3;
-    public static final int GAMEPLAYSTATE = 4;
+    public static final int JOINGAMESTATE = 4;
+    public static final int GAMEPLAYSTATE = 5;
+    public static final int DISCONNECTED = 6;
 
     /**
      * these are defined test states for development purposes
@@ -45,7 +47,8 @@ public class Project2 extends StateBasedGame {
     public static final int TESTGAMECLIENT = 22;
     private static final int TESTSTATEBEINGCOLLIDES = 23;
 
-
+    public static final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    public static final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String MELEEHEROATTACKINGSHEETRSC = "resources/Characters/Lilith.png";
     public static final String MELEEHEROWALKINGSHEETRSC = "resources/Characters/Lilith.png";
     public static final String RANGEDHEROWALKINGSHEETRSC = "resources/Characters/Lilith.png";
@@ -73,7 +76,7 @@ public class Project2 extends StateBasedGame {
     public Project2(boolean testStatePlay) {
         super(NAME);
         if(testStatePlay) {
-            this.testStatePlay = true;
+            this.testStatePlay = false;
 //          TEST STATES
             this.addState(new TestStateBeingCollides(TESTSTATEBEINGCOLLIDES));
         }
@@ -82,7 +85,9 @@ public class Project2 extends StateBasedGame {
         this.addState(new NewSingleMenu(NEWSINGLEMENUSTATE));
         this.addState(new NewMultiMenu(NEWMULTIMENUSTATE));
         this.addState(new OptionMenuState(OPTIONMENUSTATE));
+        this.addState(new JoinGameMenu());
         this.addState(new GamePlayState(GAMEPLAYSTATE));
+        this.addState(new Disconnect());
 
 //       TEST STATES
         this.addState(new TestGameClient(TESTGAMECLIENT));
@@ -115,6 +120,8 @@ public class Project2 extends StateBasedGame {
         input.initControllers();
         input.clearControlPressedRecord();
 
+        ResourceManager.loadImage(WALKINGSHEETRSC);
+        ResourceManager.loadImage(ATTACKINGSHEETRSC);
         ResourceManager.loadImage(MOB1WALKINGSHEETRSC);
         ResourceManager.loadImage(MOB1ATTACKINGSHEETRSC);
         ResourceManager.loadImage(MELEEHEROATTACKINGSHEETRSC);
@@ -137,6 +144,7 @@ public class Project2 extends StateBasedGame {
         this.getState(NEWSINGLEMENUSTATE).init(gameContainer, this);
         this.getState(NEWMULTIMENUSTATE).init(gameContainer, this);
         this.getState(OPTIONMENUSTATE).init(gameContainer, this);
+        this.getState(JOINGAMESTATE).init(gameContainer, this);
         this.getState(GAMEPLAYSTATE).init(gameContainer, this);
 
     }
