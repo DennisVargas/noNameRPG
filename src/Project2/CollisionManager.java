@@ -150,6 +150,8 @@ public class CollisionManager {
     }
 
     public static Money CheckHeroMoneyCollision(BasicBeing player, ArrayList<Money> moneys) {
+        if (moneys.isEmpty() | moneys == null | player == null)
+            return null;
         for(Money money: moneys) {
             Collision collides = null;
             if ((collides = money.collides(player)) != null) {
@@ -161,6 +163,8 @@ public class CollisionManager {
 
     public static Health CheckHeroHealthCollision(BasicBeing player, ArrayList<Health> healths) {
         if(player.getHealth() == 2)
+            return null;
+        if (healths.isEmpty() | healths == null | player == null)
             return null;
         for (Health health: healths) {
             Collision collides = null;

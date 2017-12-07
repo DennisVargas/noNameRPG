@@ -396,7 +396,7 @@ public class TestGameServer {
                     //CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
     //            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
                     Money money;
-                    money = CollisionManager.CheckHeroMoneyCollision(Players.get(0), MoneyDrops);
+                    money = CollisionManager.CheckHeroMoneyCollision(Players.get(bubbles), MoneyDrops);
                     if (money != null) {
                         for (int j = 0; j < MoneyDrops.size(); j++) {
                             if (MoneyDrops.get(j).getName().contains(money.getName())) {
@@ -407,11 +407,11 @@ public class TestGameServer {
                         }
                     }
                     Health health;
-                    health = CollisionManager.CheckHeroHealthCollision(Players.get(0), HealthDrops);
+                    health = CollisionManager.CheckHeroHealthCollision(Players.get(bubbles), HealthDrops);
                     if (health != null) {
                         for (int j = 0; i < HealthDrops.size(); j++) {
-                            if (HealthDrops.get(j).getName().contains(health.getName()) & Players.get(0).getHealth() < 10) {
-                                Players.get(0).setHealth(Players.get(0).getHealth() + 1);
+                            if (HealthDrops.get(j).getName().contains(health.getName()) & Players.get(bubbles).getHealth() < 10) {
+                                Players.get(0).setHealth(Players.get(bubbles).getHealth() + 1);
                                 healthPickupChanges += " " + health.getName();
                                 HealthDrops.remove(HealthDrops.get(j));
                             }

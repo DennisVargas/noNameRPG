@@ -111,23 +111,35 @@ public class Pathfinding {
     }
 
     public static String getPath(int x, int y){
-        int pathX = (int)path[x][y].getX();
-        int pathY = (int)path[x][y].getY();
+        if(path[x][y] != null) {
+            int pathX = (int) path[x][y].getX();
+            int pathY = (int) path[x][y].getY();
         /*
         * a, b, c
         * d,  , e
         * f, g, h
         * */
 
-        if (pathX == x-1 && pathY == y-1){ return "ulDiag";}
-        else if (pathX == x && pathY == y-1){return "up";}
-        else if (pathX == x+1 && pathY == y-1){return "urDiag";}
-        else if (pathX == x-1 && pathY == y){return "left";}
-        else if (pathX == x+1 && pathY == y){return "right";}
-        else if (pathX == x-1 && pathY == y+1){return "dlDiag";}
-        else if (pathX == x && pathY == y+1){return "down";}
-        else if (pathX == x+1 && pathY == y+1){return "drDiag";}
-        else return "idle";
+            if (pathX == x - 1 && pathY == y - 1) {
+                return "ulDiag";
+            } else if (pathX == x && pathY == y - 1) {
+                return "up";
+            } else if (pathX == x + 1 && pathY == y - 1) {
+                return "urDiag";
+            } else if (pathX == x - 1 && pathY == y) {
+                return "left";
+            } else if (pathX == x + 1 && pathY == y) {
+                return "right";
+            } else if (pathX == x - 1 && pathY == y + 1) {
+                return "dlDiag";
+            } else if (pathX == x && pathY == y + 1) {
+                return "down";
+            } else if (pathX == x + 1 && pathY == y + 1) {
+                return "drDiag";
+            } else return "idle";
+        } else {
+            return "idle";
+        }
     }
 
     public static Vector nextTile(int x, int y, String cmd){
