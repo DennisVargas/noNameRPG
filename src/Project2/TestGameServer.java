@@ -358,7 +358,7 @@ public class TestGameServer {
     // timer for update packets
     private Runnable sendUpdate = new Runnable() {
         public void run() {
-            System.out.println("Running fine");
+//            System.out.println("Running fine");
             Random random = new Random();
             for (int bubbles = 0; bubbles < Players.size(); bubbles++) {
                 //<editor-fold desc="Dijkstra stuffs">
@@ -394,31 +394,6 @@ public class TestGameServer {
                     Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
                     CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
                     //CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
-    //            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
-                    Money money;
-                    money = CollisionManager.CheckHeroMoneyCollision(Players.get(bubbles), MoneyDrops);
-                    if (money != null) {
-                        for (int j = 0; j < MoneyDrops.size(); j++) {
-                            if (MoneyDrops.get(j).getName().contains(money.getName())) {
-                                playersMoney += money.value;
-                                moneyPickupChanges += " " + money.getName();
-                                MoneyDrops.remove(MoneyDrops.get(j));
-                            }
-                        }
-                    }
-                    Health health;
-                    health = CollisionManager.CheckHeroHealthCollision(Players.get(bubbles), HealthDrops);
-                    if (health != null) {
-                        for (int j = 0; i < HealthDrops.size(); j++) {
-                            if (HealthDrops.get(j).getName().contains(health.getName()) & Players.get(bubbles).getHealth() < 10) {
-                                Players.get(0).setHealth(Players.get(bubbles).getHealth() + 1);
-                                healthPickupChanges += " " + health.getName();
-                                HealthDrops.remove(HealthDrops.get(j));
-                            }
-                        }
-                    }
-    //              CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
-                    //            // if movement was valid, add update to changes
 
                     if (Mobs.get(i).getCommand() == InputCommands.death) {
     //                    System.out.println(mob.getName() + " " + mob.getCommand());
