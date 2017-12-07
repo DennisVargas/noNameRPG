@@ -28,11 +28,11 @@ public class MobList {
 //            mob = new Mob(new Vector(63f, 104f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 //            mob = new Mob(new Vector(62.5f, 106f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
-            mob = new Mob(new Vector(50f, 104f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+            /*mob = new Mob(new Vector(50f, 104f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(49f, 105f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(51.5f, 105f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(50f, 106f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-
+*/
             mob = new Mob(new Vector(31f, 104.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(30f, 105f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(31f, 105.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
