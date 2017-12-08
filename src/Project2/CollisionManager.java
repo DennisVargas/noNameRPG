@@ -19,6 +19,43 @@ public class CollisionManager {
         if (Project2.settings.checkTile((int) Math.round(being.getWorldPositionX()-.5) + 20, (int) Math.round(being.getWorldPositionY()) + 11).equals("abyss") |
                 Project2.settings.checkTile((int) Math.round(being.getWorldPositionX()-.5) + 20, (int) Math.round(being.getWorldPositionY()) + 11).equals("wall")) {
             being.setWorldPosition(MovementCalc.CalcWorldPosition(ReverseCommand(being.getCommand()), being.getWorldPosition(),being.getSpeed()));
+            if(being.getCommand().equals(InputCommands.dlDiag)){
+                being.setCommand(InputCommands.down);
+                being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                if (!CheckValidMove(being)){
+                    being.setCommand(InputCommands.left);
+                    being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                    return CheckValidMove(being);
+                }else
+                    return true;
+            }else if(being.getCommand().equals(InputCommands.drDiag)){
+                being.setCommand(InputCommands.down);
+                being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                if (!CheckValidMove(being)){
+                    being.setCommand(InputCommands.right);
+                    being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                    return CheckValidMove(being);
+                }else
+                    return true;
+            }else if(being.getCommand().equals(InputCommands.ulDiag)){
+                being.setCommand(InputCommands.up);
+                being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                if (!CheckValidMove(being)){
+                    being.setCommand(InputCommands.left);
+                    being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                    return CheckValidMove(being);
+                }else
+                    return true;
+            }else if(being.getCommand().equals(InputCommands.urDiag)){
+                being.setCommand(InputCommands.up);
+                being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                if (!CheckValidMove(being)){
+                    being.setCommand(InputCommands.right);
+                    being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                    return CheckValidMove(being);
+                }else
+                    return true;
+            }
             return false;
         }
         else
@@ -70,19 +107,17 @@ public class CollisionManager {
                             mob.setCommand(InputCommands.death);
 //                            System.out.println("I'm Dead");
                         }
-
                     }
 //              reverse the attack move
                     attackPos = MovementCalc.CalcWorldPosition(ReverseCommand(hero.getLastDirectionCommand()), hero.getWorldPosition(), hero.getSpeed());
                     hero.setPosition(new Vector(attackPos.getX() * 32f, attackPos.getY() * 32f));
                 }
                 if ((collides = hero.collides(mob)) != null) {
-
                     hero.setWorldPosition(MovementCalc.CalcWorldPosition(ReverseCommand(hero.getCommand()), hero.getWorldPosition(), hero.getSpeed()));
-
                     hero.setPosition(new Vector(hero.getWorldPositionX() * 32f, hero.getWorldPositionY() * 32f));
-                System.out.println("we collided Hero mob style x,y hero " + hero.getPosition() + "x,y mob: " + mob.getPosition());
-                System.out.println("collision min penetration: " + collides.getMinPenetration());
+
+//                System.out.println("we collided Hero mob style x,y hero " + hero.getPosition() + "x,y mob: " + mob.getPosition());
+//                System.out.println("collision min penetration: " + collides.getMinPenetration());
                     return true;
                 }
             }
