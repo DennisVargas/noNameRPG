@@ -16,6 +16,8 @@ package Project2;
 
 import jig.Vector;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Circle;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -47,6 +49,7 @@ public class TestGameServer {
     private MobList moblist;
     private DoorList doorList;
     private ArrayList<Mob> Mobs;
+    private ArrayList<Circle> MobBalls;
     private ArrayList<Door> Doors;
     private ArrayList<Money> Money;
     private ArrayList<Money> MoneyDrops;
@@ -69,6 +72,7 @@ public class TestGameServer {
         Mobs = new ArrayList<>();
         Doors = new ArrayList<>();
         Money = new ArrayList<>();
+        MobBalls = new ArrayList();
         moblist = new MobList();
         doorList = new DoorList();
         MoneyDrops = new ArrayList<Money>();
@@ -373,27 +377,26 @@ public class TestGameServer {
                     float mobX = (float)Math.floor(Mobs.get(i).getWorldPositionX());
                     float mobY = (float)Math.floor(Mobs.get(i).getWorldPositionY());
                     Vector cheesyMobs = new Vector(mobX, mobY);
-                    if (Pathfinding.range(playerPosition, cheesyMobs) &&
-                            !Mobs.get(i).IsDead()){
-                        String command = Pathfinding.getPath((int)mobX, (int)mobY);
-                        //Vector whatever = Pathfinding.nextTile((int)mobX, (int)mobY, command);
-                        /*up, down, left, right, ulDiag, dlDiag, urDiag, drDiag*/
-                        if (command.equalsIgnoreCase("up")){Mobs.get(i).setCommand(InputCommands.up);}
-                        else if (command.equalsIgnoreCase("down")){Mobs.get(i).setCommand(InputCommands.down);}
-                        else if (command.equalsIgnoreCase("left")){Mobs.get(i).setCommand(InputCommands.left);}
-                        else if (command.equalsIgnoreCase("right")){Mobs.get(i).setCommand(InputCommands.right);}
-                        else if (command.equalsIgnoreCase("ulDiag")){Mobs.get(i).setCommand(InputCommands.ulDiag);}
-                        else if (command.equalsIgnoreCase("dlDiag")){Mobs.get(i).setCommand(InputCommands.dlDiag);}
-                        else if (command.equalsIgnoreCase("urDiag")){Mobs.get(i).setCommand(InputCommands.urDiag);}
-                        else if (command.equalsIgnoreCase("drDiag")){Mobs.get(i).setCommand(InputCommands.drDiag);}
-                    } else {
-                        Mobs.get(i).setCommand(InputCommands.idle);
+
+                    // if mob is 5 tiles or less away from player and is not dead
+                    if (Pathfinding.range(playerPosition, cheesyMobs) && !Mobs.get(i).IsDead()){
+                        // if mob is melee or if mob is greater than 3 tiles away, give it a path
+                        if (!Mobs.get(i).isRanged() || (!Pathfinding.rangedRange(playerPosition, cheesyMobs))) {
+                            String command = Pathfinding.getPath((int) mobX, (int) mobY);
+                            Mobs.get(i).setCommand(getCommand(command));
+                        } else {
+                            // if mob is ranged and 3 or fewer tiles away, set to idle (so it stops and attacks)
+                            Mobs.get(i).setCommand(idle);
+//                            MobBalls.add(Mobs.get(i).rangedAttack());
+                        }
                     }
+
                     Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(), Mobs.get(i).getWorldPosition(), Mobs.get(i).getSpeed());
                     Mobs.get(i).setWorldPosition(newMobPosition);
                     Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
                     CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
                     //CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
+
 
                     if (Mobs.get(i).getCommand() == InputCommands.death) {
     //                    System.out.println(mob.getName() + " " + mob.getCommand());

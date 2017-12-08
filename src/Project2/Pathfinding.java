@@ -23,6 +23,20 @@ public class Pathfinding {
         return false;
     }
 
+    // if mob is within three tiles of the player, return false (mob should not move)
+    public static boolean rangedRange(Vector player, Vector mob){
+        float playerXMin =  player.getX()-3;
+        float playerYMin = player.getY()-3;
+        float playerXMax = player.getX()+3;
+        float playerYMax = player.getY()+3;
+
+        if (mob.getX() >= playerXMin && mob.getX() <= playerXMax &&
+                mob.getY() >= playerYMin && mob.getY() <= playerYMax)
+            return true;
+
+        return false;
+    }
+
     public static void Dijkstra(Map tiles, Vector playerPosition){
         initialize(playerPosition.getX(), playerPosition.getY() );
         makeGraphCopy(tiles, playerPosition.getX(), playerPosition.getY());

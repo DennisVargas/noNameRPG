@@ -6,6 +6,7 @@ import jig.Vector;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.geom.Circle;
 
 import static Project2.InputManager.InputCommands;
 
@@ -135,6 +136,9 @@ public class BasicBeing extends Entity{
         }
     }
 
+//    public Circle rangedAttack() {
+//        Circle ball = new Circle(get)
+//    }
 
     /**
      * attack power is used in hit method for reducing another being's health.
