@@ -116,9 +116,58 @@ public class CollisionManager {
                     hero.setWorldPosition(MovementCalc.CalcWorldPosition(ReverseCommand(hero.getCommand()), hero.getWorldPosition(), hero.getSpeed()));
                     hero.setPosition(new Vector(hero.getWorldPositionX() * 32f, hero.getWorldPositionY() * 32f));
 
+                    if(hero.getCommand().equals(InputCommands.dlDiag)){
+                        hero.setCommand(InputCommands.down);
+                        hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                        if collision
+                        if (CheckHeroMobCollisions(hero, mobs)){
+                            hero.setCommand(InputCommands.left);
+                            hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                            return result of if collidied or not
+                            return CheckHeroMobCollisions(hero,mobs);
+                        }else
+//                            no collision
+                            return false;
+                    }else if(hero.getCommand().equals(InputCommands.drDiag)){
+                        hero.setCommand(InputCommands.down);
+                        hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                      if collision
+                        if (CheckHeroMobCollisions(hero, mobs)){
+                            hero.setCommand(InputCommands.right);
+                            hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                            return result of if collidied or not
+                            return CheckHeroMobCollisions(hero,mobs);
+                        }else
+//                            no collision
+                            return false;
+                    }else if(hero.getCommand().equals(InputCommands.ulDiag)){
+                        hero.setCommand(InputCommands.up);
+                        hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                      if collision
+                        if (CheckHeroMobCollisions(hero, mobs)){
+                            hero.setCommand(InputCommands.left);
+                            hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                            return result of if collidied or not
+                            return CheckHeroMobCollisions(hero,mobs);
+                        }else
+//                            no collision
+                            return false;
+                    }else if(hero.getCommand().equals(InputCommands.urDiag)){
+                        hero.setCommand(InputCommands.up);
+                        hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                      if collision
+                        if (CheckHeroMobCollisions(hero, mobs)){
+                            hero.setCommand(InputCommands.right);
+                            hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                            return result of if collidied or not
+                            return CheckHeroMobCollisions(hero,mobs);
+                        }else
+//                            no collision
+                            return false;
+                    }
+                    return true;
 //                System.out.println("we collided Hero mob style x,y hero " + hero.getPosition() + "x,y mob: " + mob.getPosition());
 //                System.out.println("collision min penetration: " + collides.getMinPenetration());
-                    return true;
                 }
             }
         }
