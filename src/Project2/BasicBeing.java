@@ -6,7 +6,6 @@ import jig.Vector;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SpriteSheet;
-import org.newdawn.slick.geom.Circle;
 
 import static Project2.InputManager.InputCommands;
 
@@ -36,10 +35,7 @@ public class BasicBeing extends Entity{
     private String name = "default";
     private int beingID = 0;
 
-
     private InputCommands inputCommand;
-
-
 
     private InputCommands lastDirectionCommand = InputCommands.left;
     private Vector worldPosition;
@@ -48,7 +44,8 @@ public class BasicBeing extends Entity{
 
     private Animation currentAnimation;
 
-    private int worldPositionX;
+    private long shoottimer = 0; // time of last bullet fired
+    private int shootdelay = 350; // time between bullets
 
 
     /**
@@ -136,9 +133,11 @@ public class BasicBeing extends Entity{
         }
     }
 
-//    public Circle rangedAttack() {
-//        Circle ball = new Circle(get)
-//    }
+    public Ball rangedAttack() {
+        Ball ball = new Ball(this);
+        shoottimer = System.currentTimeMillis();
+        return ball;
+    }
 
     /**
      * attack power is used in hit method for reducing another being's health.
@@ -482,7 +481,6 @@ public class BasicBeing extends Entity{
     }
     
     public void setCommand(InputCommands cmd) {
-
         if(this.inputCommand!= InputCommands.death) {
             if (cmd.equals(InputManager.InputCommands.down)
                     || cmd.equals(InputManager.InputCommands.up)
@@ -500,4 +498,9 @@ public class BasicBeing extends Entity{
     public InputCommands getCommand(){
         return this.inputCommand;
     }
+
+    public long getShoottimer() { return shoottimer; }
+
+    public int getShootdelay() { return shootdelay; }
+
 }

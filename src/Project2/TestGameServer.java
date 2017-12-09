@@ -49,7 +49,7 @@ public class TestGameServer {
     private MobList moblist;
     private DoorList doorList;
     private ArrayList<Mob> Mobs;
-    private ArrayList<Circle> MobBalls;
+    private ArrayList<Ball> MobBalls;
     private ArrayList<Door> Doors;
     private ArrayList<Money> Money;
     private ArrayList<Money> MoneyDrops;
@@ -364,6 +364,7 @@ public class TestGameServer {
         public void run() {
 //            System.out.println("Running fine");
             Random random = new Random();
+            String balls = "";
             for (int bubbles = 0; bubbles < Players.size(); bubbles++) {
                 //<editor-fold desc="Dijkstra stuffs">
                 float playerX = (float)Math.floor(Players.get(bubbles).getWorldPositionX());
@@ -387,7 +388,15 @@ public class TestGameServer {
                         } else {
                             // if mob is ranged and 3 or fewer tiles away, set to idle (so it stops and attacks)
                             Mobs.get(i).setCommand(idle);
-//                            MobBalls.add(Mobs.get(i).rangedAttack());
+                            if ((System.currentTimeMillis() - Mobs.get(i).getShoottimer()) >= Mobs.get(i).getShootdelay()) {
+                                MobBalls.add(Mobs.get(i).rangedAttack());
+                                int num = MobBalls.size();
+                                balls += " ball" + num;
+                                balls += " " + Mobs.get(i).getLastDirectionCommand();
+                                balls += " " + Mobs.get(i).getWorldPositionX();
+                                balls += " " + Mobs.get(i).getWorldPositionY();
+                                System.out.println(balls);
+                            }
                         }
                     }
 
