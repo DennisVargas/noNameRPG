@@ -103,7 +103,7 @@ public class CollisionManager {
                 if ((collides = mob.collides(hero))!= null){
 //                    System.out.println("hit Hero before health: "+hero.getHealth());
 
-                    hero.HitBeing(mob.getAttackPower());
+//                    hero.HitBeing(mob.getAttackPower());
 //                    System.out.println("hit Hero after health: "+hero.getHealth());
                 }
 //              reverse the attack move
@@ -173,5 +173,26 @@ public class CollisionManager {
             }
         }
         return null;
+    }
+
+    public static boolean CheckHeroMobBallCollisions(Hero hero, ArrayList<Ball> balls) {
+        Collision collides = null;
+
+        float heroMinX = hero.getCoarseGrainedMinX();
+        float heroMaxX = hero.getCoarseGrainedMaxX();
+        float heroMinY = hero.getCoarseGrainedMinY();
+        float heroMaxY = hero.getCoarseGrainedMaxY();
+        for (int i = 0; i < balls.size(); i++) {
+            float ballX = balls.get(i).getX();
+            float ballY = balls.get(i).getY();
+
+            if (ballX > heroMinX && ballX < heroMaxX) {
+                if (ballY > heroMinY && ballY < heroMaxY) {
+                    hero.HitBeing(balls.get(i).getAttackPower());
+                    balls.get(i).setCommand(rm);
+                }
+            }
+        }
+        return false;
     }
 }

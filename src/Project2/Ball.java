@@ -9,6 +9,7 @@ import static Project2.InputManager.InputCommands.*;
 public class Ball extends Entity {
 
     public Circle ball;
+
     private float attackPower = 20f;
     private Vector worldPosition;
     private int radius = 3;
@@ -16,6 +17,7 @@ public class Ball extends Entity {
     private String name;
     private float speed = 0.3f;
     private long time;
+    InputCommands cmd;
 
     // server side ball constructor
     // x and y are actual world coordinates, tx and ty are tiled coordinates (WorldPosition on beings)
@@ -26,7 +28,7 @@ public class Ball extends Entity {
         radius = 3;
         attackPower = attacker.getAttackPower();
         time = System.currentTimeMillis();
-        InputCommands cmd = attacker.getCommand();
+        cmd = attacker.getCommand();
         if (cmd == up || cmd == down || cmd == left || cmd == right ||
                 cmd == ulDiag || cmd == urDiag || cmd == dlDiag || cmd == drDiag) {
             setVelocity(cmd);
@@ -86,6 +88,16 @@ public class Ball extends Entity {
 
     public long getTime() {
         return time;
+    }
+
+    public float getAttackPower() { return attackPower; }
+
+    public void setCommand(InputCommands command) {
+        cmd = command;
+    }
+
+    public InputCommands getCommand() {
+        return cmd;
     }
 
     public void update() {

@@ -104,7 +104,7 @@ public class TestGameServer {
 
     private void ballUpdate() {
         for (int i = 0; i < MobBalls.size(); i++) {
-            if ((MobBalls.get(i).getTime() + 1000) <= System.currentTimeMillis()) {
+            if ((MobBalls.get(i).getTime() + 1000) <= System.currentTimeMillis() || MobBalls.get(i).getCommand() == rm) {
                 String balls = "";
                 balls += " " + MobBalls.get(i).getName();
                 balls += " " + rm;
@@ -122,26 +122,6 @@ public class TestGameServer {
                 changes += balls;
             }
         }
-    }
-
-    // finds which direction the mob should be facing even if they don't move
-    private InputCommands getFacing(Vector player, Vector mob) {
-        InputCommands cmd;
-        if (player.getX() > mob.getX()) {
-            if (player.getY() > mob.getY()) { cmd = drDiag;
-            } else if (player.getY() < mob.getY()) { cmd = urDiag;
-            } else cmd = right;
-        } else if (player.getX() < mob.getX()) {
-            if (player.getY() > mob.getY()) { cmd = dlDiag;
-            } else if (player.getY() < mob.getY()) { cmd = ulDiag;
-            } else cmd = left;
-        } else {
-            if (player.getY() > mob.getY()) { cmd = down;
-            } else {
-                cmd = up;
-            }
-        }
-        return cmd;
     }
 
     private void mobRangedAttack(int i) {
@@ -281,8 +261,8 @@ public class TestGameServer {
                         health = CollisionManager.CheckHeroHealthCollision(Players.get(i), HealthDrops);
                         if (health != null) {
                             for (int j = 0; j < HealthDrops.size(); j++){
-                                if (HealthDrops.get(j).getName().contains(health.getName()) & Players.get(i).getHealth() < 10){
-                                    Players.get(i).setHealth(Players.get(i).getHealth()+1);
+                                if (HealthDrops.get(j).getName().contains(health.getName()) && Players.get(i).getHealth() < 1f){
+                                    Players.get(i).setHealth(Players.get(i).getHealth()+.5f);
                                     healthPickupChanges += " " + health.getName();
                                     HealthDrops.remove(HealthDrops.get(j));
                                 }
@@ -293,7 +273,7 @@ public class TestGameServer {
 
                 break;
             default:
-                System.out.println("Server: unknown message received: " + msg);
+//                System.out.println("Server: unknown message received: " + msg);
                 break;
         }
     }
@@ -411,6 +391,10 @@ public class TestGameServer {
             ballUpdate();
 
             for (int bubbles = 0; bubbles < Players.size(); bubbles++) {
+
+                // player/fireball collisions
+                CollisionManager.CheckHeroMobBallCollisions(Players.get(bubbles), MobBalls);
+
                 //<editor-fold desc="Dijkstra stuffs">
                 float playerX = (float)Math.floor(Players.get(bubbles).getWorldPositionX());
                 float playerY = (float)Math.floor(Players.get(bubbles).getWorldPositionY());
@@ -418,27 +402,23 @@ public class TestGameServer {
                 Pathfinding.Dijkstra(mapping, playerPosition);
                 //</editor-fold>
                 for (int i = 0; i < Mobs.size(); i++) {
-                    InputCommands facing = idle;
-                    //TODO: if mob is within player range, give it a path
-                    //TODO: check which direction the mob should move in
+                    Boolean isIdle = false;
+                    String command = "";
                     float mobX = (float)Math.floor(Mobs.get(i).getWorldPositionX());
                     float mobY = (float)Math.floor(Mobs.get(i).getWorldPositionY());
                     Vector cheesyMobs = new Vector(mobX, mobY);
 
                     // if mob is 5 tiles or less away from player and is not dead
                     if (Pathfinding.range(playerPosition, cheesyMobs) && !Mobs.get(i).IsDead()){
-                        // if mob is melee or if mob is greater than 3 tiles away, give it a path
+                        command = Pathfinding.getPath((int) mobX, (int) mobY);
+                        // if mob is melee or if mob is greater than 3 tiles away, set it's path
                         if (!Mobs.get(i).isRanged() || (!Pathfinding.rangedRange(playerPosition, cheesyMobs))) {
-                            String command = Pathfinding.getPath((int) mobX, (int) mobY);
                             Mobs.get(i).setCommand(getCommand(command));
-                            Mobs.get(i).setTargetPlayer(bubbles);
                         } else {
                             // if mob is ranged and 3 or fewer tiles away, set to idle (so it stops and attacks)
                             // get direction mob has to face to hit player
                             Mobs.get(i).setCommand(idle);
-                            facing = getFacing(playerPosition, cheesyMobs);
-//                            mobRangedAttack(i);
-                            // TODO: adjust mob movement then set mob to facing for update string
+                            isIdle = true;
                         }
                     }
 
@@ -499,8 +479,8 @@ public class TestGameServer {
                     }
 
                     // after movements, but before update string, adjust the direction the mob is facing if ranged
-                    if (facing != idle) {
-                        Mobs.get(i).setCommand(facing);
+                    if (isIdle) {
+                        Mobs.get(i).setCommand(getCommand(command));
                         mobRangedAttack(i);
                     }
 

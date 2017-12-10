@@ -19,7 +19,7 @@ public class BasicBeing extends Entity{
     //translation = velocity
 
 
-    private float attackPower = 20f;
+    private float attackPower = 10f;
     private float health = 1f;
     private float speed = 2f;
     boolean isClient = false;
@@ -304,7 +304,9 @@ public class BasicBeing extends Entity{
      */
     public void HitBeing(float attackValue){
 //        reduces attack value by a percentage of its health
-        this.setHealth(this.getHealth() - attackValue/100);
+        if (health > 0) {
+            this.health = health - (attackValue/100);
+        }
         if (this.getHealth()<=0)
             this.dead = true;
     }
@@ -382,7 +384,10 @@ public class BasicBeing extends Entity{
      * @param health float value that will be used to set health.
      */
     public void setHealth(float health) {
-        this.health = health;
+        if (health <= 1) {
+            this.health = health;
+        } else
+            this.health = 1f;
     }
 
 
