@@ -244,7 +244,7 @@ public class CollisionManager {
     }
 
     public static Health CheckHeroHealthCollision(BasicBeing player, ArrayList<Health> healths) {
-        if(player.getHealth() == 2)
+        if(player.getHealth() >= 1f)
             return null;
         if (healths.isEmpty() | healths == null | player == null)
             return null;
