@@ -565,8 +565,9 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                             }
                         }
                     }
+                    break;
                 default:
-                    System.out.println("Server: unknown message received");
+                    System.out.println("Client: unknown message received "+msg);
                     break;
             }
         }
