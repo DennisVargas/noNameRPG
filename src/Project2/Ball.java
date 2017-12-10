@@ -50,7 +50,7 @@ public class Ball extends Entity {
     public void setVelocity(InputCommands input) {
         switch (input) {
             case up:
-                velocity =  new Vector(0,speed); break;
+                velocity =  new Vector(0,-speed); break;
             case down:
                 velocity =  new Vector(0,speed); break;
             case left:

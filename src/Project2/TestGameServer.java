@@ -124,8 +124,28 @@ public class TestGameServer {
         }
     }
 
+    // finds which direction the mob should be facing even if they don't move
+    private InputCommands getFacing(Vector player, Vector mob) {
+        InputCommands cmd;
+        if (player.getX() > mob.getX()) {
+            if (player.getY() > mob.getY()) { cmd = drDiag;
+            } else if (player.getY() < mob.getY()) { cmd = urDiag;
+            } else cmd = right;
+        } else if (player.getX() < mob.getX()) {
+            if (player.getY() > mob.getY()) { cmd = dlDiag;
+            } else if (player.getY() < mob.getY()) { cmd = ulDiag;
+            } else cmd = left;
+        } else {
+            if (player.getY() > mob.getY()) { cmd = down;
+            } else {
+                cmd = up;
+            }
+        }
+        return cmd;
+    }
+
     private void mobRangedAttack(int i) {
-        if ((System.currentTimeMillis() - Mobs.get(i).getShoottimer()) >= Mobs.get(i).getShootdelay()) {
+        if ((System.currentTimeMillis() - Mobs.get(i).getAttacktimer()) >= Mobs.get(i).getAttackdelay()) {
             String balls = "";
             int num = MobBalls.size();
             String name = "mball" + num;
@@ -398,6 +418,7 @@ public class TestGameServer {
                 Pathfinding.Dijkstra(mapping, playerPosition);
                 //</editor-fold>
                 for (int i = 0; i < Mobs.size(); i++) {
+                    InputCommands facing = idle;
                     //TODO: if mob is within player range, give it a path
                     //TODO: check which direction the mob should move in
                     float mobX = (float)Math.floor(Mobs.get(i).getWorldPositionX());
@@ -410,21 +431,14 @@ public class TestGameServer {
                         if (!Mobs.get(i).isRanged() || (!Pathfinding.rangedRange(playerPosition, cheesyMobs))) {
                             String command = Pathfinding.getPath((int) mobX, (int) mobY);
                             Mobs.get(i).setCommand(getCommand(command));
+                            Mobs.get(i).setTargetPlayer(bubbles);
                         } else {
                             // if mob is ranged and 3 or fewer tiles away, set to idle (so it stops and attacks)
+                            // get direction mob has to face to hit player
                             Mobs.get(i).setCommand(idle);
-                            mobRangedAttack(i);
-//                            if ((System.currentTimeMillis() - Mobs.get(i).getShoottimer()) >= Mobs.get(i).getShootdelay()) {
-//                                int num = MobBalls.size();
-//                                String name = "mball" + num;
-//                                MobBalls.add(Mobs.get(i).rangedAttack(name));
-//                                balls += " " + name;
-//                                balls += " " + Mobs.get(i).getLastDirectionCommand();
-//                                balls += " " + Mobs.get(i).getWorldPositionX();
-//                                balls += " " + Mobs.get(i).getWorldPositionY();
-//                                changes += balls;
-//                                System.out.println(balls);
-//                            }
+                            facing = getFacing(playerPosition, cheesyMobs);
+//                            mobRangedAttack(i);
+                            // TODO: adjust mob movement then set mob to facing for update string
                         }
                     }
 
@@ -433,7 +447,6 @@ public class TestGameServer {
                     Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
                     CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
                     //CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
-
 
                     if (Mobs.get(i).getCommand() == InputCommands.death) {
     //                    System.out.println(mob.getName() + " " + mob.getCommand());
@@ -485,12 +498,18 @@ public class TestGameServer {
                         }
                     }
 
+                    // after movements, but before update string, adjust the direction the mob is facing if ranged
+                    if (facing != idle) {
+                        Mobs.get(i).setCommand(facing);
+                        mobRangedAttack(i);
+                    }
+
                     String mobChange  = " " + Mobs.get(i).getName();
                     mobChange += " " + Mobs.get(i).getCommand();
                     mobChange += " " + Mobs.get(i).getWorldPositionX();
                     mobChange += " " + Mobs.get(i).getWorldPositionY();
-
                     changes = changes.concat(mobChange);
+
                 }
             }
 

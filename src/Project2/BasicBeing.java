@@ -44,8 +44,8 @@ public class BasicBeing extends Entity{
 
     private Animation currentAnimation;
 
-    private long shoottimer = 0; // time of last bullet fired
-    private int shootdelay = 1000; // time between bullets
+    private long attacktimer = 0; // time of last attack
+    private int attackdelay = 1000; // time between attacks
 
 
     /**
@@ -135,7 +135,7 @@ public class BasicBeing extends Entity{
 
     public Ball rangedAttack(String name) {
         Ball ball = new Ball(this, name);
-        shoottimer = System.currentTimeMillis();
+        attacktimer = System.currentTimeMillis();
         return ball;
     }
 
@@ -499,8 +499,8 @@ public class BasicBeing extends Entity{
         return this.inputCommand;
     }
 
-    public long getShoottimer() { return shoottimer; }
+    public long getAttacktimer() { return attacktimer; }
 
-    public int getShootdelay() { return shootdelay; }
+    public int getAttackdelay() { return attackdelay; }
 
 }

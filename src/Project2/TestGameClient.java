@@ -45,7 +45,7 @@ public class TestGameClient extends BasicGameState{
     private ArrayList<Mob>mobsToMove;
     private int playersMoney;
 
-    private int temp = 1;
+    private int temp = 0;
 
     // MAP STUFF
     private double x, y;

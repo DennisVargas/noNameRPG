@@ -13,6 +13,7 @@ import org.newdawn.slick.SpriteSheet;
 
 public class Mob extends BasicBeing {
     private int mobType;
+    private int targetPlayer;
     private static final SpriteSheet mob1Walking = ResourceManager.getSpriteSheet(Project2.MOB1WALKINGSHEETRSC,48,48);
     private static final SpriteSheet mob1Attacking = ResourceManager.getSpriteSheet(Project2.MOB1ATTACKINGSHEETRSC,32,32);
     private static final SpriteSheet mob2Walking = ResourceManager.getSpriteSheet(Project2.MOB2WALKINGSHEETRSC,32,32);
@@ -90,4 +91,9 @@ public class Mob extends BasicBeing {
 //        same as default crystal buddy sheet
         this.InitAnimations(walkingSheet,attackingSheet);
     }
+
+    public int getTargetPlayer() { return targetPlayer; }
+
+    public void setTargetPlayer(int targetPlayer) { this.targetPlayer = targetPlayer; }
+
 }
