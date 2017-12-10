@@ -139,6 +139,14 @@ public class BasicBeing extends Entity{
         return ball;
     }
 
+    protected float meleeAttack() {
+//        System.out.println((System.currentTimeMillis()-getAttacktimer()));
+        if ((System.currentTimeMillis()-getAttacktimer()) >= getAttackdelay()) {
+            setAttacktimer(System.currentTimeMillis());
+            return getAttackPower();
+        } else
+            return 0;
+    }
     /**
      * attack power is used in hit method for reducing another being's health.
      * @return float value for the being attack power
@@ -304,8 +312,8 @@ public class BasicBeing extends Entity{
      */
     public void HitBeing(float attackValue){
 //        reduces attack value by a percentage of its health
-        if (health > 0) {
-            this.health = health - (attackValue/100);
+        if (this.health > 0) {
+            this.health = this.health - (attackValue/100);
         }
         if (this.getHealth()<=0)
             this.dead = true;
@@ -508,4 +516,7 @@ public class BasicBeing extends Entity{
 
     public int getAttackdelay() { return attackdelay; }
 
+    public void setAttacktimer(long attacktimer) {
+        this.attacktimer = attacktimer;
+    }
 }
