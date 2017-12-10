@@ -491,6 +491,13 @@ public class TestGameServer {
                 }
 //                </editor-fold desc="iterate through the mobs">
 
+                //<editor-fold desc= "Player Update Health">
+                String msg = "UPDTHLTH "+Players.get(i).getName()
+                        + " " + Players.get(i).getHealth();
+                send(msg);
+                //</editor-fold desc= "Player Update Health">
+            }
+            //</editor-fold desc= "for each player logged in">
 
             if (changes != "") {
                 String msg = "UPDT" + changes;
