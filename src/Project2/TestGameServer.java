@@ -224,10 +224,7 @@ public class TestGameServer {
                     if (Players.get(i).getName().equals(player)) {
                         // process movement based on input
                         Players.get(i).setCommand(inputCommand);
-                        Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(i).getSpeed()));
                         Vector newWorldPosition = CalcWorldPosition(Players.get(i).getCommand(),Players.get(i).getWorldPosition(),Players.get(i).getSpeed());
-                        
-                        Players.get(i).setTranslation(velocity);
                         // set map position
                         Players.get(i).setWorldPosition(newWorldPosition);
                         // set jig entity vector for collisions.
