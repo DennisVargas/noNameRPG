@@ -25,10 +25,10 @@ public class Pathfinding {
 
     // if mob is within three tiles of the player, return false (mob should not move)
     public static boolean rangedRange(Vector player, Vector mob){
-        float playerXMin =  player.getX()-3;
-        float playerYMin = player.getY()-3;
-        float playerXMax = player.getX()+3;
-        float playerYMax = player.getY()+3;
+        float playerXMin =  player.getX()-4;
+        float playerYMin = player.getY()-4;
+        float playerXMax = player.getX()+4;
+        float playerYMax = player.getY()+4;
 
         if (mob.getX() >= playerXMin && mob.getX() <= playerXMax &&
                 mob.getY() >= playerYMin && mob.getY() <= playerYMax)

@@ -17,7 +17,8 @@ public class InputManager {
      * InputCommands to drive the BasicBeings.
      */
     public enum InputCommands {up, down, left, right, enter, idle, attack, back, hit,
-                                ulDiag, dlDiag, urDiag, drDiag, hitLt, hitRt, death, dc}
+                                ulDiag, dlDiag, urDiag, drDiag, hitLt, hitRt, death, rm
+    }
 
 //  boolean that stores the value of when a GamePad button
 //  has been pressed once so that it will not repeat.

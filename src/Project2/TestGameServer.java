@@ -1,22 +1,7 @@
 package Project2;
-/**
- * Need to fix player creation and init packet - pass player's socket so init only goes to new player
- * clean up remaining server errors that are referencing server and not client list loop
- * find way to tell client that player disconnected and is gone
- * player 2 resets position to player 1's position when window loses and regains focus - possibly referencing (0) somewhere
- *
- * Once player 2 disconnects, is unable to reconnect, possible server thinks two clients still connected
- */
-
-/**
- * When changes made, add change to changes string
- * " " + ENTITY_ID + inputCommand + WorldPos_X + WorldPos_Y
- */
-
 
 import jig.Vector;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Circle;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -115,6 +100,42 @@ public class TestGameServer {
         newChange += " " + hero.getWorldPositionY();
 
         changes += newChange;
+    }
+
+    private void ballUpdate() {
+        for (int i = 0; i < MobBalls.size(); i++) {
+            if ((MobBalls.get(i).getTime() + 1000) <= System.currentTimeMillis()) {
+                String balls = "";
+                balls += " " + MobBalls.get(i).getName();
+                balls += " " + rm;
+                balls += " " + MobBalls.get(i).getWorldPositionX();
+                balls += " " + MobBalls.get(i).getWorldPositionY();
+                changes += balls;
+                MobBalls.remove(i);
+            } else {
+                String balls = "";
+                MobBalls.get(i).update();
+                balls += " " + MobBalls.get(i).getName();
+                balls += " " + up;
+                balls += " " + MobBalls.get(i).getWorldPositionX();
+                balls += " " + MobBalls.get(i).getWorldPositionY();
+                changes += balls;
+            }
+        }
+    }
+
+    private void mobRangedAttack(int i) {
+        if ((System.currentTimeMillis() - Mobs.get(i).getShoottimer()) >= Mobs.get(i).getShootdelay()) {
+            String balls = "";
+            int num = MobBalls.size();
+            String name = "mball" + num;
+            MobBalls.add(Mobs.get(i).rangedAttack(name));
+            balls += " " + name;
+            balls += " " + Mobs.get(i).getLastDirectionCommand();
+            balls += " " + Mobs.get(i).getWorldPositionX();
+            balls += " " + Mobs.get(i).getWorldPositionY();
+            changes += balls;
+        }
     }
 
 
@@ -327,7 +348,7 @@ public class TestGameServer {
                     // find corresponding player in player list and remove
                     if (player.equals(Players.get(j).getName())) {
                         String newChange  = " " + Players.get(j).getName();
-                        newChange += " " + InputCommands.dc;
+                        newChange += " " + InputCommands.rm;
                         newChange += " " + Players.get(j).getWorldPositionX();
                         newChange += " " + Players.get(j).getWorldPositionY();
                         changes += newChange;
@@ -365,6 +386,10 @@ public class TestGameServer {
 //            System.out.println("Running fine");
             Random random = new Random();
             String balls = "";
+
+            // update position of mob and player projectiles
+            ballUpdate();
+
             for (int bubbles = 0; bubbles < Players.size(); bubbles++) {
                 //<editor-fold desc="Dijkstra stuffs">
                 float playerX = (float)Math.floor(Players.get(bubbles).getWorldPositionX());
@@ -388,15 +413,18 @@ public class TestGameServer {
                         } else {
                             // if mob is ranged and 3 or fewer tiles away, set to idle (so it stops and attacks)
                             Mobs.get(i).setCommand(idle);
-                            if ((System.currentTimeMillis() - Mobs.get(i).getShoottimer()) >= Mobs.get(i).getShootdelay()) {
-                                MobBalls.add(Mobs.get(i).rangedAttack());
-                                int num = MobBalls.size();
-                                balls += " ball" + num;
-                                balls += " " + Mobs.get(i).getLastDirectionCommand();
-                                balls += " " + Mobs.get(i).getWorldPositionX();
-                                balls += " " + Mobs.get(i).getWorldPositionY();
-                                System.out.println(balls);
-                            }
+                            mobRangedAttack(i);
+//                            if ((System.currentTimeMillis() - Mobs.get(i).getShoottimer()) >= Mobs.get(i).getShootdelay()) {
+//                                int num = MobBalls.size();
+//                                String name = "mball" + num;
+//                                MobBalls.add(Mobs.get(i).rangedAttack(name));
+//                                balls += " " + name;
+//                                balls += " " + Mobs.get(i).getLastDirectionCommand();
+//                                balls += " " + Mobs.get(i).getWorldPositionX();
+//                                balls += " " + Mobs.get(i).getWorldPositionY();
+//                                changes += balls;
+//                                System.out.println(balls);
+//                            }
                         }
                     }
 
