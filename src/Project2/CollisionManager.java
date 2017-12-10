@@ -92,6 +92,7 @@ public class CollisionManager {
 
     public static boolean CheckHeroMobCollisions(Hero hero, ArrayList<Mob> mobs) {
         boolean diagAdjustmentCollided= false;
+        InputCommands oldDiagCommand = null;
         for(Mob mob: mobs) {
             Collision collides = null;
             if (!mob.IsDead()) {
@@ -115,7 +116,7 @@ public class CollisionManager {
                     hero.setPosition(new Vector(attackPos.getX() * 32f, attackPos.getY() * 32f));
                 }
                 if ((collides = hero.collides(mob)) != null) {
-                    System.out.println("Collides Min Pen: "+collides.getMinPenetration());
+//                    System.out.println("Collides Min Pen: "+collides.getMinPenetration());
                     Vector collisionSide = collides.getMinPenetration();
                     if((abs(collisionSide.getX()) == 0) && (hero.getCommand().equals(InputCommands.left)||hero.getCommand().equals(InputCommands.right)))
                         continue;
@@ -144,10 +145,12 @@ public class CollisionManager {
                             if(!diagAdjustmentCollided)
                                 hero.setCommand(InputCommands.dlDiag);
                             return diagAdjustmentCollided;
+//                            continue;
                         }else
 //                            no collision
                             hero.setCommand(InputCommands.dlDiag);
                             return diagAdjustmentCollided;
+//                            continue;
                     }else if(hero.getCommand().equals(InputCommands.drDiag)){
                         hero.setCommand(InputCommands.down);
                         hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
@@ -160,10 +163,12 @@ public class CollisionManager {
                             if(!diagAdjustmentCollided)
                                 hero.setCommand(InputCommands.drDiag);
                             return diagAdjustmentCollided;
+//                            continue;
                         }else
 //                            no collision
                             hero.setCommand(InputCommands.drDiag);
                             return diagAdjustmentCollided;
+//                            continue;
                     }else if(hero.getCommand().equals(InputCommands.ulDiag)){
                         hero.setCommand(InputCommands.up);
                         hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
@@ -176,10 +181,13 @@ public class CollisionManager {
                             if(!diagAdjustmentCollided)
                                 hero.setCommand(InputCommands.ulDiag);
                             return diagAdjustmentCollided;
-                        }else
+//                            continue;
+                        }else{
 //                            no collision
                             hero.setCommand(InputCommands.ulDiag);
                             return diagAdjustmentCollided;
+//                            continue;
+                        }
                     }else if(hero.getCommand().equals(InputCommands.urDiag)){
                         hero.setCommand(InputCommands.up);
                         hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
@@ -192,10 +200,13 @@ public class CollisionManager {
                             if(!diagAdjustmentCollided)
                                 hero.setCommand(InputCommands.urDiag);
                             return diagAdjustmentCollided;
-                        }else
+//                            continue;
+                        }else {
 //                            no collision
                             hero.setCommand(InputCommands.urDiag);
                             return diagAdjustmentCollided;
+//                            continue;
+                        }
                     }
                     return true;
 //                System.out.println("we collided Hero mob style x,y hero " + hero.getPosition() + "x,y mob: " + mob.getPosition());
