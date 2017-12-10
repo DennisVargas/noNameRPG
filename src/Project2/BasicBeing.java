@@ -379,7 +379,10 @@ public class BasicBeing extends Entity{
      * @param health float value that will be used to set health.
      */
     public void setHealth(float health) {
-        this.health = health;
+        if(health > 1)
+            this.health = 1;
+        else
+            this.health = health;
     }
 
 
