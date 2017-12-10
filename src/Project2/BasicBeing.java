@@ -35,7 +35,7 @@ public class BasicBeing extends Entity{
     private String name = "default";
     private int beingID = 0;
 
-    private InputCommands inputCommand;
+    private InputCommands inputCommand = InputCommands.idle;
 
     private InputCommands lastDirectionCommand = InputCommands.left;
     private Vector worldPosition;
@@ -486,7 +486,7 @@ public class BasicBeing extends Entity{
     }
     
     public void setCommand(InputCommands cmd) {
-        if(this.inputCommand!= InputCommands.death) {
+        if(!this.inputCommand.equals(InputCommands.death) ) {
             if (cmd.equals(InputManager.InputCommands.down)
                     || cmd.equals(InputManager.InputCommands.up)
                     || cmd.equals(InputManager.InputCommands.left)
