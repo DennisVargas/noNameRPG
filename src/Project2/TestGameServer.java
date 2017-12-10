@@ -425,7 +425,8 @@ public class TestGameServer {
                     Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(), Mobs.get(i).getWorldPosition(), Mobs.get(i).getSpeed());
                     Mobs.get(i).setWorldPosition(newMobPosition);
                     Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
-                    CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
+                    if (Mobs.get(i).getCommand() != InputCommands.death)
+                        CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
                     //CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
 
                     if (Mobs.get(i).getCommand() == InputCommands.death) {
