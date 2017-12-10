@@ -23,13 +23,13 @@
 - **[40]** make dead beings walkable tiles.
 - **[12]** Add additional animated mob types 1 and hero type 1
 - **[29]** Create functional MenuItems in Multi-player Menu
-
+- **[42]** let characters move in component direction not blocked when diagonal move
 
 ## Claimed Issues ##
 - **[2]** Add art assets
 - **[9]** Add mob path finding
 - **[14]** Design and implement level 1 mob & item locations - waiting on item img
-- **[42]** let characters move in component direction not blocked when diagonal move
+- **[44]** trigger mob melee attacks when in range
 
 
 ## Open Issues ##
