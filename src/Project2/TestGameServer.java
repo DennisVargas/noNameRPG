@@ -388,13 +388,13 @@ public class TestGameServer {
             ballUpdate();
 
             for (int bubbles = 0; bubbles < Players.size(); bubbles++) {
-
-                // player/fireball collisions
                 CollisionManager.CheckHeroMobBallCollisions(Players.get(bubbles), MobBalls);
 
+                // player/fireball collisions
+
                 //<editor-fold desc="Dijkstra stuffs">
-                float playerX = (float)Math.floor(Players.get(bubbles).getWorldPositionX());
-                float playerY = (float)Math.floor(Players.get(bubbles).getWorldPositionY());
+                float playerX = (float)Math.floor(Players.get(i).getWorldPositionX());
+                float playerY = (float)Math.floor(Players.get(i).getWorldPositionY());
                 Vector playerPosition = new Vector(playerX,playerY);
                 Pathfinding.Dijkstra(mapping, playerPosition);
                 //</editor-fold>
@@ -426,13 +426,13 @@ public class TestGameServer {
                         CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
                     //CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
 
-                    if (Mobs.get(i).getCommand() == InputCommands.death) {
+                    if (Mobs.get(j).getCommand() == InputCommands.death) {
     //                    System.out.println(mob.getName() + " " + mob.getCommand());
-                        Vector position = Mobs.get(i).getWorldPosition();
+                        Vector position = Mobs.get(j).getWorldPosition();
                         int value = random.nextInt((21 - 1) + 1);
                         int coinFlip = random.nextInt((2 - 1) + 1);
                         if (coinFlip == 1) {
-                            if (!IgnoreList.contains(Mobs.get(i))) {
+                            if (!IgnoreList.contains(Mobs.get(j))) {
                                 IgnoreList.add(Mobs.get(i));
                                 String moneyChange = "";
                                 NewMoneyDrops.clear();
