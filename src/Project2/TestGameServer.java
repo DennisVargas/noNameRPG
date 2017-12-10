@@ -443,18 +443,18 @@ public class TestGameServer {
                                 } catch (SlickException e) {
                                     System.out.println("Failed to drop money off of " + Mobs.get(i).getName());
                                 }
-                                for (int j = 0; j < NewMoneyDrops.size(); j++) {
-                                    moneyChange += " " + NewMoneyDrops.get(j).getName();
-                                    moneyChange += " " + NewMoneyDrops.get(j).getWorldPositionX();
-                                    moneyChange += " " + NewMoneyDrops.get(j).getWorldPositionY();
-                                    moneyChange += " " + NewMoneyDrops.get(j).value;
+                                for (int k = 0; k < NewMoneyDrops.size(); k++) {
+                                    moneyChange += " " + NewMoneyDrops.get(k).getName();
+                                    moneyChange += " " + NewMoneyDrops.get(k).getWorldPositionX();
+                                    moneyChange += " " + NewMoneyDrops.get(k).getWorldPositionY();
+                                    moneyChange += " " + NewMoneyDrops.get(k).value;
                                 }
                                 MoneyDrops.addAll(NewMoneyDrops);
                                 moneyDropChanges = moneyChange;
                             }
                         } else {
-                            if (!IgnoreList.contains(Mobs.get(i))) {
-                                IgnoreList.add(Mobs.get(i));
+                            if (!IgnoreList.contains(Mobs.get(j))) {
+                                IgnoreList.add(Mobs.get(j));
                                 String healthChange = "";
                                 NewHealthDrops.clear();
                                 try {
@@ -462,13 +462,13 @@ public class TestGameServer {
                                         NewHealthDrops.add(new Health(position, "health" + MoneyDrops.size(), value));
                                     }
                                 } catch (SlickException e) {
-                                    System.out.println("Failed to drop money off of " + Mobs.get(i).getName());
+                                    System.out.println("Failed to drop money off of " + Mobs.get(j).getName());
                                 }
-                                for (int j = 0; j < NewHealthDrops.size(); j++) {
-                                    healthChange += " " + NewHealthDrops.get(j).getName();
-                                    healthChange += " " + NewHealthDrops.get(j).getWorldPositionX();
-                                    healthChange += " " + NewHealthDrops.get(j).getWorldPositionY();
-                                    healthChange += " " + NewHealthDrops.get(j).value;
+                                for (int k = 0; j < NewHealthDrops.size(); k++) {
+                                    healthChange += " " + NewHealthDrops.get(k).getName();
+                                    healthChange += " " + NewHealthDrops.get(k).getWorldPositionX();
+                                    healthChange += " " + NewHealthDrops.get(k).getWorldPositionY();
+                                    healthChange += " " + NewHealthDrops.get(k).value;
                                 }
                                 HealthDrops.addAll(NewHealthDrops);
                                 healthDropChanges = healthChange;
@@ -489,7 +489,7 @@ public class TestGameServer {
                     changes = changes.concat(mobChange);
 
                 }
-            }
+//                </editor-fold desc="iterate through the mobs">
 
 
             if (changes != "") {
