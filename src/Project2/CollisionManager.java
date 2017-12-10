@@ -1,14 +1,13 @@
 package Project2;
 
+import Project2.InputManager.InputCommands;
 import jig.Collision;
 import jig.Vector;
 
 import java.util.ArrayList;
-import Project2.InputManager.*;
 
 import static Project2.InputManager.InputCommands.*;
-import static java.lang.Math.abs;
-import static java.lang.Math.floor;
+import static java.lang.StrictMath.abs;
 
 /**
  * manages all collisions between being/being and being/wall
@@ -21,6 +20,43 @@ public class CollisionManager {
         if (Project2.settings.checkTile((int) Math.round(being.getWorldPositionX()-.5) + 20, (int) Math.round(being.getWorldPositionY()) + 11).equals("abyss") |
                 Project2.settings.checkTile((int) Math.round(being.getWorldPositionX()-.5) + 20, (int) Math.round(being.getWorldPositionY()) + 11).equals("wall")) {
             being.setWorldPosition(MovementCalc.CalcWorldPosition(ReverseCommand(being.getCommand()), being.getWorldPosition(),being.getSpeed()));
+            if(being.getCommand().equals(InputCommands.dlDiag)){
+                being.setCommand(InputCommands.down);
+                being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                if (!CheckValidMove(being)){
+                    being.setCommand(InputCommands.left);
+                    being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                    return CheckValidMove(being);
+                }else
+                    return true;
+            }else if(being.getCommand().equals(InputCommands.drDiag)){
+                being.setCommand(InputCommands.down);
+                being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                if (!CheckValidMove(being)){
+                    being.setCommand(InputCommands.right);
+                    being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                    return CheckValidMove(being);
+                }else
+                    return true;
+            }else if(being.getCommand().equals(InputCommands.ulDiag)){
+                being.setCommand(InputCommands.up);
+                being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                if (!CheckValidMove(being)){
+                    being.setCommand(InputCommands.left);
+                    being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                    return CheckValidMove(being);
+                }else
+                    return true;
+            }else if(being.getCommand().equals(InputCommands.urDiag)){
+                being.setCommand(InputCommands.up);
+                being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                if (!CheckValidMove(being)){
+                    being.setCommand(InputCommands.right);
+                    being.setWorldPosition(MovementCalc.CalcWorldPosition(being.getCommand(),being.getWorldPosition(),being.getSpeed()));
+                    return CheckValidMove(being);
+                }else
+                    return true;
+            }
             return false;
         }
         else
@@ -55,6 +91,8 @@ public class CollisionManager {
     }
 
     public static boolean CheckHeroMobCollisions(Hero hero, ArrayList<Mob> mobs) {
+        boolean diagAdjustmentCollided= false;
+        InputCommands oldDiagCommand = null;
         for(Mob mob: mobs) {
             Collision collides = null;
             if (!mob.IsDead()) {
@@ -72,20 +110,107 @@ public class CollisionManager {
                             mob.setCommand(InputCommands.death);
 //                            System.out.println("I'm Dead");
                         }
-
                     }
 //              reverse the attack move
                     attackPos = MovementCalc.CalcWorldPosition(ReverseCommand(hero.getLastDirectionCommand()), hero.getWorldPosition(), hero.getSpeed());
                     hero.setPosition(new Vector(attackPos.getX() * 32f, attackPos.getY() * 32f));
                 }
                 if ((collides = hero.collides(mob)) != null) {
-
+//                    System.out.println("Collides Min Pen: "+collides.getMinPenetration());
+                    Vector collisionSide = collides.getMinPenetration();
+                    if((abs(collisionSide.getX()) == 0) && (hero.getCommand().equals(InputCommands.left)||hero.getCommand().equals(InputCommands.right)))
+                        continue;
+                    else if((abs(collisionSide.getY()) == 0) && (hero.getCommand().equals(InputCommands.up)||hero.getCommand().equals(InputCommands.down)))
+                        continue;
+                    else if((collisionSide.getX() > 0) && (hero.getCommand().equals(InputCommands.right)))
+                        continue;
+                    else if((collisionSide.getX() < 0) && (hero.getCommand().equals(InputCommands.left)))
+                        continue;
+                    else if((collisionSide.getY() < 0) && (hero.getCommand().equals(InputCommands.up)))
+                        continue;
+                    else if((collisionSide.getY() > 0) && (hero.getCommand().equals(InputCommands.down)))
+                        continue;
                     hero.setWorldPosition(MovementCalc.CalcWorldPosition(ReverseCommand(hero.getCommand()), hero.getWorldPosition(), hero.getSpeed()));
-
                     hero.setPosition(new Vector(hero.getWorldPositionX() * 32f, hero.getWorldPositionY() * 32f));
+
+                    if(hero.getCommand().equals(InputCommands.dlDiag)){
+                        hero.setCommand(InputCommands.down);
+                        hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                        if collision
+                        if (diagAdjustmentCollided = CheckHeroMobCollisions(hero, mobs)){
+                            hero.setCommand(InputCommands.left);
+                            hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                            return result of if collidied or not
+                            diagAdjustmentCollided = CheckHeroMobCollisions(hero,mobs);
+                            if(!diagAdjustmentCollided)
+                                hero.setCommand(InputCommands.dlDiag);
+                            return diagAdjustmentCollided;
+//                            continue;
+                        }else
+//                            no collision
+                            hero.setCommand(InputCommands.dlDiag);
+                            return diagAdjustmentCollided;
+//                            continue;
+                    }else if(hero.getCommand().equals(InputCommands.drDiag)){
+                        hero.setCommand(InputCommands.down);
+                        hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                      if collision
+                        if (diagAdjustmentCollided = CheckHeroMobCollisions(hero, mobs)){
+                            hero.setCommand(InputCommands.right);
+                            hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                            return result of if collidied or not
+                            diagAdjustmentCollided = CheckHeroMobCollisions(hero,mobs);
+                            if(!diagAdjustmentCollided)
+                                hero.setCommand(InputCommands.drDiag);
+                            return diagAdjustmentCollided;
+//                            continue;
+                        }else
+//                            no collision
+                            hero.setCommand(InputCommands.drDiag);
+                            return diagAdjustmentCollided;
+//                            continue;
+                    }else if(hero.getCommand().equals(InputCommands.ulDiag)){
+                        hero.setCommand(InputCommands.up);
+                        hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                      if collision
+                        if (diagAdjustmentCollided = CheckHeroMobCollisions(hero, mobs)){
+                            hero.setCommand(InputCommands.left);
+                            hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                            return result of if collidied or not
+                            diagAdjustmentCollided = CheckHeroMobCollisions(hero,mobs);
+                            if(!diagAdjustmentCollided)
+                                hero.setCommand(InputCommands.ulDiag);
+                            return diagAdjustmentCollided;
+//                            continue;
+                        }else{
+//                            no collision
+                            hero.setCommand(InputCommands.ulDiag);
+                            return diagAdjustmentCollided;
+//                            continue;
+                        }
+                    }else if(hero.getCommand().equals(InputCommands.urDiag)){
+                        hero.setCommand(InputCommands.up);
+                        hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                      if collision
+                        if (diagAdjustmentCollided = CheckHeroMobCollisions(hero, mobs)){
+                            hero.setCommand(InputCommands.right);
+                            hero.setWorldPosition(MovementCalc.CalcWorldPosition(hero.getCommand(),hero.getWorldPosition(),hero.getSpeed()));
+//                            return result of if collidied or not
+                            diagAdjustmentCollided = CheckHeroMobCollisions(hero,mobs);
+                            if(!diagAdjustmentCollided)
+                                hero.setCommand(InputCommands.urDiag);
+                            return diagAdjustmentCollided;
+//                            continue;
+                        }else {
+//                            no collision
+                            hero.setCommand(InputCommands.urDiag);
+                            return diagAdjustmentCollided;
+//                            continue;
+                        }
+                    }
+                    return true;
 //                System.out.println("we collided Hero mob style x,y hero " + hero.getPosition() + "x,y mob: " + mob.getPosition());
 //                System.out.println("collision min penetration: " + collides.getMinPenetration());
-                    return true;
                 }
             }
         }
@@ -162,7 +287,7 @@ public class CollisionManager {
     }
 
     public static Health CheckHeroHealthCollision(BasicBeing player, ArrayList<Health> healths) {
-        if(player.getHealth() == 2)
+        if(player.getHealth() >= 1f)
             return null;
         if (healths.isEmpty() | healths == null | player == null)
             return null;

@@ -67,7 +67,7 @@ public class BasicBeing extends Entity{
         setCommand(InputCommands.idle);
         setLastDirectionCommand(InputCommands.left);
 //        InitNextVectors();
-        this.debugThis = false;
+        this.debugThis = true;
     }
 
     public BasicBeing(Vector screenPosition, Vector worldPosition){
@@ -379,7 +379,10 @@ public class BasicBeing extends Entity{
      * @param health float value that will be used to set health.
      */
     public void setHealth(float health) {
-        this.health = health;
+        if(health > 1)
+            this.health = 1;
+        else
+            this.health = health;
     }
 
 
