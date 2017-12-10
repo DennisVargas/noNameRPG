@@ -24,12 +24,14 @@
 - **[12]** Add additional animated mob types 1 and hero type 1
 - **[29]** Create functional MenuItems in Multi-player Menu
 - **[42]** let characters move in component direction not blocked when diagonal move
+- **[44]** trigger mob melee attacks when in range
+- **[43]** send Hero health messages
 
 ## Claimed Issues ##
 - **[2]** Add art assets
 - **[9]** Add mob path finding
 - **[14]** Design and implement level 1 mob & item locations - waiting on item img
-- **[44]** trigger mob melee attacks when in range
+
 
 
 ## Open Issues ##
@@ -48,5 +50,5 @@
 - **[39]** Create a game over screen
 - **[40]** Add animated mob type 2
 - **[41]** Add animated mob type 4
-- **[43]** send Hero health messages
+
 
