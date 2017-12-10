@@ -238,6 +238,9 @@ public class CollisionManager {
             if((collides = mob.collides(hero))!=null){
                 mob.setWorldPosition(MovementCalc.CalcWorldPosition(ReverseCommand(mob.getCommand()), mob.getWorldPosition(), mob.getSpeed()));
                 mob.setPosition(new Vector(mob.getWorldPositionX()*32f,mob.getWorldPositionY()*32f));
+                System.out.println("hit HERO before health: " + hero.getHealth());
+                hero.HitBeing(mob.getAttackPower());
+                System.out.println("hit HERO after health: " + hero.getHealth());
 //                System.out.println("we collided Mob hero style x,y mob "+mob.getPosition()+"x,y mob: "+hero.getPosition());
 //                System.out.println("collision min penetration: "+collides.getMinPenetration());
                 return true;
