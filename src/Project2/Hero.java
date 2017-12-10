@@ -69,7 +69,6 @@ public class Hero extends BasicBeing{
         heroHeight = this.getLocallyOffsetShapes().getFirst().getWidth()*this.getScale();
         healthBar.setLocation(this.getX()-heroWidth/2,
                 this.getY() + heroHeight/2);
-        System.out.println("UpdateHealthBar: "+ this.getHealth()+" width: "+healthBar.getWidth());
         float curHealth = this.getHealth();
         if(curHealth<0)
             curHealth = 0;
