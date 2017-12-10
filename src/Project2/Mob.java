@@ -45,6 +45,7 @@ public class Mob extends BasicBeing {
                 InitMob1Animations(mob1Walking, mob1Attacking);
 //                this.InitAnimations(mob1Walking,mob1Attacking);
                 this.setRanged(false);
+                this.setAttackPower(1f);
                 break;
             case 2:
 //                InitMob2Animations(mob2Walking, mob2Attacking);
@@ -55,6 +56,8 @@ public class Mob extends BasicBeing {
 //                InitMob3Animations(mob3Walking, mob3Attacking);
                 this.InitAnimations(mob3Walking,mob3Attacking);
                 this.setRanged(true);
+                this.setAttackPower(1f);
+
                 break;
             case 4:
 //                InitAnimations(mob4Walking, mob4Attacking);

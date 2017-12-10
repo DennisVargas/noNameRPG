@@ -224,10 +224,7 @@ public class TestGameServer {
                     if (Players.get(i).getName().equals(player)) {
                         // process movement based on input
                         Players.get(i).setCommand(inputCommand);
-                        Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(i).getSpeed()));
                         Vector newWorldPosition = CalcWorldPosition(Players.get(i).getCommand(),Players.get(i).getWorldPosition(),Players.get(i).getSpeed());
-                        
-                        Players.get(i).setTranslation(velocity);
                         // set map position
                         Players.get(i).setWorldPosition(newWorldPosition);
                         // set jig entity vector for collisions.
@@ -391,9 +388,9 @@ public class TestGameServer {
             ballUpdate();
 
             for (int bubbles = 0; bubbles < Players.size(); bubbles++) {
+                CollisionManager.CheckHeroMobBallCollisions(Players.get(bubbles), MobBalls);
 
                 // player/fireball collisions
-                CollisionManager.CheckHeroMobBallCollisions(Players.get(bubbles), MobBalls);
 
                 //<editor-fold desc="Dijkstra stuffs">
                 float playerX = (float)Math.floor(Players.get(bubbles).getWorldPositionX());
@@ -425,7 +422,8 @@ public class TestGameServer {
                     Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(), Mobs.get(i).getWorldPosition(), Mobs.get(i).getSpeed());
                     Mobs.get(i).setWorldPosition(newMobPosition);
                     Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
-                    CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
+                    if (Mobs.get(i).getCommand() != InputCommands.death)
+                        CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
                     //CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
 
                     if (Mobs.get(i).getCommand() == InputCommands.death) {
@@ -491,8 +489,15 @@ public class TestGameServer {
                     changes = changes.concat(mobChange);
 
                 }
-            }
+//                </editor-fold desc="iterate through the mobs">
 
+                //<editor-fold desc= "Player Update Health">
+                String msg = "UPDTHLTH "+Players.get(bubbles).getName()
+                        + " " + Players.get(bubbles).getHealth();
+                send(msg);
+                //</editor-fold desc= "Player Update Health">
+            }
+            //</editor-fold desc= "for each player logged in">
 
             if (changes != "") {
                 String msg = "UPDT" + changes;

@@ -521,6 +521,20 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
     //                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
                     }
                     break;
+                case "UPDTHLTH":
+                    System.out.println("Client: got UPDTHLTH response");
+
+                    if(Project2.getSettings().getIpAddress().equals(tokens[1])) {
+                        System.out.println("This is the player: "+tokens[1]);
+                        System.out.println("Health value " + tokens[2]);
+                        for(Hero hero:Players){
+                            if(hero.getName().equals(Project2.getSettings().getIpAddress())){
+                                hero.setHealth(Float.parseFloat(tokens[2]) );}
+                        }
+                    }
+                    else
+                        System.out.println("Not the player "+tokens[1]);
+                    break;
                 case "DROPM":
                     for (int i = 1; i < tokens.length; i++) {
                         if (tokens[i].contains("money"))
