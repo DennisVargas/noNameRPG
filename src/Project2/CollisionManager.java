@@ -7,6 +7,7 @@ import jig.Vector;
 import java.util.ArrayList;
 
 import static Project2.InputManager.InputCommands.*;
+import static java.lang.StrictMath.abs;
 
 /**
  * manages all collisions between being/being and being/wall
@@ -90,6 +91,7 @@ public class CollisionManager {
     }
 
     public static boolean CheckHeroMobCollisions(Hero hero, ArrayList<Mob> mobs) {
+        boolean diagAdjustmentCollided= false;
         for(Mob mob: mobs) {
             Collision collides = null;
             if (!mob.IsDead()) {
@@ -113,6 +115,20 @@ public class CollisionManager {
                     hero.setPosition(new Vector(attackPos.getX() * 32f, attackPos.getY() * 32f));
                 }
                 if ((collides = hero.collides(mob)) != null) {
+                    System.out.println("Collides Min Pen: "+collides.getMinPenetration());
+                    Vector collisionSide = collides.getMinPenetration();
+                    if((abs(collisionSide.getX()) == 0) && (hero.getCommand().equals(InputCommands.left)||hero.getCommand().equals(InputCommands.right)))
+                        continue;
+                    else if((abs(collisionSide.getY()) == 0) && (hero.getCommand().equals(InputCommands.up)||hero.getCommand().equals(InputCommands.down)))
+                        continue;
+                    else if((collisionSide.getX() > 0) && (hero.getCommand().equals(InputCommands.right)))
+                        continue;
+                    else if((collisionSide.getX() < 0) && (hero.getCommand().equals(InputCommands.left)))
+                        continue;
+                    else if((collisionSide.getY() < 0) && (hero.getCommand().equals(InputCommands.up)))
+                        continue;
+                    else if((collisionSide.getY() > 0) && (hero.getCommand().equals(InputCommands.down)))
+                        continue;
                     hero.setWorldPosition(MovementCalc.CalcWorldPosition(ReverseCommand(hero.getCommand()), hero.getWorldPosition(), hero.getSpeed()));
                     hero.setPosition(new Vector(hero.getWorldPositionX() * 32f, hero.getWorldPositionY() * 32f));
 
