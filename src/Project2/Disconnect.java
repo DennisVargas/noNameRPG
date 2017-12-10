@@ -1,6 +1,9 @@
 package Project2;
 
-import jig.ResourceManager;
+/**
+    This screen displays for the joined player if the hosting player disconnects.
+ */
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -9,7 +12,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.EmptyTransition;
 import org.newdawn.slick.state.transition.HorizontalSplitTransition;
 
-import java.util.Iterator;
 
 public class Disconnect extends BasicGameState {
 

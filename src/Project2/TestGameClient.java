@@ -1,16 +1,5 @@
 package Project2;
 
-/**
- * Page should load from either a screen where the player sets up a server (enters port number) or the player chooses to
- * join someone else's game (enters IP and port number)
- *
- * Need to fix every hardcoded ipaddress and port once menus are done
- *
- * If server disconnects, need to kick joined client out to "disconnected" screen, then main menu
- *
- * */
-
-import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
@@ -18,7 +7,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.EmptyTransition;
 import org.newdawn.slick.state.transition.HorizontalSplitTransition;
 import org.newdawn.slick.tiled.TiledMap;
-import sun.plugin.perf.PluginRollup;
 
 import java.io.*;
 import java.net.Socket;
@@ -49,6 +37,7 @@ public class TestGameClient extends BasicGameState{
     private DoorList doorList;
     private List<Door> Doors;
     private List<Mob> Mobs;
+    private ArrayList<Ball> MobBalls;
     private List<Money> MoneyDrops;
     private List<Health> HealthDrops;
     private boolean isIdle = true;
@@ -56,7 +45,7 @@ public class TestGameClient extends BasicGameState{
     private ArrayList<Mob>mobsToMove;
     private int playersMoney;
 
-    private int temp = 1;
+    private int temp = 0;
 
     // MAP STUFF
     private double x, y;
@@ -81,6 +70,7 @@ public class TestGameClient extends BasicGameState{
     public void init(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
         Players = Collections.synchronizedList(new ArrayList<Hero>());
         Mobs = Collections.synchronizedList(new ArrayList<>());
+        MobBalls = new ArrayList<Ball>();
         Doors = Collections.synchronizedList(new ArrayList<Door>());
         MoneyDrops = Collections.synchronizedList(new ArrayList<Money>());
         HealthDrops = Collections.synchronizedList(new ArrayList<Health>());
@@ -121,7 +111,6 @@ public class TestGameClient extends BasicGameState{
     @Override
     public synchronized void render(GameContainer container, StateBasedGame stateBasedGame, Graphics g) throws SlickException {
         int viewportX = 0; int viewportY = 0;
-
         if (init) {
             // VIEWPORT STUFF
             float displaceX, displaceY, worldPosX, worldPosY;
@@ -135,6 +124,7 @@ public class TestGameClient extends BasicGameState{
                             (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
 
 //                    g.drawString("player name: "+Players.get(i).getName(), 200,170);
+//                    g.drawString("balls: "+ MobBalls.size(), 200,170);
 //                    g.drawString("displaceX: "+displaceX*-1 + " displaceY:"+displaceY*-1, 200,200);
 //                    g.drawString("worldX: "+Players.get(i).getWorldPositionX() + "      worldY:"+Players.get(i).getWorldPositionY(), 200,230);
 //                    g.drawString("screenX: "+Players.get(i).getScreenPositionX() + " screenY:"+Players.get(i).getScreenPositionY(), 200,260);
@@ -172,7 +162,7 @@ public class TestGameClient extends BasicGameState{
                     }
                 }
             }
-            g.setColor(Color.red);
+            g.setColor(Color.green);
             //</editor-fold
             //g.drawString("Mobs in range: "+mobsToMove.size(),100, 300 );
             //g.drawString("Players Account: "+playersMoney, 200,200);
@@ -197,6 +187,14 @@ public class TestGameClient extends BasicGameState{
                 MoneyDrops.get(i).render(g);
             for (int i = 0; i < HealthDrops.size(); i++)
                 HealthDrops.get(i).render(g);
+            for (int i = 0; i < MobBalls.size(); i++) {
+                g.setColor(Color.white);
+                g.fill(MobBalls.get(i).ball);
+//                float ballX = MobBalls.get(i).getX();
+//                float ballY = MobBalls.get(i).getY();
+//                int radius = MobBalls.get(i).getRadius();
+//                g.fillOval(ballX, ballY, radius, radius);
+            }
             // ENTITY STUFF
             // render players
             for (int i = 0; i < Players.size(); i++) {
@@ -274,7 +272,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             for (int i=0; i < Players.size(); i++) {
                 if(entity.equals(Players.get(i).getName())){
                     found = true;
-                    if (input == dc) {
+                    if (input == rm) {
                         Players.remove(i);
 //                        System.out.println("Client removed player, player size = " + Players.size());
                     }
@@ -294,6 +292,23 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                     break;
                 }
             }
+        } else if(entity.contains("mball")){
+            boolean found = false;
+            for (int i=0; i < MobBalls.size(); i++) {
+                if(entity.equals(MobBalls.get(i).getName())){
+                    found = true;
+                    if (input == rm) {
+                        MobBalls.remove(i);
+                    }
+                    else {
+                        MobBalls.get(i).setWorldPosition(new Vector(posX, posY));
+                        MobBalls.get(i).ball.setLocation(MobBalls.get(i).getWorldPositionX(), MobBalls.get(i).getWorldPositionY());
+                    }
+                    break;
+                }
+            }
+            if (!found)
+                MobBalls.add(new Ball(posX, posY, entity));
         }
 
     }
@@ -339,7 +354,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             case "attack": inputCommand = attack; break;
             case "idle": inputCommand = idle; break;
             case "death": inputCommand = death; break;
-            case "dc": inputCommand = dc; break;
+            case "rm": inputCommand = rm; break;
         }
         return inputCommand;
     }
@@ -384,6 +399,14 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             int newX = entityX - viewportX;
             int newY = entityY - viewportY;
             HealthDrops.get(i).setPosition(newX, newY);
+        }
+        for (int i = 0; i < MobBalls.size(); i++){
+            int entityX = (int)(MobBalls.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(MobBalls.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            MobBalls.get(i).setPosition(newX, newY);
+            MobBalls.get(i).ball.setLocation(newX, newY);
         }
     }
 

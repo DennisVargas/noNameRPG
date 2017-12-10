@@ -1,21 +1,8 @@
 package Project2;
-/**
- * Need to fix player creation and init packet - pass player's socket so init only goes to new player
- * clean up remaining server errors that are referencing server and not client list loop
- * find way to tell client that player disconnected and is gone
- * player 2 resets position to player 1's position when window loses and regains focus - possibly referencing (0) somewhere
- *
- * Once player 2 disconnects, is unable to reconnect, possible server thinks two clients still connected
- */
-
-/**
- * When changes made, add change to changes string
- * " " + ENTITY_ID + inputCommand + WorldPos_X + WorldPos_Y
- */
-
 
 import jig.Vector;
 import org.newdawn.slick.SlickException;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -47,6 +34,7 @@ public class TestGameServer {
     private MobList moblist;
     private DoorList doorList;
     private ArrayList<Mob> Mobs;
+    private ArrayList<Ball> MobBalls;
     private ArrayList<Door> Doors;
     private ArrayList<Money> Money;
     private ArrayList<Money> MoneyDrops;
@@ -69,6 +57,7 @@ public class TestGameServer {
         Mobs = new ArrayList<>();
         Doors = new ArrayList<>();
         Money = new ArrayList<>();
+        MobBalls = new ArrayList();
         moblist = new MobList();
         doorList = new DoorList();
         MoneyDrops = new ArrayList<Money>();
@@ -111,6 +100,42 @@ public class TestGameServer {
         newChange += " " + hero.getWorldPositionY();
 
         changes += newChange;
+    }
+
+    private void ballUpdate() {
+        for (int i = 0; i < MobBalls.size(); i++) {
+            if ((MobBalls.get(i).getTime() + 1000) <= System.currentTimeMillis() || MobBalls.get(i).getCommand() == rm) {
+                String balls = "";
+                balls += " " + MobBalls.get(i).getName();
+                balls += " " + rm;
+                balls += " " + MobBalls.get(i).getWorldPositionX();
+                balls += " " + MobBalls.get(i).getWorldPositionY();
+                changes += balls;
+                MobBalls.remove(i);
+            } else {
+                String balls = "";
+                MobBalls.get(i).update();
+                balls += " " + MobBalls.get(i).getName();
+                balls += " " + up;
+                balls += " " + MobBalls.get(i).getWorldPositionX();
+                balls += " " + MobBalls.get(i).getWorldPositionY();
+                changes += balls;
+            }
+        }
+    }
+
+    private void mobRangedAttack(int i) {
+        if ((System.currentTimeMillis() - Mobs.get(i).getAttacktimer()) >= Mobs.get(i).getAttackdelay()) {
+            String balls = "";
+            int num = MobBalls.size();
+            String name = "mball" + num;
+            MobBalls.add(Mobs.get(i).rangedAttack(name));
+            balls += " " + name;
+            balls += " " + Mobs.get(i).getLastDirectionCommand();
+            balls += " " + Mobs.get(i).getWorldPositionX();
+            balls += " " + Mobs.get(i).getWorldPositionY();
+            changes += balls;
+        }
     }
 
 
@@ -236,8 +261,8 @@ public class TestGameServer {
                         health = CollisionManager.CheckHeroHealthCollision(Players.get(i), HealthDrops);
                         if (health != null) {
                             for (int j = 0; j < HealthDrops.size(); j++){
-                                if (HealthDrops.get(j).getName().contains(health.getName()) & Players.get(i).getHealth() < 10){
-                                    Players.get(i).setHealth(Players.get(i).getHealth()+1);
+                                if (HealthDrops.get(j).getName().contains(health.getName()) && Players.get(i).getHealth() < 1f){
+                                    Players.get(i).setHealth(Players.get(i).getHealth()+.5f);
                                     healthPickupChanges += " " + health.getName();
                                     HealthDrops.remove(HealthDrops.get(j));
                                 }
@@ -248,7 +273,7 @@ public class TestGameServer {
 
                 break;
             default:
-                System.out.println("Server: unknown message received: " + msg);
+//                System.out.println("Server: unknown message received: " + msg);
                 break;
         }
     }
@@ -323,7 +348,7 @@ public class TestGameServer {
                     // find corresponding player in player list and remove
                     if (player.equals(Players.get(j).getName())) {
                         String newChange  = " " + Players.get(j).getName();
-                        newChange += " " + InputCommands.dc;
+                        newChange += " " + InputCommands.rm;
                         newChange += " " + Players.get(j).getWorldPositionX();
                         newChange += " " + Players.get(j).getWorldPositionY();
                         changes += newChange;
@@ -360,7 +385,16 @@ public class TestGameServer {
         public void run() {
 //            System.out.println("Running fine");
             Random random = new Random();
+            String balls = "";
+
+            // update position of mob and player projectiles
+            ballUpdate();
+
             for (int bubbles = 0; bubbles < Players.size(); bubbles++) {
+
+                // player/fireball collisions
+                CollisionManager.CheckHeroMobBallCollisions(Players.get(bubbles), MobBalls);
+
                 //<editor-fold desc="Dijkstra stuffs">
                 float playerX = (float)Math.floor(Players.get(bubbles).getWorldPositionX());
                 float playerY = (float)Math.floor(Players.get(bubbles).getWorldPositionY());
@@ -368,27 +402,26 @@ public class TestGameServer {
                 Pathfinding.Dijkstra(mapping, playerPosition);
                 //</editor-fold>
                 for (int i = 0; i < Mobs.size(); i++) {
-                    //TODO: if mob is within player range, give it a path
-                    //TODO: check which direction the mob should move in
+                    Boolean isIdle = false;
+                    String command = "";
                     float mobX = (float)Math.floor(Mobs.get(i).getWorldPositionX());
                     float mobY = (float)Math.floor(Mobs.get(i).getWorldPositionY());
                     Vector cheesyMobs = new Vector(mobX, mobY);
-                    if (Pathfinding.range(playerPosition, cheesyMobs) &&
-                            !Mobs.get(i).IsDead()){
-                        String command = Pathfinding.getPath((int)mobX, (int)mobY);
-                        //Vector whatever = Pathfinding.nextTile((int)mobX, (int)mobY, command);
-                        /*up, down, left, right, ulDiag, dlDiag, urDiag, drDiag*/
-                        if (command.equalsIgnoreCase("up")){Mobs.get(i).setCommand(InputCommands.up);}
-                        else if (command.equalsIgnoreCase("down")){Mobs.get(i).setCommand(InputCommands.down);}
-                        else if (command.equalsIgnoreCase("left")){Mobs.get(i).setCommand(InputCommands.left);}
-                        else if (command.equalsIgnoreCase("right")){Mobs.get(i).setCommand(InputCommands.right);}
-                        else if (command.equalsIgnoreCase("ulDiag")){Mobs.get(i).setCommand(InputCommands.ulDiag);}
-                        else if (command.equalsIgnoreCase("dlDiag")){Mobs.get(i).setCommand(InputCommands.dlDiag);}
-                        else if (command.equalsIgnoreCase("urDiag")){Mobs.get(i).setCommand(InputCommands.urDiag);}
-                        else if (command.equalsIgnoreCase("drDiag")){Mobs.get(i).setCommand(InputCommands.drDiag);}
-                    } else {
-                        Mobs.get(i).setCommand(InputCommands.idle);
+
+                    // if mob is 5 tiles or less away from player and is not dead
+                    if (Pathfinding.range(playerPosition, cheesyMobs) && !Mobs.get(i).IsDead()){
+                        command = Pathfinding.getPath((int) mobX, (int) mobY);
+                        // if mob is melee or if mob is greater than 3 tiles away, set it's path
+                        if (!Mobs.get(i).isRanged() || (!Pathfinding.rangedRange(playerPosition, cheesyMobs))) {
+                            Mobs.get(i).setCommand(getCommand(command));
+                        } else {
+                            // if mob is ranged and 3 or fewer tiles away, set to idle (so it stops and attacks)
+                            // get direction mob has to face to hit player
+                            Mobs.get(i).setCommand(idle);
+                            isIdle = true;
+                        }
                     }
+
                     Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(), Mobs.get(i).getWorldPosition(), Mobs.get(i).getSpeed());
                     Mobs.get(i).setWorldPosition(newMobPosition);
                     Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
@@ -445,12 +478,18 @@ public class TestGameServer {
                         }
                     }
 
+                    // after movements, but before update string, adjust the direction the mob is facing if ranged
+                    if (isIdle) {
+                        Mobs.get(i).setCommand(getCommand(command));
+                        mobRangedAttack(i);
+                    }
+
                     String mobChange  = " " + Mobs.get(i).getName();
                     mobChange += " " + Mobs.get(i).getCommand();
                     mobChange += " " + Mobs.get(i).getWorldPositionX();
                     mobChange += " " + Mobs.get(i).getWorldPositionY();
-
                     changes = changes.concat(mobChange);
+
                 }
             }
 

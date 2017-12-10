@@ -1,5 +1,10 @@
 package Project2;
 
+/*
+Mobs 1 and 2 are melee
+Mobs 3 and 4 are ranged
+ */
+
 import jig.ConvexPolygon;
 import jig.ResourceManager;
 import jig.Shape;
@@ -95,4 +100,5 @@ public class Mob extends BasicBeing {
         this.removeShape(oldHitBox);
         this.InitAnimations(walkingSheet,attackingSheet);
     }
+
 }
