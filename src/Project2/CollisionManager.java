@@ -96,7 +96,7 @@ public class CollisionManager {
         for(Mob mob: mobs) {
             Collision collides = null;
             if (!mob.IsDead()) {
-                if (hero.getCommand() == InputCommands.attack) {
+                if (hero.getCommand() == InputCommands.attack && !hero.isRanged()) {
 //                make an attack move so you collide in the direction moving if you don't collide go back.
                     Vector attackPos = MovementCalc.CalcWorldPosition(hero.getLastDirectionCommand(), hero.getWorldPosition(), hero.getSpeed());
                     hero.setPosition(new Vector(attackPos.getX() * 32f, attackPos.getY() * 32f));

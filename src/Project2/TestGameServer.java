@@ -31,6 +31,7 @@ public class TestGameServer {
     private int stateId;
     private float mapX, mapY;
     private ArrayList<Hero> Players;
+    private ArrayList<Ball> HeroBalls;
     private MobList moblist;
     private DoorList doorList;
     private ArrayList<Mob> Mobs;
@@ -57,7 +58,8 @@ public class TestGameServer {
         Mobs = new ArrayList<>();
         Doors = new ArrayList<>();
         Money = new ArrayList<>();
-        MobBalls = new ArrayList();
+        MobBalls = new ArrayList<>();
+        HeroBalls = new ArrayList<>();
         moblist = new MobList();
         doorList = new DoorList();
         MoneyDrops = new ArrayList<Money>();
@@ -91,7 +93,8 @@ public class TestGameServer {
 
     /** Game Functions */
     private void addPlayer(String playerID, int type) {
-        Hero hero = new Hero(new Vector(mapX, mapY),false, playerID);
+//        Hero hero = new Hero(new Vector(mapX, mapY), false, playerID); // melee
+        Hero hero = new Hero(new Vector(mapX, mapY), true, playerID); // ranged
         hero.setPosition(new Vector(mapX,mapY));
         Players.add(hero);
         String newChange  = " " + playerID;
@@ -122,6 +125,25 @@ public class TestGameServer {
                 changes += balls;
             }
         }
+        for (int i = 0; i < HeroBalls.size(); i++) {
+            if ((HeroBalls.get(i).getTime() + 1000) <= System.currentTimeMillis() || HeroBalls.get(i).getCommand() == rm) {
+                String balls = "";
+                balls += " " + HeroBalls.get(i).getName();
+                balls += " " + rm;
+                balls += " " + HeroBalls.get(i).getWorldPositionX();
+                balls += " " + HeroBalls.get(i).getWorldPositionY();
+                changes += balls;
+                HeroBalls.remove(i);
+            } else {
+                String balls = "";
+                HeroBalls.get(i).update();
+                balls += " " + HeroBalls.get(i).getName();
+                balls += " " + up;
+                balls += " " + HeroBalls.get(i).getWorldPositionX();
+                balls += " " + HeroBalls.get(i).getWorldPositionY();
+                changes += balls;
+            }
+        }
     }
 
     private void mobRangedAttack(int i) {
@@ -134,6 +156,20 @@ public class TestGameServer {
             balls += " " + Mobs.get(i).getLastDirectionCommand();
             balls += " " + Mobs.get(i).getWorldPositionX();
             balls += " " + Mobs.get(i).getWorldPositionY();
+            changes += balls;
+        }
+    }
+
+    private void heroRangedAttack(int i) {
+        if ((System.currentTimeMillis() - Players.get(i).getAttacktimer()) >= Players.get(i).getAttackdelay()) {
+            String balls = "";
+            int num = HeroBalls.size();
+            String name = "hball" + num;
+            HeroBalls.add(Players.get(i).rangedAttack(name));
+            balls += " " + name;
+            balls += " " + Players.get(i).getLastDirectionCommand();
+            balls += " " + Players.get(i).getWorldPositionX();
+            balls += " " + Players.get(i).getWorldPositionY();
             changes += balls;
         }
     }
@@ -231,6 +267,9 @@ public class TestGameServer {
                         Players.get(i).setPosition(new Vector(newWorldPosition.getX() * 32f, newWorldPosition.getY() * 32f));
                         float x = Players.get(i).getWorldPositionX();
                         float y = Players.get(i).getWorldPositionY();
+                        // if player is ranged and input was attack, call heroRangedAttack
+                        if (Players.get(i).isRanged() && Players.get(i).getCommand() == attack)
+                            heroRangedAttack(i);
                         // check for player/wall collisions
                         CollisionManager.CheckHeroMobCollisions(Players.get(i), Mobs);
                         if(CollisionManager.CheckValidMove(Players.get(i))) {

@@ -45,7 +45,7 @@ public class BasicBeing extends Entity{
     private Animation currentAnimation;
 
     private long attacktimer = 0; // time of last attack
-    private int attackdelay = 1000; // time between attacks
+    private int attackdelay = 500; // time between attacks
 
 
     /**

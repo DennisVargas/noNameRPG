@@ -38,6 +38,7 @@ public class TestGameClient extends BasicGameState{
     private List<Door> Doors;
     private List<Mob> Mobs;
     private ArrayList<Ball> MobBalls;
+    private ArrayList<Ball> HeroBalls;
     private List<Money> MoneyDrops;
     private List<Health> HealthDrops;
     private boolean isIdle = true;
@@ -71,6 +72,7 @@ public class TestGameClient extends BasicGameState{
         Players = Collections.synchronizedList(new ArrayList<Hero>());
         Mobs = Collections.synchronizedList(new ArrayList<>());
         MobBalls = new ArrayList<Ball>();
+        HeroBalls = new ArrayList<Ball>();
         Doors = Collections.synchronizedList(new ArrayList<Door>());
         MoneyDrops = Collections.synchronizedList(new ArrayList<Money>());
         HealthDrops = Collections.synchronizedList(new ArrayList<Health>());
@@ -188,12 +190,12 @@ public class TestGameClient extends BasicGameState{
             for (int i = 0; i < HealthDrops.size(); i++)
                 HealthDrops.get(i).render(g);
             for (int i = 0; i < MobBalls.size(); i++) {
-                g.setColor(Color.white);
+                g.setColor(Color.red);
                 g.fill(MobBalls.get(i).ball);
-//                float ballX = MobBalls.get(i).getX();
-//                float ballY = MobBalls.get(i).getY();
-//                int radius = MobBalls.get(i).getRadius();
-//                g.fillOval(ballX, ballY, radius, radius);
+            }
+            for (int i = 0; i < HeroBalls.size(); i++) {
+                g.setColor(Color.white);
+                g.fill(HeroBalls.get(i).ball);
             }
             // ENTITY STUFF
             // render players
@@ -309,8 +311,24 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             }
             if (!found)
                 MobBalls.add(new Ball(posX, posY, entity));
-        }
-
+        } else if(entity.contains("hball")){
+                boolean found = false;
+                for (int i=0; i < HeroBalls.size(); i++) {
+                    if(entity.equals(HeroBalls.get(i).getName())){
+                        found = true;
+                        if (input == rm) {
+                            HeroBalls.remove(i);
+                        }
+                        else {
+                            HeroBalls.get(i).setWorldPosition(new Vector(posX, posY));
+                            HeroBalls.get(i).ball.setLocation(HeroBalls.get(i).getWorldPositionX(), HeroBalls.get(i).getWorldPositionY());
+                        }
+                        break;
+                    }
+                }
+                if (!found)
+                    HeroBalls.add(new Ball(posX, posY, entity));
+            }
     }
 
     private void loadLevel(int level) throws SlickException {
@@ -336,8 +354,9 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
     private void addPlayer(String playerID, float xPos, float yPos) {
 //        System.out.println("Adding Player at " + xPos + ", " + yPos);
         // TODO: Add ClassID to player constructor, whatever gets used here
-        Hero hero1 = new Hero(new Vector(xPos,yPos),false, playerID);
-        Players.add(hero1);
+//        Hero hero = new Hero(new Vector(xPos,yPos), false, playerID); // melee
+        Hero hero = new Hero(new Vector(xPos,yPos), true, playerID); // ranged
+        Players.add(hero);
     }
 
     private InputCommands getCommand(String rawCommand) {
@@ -407,6 +426,14 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             int newY = entityY - viewportY;
             MobBalls.get(i).setPosition(newX, newY);
             MobBalls.get(i).ball.setLocation(newX, newY);
+        }
+        for (int i = 0; i < HeroBalls.size(); i++){
+            int entityX = (int)(HeroBalls.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(HeroBalls.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            HeroBalls.get(i).setPosition(newX, newY);
+            HeroBalls.get(i).ball.setLocation(newX, newY);
         }
     }
 
