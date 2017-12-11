@@ -255,22 +255,19 @@ public class TestGameServer {
             case "INPT":
 //                System.out.println("Server: got INPT message from: " + player);
                 InputCommands inputCommand = getCommand(tokens[2]);
-System.out.println("Input received");
                 for (int i = 0; i < Players.size(); i++) {
                     if (Players.get(i).getName().equals(player)) {
                         // process movement based on input
                         Players.get(i).setCommand(inputCommand);
                         Vector newWorldPosition = CalcWorldPosition(Players.get(i).getCommand(),Players.get(i).getWorldPosition(),Players.get(i).getSpeed());
-            System.out.println("Old world position: " + Players.get(i).getWorldPositionX() + ", " + Players.get(i).getWorldPositionY());
                         // set map position
                         Players.get(i).setWorldPosition(newWorldPosition);
-            System.out.println("New world position: " + Players.get(i).getWorldPositionX() + ", " + Players.get(i).getWorldPositionY());
                         // set jig entity vector for collisions.
                         Players.get(i).setPosition(new Vector(newWorldPosition.getX() * 32f, newWorldPosition.getY() * 32f));
                         float x = Players.get(i).getWorldPositionX();
                         float y = Players.get(i).getWorldPositionY();
                         // if player is ranged and input was attack, call heroRangedAttack
-                        if (Players.get(i).isRanged() && Players.get(i).getCommand() == attack)
+                        if (Players.get(i).isRanged() && inputCommand == attack)
                             heroRangedAttack(i);
                         // check for player/wall collisions
                         CollisionManager.CheckHeroMobCollisions(Players.get(i), Mobs);
@@ -423,7 +420,6 @@ System.out.println("Input received");
         public void run() {
 //            System.out.println("Running fine");
             Random random = new Random();
-            String balls = "";
 
             // update position of mob and player projectiles
             ballUpdate();
@@ -466,6 +462,8 @@ System.out.println("Input received");
                     //CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
 
                     if (!Mobs.get(i).IsDead()) CollisionManager.CheckEntityBallCollisions(Mobs.get(i), HeroBalls);
+                    CollisionManager.CheckBallsToWall(MobBalls);
+                    CollisionManager.CheckBallsToWall(HeroBalls);
 
                     if (Mobs.get(i).getCommand() == InputCommands.death) {
     //                    System.out.println(mob.getName() + " " + mob.getCommand());

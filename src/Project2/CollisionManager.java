@@ -96,7 +96,7 @@ public class CollisionManager {
         for(Mob mob: mobs) {
             Collision collides = null;
             if (!mob.IsDead()) {
-//                if (hero.getCommand() == InputCommands.attack && !hero.isRanged()) {
+                if (hero.getCommand() == InputCommands.attack && !hero.isRanged()) {
 //                make an attack move so you collide in the direction moving if you don't collide go back.
                     Vector attackPos = MovementCalc.CalcWorldPosition(hero.getLastDirectionCommand(), hero.getWorldPosition(), hero.getSpeed());
                     hero.setPosition(new Vector(attackPos.getX() * 32f, attackPos.getY() * 32f));
@@ -110,7 +110,7 @@ public class CollisionManager {
                             mob.setCommand(InputCommands.death);
 //                            System.out.println("I'm Dead");
                         }
-//                    }
+                    }
 //              reverse the attack move
                     attackPos = MovementCalc.CalcWorldPosition(ReverseCommand(hero.getLastDirectionCommand()), hero.getWorldPosition(), hero.getSpeed());
                     hero.setPosition(new Vector(attackPos.getX() * 32f, attackPos.getY() * 32f));
@@ -304,7 +304,7 @@ public class CollisionManager {
         return null;
     }
 
-    public static boolean CheckEntityBallCollisions(BasicBeing entity, ArrayList<Ball> balls) {
+    public static void CheckEntityBallCollisions(BasicBeing entity, ArrayList<Ball> balls) {
         Collision collides = null;
 
         float entityMinX = entity.getCoarseGrainedMinX();
@@ -323,6 +323,13 @@ public class CollisionManager {
                 }
             }
         }
-        return false;
+    }
+    public static void CheckBallsToWall(ArrayList<Ball> balls) {
+        for (int i = 0; i < balls.size(); i++) {
+            if (Project2.settings.checkTile((int) Math.round(balls.get(i).getWorldPositionX()-.5) + 20, (int) Math.round(balls.get(i).getWorldPositionY()) + 11).equals("abyss") |
+                    Project2.settings.checkTile((int) Math.round(balls.get(i).getWorldPositionX()-.5) + 20, (int) Math.round(balls.get(i).getWorldPositionY()) + 11).equals("wall")) {
+                balls.get(i).setCommand(rm);
+            }
+        }
     }
 }

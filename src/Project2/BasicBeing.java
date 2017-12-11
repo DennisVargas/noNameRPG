@@ -315,9 +315,10 @@ public class BasicBeing extends Entity{
         if (this.health > 0) {
             this.health = this.health - (attackValue/100);
         }
-        if (this.getHealth()<=0)
+        if (this.getHealth()<=0) {
             this.dead = true;
             this.inputCommand = InputCommands.death;
+        }
     }
 
     /**
