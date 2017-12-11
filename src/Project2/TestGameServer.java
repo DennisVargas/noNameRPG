@@ -327,6 +327,28 @@ public class TestGameServer {
                                 }
                             }
                         }
+                        Key key;
+                        key = CollisionManager.CheckHeroKeyCollision(Players.get(i), Keys);
+                        if (key != null) {
+                            for(int j = 0; j < Keys.size(); j++){
+                                if(Keys.get(j).getName().contains(key.getName())){
+                                    playersKeys += 1;
+                                    keyPickupChanges += " " + key.getName();
+                                    Keys.remove(Keys.get(j));
+                                }
+                            }
+                        }
+                        Door door;
+                        door = CollisionManager.CheckHeroDoorCollision(Players.get(i), Doors);
+                        if (door != null) {
+                            for(int j = 0; j < Doors.size(); j++){
+                                if(Doors.get(j).getName().contains(door.getName())){
+                                    playersKeys -= 1;
+                                    doorChanges += " " + door.getName();
+                                    Doors.remove(Doors.get(j));
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -497,44 +519,12 @@ public class TestGameServer {
                         if (coinFlip == 1) {
                             if (!IgnoreList.contains(Mobs.get(i))) {
                                 IgnoreList.add(Mobs.get(i));
-                                String moneyChange = "";
-                                NewMoneyDrops.clear();
-                                try {
-                                    if (value > 0) {
-                                        NewMoneyDrops.add(new Money(position, "money" + MoneyDrops.size(), value));
-                                    }
-                                } catch (SlickException e) {
-                                    System.out.println("Failed to drop money off of " + Mobs.get(i).getName());
-                                }
-                                for (int j = 0; j < NewMoneyDrops.size(); j++) {
-                                    moneyChange += " " + NewMoneyDrops.get(j).getName();
-                                    moneyChange += " " + NewMoneyDrops.get(j).getWorldPositionX();
-                                    moneyChange += " " + NewMoneyDrops.get(j).getWorldPositionY();
-                                    moneyChange += " " + NewMoneyDrops.get(j).value;
-                                }
-                                MoneyDrops.addAll(NewMoneyDrops);
-                                moneyDropChanges = moneyChange;
+                                moneyDropChanges = moneyDropChanges(position, Mobs.get(i), 1);
                             }
                         } else {
                             if (!IgnoreList.contains(Mobs.get(i))) {
                                 IgnoreList.add(Mobs.get(i));
-                                String healthChange = "";
-                                NewHealthDrops.clear();
-                                try {
-                                    if (value > 0) {
-                                        NewHealthDrops.add(new Health(position, "health" + MoneyDrops.size(), value));
-                                    }
-                                } catch (SlickException e) {
-                                    System.out.println("Failed to drop money off of " + Mobs.get(i).getName());
-                                }
-                                for (int j = 0; j < NewHealthDrops.size(); j++) {
-                                    healthChange += " " + NewHealthDrops.get(j).getName();
-                                    healthChange += " " + NewHealthDrops.get(j).getWorldPositionX();
-                                    healthChange += " " + NewHealthDrops.get(j).getWorldPositionY();
-                                    healthChange += " " + NewHealthDrops.get(j).value;
-                                }
-                                HealthDrops.addAll(NewHealthDrops);
-                                healthDropChanges = healthChange;
+                                healthDropChanges = healthDropChanges(position, Mobs.get(i), 1);
                             }
                         }
                     }
