@@ -3,13 +3,27 @@ package Project2;
 public class Tile {
     private int coordX;
     private int coordY;
+    private int xoff;
+    private int yoff;
     private String type;
+    private int levelNum;
     private int room;
+
+    boolean a,b,c;
+    boolean d,  e;
+    boolean f,g,h;
+
+    private int tileCost;
 
     Tile(int x, int y, String type, int level) {
         this.coordX = x;
         this.coordY = y;
+        this.xoff = x-20;
+        this.yoff = y-11;
+//        this.xoff = x+20;
+//        this.yoff = y+11;
         this.type = type;
+        this.levelNum = level;
         setupRoomNumber(x,y,level);
     }
     int getCoordX(){
@@ -18,9 +32,12 @@ public class Tile {
     int getCoordY(){
         return this.coordY;
     }
+    int getXoff(){return this.xoff;}
+    int getYoff(){return  this.yoff;}
     int getRoom(){
         return this.room;
     }
+    int getLevel(){return this.levelNum;}
     String getType(){
         return this.type;
     }
@@ -45,6 +62,20 @@ public class Tile {
             if (x <= 113 & x >= 99 & y <= 87 & y >= 79)
                 this.room = 8;
         }
+    }
+
+    void setTileCost(int cost){tileCost = cost;}
+    int getTileCost(){return tileCost;}
+
+    void neighbors(Tile temp){
+        this.a = temp.a;
+        this.b = temp.b;
+        this.c = temp.c;
+        this.d = temp.d;
+        this.e = temp.e;
+        this.f = temp.f;
+        this.g = temp.g;
+        this.h = temp.h;
     }
     public void setType(String type){
         this.type = type;

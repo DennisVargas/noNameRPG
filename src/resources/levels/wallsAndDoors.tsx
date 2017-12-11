@@ -8,17 +8,17 @@
  </tile>
  <tile id="5">
   <properties>
-   <property name="type" value="wall"/>
+   <property name="type" value="abyss"/>
   </properties>
  </tile>
  <tile id="6">
   <properties>
-   <property name="type" value="wall"/>
+   <property name="type" value="abyss"/>
   </properties>
  </tile>
  <tile id="8">
   <properties>
-   <property name="type" value="wall"/>
+   <property name="type" value="abyss"/>
   </properties>
  </tile>
  <tile id="10">
@@ -28,27 +28,27 @@
  </tile>
  <tile id="17">
   <properties>
-   <property name="type" value="wall"/>
+   <property name="type" value="abyss"/>
   </properties>
  </tile>
  <tile id="25">
   <properties>
-   <property name="type" value="wall"/>
+   <property name="type" value="abyss"/>
   </properties>
  </tile>
  <tile id="32">
   <properties>
-   <property name="type" value="wall"/>
+   <property name="type" value="abyss"/>
   </properties>
  </tile>
  <tile id="33">
   <properties>
-   <property name="type" value="wall"/>
+   <property name="type" value="abyss"/>
   </properties>
  </tile>
  <tile id="34">
   <properties>
-   <property name="type" value="wall"/>
+   <property name="type" value="abyss"/>
   </properties>
  </tile>
 </tileset>

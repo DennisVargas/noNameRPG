@@ -1,22 +1,13 @@
 package Project2;
 
-/**
- * When changes made, add change to changes string
- * " " + ENTITY_ID + inputCommand + WorldPos_X + WorldPos_Y
- */
-
-import jig.Collision;
-import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.SlickException;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.Object;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -31,19 +22,21 @@ import static Project2.MovementCalc.*;
 public class TestGameServer {
     // SERVER STUFF
     private int port;
-    private Thread listeningThread;
-    private boolean listening = false;
     private ServerSocket socket;
     private Socket server;
+    private ArrayList<Socket> clients;
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
     // GAME STUFF
     private int stateId;
     private float mapX, mapY;
     private ArrayList<Hero> Players;
+    private ArrayList<Ball> HeroBalls;
     private MobList moblist;
     private DoorList doorList;
     private KeyList keyList;
     private ArrayList<Mob> Mobs;
+    private ArrayList<Ball> MobBalls;
     private ArrayList<Door> Doors;
     private ArrayList<Money> Money;
     private ArrayList<Key> Keys;
@@ -55,7 +48,7 @@ public class TestGameServer {
     private ArrayList<Key> NewKeyDrops;
     private ArrayList<Mob> IgnoreList;
     private static int PlayerCount = 2;
-    private String mobChanges = "";
+    private String changes = "";
     private String moneyDropChanges = "";
     private String healthDropChanges = "";
     private String keyDropChanges = "";
@@ -65,6 +58,7 @@ public class TestGameServer {
     private String doorChanges = "";
     private String e = "";
     int playersMoney;
+    private Map mapping = null;
     int playersKeys;
 
     // TODO: eventually remove this
@@ -77,6 +71,8 @@ public class TestGameServer {
         Mobs = new ArrayList<>();
         Doors = new ArrayList<>();
         Money = new ArrayList<>();
+        MobBalls = new ArrayList<>();
+        HeroBalls = new ArrayList<>();
         moblist = new MobList();
         doorList = new DoorList();
         keyList = new KeyList();
@@ -87,13 +83,12 @@ public class TestGameServer {
         KeyDrops = new ArrayList<Key>();
         NewKeyDrops = new ArrayList<Key>();
         playersMoney = 0;
+        clients = new ArrayList<>();
+
         playersKeys = 0;
         // Set game info based on what level was requested by host
-        // TODO: eventually remove spritesheets
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
         if (stateId == 22) {
-            ResourceManager.loadImage(WALKINGSHEETRSC);
-            ResourceManager.loadImage(ATTACKINGSHEETRSC);
             mapX = 45f;
             mapY = 105f;
             Mobs = moblist.getMobList(1);
@@ -108,6 +103,7 @@ public class TestGameServer {
             for(Door door: Doors){
                 door.setPosition(new Vector(door.getWorldPositionX()*32, door.getWorldPositionY()*32));
             }
+            mapping = Project2.settings.getTilemapping();
             for(Key key: Keys){
                 key.setPosition(new Vector(key.getWorldPositionX()*32, key.getWorldPositionY()*32));
             }
@@ -121,13 +117,87 @@ public class TestGameServer {
 
     /** Game Functions */
     private void addPlayer(String playerID, int type) {
-        Hero hero1 = new Hero(new Vector(mapX, mapY),false, playerID);
-        hero1.setPosition(new Vector(mapX,mapY));
-        Players.add(hero1);
+//        Hero hero = new Hero(new Vector(mapX, mapY), false, playerID); // melee
+        Hero hero = new Hero(new Vector(mapX, mapY), true, playerID); // ranged
+        hero.setPosition(new Vector(mapX,mapY));
+        Players.add(hero);
+        String newChange  = " " + playerID;
+        newChange += " " + idle;
+        newChange += " " + hero.getWorldPositionX();
+        newChange += " " + hero.getWorldPositionY();
+
+        changes += newChange;
     }
 
-    // TODO: function for running dijkstra's
-        // to adjust mob positions, call in the sendUpdate runnable? may need a new name then
+    private void ballUpdate() {
+        for (int i = 0; i < MobBalls.size(); i++) {
+            if ((MobBalls.get(i).getTime() + 1000) <= System.currentTimeMillis() || MobBalls.get(i).getCommand() == rm) {
+                String balls = "";
+                balls += " " + MobBalls.get(i).getName();
+                balls += " " + rm;
+                balls += " " + MobBalls.get(i).getWorldPositionX();
+                balls += " " + MobBalls.get(i).getWorldPositionY();
+                changes += balls;
+                MobBalls.remove(i);
+            } else {
+                String balls = "";
+                MobBalls.get(i).update();
+                balls += " " + MobBalls.get(i).getName();
+                balls += " " + up;
+                balls += " " + MobBalls.get(i).getWorldPositionX();
+                balls += " " + MobBalls.get(i).getWorldPositionY();
+                changes += balls;
+            }
+        }
+        for (int i = 0; i < HeroBalls.size(); i++) {
+            if ((HeroBalls.get(i).getTime() + 1000) <= System.currentTimeMillis() || HeroBalls.get(i).getCommand() == rm) {
+                String balls = "";
+                balls += " " + HeroBalls.get(i).getName();
+                balls += " " + rm;
+                balls += " " + HeroBalls.get(i).getWorldPositionX();
+                balls += " " + HeroBalls.get(i).getWorldPositionY();
+                changes += balls;
+                HeroBalls.remove(i);
+            } else {
+                String balls = "";
+                HeroBalls.get(i).update();
+                balls += " " + HeroBalls.get(i).getName();
+                balls += " " + up;
+                balls += " " + HeroBalls.get(i).getWorldPositionX();
+                balls += " " + HeroBalls.get(i).getWorldPositionY();
+                changes += balls;
+            }
+        }
+    }
+
+    private void mobRangedAttack(int i) {
+        if ((System.currentTimeMillis() - Mobs.get(i).getAttacktimer()) >= Mobs.get(i).getAttackdelay()) {
+            String balls = "";
+            int num = MobBalls.size();
+            String name = "mball" + num;
+            MobBalls.add(Mobs.get(i).rangedAttack(name));
+            balls += " " + name;
+            balls += " " + Mobs.get(i).getLastDirectionCommand();
+            balls += " " + Mobs.get(i).getWorldPositionX();
+            balls += " " + Mobs.get(i).getWorldPositionY();
+            changes += balls;
+        }
+    }
+
+    private void heroRangedAttack(int i) {
+        if ((System.currentTimeMillis() - Players.get(i).getAttacktimer()) >= Players.get(i).getAttackdelay()) {
+            String balls = "";
+            int num = HeroBalls.size();
+            String name = "hball" + num;
+            HeroBalls.add(Players.get(i).rangedAttack(name));
+            balls += " " + name;
+            balls += " " + Players.get(i).getLastDirectionCommand();
+            balls += " " + Players.get(i).getWorldPositionX();
+            balls += " " + Players.get(i).getWorldPositionY();
+            changes += balls;
+        }
+    }
+
 
 /** Server Functions */
     public void init () {
@@ -139,16 +209,25 @@ public class TestGameServer {
         // try to open server socket, catch error if fails
         try {
             socket = new ServerSocket(port);
-            socket.setSoTimeout(10000);
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Server: cannot create ServerSocket");
         }
 
-        // creates new thread to listen on so server can do other things while waiting
-        listening = true;
-        listeningThread = new Thread(() -> listen(), "GameServerListener");
-        listeningThread.start();
+        executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(sendUpdate, 0, 15, TimeUnit.MILLISECONDS);
+
+        while (true) {
+            System.out.println("Server: waiting for client on port " + socket.getLocalPort() + "...");
+            try {
+                server = socket.accept();
+                clients.add(server);
+                // creates new thread to listen on so server can do other things while waiting
+                new Thread(() -> listen(server), "GameServerListener").start();
+            } catch (IOException e) {
+                System.out.println("Server: server has a problem listening");
+            }
+        }
     }
 
 
@@ -170,58 +249,90 @@ public class TestGameServer {
         switch (command) {
             case "INIT":
 //                System.out.println("Server: got INIT message");
-                addPlayer(player, Integer.parseInt(tokens[2]));
-//                addPlayer("/animalCrackers", 1);
-                initPacket();
-                break;
-            case "INPT":
-//                System.out.println("Server: got INPT message: " + tokens[2]);
-                InputCommands inputCommand = getCommand(tokens[2]);
-                Hero hero1 = Players.get(0);
-                // TODO: fix this after IP is stored in player class
-                // process movement based on input
-                hero1.setCommand(inputCommand);
-//                Players.get(0).UpdateAttackRect();
-//                Vector velocity = (CalcTranslation(CalcDirection(inputCommand), Players.get(0).getSpeed()));
-//                hero1.setTranslation(velocity);
-                Vector newWorldPosition = CalcWorldPosition(hero1.getCommand(),hero1.getWorldPosition(),hero1.getSpeed());
-//                set map position
-                hero1.setWorldPosition(newWorldPosition);
-//                set jig entity vector for collisions.
-                hero1.setPosition(new Vector(newWorldPosition.getX()*32f,newWorldPosition.getY()*32f));
-                float x =  hero1.getWorldPositionX();
-                float y =  hero1.getWorldPositionY();
-                CollisionManager.CheckHeroMobCollisions(hero1, Mobs);
-                CollisionManager.CheckHeroHeroCollisions(hero1, Players);
+                if (Players.size() < PlayerCount) {
+                    addPlayer(player, Integer.parseInt(tokens[2]));
+                    msg = initPacket();
 
+                    // loop through player list, find player that sent init message
+                    for (int i = 0; i < Players.size(); i++) {
+                        if (Players.get(i).getName().equals(player)) {
+                            // find matching client thread for player
+                            for (int j = 0; j < clients.size(); j++) {
+                                String address = clients.get(j).getInetAddress().getHostAddress();
+                                int port = clients.get(j).getPort();
+                                String test = "/" + address + ":" + port;
+                                // only sent init response to player that sent init request
+                                if (test.equals(player)) {
+                                    try {
+                                        DataOutputStream out = new DataOutputStream(clients.get(j).getOutputStream());
+                                        out.writeUTF(msg);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
 
-                // check for player/wall collisions
-                if(CollisionManager.CheckValidMove(Players.get(0))) {
-//                if(true){
-                    CollisionManager.CheckHeroMobCollisions(Players.get(0), Mobs);
-                    // if movement was valid, add update to changes
-                    String newChange = " " + player;
-                    newChange += " " + tokens[2];
-                    newChange += " " + x;
-                    newChange += " " + y;
-
-                    mobChanges += newChange;
-                }
-                // for use when IP is properly stored in player class
-                /*
-                for (int i = 0; i < Players.size(); i++) {
-                    if (Players.get(i).getName() == player) {
-                        Players.get(i).GenerateNextMove(inputCommand);
-                        Players.get(i).UpdateBeingPosition();
-                        changes += " " + player;
-                        changes += " " + Players.get(i).getX();
-                        changes += " " + Players.get(i).getY();
+                                }
+                            }
+                        }
                     }
                 }
-                */
+                break;
+            case "INPT":
+//                System.out.println("Server: got INPT message from: " + player);
+                InputCommands inputCommand = getCommand(tokens[2]);
+                for (int i = 0; i < Players.size(); i++) {
+                    if (Players.get(i).getName().equals(player)) {
+                        // process movement based on input
+                        Players.get(i).setCommand(inputCommand);
+                        Vector newWorldPosition = CalcWorldPosition(Players.get(i).getCommand(),Players.get(i).getWorldPosition(),Players.get(i).getSpeed());
+                        // set map position
+                        Players.get(i).setWorldPosition(newWorldPosition);
+                        // set jig entity vector for collisions.
+                        Players.get(i).setPosition(new Vector(newWorldPosition.getX() * 32f, newWorldPosition.getY() * 32f));
+                        float x = Players.get(i).getWorldPositionX();
+                        float y = Players.get(i).getWorldPositionY();
+                        // if player is ranged and input was attack, call heroRangedAttack
+                        if (Players.get(i).isRanged() && inputCommand == attack)
+                            heroRangedAttack(i);
+                        // check for player/wall collisions
+                        CollisionManager.CheckHeroMobCollisions(Players.get(i), Mobs);
+                        if(CollisionManager.CheckValidMove(Players.get(i))) {
+                            // if movement was valid, add update to changes
+                            String newChange = " " + player;
+                            newChange += " " + tokens[2];
+                            newChange += " " + x;
+                            newChange += " " + y;
+
+                            changes += newChange;
+                        }
+
+                        Money money;
+                        money = CollisionManager.CheckHeroMoneyCollision(Players.get(i),MoneyDrops);
+                        if (money != null) {
+                            for(int j = 0; j < MoneyDrops.size(); j++){
+                                if(MoneyDrops.get(j).getName().contains(money.getName())){
+                                    playersMoney += money.value;
+                                    moneyPickupChanges += " " + money.getName();
+                                    MoneyDrops.remove(MoneyDrops.get(j));
+                                }
+                            }
+                        }
+                        Health health;
+                        health = CollisionManager.CheckHeroHealthCollision(Players.get(i), HealthDrops);
+                        if (health != null) {
+                            for (int j = 0; j < HealthDrops.size(); j++){
+                                if (HealthDrops.get(j).getName().contains(health.getName()) && Players.get(i).getHealth() < 1f){
+                                    Players.get(i).setHealth(Players.get(i).getHealth()+.5f);
+                                    healthPickupChanges += " " + health.getName();
+                                    HealthDrops.remove(HealthDrops.get(j));
+                                }
+                            }
+                        }
+                    }
+                }
+
                 break;
             default:
-                System.out.println("Server: unknown message received");
+//                System.out.println("Server: unknown message received: " + msg);
                 break;
         }
     }
@@ -244,125 +355,216 @@ public class TestGameServer {
         return inputCommand;
     }
 
-    private void initPacket() {
+    private String initPacket() {
         // TODO: send proper level info, currently hardcoded to level 1
+//        System.out.println("Server: sending INIT message");
         String msg = "INIT " + Integer.toString(1); // Integer.toString(LEVEL_NO)
         for (int i = 0; i < Players.size(); i++) {
             msg += " " + Players.get(i).getName();
             msg += " " + Float.toString(Players.get(i).getWorldPositionX());
             msg += " " + Float.toString(Players.get(i).getWorldPositionY());
         }
-        send(msg);
+        return msg;
     }
 
     // listen on port for client connections
-    private void listen() {
-        // listen while socket is open
+    private void listen(Socket listener) {
+        boolean listening = true;
+
         while(listening) {
             try {
-                System.out.println("Server: waiting for client on port " + socket.getLocalPort() + "...");
-
-                // Connect a client
-                server = socket.accept();
-                connectClient(server);
-
-                ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-                executor.scheduleAtFixedRate(sendUpdate, 0, 15, TimeUnit.MILLISECONDS);
-
-                DataInputStream in = new DataInputStream(server.getInputStream());
+                DataInputStream in = new DataInputStream(listener.getInputStream());
                 String msg;
 
-                // listen for incoming messages
-                while ((msg = in.readUTF()) != null) {
+                msg = in.readUTF();
+
+                while (listener.isConnected()) {
                     processMessage(msg);
+                    msg = in.readUTF();
                 }
 
-            } catch (SocketTimeoutException t) {
-                System.out.println("Server: socket timed out");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Server: server has a problem listening");
+                listening = false;
             }
         }
         try {
-            server.close();
+            listener.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        // only going to reach this point if client disconnected
+        for (int i = 0; i < clients.size(); i++) {
+            // find client in client list
+            if (listener == clients.get(i)) {
+                String address = clients.get(i).getInetAddress().getHostAddress();
+                int port = clients.get(i).getPort();
+                String player = "/" + address + ":" + port;
+
+                for (int j = 0; j < Players.size(); j++) {
+                    // find corresponding player in player list and remove
+                    if (player.equals(Players.get(j).getName())) {
+                        String newChange  = " " + Players.get(j).getName();
+                        newChange += " " + InputCommands.rm;
+                        newChange += " " + Players.get(j).getWorldPositionX();
+                        newChange += " " + Players.get(j).getWorldPositionY();
+                        changes += newChange;
+                        Players.remove(j);
+                        System.out.println("Server removed player, player size = " + Players.size());
+                    }
+                }
+                // remove player's client from client list
+                clients.remove(i);
+                System.out.println("Server: Disconnected client, client count = " + clients.size());
+            }
         }
     }
 
 
-    private void connectClient(Socket server) {
-        try {
-            // prints connect message to server's console window
-            System.out.println("Server: just connected to client " + server.getRemoteSocketAddress());
-            // collects incoming data from data stream
-            DataInputStream in = new DataInputStream(server.getInputStream());
-            // converts data steam into string
-            String initMsg = in.readUTF();
-            // sends string to processMessage()
-            processMessage(initMsg);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
+    // send message to all clients
     private void send(String msg) {
         // send an outgoing message
-        try {
-            DataOutputStream out = new DataOutputStream(server.getOutputStream());
-            out.writeUTF(msg);
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (int i = 0; i < clients.size(); i++) {
+            try {
+                DataOutputStream out = new DataOutputStream(clients.get(i).getOutputStream());
+                out.writeUTF(msg);
+            } catch (IOException e) {
+                System.out.println("Server sending to player that doesn't exist");
+                clients.remove(i);
+                e.printStackTrace();
+            }
         }
     }
+
 
     // timer for update packets
     private Runnable sendUpdate = new Runnable() {
         public void run() {
+//            System.out.println("Running fine");
             Random random = new Random();
-            playerObjectCollisions();
-            for (int i = 0; i < Mobs.size(); i++) {
-                try{Mobs.get(i).setCommand(InputCommands.idle);}catch(Exception e){ System.out.println("emptyMOB ON SERvER");}
-                Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(),Mobs.get(i).getWorldPosition(),Mobs.get(i).getSpeed());
-                Mobs.get(i).setWorldPosition(newMobPosition);
-                Mobs.get(i).setPosition(new Vector(newMobPosition.getX()*32f, newMobPosition.getY()*32f));
-                CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
-                CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
-//            CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
 
-//              CollisionManager.CheckBeingBeingCollisions(Mobs.get(0), Mobs);
-                //            // if movement was valid, add update to changes
+            // update position of mob and player projectiles
+            ballUpdate();
 
-                if(Mobs.get(i).getCommand() == InputCommands.death) {
-//                    System.out.println(mob.getName() + " " + mob.getCommand());
-                    Vector position = Mobs.get(i).getWorldPosition();
-                    int value = random.nextInt((21 - 1) + 1);
-                    int diceRoll = random.nextInt((4-1) + 1);
-                    if(!IgnoreList.contains(Mobs.get(i))) {
-                        if (diceRoll == 1) {
-                            IgnoreList.add(Mobs.get(i));
-                            moneyDropChanges(position, Mobs.get(i), value);
-                        } else if(diceRoll == 2){
-                            IgnoreList.add(Mobs.get(i));
-                            healthDropChanges(position, Mobs.get(i), value);
+            for (int bubbles = 0; bubbles < Players.size(); bubbles++) {
+                CollisionManager.CheckEntityBallCollisions(Players.get(bubbles), MobBalls);
+
+                //<editor-fold desc="Dijkstra stuffs">
+                float playerX = (float)Math.floor(Players.get(bubbles).getWorldPositionX());
+                float playerY = (float)Math.floor(Players.get(bubbles).getWorldPositionY());
+                Vector playerPosition = new Vector(playerX,playerY);
+                Pathfinding.Dijkstra(mapping, playerPosition);
+                //</editor-fold>
+                for (int i = 0; i < Mobs.size(); i++) {
+                    Boolean isIdle = false;
+                    String command = "";
+                    float mobX = (float)Math.floor(Mobs.get(i).getWorldPositionX());
+                    float mobY = (float)Math.floor(Mobs.get(i).getWorldPositionY());
+                    Vector cheesyMobs = new Vector(mobX, mobY);
+
+                    // if mob is 5 tiles or less away from player and is not dead
+                    if (Pathfinding.range(playerPosition, cheesyMobs) && !Mobs.get(i).IsDead()){
+                        command = Pathfinding.getPath((int) mobX, (int) mobY);
+                        // if mob is melee or if mob is greater than 3 tiles away, set it's path
+                        if (!Mobs.get(i).isRanged() || (!Pathfinding.rangedRange(playerPosition, cheesyMobs))) {
+                            Mobs.get(i).setCommand(getCommand(command));
+                        } else {
+                            // if mob is ranged and 3 or fewer tiles away, set to idle (so it stops and attacks)
+                            // get direction mob has to face to hit player
+                            Mobs.get(i).setCommand(idle);
+                            isIdle = true;
                         }
                     }
+
+                    Vector newMobPosition = MovementCalc.CalcWorldPosition(Mobs.get(i).getCommand(), Mobs.get(i).getWorldPosition(), Mobs.get(i).getSpeed());
+                    Mobs.get(i).setWorldPosition(newMobPosition);
+                    Mobs.get(i).setPosition(new Vector(newMobPosition.getX() * 32f, newMobPosition.getY() * 32f));
+                    if (Mobs.get(i).getCommand() != InputCommands.death)
+                        CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
+                    //CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
+
+                    if (!Mobs.get(i).IsDead()) CollisionManager.CheckEntityBallCollisions(Mobs.get(i), HeroBalls);
+                    CollisionManager.CheckBallsToWall(MobBalls);
+                    CollisionManager.CheckBallsToWall(HeroBalls);
+
+                    if (Mobs.get(i).getCommand() == InputCommands.death) {
+    //                    System.out.println(mob.getName() + " " + mob.getCommand());
+                        Vector position = Mobs.get(i).getWorldPosition();
+                        int value = random.nextInt((21 - 1) + 1);
+                        int coinFlip = random.nextInt((2 - 1) + 1);
+                        if (coinFlip == 1) {
+                            if (!IgnoreList.contains(Mobs.get(i))) {
+                                IgnoreList.add(Mobs.get(i));
+                                String moneyChange = "";
+                                NewMoneyDrops.clear();
+                                try {
+                                    if (value > 0) {
+                                        NewMoneyDrops.add(new Money(position, "money" + MoneyDrops.size(), value));
+                                    }
+                                } catch (SlickException e) {
+                                    System.out.println("Failed to drop money off of " + Mobs.get(i).getName());
+                                }
+                                for (int j = 0; j < NewMoneyDrops.size(); j++) {
+                                    moneyChange += " " + NewMoneyDrops.get(j).getName();
+                                    moneyChange += " " + NewMoneyDrops.get(j).getWorldPositionX();
+                                    moneyChange += " " + NewMoneyDrops.get(j).getWorldPositionY();
+                                    moneyChange += " " + NewMoneyDrops.get(j).value;
+                                }
+                                MoneyDrops.addAll(NewMoneyDrops);
+                                moneyDropChanges = moneyChange;
+                            }
+                        } else {
+                            if (!IgnoreList.contains(Mobs.get(i))) {
+                                IgnoreList.add(Mobs.get(i));
+                                String healthChange = "";
+                                NewHealthDrops.clear();
+                                try {
+                                    if (value > 0) {
+                                        NewHealthDrops.add(new Health(position, "health" + MoneyDrops.size(), value));
+                                    }
+                                } catch (SlickException e) {
+                                    System.out.println("Failed to drop money off of " + Mobs.get(i).getName());
+                                }
+                                for (int j = 0; j < NewHealthDrops.size(); j++) {
+                                    healthChange += " " + NewHealthDrops.get(j).getName();
+                                    healthChange += " " + NewHealthDrops.get(j).getWorldPositionX();
+                                    healthChange += " " + NewHealthDrops.get(j).getWorldPositionY();
+                                    healthChange += " " + NewHealthDrops.get(j).value;
+                                }
+                                HealthDrops.addAll(NewHealthDrops);
+                                healthDropChanges = healthChange;
+                            }
+                        }
+                    }
+
+                    // after movements, but before update string, adjust the direction the mob is facing if ranged
+                    if (isIdle) {
+                        Mobs.get(i).setCommand(getCommand(command));
+                        mobRangedAttack(i);
+                    }
+
+                    String mobChange  = " " + Mobs.get(i).getName();
+                    mobChange += " " + Mobs.get(i).getCommand();
+                    mobChange += " " + Mobs.get(i).getWorldPositionX();
+                    mobChange += " " + Mobs.get(i).getWorldPositionY();
+                    changes = changes.concat(mobChange);
                 }
-                String mobChange  = " " + Mobs.get(i).getName();
-                mobChange += " " + Mobs.get(i).getCommand();
-                mobChange += " " + Mobs.get(i).getWorldPositionX();
-                mobChange += " " + Mobs.get(i).getWorldPositionY();
+//                </editor-fold desc="iterate through the mobs">
 
-                mobChanges = mobChanges.concat(mobChange);
+                //<editor-fold desc= "Player Update Health">
+                String msg = "UPDTHLTH "+Players.get(bubbles).getName()
+                        + " " + Players.get(bubbles).getHealth();
+                send(msg);
+                //</editor-fold desc= "Player Update Health">
             }
+            //</editor-fold desc= "for each player logged in">
 
-//            System.out.println("seerver change: "+changes);
-            if (mobChanges != "") {
-                String msg = "UPDT" + mobChanges;
-                mobChanges = "";
-//                System.out.println(msg);
+            if (changes != "") {
+                String msg = "UPDT" + changes;
+                changes = "";
+//                System.out.println("Server: "+msg);
                 send(msg);
             }
             if (healthDropChanges != "") {
@@ -384,7 +586,7 @@ public class TestGameServer {
             }
 
             if (moneyPickupChanges != "") {
-                String msg = "PCKUPM " + playersMoney + moneyPickupChanges;
+                String msg = "PCKUPM " + playersMoney + " " + moneyPickupChanges;
                 moneyPickupChanges = "";
                 send(msg);
             }
