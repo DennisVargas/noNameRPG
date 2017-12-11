@@ -31,6 +31,7 @@ public class TestGameServer {
     private int stateId;
     private float mapX, mapY;
     private ArrayList<Hero> Players;
+    private ArrayList<Ball> HeroBalls;
     private MobList moblist;
     private DoorList doorList;
     private ArrayList<Mob> Mobs;
@@ -57,7 +58,8 @@ public class TestGameServer {
         Mobs = new ArrayList<>();
         Doors = new ArrayList<>();
         Money = new ArrayList<>();
-        MobBalls = new ArrayList();
+        MobBalls = new ArrayList<>();
+        HeroBalls = new ArrayList<>();
         moblist = new MobList();
         doorList = new DoorList();
         MoneyDrops = new ArrayList<Money>();
@@ -91,7 +93,8 @@ public class TestGameServer {
 
     /** Game Functions */
     private void addPlayer(String playerID, int type) {
-        Hero hero = new Hero(new Vector(mapX, mapY),false, playerID);
+//        Hero hero = new Hero(new Vector(mapX, mapY), false, playerID); // melee
+        Hero hero = new Hero(new Vector(mapX, mapY), true, playerID); // ranged
         hero.setPosition(new Vector(mapX,mapY));
         Players.add(hero);
         String newChange  = " " + playerID;
@@ -122,6 +125,25 @@ public class TestGameServer {
                 changes += balls;
             }
         }
+        for (int i = 0; i < HeroBalls.size(); i++) {
+            if ((HeroBalls.get(i).getTime() + 1000) <= System.currentTimeMillis() || HeroBalls.get(i).getCommand() == rm) {
+                String balls = "";
+                balls += " " + HeroBalls.get(i).getName();
+                balls += " " + rm;
+                balls += " " + HeroBalls.get(i).getWorldPositionX();
+                balls += " " + HeroBalls.get(i).getWorldPositionY();
+                changes += balls;
+                HeroBalls.remove(i);
+            } else {
+                String balls = "";
+                HeroBalls.get(i).update();
+                balls += " " + HeroBalls.get(i).getName();
+                balls += " " + up;
+                balls += " " + HeroBalls.get(i).getWorldPositionX();
+                balls += " " + HeroBalls.get(i).getWorldPositionY();
+                changes += balls;
+            }
+        }
     }
 
     private void mobRangedAttack(int i) {
@@ -134,6 +156,20 @@ public class TestGameServer {
             balls += " " + Mobs.get(i).getLastDirectionCommand();
             balls += " " + Mobs.get(i).getWorldPositionX();
             balls += " " + Mobs.get(i).getWorldPositionY();
+            changes += balls;
+        }
+    }
+
+    private void heroRangedAttack(int i) {
+        if ((System.currentTimeMillis() - Players.get(i).getAttacktimer()) >= Players.get(i).getAttackdelay()) {
+            String balls = "";
+            int num = HeroBalls.size();
+            String name = "hball" + num;
+            HeroBalls.add(Players.get(i).rangedAttack(name));
+            balls += " " + name;
+            balls += " " + Players.get(i).getLastDirectionCommand();
+            balls += " " + Players.get(i).getWorldPositionX();
+            balls += " " + Players.get(i).getWorldPositionY();
             changes += balls;
         }
     }
@@ -219,7 +255,6 @@ public class TestGameServer {
             case "INPT":
 //                System.out.println("Server: got INPT message from: " + player);
                 InputCommands inputCommand = getCommand(tokens[2]);
-
                 for (int i = 0; i < Players.size(); i++) {
                     if (Players.get(i).getName().equals(player)) {
                         // process movement based on input
@@ -231,6 +266,9 @@ public class TestGameServer {
                         Players.get(i).setPosition(new Vector(newWorldPosition.getX() * 32f, newWorldPosition.getY() * 32f));
                         float x = Players.get(i).getWorldPositionX();
                         float y = Players.get(i).getWorldPositionY();
+                        // if player is ranged and input was attack, call heroRangedAttack
+                        if (Players.get(i).isRanged() && inputCommand == attack)
+                            heroRangedAttack(i);
                         // check for player/wall collisions
                         CollisionManager.CheckHeroMobCollisions(Players.get(i), Mobs);
                         if(CollisionManager.CheckValidMove(Players.get(i))) {
@@ -382,15 +420,12 @@ public class TestGameServer {
         public void run() {
 //            System.out.println("Running fine");
             Random random = new Random();
-            String balls = "";
 
             // update position of mob and player projectiles
             ballUpdate();
 
             for (int bubbles = 0; bubbles < Players.size(); bubbles++) {
-                CollisionManager.CheckHeroMobBallCollisions(Players.get(bubbles), MobBalls);
-
-                // player/fireball collisions
+                CollisionManager.CheckEntityBallCollisions(Players.get(bubbles), MobBalls);
 
                 //<editor-fold desc="Dijkstra stuffs">
                 float playerX = (float)Math.floor(Players.get(bubbles).getWorldPositionX());
@@ -425,6 +460,10 @@ public class TestGameServer {
                     if (Mobs.get(i).getCommand() != InputCommands.death)
                         CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
                     //CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
+
+                    if (!Mobs.get(i).IsDead()) CollisionManager.CheckEntityBallCollisions(Mobs.get(i), HeroBalls);
+                    CollisionManager.CheckBallsToWall(MobBalls);
+                    CollisionManager.CheckBallsToWall(HeroBalls);
 
                     if (Mobs.get(i).getCommand() == InputCommands.death) {
     //                    System.out.println(mob.getName() + " " + mob.getCommand());
@@ -487,7 +526,6 @@ public class TestGameServer {
                     mobChange += " " + Mobs.get(i).getWorldPositionX();
                     mobChange += " " + Mobs.get(i).getWorldPositionY();
                     changes = changes.concat(mobChange);
-
                 }
 //                </editor-fold desc="iterate through the mobs">
 

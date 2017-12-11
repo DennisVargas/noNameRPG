@@ -96,7 +96,7 @@ public class CollisionManager {
         for(Mob mob: mobs) {
             Collision collides = null;
             if (!mob.IsDead()) {
-                if (hero.getCommand() == InputCommands.attack) {
+                if (hero.getCommand() == InputCommands.attack && !hero.isRanged()) {
 //                make an attack move so you collide in the direction moving if you don't collide go back.
                     Vector attackPos = MovementCalc.CalcWorldPosition(hero.getLastDirectionCommand(), hero.getWorldPosition(), hero.getSpeed());
                     hero.setPosition(new Vector(attackPos.getX() * 32f, attackPos.getY() * 32f));
@@ -304,24 +304,32 @@ public class CollisionManager {
         return null;
     }
 
-    public static boolean CheckHeroMobBallCollisions(Hero hero, ArrayList<Ball> balls) {
+    public static void CheckEntityBallCollisions(BasicBeing entity, ArrayList<Ball> balls) {
         Collision collides = null;
 
-        float heroMinX = hero.getCoarseGrainedMinX();
-        float heroMaxX = hero.getCoarseGrainedMaxX();
-        float heroMinY = hero.getCoarseGrainedMinY();
-        float heroMaxY = hero.getCoarseGrainedMaxY();
+        float entityMinX = entity.getCoarseGrainedMinX();
+        float entityMaxX = entity.getCoarseGrainedMaxX();
+        float entityMinY = entity.getCoarseGrainedMinY();
+        float entityMaxY = entity.getCoarseGrainedMaxY();
         for (int i = 0; i < balls.size(); i++) {
             float ballX = balls.get(i).getX();
             float ballY = balls.get(i).getY();
 
-            if (ballX > heroMinX && ballX < heroMaxX) {
-                if (ballY > heroMinY && ballY < heroMaxY) {
-                    hero.HitBeing(balls.get(i).getAttackPower());
+            if (ballX > entityMinX && ballX < entityMaxX) {
+                if (ballY > entityMinY && ballY < entityMaxY) {
+//                    System.out.println("Collision check: entity hit");
+                    entity.HitBeing(balls.get(i).getAttackPower());
                     balls.get(i).setCommand(rm);
                 }
             }
         }
-        return false;
+    }
+    public static void CheckBallsToWall(ArrayList<Ball> balls) {
+        for (int i = 0; i < balls.size(); i++) {
+            if (Project2.settings.checkTile((int) Math.round(balls.get(i).getWorldPositionX()-.5) + 20, (int) Math.round(balls.get(i).getWorldPositionY()) + 11).equals("abyss") |
+                    Project2.settings.checkTile((int) Math.round(balls.get(i).getWorldPositionX()-.5) + 20, (int) Math.round(balls.get(i).getWorldPositionY()) + 11).equals("wall")) {
+                balls.get(i).setCommand(rm);
+            }
+        }
     }
 }

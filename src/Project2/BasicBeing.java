@@ -45,7 +45,7 @@ public class BasicBeing extends Entity{
     private Animation currentAnimation;
 
     private long attacktimer = 0; // time of last attack
-    private int attackdelay = 1000; // time between attacks
+    private int attackdelay = 500; // time between attacks
 
 
     /**
@@ -315,8 +315,10 @@ public class BasicBeing extends Entity{
         if (this.health > 0) {
             this.health = this.health - (attackValue/100);
         }
-        if (this.getHealth()<=0)
+        if (this.getHealth()<=0) {
             this.dead = true;
+            this.inputCommand = InputCommands.death;
+        }
     }
 
     /**
