@@ -255,14 +255,16 @@ public class TestGameServer {
             case "INPT":
 //                System.out.println("Server: got INPT message from: " + player);
                 InputCommands inputCommand = getCommand(tokens[2]);
-
+System.out.println("Input received");
                 for (int i = 0; i < Players.size(); i++) {
                     if (Players.get(i).getName().equals(player)) {
                         // process movement based on input
                         Players.get(i).setCommand(inputCommand);
                         Vector newWorldPosition = CalcWorldPosition(Players.get(i).getCommand(),Players.get(i).getWorldPosition(),Players.get(i).getSpeed());
+            System.out.println("Old world position: " + Players.get(i).getWorldPositionX() + ", " + Players.get(i).getWorldPositionY());
                         // set map position
                         Players.get(i).setWorldPosition(newWorldPosition);
+            System.out.println("New world position: " + Players.get(i).getWorldPositionX() + ", " + Players.get(i).getWorldPositionY());
                         // set jig entity vector for collisions.
                         Players.get(i).setPosition(new Vector(newWorldPosition.getX() * 32f, newWorldPosition.getY() * 32f));
                         float x = Players.get(i).getWorldPositionX();
@@ -427,9 +429,7 @@ public class TestGameServer {
             ballUpdate();
 
             for (int bubbles = 0; bubbles < Players.size(); bubbles++) {
-                CollisionManager.CheckHeroMobBallCollisions(Players.get(bubbles), MobBalls);
-
-                // player/fireball collisions
+                CollisionManager.CheckEntityBallCollisions(Players.get(bubbles), MobBalls);
 
                 //<editor-fold desc="Dijkstra stuffs">
                 float playerX = (float)Math.floor(Players.get(bubbles).getWorldPositionX());
@@ -464,6 +464,8 @@ public class TestGameServer {
                     if (Mobs.get(i).getCommand() != InputCommands.death)
                         CollisionManager.CheckMobHeroCollisions(Mobs.get(i), Players);
                     //CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
+
+                    if (!Mobs.get(i).IsDead()) CollisionManager.CheckEntityBallCollisions(Mobs.get(i), HeroBalls);
 
                     if (Mobs.get(i).getCommand() == InputCommands.death) {
     //                    System.out.println(mob.getName() + " " + mob.getCommand());
@@ -526,7 +528,6 @@ public class TestGameServer {
                     mobChange += " " + Mobs.get(i).getWorldPositionX();
                     mobChange += " " + Mobs.get(i).getWorldPositionY();
                     changes = changes.concat(mobChange);
-
                 }
 //                </editor-fold desc="iterate through the mobs">
 

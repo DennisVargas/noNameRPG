@@ -317,6 +317,7 @@ public class BasicBeing extends Entity{
         }
         if (this.getHealth()<=0)
             this.dead = true;
+            this.inputCommand = InputCommands.death;
     }
 
     /**
