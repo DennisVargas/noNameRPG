@@ -36,7 +36,9 @@ public class TestGameClient extends BasicGameState{
     private MobList moblist;
     private DoorList doorList;
     private KeyList keyList;
+    private CrateList crateList;
     private List<Door> Doors;
+    private List<Crate> Crates;
     private List<Mob> Mobs;
     private ArrayList<Ball> MobBalls;
     private ArrayList<Ball> HeroBalls;
@@ -77,6 +79,7 @@ public class TestGameClient extends BasicGameState{
         MobBalls = new ArrayList<Ball>();
         HeroBalls = new ArrayList<Ball>();
         Doors = Collections.synchronizedList(new ArrayList<Door>());
+        Crates = Collections.synchronizedList(new ArrayList<Crate>());
         MoneyDrops = Collections.synchronizedList(new ArrayList<Money>());
         HealthDrops = Collections.synchronizedList(new ArrayList<Health>());
         mobsToMove = new ArrayList<>();
@@ -198,6 +201,9 @@ public class TestGameClient extends BasicGameState{
             }
             for (int i = 0; i < Doors.size(); i++) {
                 Doors.get(i).render(g);
+            }
+            for (int i = 0; i < Crates.size(); i++) {
+                Crates.get(i).render(g);
             }
             for (int i = 0; i < MoneyDrops.size(); i++)
                 MoneyDrops.get(i).render(g);
@@ -352,6 +358,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
         moblist = new MobList();
         doorList = new DoorList();
         keyList = new KeyList();
+        crateList = new CrateList();
         // should match info switch statement in TestGameServer constructor
         switch (level) {
             case 1:
@@ -361,6 +368,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                 Mobs = moblist.getMobList(1);
                 Doors = doorList.getDoorList(1);
                 Keys = keyList.getKeyList(1);
+                Crates = crateList.getCrateList(1);
                 break;
             default:
                 System.out.println("Client: unknown level");
@@ -422,6 +430,13 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             int newX = entityX - viewportX;
             int newY = entityY - viewportY;
             Doors.get(i).setPosition(newX, newY);
+        }
+        for (int i = 0; i < Crates.size(); i++) {
+            int entityX = (int)(Crates.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(Crates.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            Crates.get(i).setPosition(newX, newY);
         }
         for (int i = 0; i < MoneyDrops.size(); i++){
             int entityX = (int)(MoneyDrops.get(i).getWorldPositionX()*32.0);

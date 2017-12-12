@@ -35,9 +35,11 @@ public class TestGameServer {
     private MobList moblist;
     private DoorList doorList;
     private KeyList keyList;
+    private CrateList crateList;
     private ArrayList<Mob> Mobs;
     private ArrayList<Ball> MobBalls;
     private ArrayList<Door> Doors;
+    private ArrayList<Crate> Crates;
     private ArrayList<Money> Money;
     private ArrayList<Key> Keys;
     private ArrayList<Money> MoneyDrops;
@@ -70,11 +72,13 @@ public class TestGameServer {
     public TestGameServer(int stateId, int port) throws SlickException {
         Mobs = new ArrayList<>();
         Doors = new ArrayList<>();
+        Crates = new ArrayList<>();
         Money = new ArrayList<>();
         MobBalls = new ArrayList<>();
         HeroBalls = new ArrayList<>();
         moblist = new MobList();
         doorList = new DoorList();
+        crateList = new CrateList();
         keyList = new KeyList();
         MoneyDrops = new ArrayList<Money>();
         NewMoneyDrops = new ArrayList<>();
@@ -93,6 +97,7 @@ public class TestGameServer {
             mapY = 105f;
             Mobs = moblist.getMobList(1);
             Doors = doorList.getDoorList(1);
+            Crates = crateList.getCrateList(1);
             Keys = keyList.getKeyList(1);
             for (int i = 0; i < Doors.size(); i++){
                 Project2.settings.editTileMapping(Doors.get(i).getWorldPositionX(), Doors.get(i).getWorldPositionY(), "abyss");
@@ -102,6 +107,9 @@ public class TestGameServer {
             }
             for(Door door: Doors){
                 door.setPosition(new Vector(door.getWorldPositionX()*32, door.getWorldPositionY()*32));
+            }
+            for(Crate crate: Crates){
+                crate.setPosition(new Vector(crate.getWorldPositionX()*32, crate.getWorldPositionY()*32));
             }
             mapping = Project2.settings.getTilemapping();
             for(Key key: Keys){
