@@ -653,8 +653,17 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                         }
                     }
                     break;
+                case "RMVC":
+                    for(int i = 1; i < tokens.length; i++) {
+                        for(int j = 0; j < Crates.size(); j++) {
+                            if (Crates.get(j).getName().equals(tokens[i])){
+                                Crates.remove(Crates.get(j));
+                            }
+                        }
+                    }
+                    break;
                 default:
-                    System.out.println("Client: unknown message received "+msg);
+                    System.out.println("Client: unknown message received:"+msg);
                     break;
             }
         }

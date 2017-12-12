@@ -49,6 +49,7 @@ public class TestGameServer {
     private ArrayList<Health> NewHealthDrops;
     private ArrayList<Key> NewKeyDrops;
     private ArrayList<Mob> IgnoreList;
+    private ArrayList<Crate> IgnoreCrateList;
     private static int PlayerCount = 2;
     private String changes = "";
     private String moneyDropChanges = "";
@@ -58,6 +59,7 @@ public class TestGameServer {
     private String healthPickupChanges = "";
     private String keyPickupChanges = "";
     private String doorChanges = "";
+    private String crateRemoval = "";
     private String e = "";
     int playersMoney;
     private Map mapping = null;
@@ -126,7 +128,7 @@ public class TestGameServer {
     /** Game Functions */
     private void addPlayer(String playerID, int type) {
 //        Hero hero = new Hero(new Vector(mapX, mapY), false, playerID); // melee
-        Hero hero = new Hero(new Vector(mapX, mapY), true, playerID); // ranged
+        Hero hero = new Hero(new Vector(mapX, mapY), false, playerID); // ranged
         hero.setPosition(new Vector(mapX,mapY));
         Players.add(hero);
         String newChange  = " " + playerID;
@@ -211,6 +213,7 @@ public class TestGameServer {
     public void init () {
         Players = new ArrayList<>();
         IgnoreList = new ArrayList<Mob>();
+        IgnoreCrateList = new ArrayList<Crate>();
 //        These are being initialized in constructor and this one sets them to zero again.
 //        Mobs = new ArrayList<>();
 //        moblist = new MobList();
@@ -303,6 +306,7 @@ public class TestGameServer {
                             heroRangedAttack(i);
                         // check for player/wall collisions
                         CollisionManager.CheckHeroMobCollisions(Players.get(i), Mobs);
+                        CollisionManager.CheckHeroCrateCollisions(Players.get(i), Crates);
                         if(CollisionManager.CheckValidMove(Players.get(i))) {
                             // if movement was valid, add update to changes
                             String newChange = " " + player;
@@ -346,14 +350,16 @@ public class TestGameServer {
                                 }
                             }
                         }
-                        Door door;
-                        door = CollisionManager.CheckHeroDoorCollision(Players.get(i), Doors);
-                        if (door != null) {
-                            for(int j = 0; j < Doors.size(); j++){
-                                if(Doors.get(j).getName().contains(door.getName())){
-                                    playersKeys -= 1;
-                                    doorChanges += " " + door.getName();
-                                    Doors.remove(Doors.get(j));
+                        if(playersKeys > 0) {
+                            Door door;
+                            door = CollisionManager.CheckHeroDoorCollision(Players.get(i), Doors);
+                            if (door != null) {
+                                for (int j = 0; j < Doors.size(); j++) {
+                                    if (Doors.get(j).getName().contains(door.getName())) {
+                                        playersKeys -= 1;
+                                        doorChanges += " " + door.getName();
+                                        Doors.remove(Doors.get(j));
+                                    }
                                 }
                             }
                         }
@@ -487,6 +493,20 @@ public class TestGameServer {
                 Vector playerPosition = new Vector(playerX,playerY);
                 Pathfinding.Dijkstra(mapping, playerPosition);
                 //</editor-fold>
+                for (int i = 0; i < Crates.size(); i++) {
+                    CollisionManager.CheckEntityBallCollisions(Crates.get(i), HeroBalls);
+                    Vector position = Crates.get(i).getWorldPosition();
+                    int value;
+                    random = new Random();
+                    value = random.nextInt((21 - 1) + 1);
+                    if(Crates.get(i).IsDead())
+                        if (!IgnoreCrateList.contains(Crates.get(i))) {
+                            IgnoreCrateList.add(Crates.get(i));
+                            moneyDropChanges = moneyDropChanges(position, Crates.get(i), value+1);
+                            crateRemoval += " " + Crates.get(i).getName();
+                            Crates.remove(Crates.get(i));
+                        }
+                }
                 for (int i = 0; i < Mobs.size(); i++) {
                     Boolean isIdle = false;
                     String command = "";
@@ -522,17 +542,23 @@ public class TestGameServer {
                     if (Mobs.get(i).getCommand() == InputCommands.death) {
     //                    System.out.println(mob.getName() + " " + mob.getCommand());
                         Vector position = Mobs.get(i).getWorldPosition();
-                        int value = random.nextInt((21 - 1) + 1);
-                        int coinFlip = random.nextInt((2 - 1) + 1);
+                        int coinFlip = random.nextInt((2-1) + 1);
                         if (coinFlip == 1) {
+                            int diceRoll = random.nextInt((4 - 0));
                             if (!IgnoreList.contains(Mobs.get(i))) {
                                 IgnoreList.add(Mobs.get(i));
-                                moneyDropChanges = moneyDropChanges(position, Mobs.get(i), 1);
+                                int value;
+                                random = new Random();
+                                value = random.nextInt((10 - 1) + 1);
+                                if (diceRoll == 1)
+                                    moneyDropChanges = moneyDropChanges(position, Mobs.get(i), value);
                             }
                         } else {
+                            int diceRoll = random.nextInt((4 - 0));
                             if (!IgnoreList.contains(Mobs.get(i))) {
                                 IgnoreList.add(Mobs.get(i));
-                                healthDropChanges = healthDropChanges(position, Mobs.get(i), 1);
+                                if(diceRoll == 1)
+                                    healthDropChanges = healthDropChanges(position, Mobs.get(i));
                             }
                         }
                     }
@@ -598,9 +624,14 @@ public class TestGameServer {
                 doorChanges = "";
                 send(msg);
             }
+            if (crateRemoval != "") {
+                String msg = "RMVC" + crateRemoval;
+                crateRemoval = "";
+                send(msg);
+            }
         }
     };
-    private String moneyDropChanges(Vector position, Mob mob, int value){
+    private String moneyDropChanges(Vector position, BasicBeing mob, int value){
         String moneyChange = "";
         NewMoneyDrops.clear();
         try {
@@ -621,15 +652,16 @@ public class TestGameServer {
         return moneyDropChanges;
     }
 
-    private String healthDropChanges(Vector position, Mob mob, int value) {
+    private String healthDropChanges(Vector position, Mob mob) {
         String healthChange = "";
+        int value = 1;
         NewHealthDrops.clear();
         try {
             if (value > 0) {
                 NewHealthDrops.add(new Health(position, "health" + MoneyDrops.size(), value));
             }
         } catch (SlickException e) {
-            System.out.println("Failed to drop money off of " + mob.getName());
+            System.out.println("Failed to drop health off of " + mob.getName());
         }
         for (int i = 0; i < NewHealthDrops.size(); i++) {
             healthChange += " " + NewHealthDrops.get(i).getName();

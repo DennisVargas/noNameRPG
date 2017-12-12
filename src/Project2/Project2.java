@@ -67,7 +67,7 @@ public class Project2 extends StateBasedGame {
     public static final String DOORHSHEETRSC = "resources/levels/doorH.png";
     public static final String HEALTHSHEETRSC = "resources/Other/heart_icon.png";
     public static final String KEYSHEETRSC = "resources/Other/key.png";
-    public static final String CRATESHEETRSC = "resources/Other/Crates.png";
+    public static final String CRATESHEETRSC = "resources/Other/CratesBig.png";
 
     /**
      * instantiates the game name and then creates a
