@@ -15,65 +15,68 @@ public class DoorList {
 
     public ArrayList getDoorList (int level)  throws SlickException {
         Door door;
+        int doorNum = 0;
+        String doorVName = "doorV" + doorNum;
+        String doorHName = "doorH" + doorNum;
         if (level == 1) {
 //          Room 1
-            door = new Door(new Vector(28.5f, 105.25f), "doorV");
+            door = new Door(new Vector(28.5f, 105.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
             Doors.add(door);
-            door = new Door(new Vector(26.5f, 79.25f), "doorH");
+            door = new Door(new Vector(26.5f, 79.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
             Doors.add(door);
-            door = new Door(new Vector(28.5f, 99.25f), "doorV");
-            Doors.add(door);
+//            door = new Door(new Vector(28.5f, 99.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
+//            Doors.add(door);
 
 //          Room 3
-            door = new Door(new Vector(30.5f, 69.25f), "doorV");
+//            door = new Door(new Vector(30.5f, 69.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
+//            Doors.add(door);
+            door = new Door(new Vector(40.5f, 69.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
             Doors.add(door);
-            door = new Door(new Vector(40.5f, 69.25f), "doorV");
+            door = new Door(new Vector(38.5f, 61.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
             Doors.add(door);
-            door = new Door(new Vector(38.5f, 61.25f), "doorH");
-            Doors.add(door);
-            door = new Door(new Vector(41.5f, 87.25f), "doorV");
-            Doors.add(door);
+//            door = new Door(new Vector(41.5f, 87.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
+//            Doors.add(door);
 
 //          Room 7
-            door = new Door(new Vector(52.5f, 99.25f), "doorV");
-            Doors.add(door);
+//            door = new Door(new Vector(52.5f, 99.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
+//            Doors.add(door);
 
 //          Room 5
-            door = new Door(new Vector(62.5f, 89.25f), "doorH");
-            Doors.add(door);
-            door = new Door(new Vector(68.5f, 73.25f), "doorH");
-            Doors.add(door);
+//            door = new Door(new Vector(62.5f, 89.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
+//            Doors.add(door);
+//            door = new Door(new Vector(68.5f, 73.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
+//            Doors.add(door);
 
 //            Room 8
-            door = new Door(new Vector(78.5f, 75.25f), "doorV");
+            door = new Door(new Vector(78.5f, 75.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
             Doors.add(door);
-            door = new Door(new Vector(94.5f, 69.25f), "doorV");
+            door = new Door(new Vector(94.5f, 69.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
             Doors.add(door);
-            door = new Door(new Vector(80.5f, 67.25f), "doorH");
+            door = new Door(new Vector(80.5f, 67.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
             Doors.add(door);
-            door = new Door(new Vector(86.5f, 77.25f), "doorH");
-            Doors.add(door);
+//            door = new Door(new Vector(86.5f, 77.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
+//            Doors.add(door);
 
 //            Room 6
-            door = new Door(new Vector(84.5f, 51.25f), "doorV");
-            Doors.add(door);
-            door = new Door(new Vector(94.5f, 39.25f), "doorV");
-            Doors.add(door);
+//            door = new Door(new Vector(84.5f, 51.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
+//            Doors.add(door);
+//            door = new Door(new Vector(94.5f, 39.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
+//            Doors.add(door);
 
 //            Room 4
-            door = new Door(new Vector(62.5f, 37.25f), "doorH");
+//            door = new Door(new Vector(62.5f, 37.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
+//            Doors.add(door);
+            door = new Door(new Vector(76.5f, 39.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
             Doors.add(door);
-            door = new Door(new Vector(76.5f, 39.25f), "doorV");
-            Doors.add(door);
-            door = new Door(new Vector(74.5f, 59.25f), "doorH");
+            door = new Door(new Vector(74.5f, 59.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
             Doors.add(door);
 
 //            Room 2
-            door = new Door(new Vector(18.5f, 33.25f), "dooV");
+//            door = new Door(new Vector(18.5f, 33.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
+//            Doors.add(door);
+            door = new Door(new Vector(52.5f, 27.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
             Doors.add(door);
-            door = new Door(new Vector(52.5f, 27.25f), "doorV");
-            Doors.add(door);
-            door = new Door(new Vector(32.5f, 47.25f), "doorH");
+            door = new Door(new Vector(32.5f, 47.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
             Doors.add(door);
         }
         return this.Doors;

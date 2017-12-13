@@ -18,6 +18,9 @@ public class Map {
             }
         }
     }
+    public void setTile(int x, int y, String type){
+        tiles[x][y].setType(type);
+    }
 
     public void setNeighbors(){
         for (int i = 0; i < 150; i++){

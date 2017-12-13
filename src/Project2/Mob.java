@@ -1,7 +1,13 @@
 package Project2;
 
+/*
+Mobs 1 and 2 are melee
+Mobs 3 and 4 are ranged
+ */
+
 import jig.ConvexPolygon;
 import jig.ResourceManager;
+import jig.Shape;
 import jig.Vector;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.SpriteSheet;
@@ -31,21 +37,31 @@ public class Mob extends BasicBeing {
     }
 
     private void setMobType(int mobType) {
+        Shape oldHitBox = this.getShapes().get(0);
+        this.removeShape(oldHitBox);
         switch(mobType){
             case 1:
+//                mob1 has different dimensions
                 InitMob1Animations(mob1Walking, mob1Attacking);
+//                this.InitAnimations(mob1Walking,mob1Attacking);
                 this.setRanged(false);
+                this.setAttackPower(1f);
                 break;
             case 2:
-                InitMob2Animations(mob2Walking, mob2Attacking);
+//                InitMob2Animations(mob2Walking, mob2Attacking);
+                this.InitAnimations(mob2Walking,mob2Attacking);
                 this.setRanged(false);
                 break;
             case 3:
-                InitMob3Animations(mob3Walking, mob3Attacking);
+//                InitMob3Animations(mob3Walking, mob3Attacking);
+                this.InitAnimations(mob3Walking,mob3Attacking);
                 this.setRanged(true);
+                this.setAttackPower(1f);
+
                 break;
             case 4:
-                InitAnimations(mob4Walking, mob4Attacking);
+//                InitAnimations(mob4Walking, mob4Attacking);
+                this.InitAnimations(mob4Walking,mob4Attacking);
                 this.setRanged(true);
                 break;
         }
@@ -83,6 +99,9 @@ public class Mob extends BasicBeing {
      */
     protected void InitMob3Animations(SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
 //        same as default crystal buddy sheet
+        Shape oldHitBox = this.getShapes().get(0);
+        this.removeShape(oldHitBox);
         this.InitAnimations(walkingSheet,attackingSheet);
     }
+
 }

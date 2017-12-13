@@ -19,7 +19,7 @@ public class BasicBeing extends Entity{
     //translation = velocity
 
 
-    private float attackPower = 20f;
+    private float attackPower = 10f;
     private float health = 1f;
     private float speed = 2f;
     boolean isClient = false;
@@ -35,10 +35,7 @@ public class BasicBeing extends Entity{
     private String name = "default";
     private int beingID = 0;
 
-
-    private InputCommands inputCommand;
-
-
+    private InputCommands inputCommand = InputCommands.idle;
 
     private InputCommands lastDirectionCommand = InputCommands.left;
     private Vector worldPosition;
@@ -47,7 +44,8 @@ public class BasicBeing extends Entity{
 
     private Animation currentAnimation;
 
-    private int worldPositionX;
+    private long attacktimer = 0; // time of last attack
+    private int attackdelay = 500; // time between attacks
 
 
     /**
@@ -67,7 +65,7 @@ public class BasicBeing extends Entity{
         setCommand(InputCommands.idle);
         setLastDirectionCommand(InputCommands.left);
 //        InitNextVectors();
-        this.debugThis = false;
+//        this.debugThis = true;
     }
 
     public BasicBeing(Vector screenPosition, Vector worldPosition){
@@ -75,7 +73,7 @@ public class BasicBeing extends Entity{
         setScreenPosition(screenPosition);
         setWorldPosition(worldPosition);
 //        InitNextVectors();
-        this.debugThis = false;
+//        this.debugThis = false;
     }
 
     public InputManager.InputCommands getLastDirectionCommand() {
@@ -135,7 +133,20 @@ public class BasicBeing extends Entity{
         }
     }
 
+    public Ball rangedAttack(String name) {
+        Ball ball = new Ball(this, name);
+        attacktimer = System.currentTimeMillis();
+        return ball;
+    }
 
+    protected float meleeAttack() {
+//        System.out.println((System.currentTimeMillis()-getAttacktimer()));
+        if ((System.currentTimeMillis()-getAttacktimer()) >= getAttackdelay()) {
+            setAttacktimer(System.currentTimeMillis());
+            return getAttackPower();
+        } else
+            return 0;
+    }
     /**
      * attack power is used in hit method for reducing another being's health.
      * @return float value for the being attack power
@@ -301,9 +312,13 @@ public class BasicBeing extends Entity{
      */
     public void HitBeing(float attackValue){
 //        reduces attack value by a percentage of its health
-        this.setHealth(this.getHealth() - attackValue/100);
-        if (this.getHealth()<=0)
+        if (this.health > 0) {
+            this.health = this.health - (attackValue/100);
+        }
+        if (this.getHealth()<=0) {
             this.dead = true;
+            this.inputCommand = InputCommands.death;
+        }
     }
 
     /**
@@ -379,7 +394,10 @@ public class BasicBeing extends Entity{
      * @param health float value that will be used to set health.
      */
     public void setHealth(float health) {
-        this.health = health;
+        if(health > 1)
+            this.health = 1;
+        else
+            this.health = health;
     }
 
 
@@ -478,8 +496,7 @@ public class BasicBeing extends Entity{
     }
     
     public void setCommand(InputCommands cmd) {
-
-        if(this.inputCommand!= InputCommands.death) {
+        if(!this.inputCommand.equals(InputCommands.death) ) {
             if (cmd.equals(InputManager.InputCommands.down)
                     || cmd.equals(InputManager.InputCommands.up)
                     || cmd.equals(InputManager.InputCommands.left)
@@ -495,5 +512,13 @@ public class BasicBeing extends Entity{
 
     public InputCommands getCommand(){
         return this.inputCommand;
+    }
+
+    public long getAttacktimer() { return attacktimer; }
+
+    public int getAttackdelay() { return attackdelay; }
+
+    public void setAttacktimer(long attacktimer) {
+        this.attacktimer = attacktimer;
     }
 }

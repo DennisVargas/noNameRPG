@@ -90,4 +90,10 @@ public class PlaySettings {
     public boolean getJoining() { return joining; }
 
     public void setJoining(boolean join) { joining = join; }
+
+    public void editTileMapping(float x, float y, String type) {
+        int ix = (int) Math.round(x-.5) + 20;
+        int iy = (int) Math.round(y) + 11;
+        tilemapping.tiles[ix][iy].setType(type);
+    }
 }

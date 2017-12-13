@@ -1,16 +1,5 @@
 package Project2;
 
-/**
- * Page should load from either a screen where the player sets up a server (enters port number) or the player chooses to
- * join someone else's game (enters IP and port number)
- *
- * Need to fix every hardcoded ipaddress and port once menus are done
- *
- * If server disconnects, need to kick joined client out to "disconnected" screen, then main menu
- *
- * */
-
-import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
@@ -18,7 +7,6 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.EmptyTransition;
 import org.newdawn.slick.state.transition.HorizontalSplitTransition;
 import org.newdawn.slick.tiled.TiledMap;
-import sun.plugin.perf.PluginRollup;
 
 import java.io.*;
 import java.net.Socket;
@@ -47,23 +35,28 @@ public class TestGameClient extends BasicGameState{
     private List<Hero> Players;
     private MobList moblist;
     private DoorList doorList;
+    private KeyList keyList;
+    private CrateList crateList;
     private List<Door> Doors;
+    private List<Crate> Crates;
     private List<Mob> Mobs;
+    private ArrayList<Ball> MobBalls;
+    private ArrayList<Ball> HeroBalls;
+    private List<Key> Keys;
     private List<Money> MoneyDrops;
     private List<Health> HealthDrops;
     private boolean isIdle = true;
     private Map mapping = null;
     private ArrayList<Mob>mobsToMove;
     private int playersMoney;
+    private int playersKey;
 
-    private int temp = 1;
+    private int temp = 0;
 
     // MAP STUFF
     private double x, y;
     private int mapX, mapY;
     public TiledMap map1 = null;
-    private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
-    private final String TILESHEETRSC = "resources/Levels";
 
 
     public TestGameClient(int state_id) {
@@ -81,14 +74,16 @@ public class TestGameClient extends BasicGameState{
     public void init(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
         Players = Collections.synchronizedList(new ArrayList<Hero>());
         Mobs = Collections.synchronizedList(new ArrayList<>());
+        MobBalls = new ArrayList<Ball>();
+        HeroBalls = new ArrayList<Ball>();
         Doors = Collections.synchronizedList(new ArrayList<Door>());
+        Crates = Collections.synchronizedList(new ArrayList<Crate>());
         MoneyDrops = Collections.synchronizedList(new ArrayList<Money>());
         HealthDrops = Collections.synchronizedList(new ArrayList<Health>());
         mobsToMove = new ArrayList<>();
+//        MoneyDrops = new ArrayList<>();
+        Keys = Collections.synchronizedList(new ArrayList<Key>());
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
-        map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
-        Project2.settings.createTileMapping(map1, 1);
-        mapping = Project2.settings.getTilemapping();
     }
 
     @Override
@@ -121,7 +116,6 @@ public class TestGameClient extends BasicGameState{
     @Override
     public synchronized void render(GameContainer container, StateBasedGame stateBasedGame, Graphics g) throws SlickException {
         int viewportX = 0; int viewportY = 0;
-
         if (init) {
             // VIEWPORT STUFF
             float displaceX, displaceY, worldPosX, worldPosY;
@@ -135,11 +129,21 @@ public class TestGameClient extends BasicGameState{
                             (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
 
 //                    g.drawString("player name: "+Players.get(i).getName(), 200,170);
+//                    g.drawString("balls: "+ MobBalls.size(), 200,170);
 //                    g.drawString("displaceX: "+displaceX*-1 + " displaceY:"+displaceY*-1, 200,200);
 //                    g.drawString("worldX: "+Players.get(i).getWorldPositionX() + "      worldY:"+Players.get(i).getWorldPositionY(), 200,230);
 //                    g.drawString("screenX: "+Players.get(i).getScreenPositionX() + " screenY:"+Players.get(i).getScreenPositionY(), 200,260);
 
-            
+            g.drawString("Players Account: "+playersMoney, 200,200);
+            g.drawString("Players Keys: " + playersKey, 200, 210);
+//            g.drawString("displaceX: "+displaceX*-1
+//                    +" displaceY:"+displaceY*-1, 200,200);
+//            g.drawString("worldX: "+Players.get(0).getWorldPositionX()
+//                    +"      worldY:"+Players.get(0).getWorldPositionY(), 200,230);
+//            g.drawString("screenX: "+Players.get(0).getScreenPositionX()
+//                    +" screenY:"+Players.get(0).getScreenPositionY(), 200,260);
+
+
             /*g.drawString("displaceX: "+displaceX*-1
                     +" displaceY:"+displaceY*-1, 100,200);
             g.drawString("worldX: "+Players.get(0).getWorldPositionX()
@@ -172,7 +176,7 @@ public class TestGameClient extends BasicGameState{
                     }
                 }
             }
-            g.setColor(Color.red);
+            g.setColor(Color.green);
             //</editor-fold
             //g.drawString("Mobs in range: "+mobsToMove.size(),100, 300 );
             //g.drawString("Players Account: "+playersMoney, 200,200);
@@ -193,10 +197,23 @@ public class TestGameClient extends BasicGameState{
             for (int i = 0; i < Doors.size(); i++) {
                 Doors.get(i).render(g);
             }
+            for (int i = 0; i < Crates.size(); i++) {
+                Crates.get(i).render(g);
+            }
             for (int i = 0; i < MoneyDrops.size(); i++)
                 MoneyDrops.get(i).render(g);
             for (int i = 0; i < HealthDrops.size(); i++)
                 HealthDrops.get(i).render(g);
+            for (int i = 0; i < MobBalls.size(); i++) {
+                g.setColor(Color.red);
+                g.fill(MobBalls.get(i).ball);
+            }
+            for (int i = 0; i < HeroBalls.size(); i++) {
+                g.setColor(Color.white);
+                g.fill(HeroBalls.get(i).ball);
+            }
+            for (int i = 0; i < Keys.size(); i++)
+                Keys.get(i).render(g);
             // ENTITY STUFF
             // render players
             for (int i = 0; i < Players.size(); i++) {
@@ -274,7 +291,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             for (int i=0; i < Players.size(); i++) {
                 if(entity.equals(Players.get(i).getName())){
                     found = true;
-                    if (input == dc) {
+                    if (input == rm) {
                         Players.remove(i);
 //                        System.out.println("Client removed player, player size = " + Players.size());
                     }
@@ -294,22 +311,60 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                     break;
                 }
             }
-        }
-
+        } else if(entity.contains("mball")){
+            boolean found = false;
+            for (int i=0; i < MobBalls.size(); i++) {
+                if(entity.equals(MobBalls.get(i).getName())){
+                    found = true;
+                    if (input == rm) {
+                        MobBalls.remove(i);
+                    }
+                    else {
+                        MobBalls.get(i).setWorldPosition(new Vector(posX, posY));
+                        MobBalls.get(i).ball.setLocation(MobBalls.get(i).getWorldPositionX(), MobBalls.get(i).getWorldPositionY());
+                    }
+                    break;
+                }
+            }
+            if (!found)
+                MobBalls.add(new Ball(posX, posY, entity));
+        } else if(entity.contains("hball")){
+                boolean found = false;
+                for (int i=0; i < HeroBalls.size(); i++) {
+                    if(entity.equals(HeroBalls.get(i).getName())){
+                        found = true;
+                        if (input == rm) {
+                            HeroBalls.remove(i);
+                        }
+                        else {
+                            HeroBalls.get(i).setWorldPosition(new Vector(posX, posY));
+                            HeroBalls.get(i).ball.setLocation(HeroBalls.get(i).getWorldPositionX(), HeroBalls.get(i).getWorldPositionY());
+                        }
+                        break;
+                    }
+                }
+                if (!found)
+                    HeroBalls.add(new Ball(posX, posY, entity));
+            }
     }
 
     private void loadLevel(int level) throws SlickException {
 //        System.out.println("executing loadLevel " + level);
         moblist = new MobList();
         doorList = new DoorList();
+        keyList = new KeyList();
+        crateList = new CrateList();
         // should match info switch statement in TestGameServer constructor
         switch (level) {
             case 1:
-                map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
-                mapX = 90;
-                mapY = 104;
+                map1 = new TiledMap(Project2.LEVEL1RSC, Project2.TILESHEETRSC);
+                mapX = 45;
+                mapY = 100;
                 Mobs = moblist.getMobList(1);
                 Doors = doorList.getDoorList(1);
+                Keys = keyList.getKeyList(1);
+                Crates = crateList.getCrateList(1);
+                mapping = Project2.settings.getTilemapping();
                 break;
             default:
                 System.out.println("Client: unknown level");
@@ -321,8 +376,9 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
     private void addPlayer(String playerID, float xPos, float yPos) {
 //        System.out.println("Adding Player at " + xPos + ", " + yPos);
         // TODO: Add ClassID to player constructor, whatever gets used here
-        Hero hero1 = new Hero(new Vector(xPos,yPos),false, playerID);
-        Players.add(hero1);
+//        Hero hero = new Hero(new Vector(xPos,yPos), false, playerID); // melee
+        Hero hero = new Hero(new Vector(xPos,yPos), true, playerID); // ranged
+        Players.add(hero);
     }
 
     private InputCommands getCommand(String rawCommand) {
@@ -339,7 +395,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             case "attack": inputCommand = attack; break;
             case "idle": inputCommand = idle; break;
             case "death": inputCommand = death; break;
-            case "dc": inputCommand = dc; break;
+            case "rm": inputCommand = rm; break;
         }
         return inputCommand;
     }
@@ -371,6 +427,13 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             int newY = entityY - viewportY;
             Doors.get(i).setPosition(newX, newY);
         }
+        for (int i = 0; i < Crates.size(); i++) {
+            int entityX = (int)(Crates.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(Crates.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            Crates.get(i).setPosition(newX, newY);
+        }
         for (int i = 0; i < MoneyDrops.size(); i++){
             int entityX = (int)(MoneyDrops.get(i).getWorldPositionX()*32.0);
             int entityY = (int)(MoneyDrops.get(i).getWorldPositionY()*32.0);
@@ -384,6 +447,29 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             int newX = entityX - viewportX;
             int newY = entityY - viewportY;
             HealthDrops.get(i).setPosition(newX, newY);
+        }
+        for (int i = 0; i < MobBalls.size(); i++){
+            int entityX = (int)(MobBalls.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(MobBalls.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            MobBalls.get(i).setPosition(newX, newY);
+            MobBalls.get(i).ball.setLocation(newX, newY);
+        }
+        for (int i = 0; i < HeroBalls.size(); i++){
+            int entityX = (int)(HeroBalls.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(HeroBalls.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            HeroBalls.get(i).setPosition(newX, newY);
+            HeroBalls.get(i).ball.setLocation(newX, newY);
+        }
+        for (int i = 0; i < Keys.size(); i++){
+            int entityX = (int)(Keys.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(Keys.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            Keys.get(i).setPosition(newX, newY);
         }
     }
 
@@ -498,6 +584,20 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
     //                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
                     }
                     break;
+                case "UPDTHLTH":
+//                    System.out.println("Client: got UPDTHLTH response");
+
+                    if(Project2.getSettings().getIpAddress().equals(tokens[1])) {
+//                        System.out.println("This is the player: "+tokens[1]);
+//                        System.out.println("Health value " + tokens[2]);
+                        for(Hero hero:Players){
+                            if(hero.getName().equals(Project2.getSettings().getIpAddress())){
+                                hero.setHealth(Float.parseFloat(tokens[2]) );}
+                        }
+                    }
+                    else
+//                        System.out.println("Not the player "+tokens[1]);
+                    break;
                 case "DROPM":
                     for (int i = 1; i < tokens.length; i++) {
                         if (tokens[i].contains("money"))
@@ -528,8 +628,38 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                             }
                         }
                     }
+                    break;
+                case "PCKUPK":
+                    playersKey = Integer.parseInt(tokens[1]);
+                    for(int i = 2; i < tokens.length; i++){
+                        for(int j = 0; j < Keys.size(); j++) {
+                            if (Keys.get(j).getName().equals(tokens[i])){
+                                Keys.remove(Keys.get(j));
+                            }
+                        }
+                    }
+                    break;
+                case "OPEND":
+                    playersKey = Integer.parseInt(tokens[1]);
+                    for(int i = 2; i < tokens.length; i++){
+                        for(int j = 0; j < Doors.size(); j++) {
+                            if (Doors.get(j).getName().equals(tokens[i])){
+                                Doors.remove(Doors.get(j));
+                            }
+                        }
+                    }
+                    break;
+                case "RMVC":
+                    for(int i = 1; i < tokens.length; i++) {
+                        for(int j = 0; j < Crates.size(); j++) {
+                            if (Crates.get(j).getName().equals(tokens[i])){
+                                Crates.remove(Crates.get(j));
+                            }
+                        }
+                    }
+                    break;
                 default:
-                    System.out.println("Server: unknown message received");
+                    System.out.println("Client: unknown message received:"+msg);
                     break;
             }
         }

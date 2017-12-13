@@ -77,4 +77,7 @@ public class Tile {
         this.g = temp.g;
         this.h = temp.h;
     }
+    public void setType(String type){
+        this.type = type;
+    }
 }

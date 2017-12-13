@@ -26,6 +26,7 @@ public class Money extends Object {
             addImageWithBoundingBox(moneySheet.getSprite(3,0));
         else
             addImageWithBoundingBox(moneySheet.getSprite(4,0));
+
     }
     public Vector getWorldPosition(){return super.getWorldPosition();}
 }
