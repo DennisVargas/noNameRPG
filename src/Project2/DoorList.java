@@ -78,6 +78,29 @@ public class DoorList {
             Doors.add(door);
             door = new Door(new Vector(32.5f, 47.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
             Doors.add(door);
+        } else if (level == 2) {
+            door = new Door(new Vector(26.5f, 18.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
+            Doors.add(door);
+            door = new Door(new Vector(80.5f, 18.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
+            Doors.add(door);
+            door = new Door(new Vector(32.5f, 30.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
+            Doors.add(door);
+            door = new Door(new Vector(60.5f, 33.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
+            Doors.add(door);
+            door = new Door(new Vector(18.5f, 82.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
+            Doors.add(door);
+            door = new Door(new Vector(24.5f, 82.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
+            Doors.add(door);
+            door = new Door(new Vector(36.5f, 82.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
+            Doors.add(door);
+            door = new Door(new Vector(42.5f, 82.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
+            Doors.add(door);
+            door = new Door(new Vector(42.5f, 92.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
+            Doors.add(door);
+            door = new Door(new Vector(92.5f, 96.25f), doorVName); doorNum++; doorVName = "doorV" + doorNum;
+            Doors.add(door);
+            door = new Door(new Vector(72.5f, 104.25f), doorHName); doorNum++; doorHName = "doorH" + doorNum;
+            Doors.add(door);
         }
         return this.Doors;
     }
