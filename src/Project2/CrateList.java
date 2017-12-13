@@ -667,13 +667,11 @@ public class CrateList {
             Crates.add(crate);
             crate = new Crate(new Vector(71.5f, 34f), crateName); crateNum++; crateName = "crate" + crateNum;
             Crates.add(crate);
-            crate = new Crate(new Vector(95.5f, 34f), crateName); crateNum++; crateName = "crate" + crateNum;
-            Crates.add(crate);
-            crate = new Crate(new Vector(96.5f, 34f), crateName); crateNum++; crateName = "crate" + crateNum;
-            Crates.add(crate);
-            crate = new Crate(new Vector(97.5f, 34f), crateName); crateNum++; crateName = "crate" + crateNum;
-            Crates.add(crate);
             crate = new Crate(new Vector(71.5f, 35f), crateName); crateNum++; crateName = "crate" + crateNum;
+            Crates.add(crate);
+            crate = new Crate(new Vector(95.5f, 35f), crateName); crateNum++; crateName = "crate" + crateNum;
+            Crates.add(crate);
+            crate = new Crate(new Vector(96.5f, 35f), crateName); crateNum++; crateName = "crate" + crateNum;
             Crates.add(crate);
             crate = new Crate(new Vector(97.5f, 35f), crateName); crateNum++; crateName = "crate" + crateNum;
             Crates.add(crate);

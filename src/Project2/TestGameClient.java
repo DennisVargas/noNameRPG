@@ -366,6 +366,16 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                 Crates = crateList.getCrateList(1);
                 mapping = Project2.settings.getTilemapping();
                 break;
+            case 2:
+                map1 = new TiledMap(Project2.LEVEL2RSC, Project2.TILESHEETRSC);
+                mapX = 86;
+                mapY = 78;
+                Mobs = moblist.getMobList(2);
+                Doors = doorList.getDoorList(2);
+                Keys = keyList.getKeyList(2);
+                Crates = crateList.getCrateList(2);
+                mapping = Project2.settings.getTilemapping();
+                break;
             default:
                 System.out.println("Client: unknown level");
                 break;

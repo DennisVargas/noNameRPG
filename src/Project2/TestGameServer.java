@@ -65,6 +65,7 @@ public class TestGameServer {
     private String e = "";
     int playersMoney;
     int playersKeys;
+    int activeLevel = 2;
 
     //        map stuff
     public TiledMap map = null;
@@ -102,14 +103,23 @@ public class TestGameServer {
         // Set game info based on what level was requested by host
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
         if (stateId == 22) {
-            mapX = 45f;
-            mapY = 105f;
-            Mobs = moblist.getMobList(1);
-            Doors = doorList.getDoorList(1);
-            Crates = crateList.getCrateList(1);
-            Keys = keyList.getKeyList(1);
-            map = new TiledMap(Project2.LEVEL1RSC, Project2.TILESHEETRSC);
-            Project2.settings.createTileMapping(map, 1);
+
+
+            Mobs = moblist.getMobList(activeLevel);
+            Doors = doorList.getDoorList(activeLevel);
+            Crates = crateList.getCrateList(activeLevel);
+            Keys = keyList.getKeyList(activeLevel);
+            if (activeLevel == 1) {
+                mapX = 45f;
+                mapY = 105f;
+                map = new TiledMap(Project2.LEVEL1RSC, Project2.TILESHEETRSC);
+            }
+            else if (activeLevel == 2) {
+                mapX = 86f;
+                mapY = 78f;
+                map = new TiledMap(Project2.LEVEL2RSC, Project2.TILESHEETRSC);
+            }
+            Project2.settings.createTileMapping(map, activeLevel);
             for (int i = 0; i < Doors.size(); i++){
                 Project2.settings.editTileMapping(Doors.get(i).getWorldPositionX(), Doors.get(i).getWorldPositionY(), "abyss");
             }
@@ -403,7 +413,7 @@ public class TestGameServer {
     private String initPacket() {
         // TODO: send proper level info, currently hardcoded to level 1
 //        System.out.println("Server: sending INIT message");
-        String msg = "INIT " + Integer.toString(1); // Integer.toString(LEVEL_NO)
+        String msg = "INIT " + Integer.toString(activeLevel); // Integer.toString(LEVEL_NO)
         for (int i = 0; i < Players.size(); i++) {
             msg += " " + Players.get(i).getName();
             msg += " " + Float.toString(Players.get(i).getWorldPositionX());
