@@ -494,7 +494,8 @@ public class TestGameServer {
 
             // update position of mob and player projectiles
             ballUpdate();
-
+            CollisionManager.CheckBallsToWall(MobBalls);
+            CollisionManager.CheckBallsToWall(HeroBalls);
             for (int bubbles = 0; bubbles < Players.size(); bubbles++) {
                 CollisionManager.CheckEntityBallCollisions(Players.get(bubbles), MobBalls);
 
@@ -547,8 +548,7 @@ public class TestGameServer {
                     //CollisionManager.CheckMobMobCollisions(Mobs.get(i), Mobs);
 
                     if (!Mobs.get(i).IsDead()) CollisionManager.CheckEntityBallCollisions(Mobs.get(i), HeroBalls);
-                    CollisionManager.CheckBallsToWall(MobBalls);
-                    CollisionManager.CheckBallsToWall(HeroBalls);
+
 
                     if (Mobs.get(i).getCommand() == InputCommands.death) {
     //                    System.out.println(mob.getName() + " " + mob.getCommand());
