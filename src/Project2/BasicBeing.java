@@ -29,7 +29,7 @@ public class BasicBeing extends Entity{
     boolean isRanged = false;
 
     protected Animation   walkRightAnim, walkLeftAnim, walkUpAnim,
-            walkDnAnim, idleAnimLt, idleAnimRt, attackAnim,
+            walkDnAnim, idleAnimLt, idleAnimRt, attackAnim, attackAnimRt, attackAnimLt,
             hitAnimLt, hitAnimRt, deathAnim, currentAnim;
 
     private String name = "default";
@@ -54,18 +54,27 @@ public class BasicBeing extends Entity{
      * Finally All the vectors for the next Being and map movement are initialized.
      *
      * @param screenPosition: A JIG Vector that set the Being starting location
-     * @param walkingSheet:   A sprite sheet of non attacking animation frames
-     * @param attackingSheet: A sprite sheet of attack animation frames
-     */
-    public BasicBeing(Vector screenPosition, Vector worldPosition, SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
+     * walkingSheet:   A sprite sheet of non attacking animation frames
+     * attackingSheet: A sprite sheet of attack animation frames
+     **/
+    public BasicBeing(Vector screenPosition, Vector worldPosition, boolean doesntMatter) { //original BasicBeing(Vector screenPosition, Vector worldPosition, SpriteSheet walkingSheet, SpriteSheet attackingSheet)
+        super(screenPosition);
+        setScreenPosition(screenPosition);
+        setWorldPosition(worldPosition);
+        //InitAnimations(walkingSheet, attackingSheet);
+//        setCommand(InputCommands.idle);
+//        setLastDirectionCommand(InputCommands.left);
+//        InitNextVectors();
+//        this.debugThis = true;
+    }
+
+    public BasicBeing(Vector screenPosition, Vector worldPosition, SpriteSheet walkingSheet, SpriteSheet attackingSheet){
         super(screenPosition);
         setScreenPosition(screenPosition);
         setWorldPosition(worldPosition);
         InitAnimations(walkingSheet, attackingSheet);
         setCommand(InputCommands.idle);
         setLastDirectionCommand(InputCommands.left);
-//        InitNextVectors();
-//        this.debugThis = true;
     }
 
     public BasicBeing(Vector screenPosition, Vector worldPosition){

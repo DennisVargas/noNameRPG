@@ -49,25 +49,34 @@ public class Project2 extends StateBasedGame {
 
     public static final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+    //TODO change to Charme.png when mobs are done
     public static final String MELEEHEROATTACKINGSHEETRSC = "resources/Characters/Lilith.png";
     public static final String MELEEHEROWALKINGSHEETRSC = "resources/Characters/Lilith.png";
+
     public static final String RANGEDHEROWALKINGSHEETRSC = "resources/Characters/Lilith.png";
     public static final String RANGEDHEROATTACKINGSHEETRSC = "resources/Characters/Lilith.png";
+
     public static final String MOB1WALKINGSHEETRSC = "resources/Characters/pencil.png";
     public static final String MOB1ATTACKINGSHEETRSC = "resources/Characters/pencil.png";
-    public static final String MOB2WALKINGSHEETRSC = "resources/Characters/pencil.png";
-    public static final String MOB2ATTACKINGSHEETRSC = "resources/Characters/pencil.png";
+
+    public static final String MOB2WALKINGSHEETRSC = "resources/Characters/Agav.png";
+    public static final String MOB2ATTACKINGSHEETRSC = "resources/Characters/Agav.png";
+
     public static final String MOB3WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String MOB3ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String MOB4WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    public static final String MOB4ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
+
+    public static final String MOB4WALKINGSHEETRSC = "resources/Characters/Wizhoo.png";
+    public static final String MOB4ATTACKINGSHEETRSC = "resources/Characters/Wizhoo.png";
+
     public static final String HOLDER_8 = "testAssets/spacer8sq.png";
     public static final String MONEYSHEETRSC = "resources/Other/shiny_treasure_icons_16x16/money.png";
     public static final String DOORVSHEETRSC = "resources/levels/doorV.png";
     public static final String DOORHSHEETRSC = "resources/levels/doorH.png";
     public static final String HEALTHSHEETRSC = "resources/Other/heart_icon.png";
     public static final String KEYSHEETRSC = "resources/Other/key.png";
+    public static final String POTION = "resources/Other/Potion.png";
     public static final String CRATESHEETRSC = "resources/Other/CratesBig.png";
+
     public static final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
     public static final String LEVEL2RSC = "resources/Levels/Level2Remake.tmx";
     public static final String TILESHEETRSC = "resources/Levels/";
@@ -126,8 +135,16 @@ public class Project2 extends StateBasedGame {
 
         ResourceManager.loadImage(WALKINGSHEETRSC);
         ResourceManager.loadImage(ATTACKINGSHEETRSC);
+
         ResourceManager.loadImage(MOB1WALKINGSHEETRSC);
         ResourceManager.loadImage(MOB1ATTACKINGSHEETRSC);
+        ResourceManager.loadImage(MOB2WALKINGSHEETRSC);
+        ResourceManager.loadImage(MOB2ATTACKINGSHEETRSC);
+        ResourceManager.loadImage(MOB3WALKINGSHEETRSC);
+        ResourceManager.loadImage(MOB3ATTACKINGSHEETRSC);
+        ResourceManager.loadImage(MOB4WALKINGSHEETRSC);
+        ResourceManager.loadImage(MOB4ATTACKINGSHEETRSC);
+
         ResourceManager.loadImage(MELEEHEROATTACKINGSHEETRSC);
         ResourceManager.loadImage(MELEEHEROWALKINGSHEETRSC);
         ResourceManager.loadImage(RANGEDHEROWALKINGSHEETRSC);
@@ -138,6 +155,7 @@ public class Project2 extends StateBasedGame {
         ResourceManager.loadImage(DOORVSHEETRSC);
         ResourceManager.loadImage(HEALTHSHEETRSC);
         ResourceManager.loadImage(KEYSHEETRSC);
+        ResourceManager.loadImage(POTION);
         ResourceManager.loadImage(CRATESHEETRSC);
 
         if(this.testStatePlay) {

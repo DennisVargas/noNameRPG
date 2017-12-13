@@ -18,8 +18,9 @@ public class Hero extends BasicBeing{
 //  get all possible hero sprite sheets
     private static final SpriteSheet rangedWalkingSheet = ResourceManager.getSpriteSheet(Project2.RANGEDHEROWALKINGSHEETRSC,32,32);
     private static final SpriteSheet rangedAttackingSheet = ResourceManager.getSpriteSheet(Project2.RANGEDHEROATTACKINGSHEETRSC,32,32);
-    private static final SpriteSheet meleeWalkingSheet = ResourceManager.getSpriteSheet(Project2.MELEEHEROWALKINGSHEETRSC,32,32);
-    private static final SpriteSheet meleeAttackingSheet = ResourceManager.getSpriteSheet(Project2.MELEEHEROATTACKINGSHEETRSC,32,32);
+
+    private static final SpriteSheet meleeWalkingSheet = ResourceManager.getSpriteSheet(Project2.MELEEHEROWALKINGSHEETRSC,21,32);
+    private static final SpriteSheet meleeAttackingSheet = ResourceManager.getSpriteSheet(Project2.MELEEHEROATTACKINGSHEETRSC,21,32);
     Rectangle healthBar;
 
     /**
@@ -29,7 +30,7 @@ public class Hero extends BasicBeing{
      */
     public Hero(Vector worldPosition, boolean isRanged, String name) {
 //        initialize the hero as if they are a client and a melee character
-        super(worldPosition, worldPosition, meleeWalkingSheet, meleeAttackingSheet);
+        super(worldPosition, worldPosition, true);//, meleeWalkingSheet, meleeAttackingSheet);
         this.setName(name);
         this.setAttackPower(100f);
         this.setRanged(isRanged);
