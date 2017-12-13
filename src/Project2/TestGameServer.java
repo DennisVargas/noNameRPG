@@ -56,7 +56,6 @@ public class TestGameServer {
     private String changes = "";
     private String moneyDropChanges = "";
     private String healthDropChanges = "";
-    private String keyDropChanges = "";
     private String moneyPickupChanges = "";
     private String healthPickupChanges = "";
     private String keyPickupChanges = "";
@@ -70,13 +69,6 @@ public class TestGameServer {
     //        map stuff
     public TiledMap map = null;
     private Map mapping = null;
-//    private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
-//    private final String TILESHEETRSC = "resources/Levels";
-
-    // TODO: eventually remove this
-    private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-    private final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
-
 
     // constructor sets port number and state ID for current level
     public TestGameServer(int stateId, int port) throws SlickException {
