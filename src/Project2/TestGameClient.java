@@ -36,7 +36,9 @@ public class TestGameClient extends BasicGameState{
     private MobList moblist;
     private DoorList doorList;
     private KeyList keyList;
+    private CrateList crateList;
     private List<Door> Doors;
+    private List<Crate> Crates;
     private List<Mob> Mobs;
     private ArrayList<Ball> MobBalls;
     private ArrayList<Ball> HeroBalls;
@@ -55,8 +57,6 @@ public class TestGameClient extends BasicGameState{
     private double x, y;
     private int mapX, mapY;
     public TiledMap map1 = null;
-    private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
-    private final String TILESHEETRSC = "resources/Levels";
 
 
     public TestGameClient(int state_id) {
@@ -77,15 +77,13 @@ public class TestGameClient extends BasicGameState{
         MobBalls = new ArrayList<Ball>();
         HeroBalls = new ArrayList<Ball>();
         Doors = Collections.synchronizedList(new ArrayList<Door>());
+        Crates = Collections.synchronizedList(new ArrayList<Crate>());
         MoneyDrops = Collections.synchronizedList(new ArrayList<Money>());
         HealthDrops = Collections.synchronizedList(new ArrayList<Health>());
         mobsToMove = new ArrayList<>();
 //        MoneyDrops = new ArrayList<>();
         Keys = Collections.synchronizedList(new ArrayList<Key>());
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
-        map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
-        Project2.settings.createTileMapping(map1, 1);
-        mapping = Project2.settings.getTilemapping();
     }
 
     @Override
@@ -198,6 +196,9 @@ public class TestGameClient extends BasicGameState{
             }
             for (int i = 0; i < Doors.size(); i++) {
                 Doors.get(i).render(g);
+            }
+            for (int i = 0; i < Crates.size(); i++) {
+                Crates.get(i).render(g);
             }
             for (int i = 0; i < MoneyDrops.size(); i++)
                 MoneyDrops.get(i).render(g);
@@ -352,15 +353,18 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
         moblist = new MobList();
         doorList = new DoorList();
         keyList = new KeyList();
+        crateList = new CrateList();
         // should match info switch statement in TestGameServer constructor
         switch (level) {
             case 1:
-                map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
+                map1 = new TiledMap(Project2.LEVEL1RSC, Project2.TILESHEETRSC);
                 mapX = 45;
-                mapY = 105;
+                mapY = 100;
                 Mobs = moblist.getMobList(1);
                 Doors = doorList.getDoorList(1);
                 Keys = keyList.getKeyList(1);
+                Crates = crateList.getCrateList(1);
+                mapping = Project2.settings.getTilemapping();
                 break;
             default:
                 System.out.println("Client: unknown level");
@@ -422,6 +426,13 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
             int newX = entityX - viewportX;
             int newY = entityY - viewportY;
             Doors.get(i).setPosition(newX, newY);
+        }
+        for (int i = 0; i < Crates.size(); i++) {
+            int entityX = (int)(Crates.get(i).getWorldPositionX()*32.0);
+            int entityY = (int)(Crates.get(i).getWorldPositionY()*32.0);
+            int newX = entityX - viewportX;
+            int newY = entityY - viewportY;
+            Crates.get(i).setPosition(newX, newY);
         }
         for (int i = 0; i < MoneyDrops.size(); i++){
             int entityX = (int)(MoneyDrops.get(i).getWorldPositionX()*32.0);
@@ -638,8 +649,17 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                         }
                     }
                     break;
+                case "RMVC":
+                    for(int i = 1; i < tokens.length; i++) {
+                        for(int j = 0; j < Crates.size(); j++) {
+                            if (Crates.get(j).getName().equals(tokens[i])){
+                                Crates.remove(Crates.get(j));
+                            }
+                        }
+                    }
+                    break;
                 default:
-                    System.out.println("Client: unknown message received "+msg);
+                    System.out.println("Client: unknown message received:"+msg);
                     break;
             }
         }
