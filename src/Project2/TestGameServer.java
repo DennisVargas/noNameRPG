@@ -1,7 +1,9 @@
 package Project2;
 
+import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.tiled.TiledMap;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -62,8 +64,13 @@ public class TestGameServer {
     private String crateRemoval = "";
     private String e = "";
     int playersMoney;
-    private Map mapping = null;
     int playersKeys;
+
+    //        map stuff
+    public TiledMap map = null;
+    private Map mapping = null;
+//    private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
+//    private final String TILESHEETRSC = "resources/Levels";
 
     // TODO: eventually remove this
     private final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
@@ -96,11 +103,13 @@ public class TestGameServer {
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
         if (stateId == 22) {
             mapX = 45f;
-            mapY = 105f;
-            Mobs = moblist.getMobList(1);
-            Doors = doorList.getDoorList(1);
-            Crates = crateList.getCrateList(1);
-            Keys = keyList.getKeyList(1);
+            mapY = 102f;
+            Mobs = moblist.getMobList(2);
+            Doors = doorList.getDoorList(2);
+            Crates = crateList.getCrateList(2);
+            Keys = keyList.getKeyList(2);
+            map = new TiledMap(Project2.LEVEL2RSC, Project2.TILESHEETRSC);
+            Project2.settings.createTileMapping(map, 2);
             for (int i = 0; i < Doors.size(); i++){
                 Project2.settings.editTileMapping(Doors.get(i).getWorldPositionX(), Doors.get(i).getWorldPositionY(), "abyss");
             }
@@ -128,7 +137,7 @@ public class TestGameServer {
     /** Game Functions */
     private void addPlayer(String playerID, int type) {
 //        Hero hero = new Hero(new Vector(mapX, mapY), false, playerID); // melee
-        Hero hero = new Hero(new Vector(mapX, mapY), false, playerID); // ranged
+        Hero hero = new Hero(new Vector(mapX, mapY), true, playerID); // ranged
         hero.setPosition(new Vector(mapX,mapY));
         Players.add(hero);
         String newChange  = " " + playerID;

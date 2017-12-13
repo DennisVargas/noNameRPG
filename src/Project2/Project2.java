@@ -68,6 +68,9 @@ public class Project2 extends StateBasedGame {
     public static final String HEALTHSHEETRSC = "resources/Other/heart_icon.png";
     public static final String KEYSHEETRSC = "resources/Other/key.png";
     public static final String CRATESHEETRSC = "resources/Other/CratesBig.png";
+    public static final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
+    public static final String LEVEL2RSC = "resources/Levels/Level2Remake.tmx";
+    public static final String TILESHEETRSC = "resources/Levels/";
 
     /**
      * instantiates the game name and then creates a

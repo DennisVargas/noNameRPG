@@ -57,8 +57,6 @@ public class TestGameClient extends BasicGameState{
     private double x, y;
     private int mapX, mapY;
     public TiledMap map1 = null;
-    private final String LEVEL1RSC = "resources/Levels/Level1Remake.tmx";
-    private final String TILESHEETRSC = "resources/Levels";
 
 
     public TestGameClient(int state_id) {
@@ -86,9 +84,6 @@ public class TestGameClient extends BasicGameState{
 //        MoneyDrops = new ArrayList<>();
         Keys = Collections.synchronizedList(new ArrayList<Key>());
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
-        map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
-        Project2.settings.createTileMapping(map1, 1);
-        mapping = Project2.settings.getTilemapping();
     }
 
     @Override
@@ -362,13 +357,14 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
         // should match info switch statement in TestGameServer constructor
         switch (level) {
             case 1:
-                map1 = new TiledMap(LEVEL1RSC, TILESHEETRSC);
+                map1 = new TiledMap(Project2.LEVEL2RSC, Project2.TILESHEETRSC);
                 mapX = 45;
-                mapY = 105;
-                Mobs = moblist.getMobList(1);
-                Doors = doorList.getDoorList(1);
-                Keys = keyList.getKeyList(1);
-                Crates = crateList.getCrateList(1);
+                mapY = 100;
+                Mobs = moblist.getMobList(2);
+                Doors = doorList.getDoorList(2);
+                Keys = keyList.getKeyList(2);
+                Crates = crateList.getCrateList(2);
+                mapping = Project2.settings.getTilemapping();
                 break;
             default:
                 System.out.println("Client: unknown level");
