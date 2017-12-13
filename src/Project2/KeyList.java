@@ -34,6 +34,23 @@ public class KeyList {
             Keys.add(key);
             key = new Key(new Vector(74f, 33f), keyName, 1); keyNum++; keyName = "key" + keyNum;
             Keys.add(key);
+        } else if (level == 2){
+            key = new Key(new Vector(102f, 18f), keyName, 1); keyNum++; keyName = "key" + keyNum;
+            Keys.add(key);
+            key = new Key(new Vector(47f, 30f), keyName, 1); keyNum++; keyName = "key" + keyNum;
+            Keys.add(key);
+            key = new Key(new Vector(96f, 30f), keyName, 1); keyNum++; keyName = "key" + keyNum;
+            Keys.add(key);
+            key = new Key(new Vector(42f, 48f), keyName, 1); keyNum++; keyName = "key" + keyNum;
+            Keys.add(key);
+            key = new Key(new Vector(72f, 66f), keyName, 1); keyNum++; keyName = "key" + keyNum;
+            Keys.add(key);
+            key = new Key(new Vector(13f, 78f), keyName, 1); keyNum++; keyName = "key" + keyNum;
+            Keys.add(key);
+            key = new Key(new Vector(90f, 90f), keyName, 1); keyNum++; keyName = "key" + keyNum;
+            Keys.add(key);
+            key = new Key(new Vector(96f, 102f), keyName, 1); keyNum++; keyName = "key" + keyNum;
+            Keys.add(key);
         }
         return this.Keys;
     }
