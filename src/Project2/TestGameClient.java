@@ -105,7 +105,7 @@ public class TestGameClient extends BasicGameState{
         } else {
             // if joining, pull server info out of settings
             // CLIENT STUFF
-            serverAddress = Project2.settings.getIpAddress();
+            serverAddress = Project2.settings.getserverIP();
             port = Project2.settings.getPort();
             System.out.println("Joining Client: connecting to " + serverAddress + " on port " + port);
             connect(game);
