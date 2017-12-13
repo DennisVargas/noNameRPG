@@ -488,6 +488,32 @@ public class CrateList {
             Crates.add(crate);
             crate = new Crate(new Vector(51.5f, 45f), crateName); crateNum++; crateName = "crate" + crateNum;
             Crates.add(crate);
+        } else if (level == 2){
+//            Room 8
+            crate = new Crate(new Vector(29.5f, 17f), crateName); crateNum++; crateName = "crate" + crateNum;
+            Crates.add(crate);
+            crate = new Crate(new Vector(30.5f, 17f), crateName); crateNum++; crateName = "crate" + crateNum;
+            Crates.add(crate);
+            crate = new Crate(new Vector(31.5f, 17f), crateName); crateNum++; crateName = "crate" + crateNum;
+            Crates.add(crate);
+            crate = new Crate(new Vector(35.5f, 17f), crateName); crateNum++; crateName = "crate" + crateNum;
+            Crates.add(crate);
+            crate = new Crate(new Vector(36.5f, 17f), crateName); crateNum++; crateName = "crate" + crateNum;
+            Crates.add(crate);
+            crate = new Crate(new Vector(37.5f, 17f), crateName); crateNum++; crateName = "crate" + crateNum;
+            Crates.add(crate);
+            crate = new Crate(new Vector(37.5f, 18f), crateName); crateNum++; crateName = "crate" + crateNum;
+            Crates.add(crate);
+            crate = new Crate(new Vector(32.5f, 19f), crateName); crateNum++; crateName = "crate" + crateNum;
+            Crates.add(crate);
+            crate = new Crate(new Vector(33.5f, 19f), crateName); crateNum++; crateName = "crate" + crateNum;
+            Crates.add(crate);
+            crate = new Crate(new Vector(34.5f, 19f), crateName); crateNum++; crateName = "crate" + crateNum;
+            Crates.add(crate);
+            crate = new Crate(new Vector(37.5f, 19f), crateName); crateNum++; crateName = "crate" + crateNum;
+            Crates.add(crate);
+            crate = new Crate(new Vector(37.5f, 20f), crateName); crateNum++; crateName = "crate" + crateNum;
+            Crates.add(crate);
         }
         return this.Crates;
     }

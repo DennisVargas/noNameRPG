@@ -103,13 +103,13 @@ public class TestGameServer {
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
         if (stateId == 22) {
             mapX = 45f;
-            mapY = 102f;
-            Mobs = moblist.getMobList(2);
-            Doors = doorList.getDoorList(2);
-            Crates = crateList.getCrateList(2);
-            Keys = keyList.getKeyList(2);
-            map = new TiledMap(Project2.LEVEL2RSC, Project2.TILESHEETRSC);
-            Project2.settings.createTileMapping(map, 2);
+            mapY = 105f;
+            Mobs = moblist.getMobList(1);
+            Doors = doorList.getDoorList(1);
+            Crates = crateList.getCrateList(1);
+            Keys = keyList.getKeyList(1);
+            map = new TiledMap(Project2.LEVEL1RSC, Project2.TILESHEETRSC);
+            Project2.settings.createTileMapping(map, 1);
             for (int i = 0; i < Doors.size(); i++){
                 Project2.settings.editTileMapping(Doors.get(i).getWorldPositionX(), Doors.get(i).getWorldPositionY(), "abyss");
             }
