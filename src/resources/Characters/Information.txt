@@ -22,9 +22,29 @@ Mob - Penicl - 48x48
 10- attack right
 11- attack left
 
-Mob - Wizoob - 32x32
+Mob - Agav - 32x56
+1- moving right 
+2- moving left 
+3- moving down 
+4- moving up
+5- being hit(right) 
+6- being hit(left) 
+7- idle right 
+8- idle left 
+9- death 
+10- attack right 
+11- attack left 
 
-Mob -
+Mob - Wizhoo - 32x32
+1- moving right
+2- moving left
+3- moving down
+4- moving up
+5- being hit(right)
+6- being hit(left)
+7- idle right
+8- idle left
+9- death 
 
 Player - Isaac/Lilith - 32x32
 1- moving right 
@@ -37,4 +57,15 @@ Player - Isaac/Lilith - 32x32
 8- idle left 
 9- death 
 
-Player - 
+Player - Charme - 32x49
+1- moving right 
+2- moving left 
+3- moving down 
+4- moving up 
+5- being hit(right) 
+6- being hit(left) 
+7- idle right 
+8- idle left 
+9- death 
+10- attack right 
+11- attack left 
