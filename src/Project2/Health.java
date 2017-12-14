@@ -7,7 +7,7 @@ import org.newdawn.slick.SpriteSheet;
 
 public class Health extends Object {
     int value;
-    private static final SpriteSheet healthSheet = ResourceManager.getSpriteSheet(Project2.HEALTHSHEETRSC,32,32);
+    private static final SpriteSheet healthSheet = ResourceManager.getSpriteSheet(Project2.POTION,32,32);
     public Health (Vector worldPosition, String name, int value) throws SlickException {
         super(worldPosition, name, value);
         this.value = value;
