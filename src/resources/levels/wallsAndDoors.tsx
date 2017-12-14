@@ -36,6 +36,21 @@
    <property name="type" value="abyss"/>
   </properties>
  </tile>
+ <tile id="27">
+  <properties>
+   <property name="type" value="goal"/>
+  </properties>
+ </tile>
+ <tile id="28">
+  <properties>
+   <property name="type" value="goal"/>
+  </properties>
+ </tile>
+ <tile id="29">
+  <properties>
+   <property name="type" value="goal"/>
+  </properties>
+ </tile>
  <tile id="32">
   <properties>
    <property name="type" value="abyss"/>

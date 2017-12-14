@@ -38,7 +38,7 @@
  </tile>
  <tile id="11">
   <properties>
-   <property name="type" value="path"/>
+   <property name="type" value="dest"/>
   </properties>
  </tile>
  <tile id="21">
@@ -78,7 +78,7 @@
  </tile>
  <tile id="32">
   <properties>
-   <property name="type" value="path"/>
+   <property name="type" value="dest"/>
   </properties>
  </tile>
  <tile id="42">
@@ -114,6 +114,11 @@
  <tile id="52">
   <properties>
    <property name="type" value="path"/>
+  </properties>
+ </tile>
+ <tile id="53">
+  <properties>
+   <property name="type" value="dest"/>
   </properties>
  </tile>
  <tile id="63">

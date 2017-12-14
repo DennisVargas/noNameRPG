@@ -623,6 +623,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                             }
                         }
                     }
+                    break;
                 case "DROPH":
                     for (int i = 1; i < tokens.length; i++) {
                         if (tokens[i].contains("health"))
@@ -667,6 +668,14 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                             }
                         }
                     }
+                    break;
+                case "TRNS2":
+                    System.out.print("Here");
+                    loadLevel(2);
+                    for(int i = 0; i < Players.size(); i++) {
+                        Players.get(i).setWorldPosition(new Vector(87 + i, 78));
+                    }
+                    System.out.print("Done");
                     break;
                 default:
                     System.out.println("Client: unknown message received:"+msg);

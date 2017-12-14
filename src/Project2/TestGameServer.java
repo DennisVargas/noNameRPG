@@ -42,7 +42,6 @@ public class TestGameServer {
     private ArrayList<Ball> MobBalls;
     private ArrayList<Door> Doors;
     private ArrayList<Crate> Crates;
-    private ArrayList<Money> Money;
     private ArrayList<Key> Keys;
     private ArrayList<Money> MoneyDrops;
     private ArrayList<Health> HealthDrops;
@@ -61,10 +60,10 @@ public class TestGameServer {
     private String keyPickupChanges = "";
     private String doorChanges = "";
     private String crateRemoval = "";
-    private String e = "";
     int playersMoney;
     int playersKeys;
-    int activeLevel = 2;
+    int activeLevel = 1;
+    boolean levelTransition = false;
 
     //        map stuff
     public TiledMap map = null;
@@ -75,7 +74,6 @@ public class TestGameServer {
         Mobs = new ArrayList<>();
         Doors = new ArrayList<>();
         Crates = new ArrayList<>();
-        Money = new ArrayList<>();
         MobBalls = new ArrayList<>();
         HeroBalls = new ArrayList<>();
         moblist = new MobList();
@@ -135,7 +133,59 @@ public class TestGameServer {
         this.stateId = stateId;
     }
 
+    private void switchLevel() throws SlickException {
+        Mobs = new ArrayList<>();
+        Doors = new ArrayList<>();
+        Crates = new ArrayList<>();
+        MobBalls = new ArrayList<>();
+        HeroBalls = new ArrayList<>();
+        moblist = new MobList();
+        doorList = new DoorList();
+        crateList = new CrateList();
+        keyList = new KeyList();
+        MoneyDrops = new ArrayList<Money>();
+        NewMoneyDrops = new ArrayList<>();
+        HealthDrops = new ArrayList<Health>();
+        NewHealthDrops = new ArrayList<Health>();
+        KeyDrops = new ArrayList<Key>();
+        NewKeyDrops = new ArrayList<Key>();
+//        playersMoney = 0;
+//        clients = new ArrayList<>();
 
+        playersKeys = 0;
+        // Set game info based on what level was requested by host
+        Mobs = moblist.getMobList(activeLevel);
+        Doors = doorList.getDoorList(activeLevel);
+        Crates = crateList.getCrateList(activeLevel);
+        Keys = keyList.getKeyList(activeLevel);
+        if (activeLevel == 1) {
+            mapX = 45f;
+            mapY = 105f;
+            map = new TiledMap(Project2.LEVEL1RSC, Project2.TILESHEETRSC);
+        }
+        else if (activeLevel == 2) {
+            mapX = 86f;
+            mapY = 78f;
+            map = new TiledMap(Project2.LEVEL2RSC, Project2.TILESHEETRSC);
+        }
+        Project2.settings.createTileMapping(map, activeLevel);
+        for (int i = 0; i < Doors.size(); i++){
+            Project2.settings.editTileMapping(Doors.get(i).getWorldPositionX(), Doors.get(i).getWorldPositionY(), "abyss");
+        }
+        for(Mob mob: Mobs){
+            mob.setPosition(new Vector(mob.getWorldPositionX()*32f, mob.getWorldPositionY()*32f));
+        }
+        for(Door door: Doors){
+            door.setPosition(new Vector(door.getWorldPositionX()*32, door.getWorldPositionY()*32));
+        }
+        for(Crate crate: Crates){
+            crate.setPosition(new Vector(crate.getWorldPositionX()*32, crate.getWorldPositionY()*32));
+        }
+        mapping = Project2.settings.getTilemapping();
+        for(Key key: Keys){
+            key.setPosition(new Vector(key.getWorldPositionX()*32, key.getWorldPositionY()*32));
+        }
+    }
     /** Game Functions */
     private void addPlayer(String playerID, int type) {
 //        Hero hero = new Hero(new Vector(mapX, mapY), false, playerID); // melee
@@ -302,6 +352,10 @@ public class TestGameServer {
 //                System.out.println("Server: got INPT message from: " + player);
                 InputCommands inputCommand = getCommand(tokens[2]);
                 for (int i = 0; i < Players.size(); i++) {
+                    if (Players.get(i).IsDead()){
+//                    if (CollisionManager.CheckHeroDestinationCollision(Players.get(i))) {
+                        levelTransition = true;
+                    }
                     if (Players.get(i).getName().equals(player)) {
                         // process movement based on input
                         Players.get(i).setCommand(inputCommand);
@@ -403,7 +457,7 @@ public class TestGameServer {
     }
 
     private String initPacket() {
-        // TODO: send proper level info, currently hardcoded to level 1
+        // TODO: send proper level info, currently hardcoded to level activeLevel
 //        System.out.println("Server: sending INIT message");
         String msg = "INIT " + Integer.toString(activeLevel); // Integer.toString(LEVEL_NO)
         for (int i = 0; i < Players.size(); i++) {
@@ -639,6 +693,24 @@ public class TestGameServer {
                 String msg = "RMVC" + crateRemoval;
                 crateRemoval = "";
                 send(msg);
+            }
+            if (playersKeys > 0) {
+                activeLevel = 2;
+//                for(Hero player: Players) {
+//                    player.setHealth(1f);
+//                    player.setCommand(InputCommands.idle);
+//                }
+
+                String msg = "TRNS2 ";
+                send(msg);
+                Mobs.clear();
+                Doors.clear();
+                Keys.clear();
+                try{switchLevel();} catch(SlickException e){System.out.print(e);}
+                playersKeys = 0;
+                for(int i = 0; i < Players.size(); i++) {
+                    Players.get(i).setWorldPosition(new Vector(87 + i, 78));
+                }
             }
         }
     };
