@@ -671,6 +671,12 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                     break;
                 case "TRNS2":
                     System.out.print("Here");
+                    Mobs.clear();
+                    Doors.clear();
+                    Keys.clear();
+                    Crates.clear();
+                    MoneyDrops.clear();
+                    HealthDrops.clear();
                     loadLevel(2);
                     for(int i = 0; i < Players.size(); i++) {
                         Players.get(i).setWorldPosition(new Vector(87 + i, 78));

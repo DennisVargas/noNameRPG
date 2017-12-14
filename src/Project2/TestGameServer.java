@@ -352,8 +352,7 @@ public class TestGameServer {
 //                System.out.println("Server: got INPT message from: " + player);
                 InputCommands inputCommand = getCommand(tokens[2]);
                 for (int i = 0; i < Players.size(); i++) {
-                    if (Players.get(i).IsDead()){
-//                    if (CollisionManager.CheckHeroDestinationCollision(Players.get(i))) {
+                    if (CollisionManager.CheckHeroDestinationCollision(Players.get(i))) {
                         levelTransition = true;
                     }
                     if (Players.get(i).getName().equals(player)) {
@@ -694,7 +693,7 @@ public class TestGameServer {
                 crateRemoval = "";
                 send(msg);
             }
-            if (playersKeys > 0) {
+            if (levelTransition) {
                 activeLevel = 2;
 //                for(Hero player: Players) {
 //                    player.setHealth(1f);
@@ -706,11 +705,14 @@ public class TestGameServer {
                 Mobs.clear();
                 Doors.clear();
                 Keys.clear();
+                MoneyDrops.clear();
+                HealthDrops.clear();
                 try{switchLevel();} catch(SlickException e){System.out.print(e);}
                 playersKeys = 0;
                 for(int i = 0; i < Players.size(); i++) {
                     Players.get(i).setWorldPosition(new Vector(87 + i, 78));
                 }
+                levelTransition = false;
             }
         }
     };

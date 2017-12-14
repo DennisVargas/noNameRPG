@@ -220,21 +220,21 @@ public class CollisionManager {
     public static boolean CheckHeroCrateCollisions(Hero hero, ArrayList<Crate> crates) {
         boolean diagAdjustmentCollided= false;
         InputCommands oldDiagCommand = null;
-        for(Crate crate: crates) {
+        for(int i = 0; i < crates.size(); i++) {
             Collision collides = null;
-            if (!crate.IsDead()) {
+            if (!crates.get(i).IsDead()) {
                 if (hero.getCommand() == InputCommands.attack && !hero.isRanged()) {
 //                make an attack move so you collide in the direction moving if you don't collide go back.
                     Vector attackPos = MovementCalc.CalcWorldPosition(hero.getLastDirectionCommand(), hero.getWorldPosition(), hero.getSpeed());
                     hero.setPosition(new Vector(attackPos.getX() * 32f, attackPos.getY() * 32f));
 
-                    if ((collides = hero.collides(crate)) != null) {
+                    if ((collides = hero.collides(crates.get(i))) != null) {
 //                        System.out.println("hit MOB before health: " + mob.getHealth());
 
-                        crate.HitBeing(hero.getAttackPower());
+                        crates.get(i).HitBeing(hero.getAttackPower());
 //                        System.out.println("hit MOB after health: " + mob.getHealth());
-                        if (crate.IsDead()) {
-                            crate.setCommand(InputCommands.death);
+                        if (crates.get(i).IsDead()) {
+                            crates.get(i).setCommand(InputCommands.death);
 //                            System.out.println("I'm Dead");
                         }
                     }
@@ -242,7 +242,7 @@ public class CollisionManager {
                     attackPos = MovementCalc.CalcWorldPosition(ReverseCommand(hero.getLastDirectionCommand()), hero.getWorldPosition(), hero.getSpeed());
                     hero.setPosition(new Vector(attackPos.getX() * 32f, attackPos.getY() * 32f));
                 }
-                if ((collides = hero.collides(crate)) != null) {
+                if ((collides = hero.collides(crates.get(i))) != null) {
 //                    System.out.println("Collides Min Pen: "+collides.getMinPenetration());
                     Vector collisionSide = collides.getMinPenetration();
                     if((abs(collisionSide.getX()) == 0) && (hero.getCommand().equals(InputCommands.left)||hero.getCommand().equals(InputCommands.right)))
