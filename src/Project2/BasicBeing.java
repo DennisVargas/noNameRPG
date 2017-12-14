@@ -155,9 +155,10 @@ public class BasicBeing extends Entity{
         if ((System.currentTimeMillis()-getAttacktimer()) >= getAttackdelay()) {
             setAttacktimer(System.currentTimeMillis());
             setCommand(InputCommands.attack);
+            ProcessNextAnimation(InputCommands.attack);
             return getAttackPower();
         } else {
-            setCommand(lastDirectionCommand);
+            //ProcessNextAnimation(lastDirectionCommand);
             return 0;
         }
     }
