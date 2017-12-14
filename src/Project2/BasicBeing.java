@@ -126,9 +126,11 @@ public class BasicBeing extends Entity{
                 break;
             case attack:
                 if(currentAnim == walkLeftAnim || currentAnim == idleAnimLt || currentAnim == walkDnAnim)
-                    setCurrentAnimation(hitAnimLt);
+                    if (!this.isRanged()){setCurrentAnimation(attackAnimLt);}
+                    else setCurrentAnimation(hitAnimLt);
                 else if(currentAnim == walkRightAnim || currentAnim == idleAnimRt || currentAnim == walkUpAnim)
-                    setCurrentAnimation(hitAnimRt);
+                    if (!this.isRanged()){setCurrentAnimation(attackAnimRt);}
+                    else setCurrentAnimation(hitAnimRt);
                 break;
             case hitLt:
                 setCurrentAnimation(hitAnimLt);
@@ -152,9 +154,12 @@ public class BasicBeing extends Entity{
 //        System.out.println((System.currentTimeMillis()-getAttacktimer()));
         if ((System.currentTimeMillis()-getAttacktimer()) >= getAttackdelay()) {
             setAttacktimer(System.currentTimeMillis());
+            setCommand(InputCommands.attack);
             return getAttackPower();
-        } else
+        } else {
+            setCommand(lastDirectionCommand);
             return 0;
+        }
     }
     /**
      * attack power is used in hit method for reducing another being's health.

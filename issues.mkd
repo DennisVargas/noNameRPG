@@ -26,6 +26,10 @@
 - **[42]** let characters move in component direction not blocked when diagonal move
 - **[44]** trigger mob melee attacks when in range
 - **[43]** send Hero health messages
+- **[40]** Add animated mob type 2
+- **[41]** Add animated mob type 4
+- **[22]** Design and implement level 2 mob & item locations
+- **[15]** Mob & destructible drop system
 
 ## Claimed Issues ##
 - **[2]** Add art assets
@@ -37,18 +41,15 @@
 
 ## Open Issues ##
 - **[11]** Add character death
-- **[15]** Mob & destructible drop system
 - **[16]** Add money-to-lives system
 - **[18]** Splash screen & menu system for character selection and networking integration
 - **[19]** Level complete and win screens
 - **[20]** Add music and sound effects
-- **[22]** Design and implement level 2 mob & item locations
 - **[23]** Add hero type melee animations
 - **[24]** Create functional MenuItem object in Single player menu
 - **[26]** Create functional MenuItems in Option Menu
 - **[38]** basic lives counter
 - **[39]** Create a game over screen
-- **[40]** Add animated mob type 2
-- **[41]** Add animated mob type 4
+
 
 
