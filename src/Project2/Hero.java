@@ -47,8 +47,8 @@ public class Hero extends BasicBeing{
 
             Project2.getSettings().setPlayer(this);
         }
-        InitHealthBarRect();
         InitHeroRangedAnimations(rangedWalkingSheet,rangedAttackingSheet);
+        InitHealthBarRect();
         this.setCurrentAnimation(idleAnimLt);
 
     }
