@@ -35,6 +35,7 @@ public class Mob extends BasicBeing {
         this.setCommand(InputManager.InputCommands.idle);
         this.setLastDirectionCommand(InputManager.InputCommands.left);
         this.setCurrentAnimation(idleAnimLt);
+        //setDebug(true);
     }
 
     public int getMobType(){
@@ -53,8 +54,7 @@ public class Mob extends BasicBeing {
                 this.setAttackPower(1f);
                 break;
             case 2: //Agav
-//                InitMob2Animations(mob2Walking, mob2Attacking);
-//                this.InitAnimations(mob2Walking,mob2Attacking);
+                InitMob2Animations(mob2Walking, mob2Attacking);
                 this.setRanged(false);
                 this.setAttackPower(1f);
                 break;
@@ -66,15 +66,34 @@ public class Mob extends BasicBeing {
 
                 break;
             case 4: //wizhoo
-//                InitAnimations(mob4Walking, mob4Attacking);
-//                this.InitAnimations(mob4Walking,mob4Attacking);
+                InitMob4Animations(mob4Walking, mob4Attacking);
                 this.setRanged(true);
+                this.setAttackPower(1f);
                 break;
         }
         this.mobType = mobType;
     }
 
     private void InitMob2Animations(SpriteSheet mob2Walking, SpriteSheet mob2Attacking) {
+        this.walkRightAnim = new Animation(mob2Walking, 0,0,8,0,true,100,true);
+        this.walkLeftAnim = new Animation(mob2Walking, 0,1,8,1,true,100,true);
+        this.walkDnAnim = new Animation(mob2Walking, 0,2,8,2,true,100,true);
+        this.walkUpAnim = new Animation(mob2Walking, 0,3,8,3,true,100,true);
+        this.hitAnimRt = new Animation(mob2Walking, 0,4,1,4,true,100,true);
+        this.hitAnimLt = new Animation(mob2Walking, 0,5,1,5,true,100,true);
+        this.idleAnimRt = new Animation(mob2Walking, 0,6,3,6,true,100,true);
+        this.idleAnimLt = new Animation(mob2Walking, 0,7,3,7,true,100,true);
+
+        this.deathAnim = new Animation(mob2Walking, 0,8,10,8,true,100,true);
+        deathAnim.setLooping(false);
+        //  Attack and hit anim are the same except he shoots things when attacking.
+        // Attack needs to be different for melee mobs
+        this.attackAnimRt =  new Animation(mob2Walking, 0, 9, 3, 9, true, 100, true);
+        this.attackAnimLt = new Animation(mob2Walking, 0,10,3,10, true, 100, true);
+
+//        set bounding box for being based on animation
+        ConvexPolygon beingBoundBox = new ConvexPolygon((float)this.walkLeftAnim.getWidth(),(float)this.walkLeftAnim.getHeight());
+        this.addShape(beingBoundBox);
 
     }
 
@@ -91,8 +110,10 @@ public class Mob extends BasicBeing {
         this.deathAnim = new Animation(walkingSheet, 0,8,12,8,true,100,true);
         deathAnim.setLooping(false);
         //  Attack and hit anim are the same except he shoots things when attacking.
-        this.attackAnim = new Animation(walkingSheet, 0,5,7,5,true,100,true);
-
+        // Attack needs to be different for melee mobs
+        //this.attackAnim = new Animation(walkingSheet, 0,5,7,5,true,100,true);
+        this.attackAnimRt =  new Animation(walkingSheet, 0, 9, 7, 9, true, 100, true);
+        this.attackAnimLt = new Animation(walkingSheet, 0,10,7,10, true, 100, true);
 //        set bounding box for being based on animation
         ConvexPolygon beingBoundBox = new ConvexPolygon((float)this.walkLeftAnim.getWidth(),(float)this.walkLeftAnim.getHeight());
         this.addShape(beingBoundBox);
@@ -103,7 +124,7 @@ public class Mob extends BasicBeing {
      * @param walkingSheet
      * @param attackingSheet
      */
-    protected void InitMob3Animations(SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
+    private void InitMob3Animations(SpriteSheet walkingSheet, SpriteSheet attackingSheet) {
         this.walkRightAnim = new Animation(walkingSheet, 0,0,5,0,true,100,true);
         this.walkLeftAnim = new Animation(walkingSheet, 0,1,5,1,true,100,true);
         this.walkDnAnim = new Animation(walkingSheet, 0,2,5,2,true,100,true);
@@ -123,4 +144,23 @@ public class Mob extends BasicBeing {
         this.addShape(beingBoundBox);
     }
 
+    private void InitMob4Animations(SpriteSheet walking, SpriteSheet attacking){
+        this.walkRightAnim = new Animation(walking, 0,0,3,0,true,100,true);
+        this.walkLeftAnim = new Animation(walking, 0,1,3,1,true,100,true);
+        this.walkDnAnim = new Animation(walking, 0,2,3,2,true,100,true);
+        this.walkUpAnim = new Animation(walking, 0,3,3,3,true,100,true);
+        this.hitAnimRt = new Animation(walking, 0,4,1,4,true,100,true);
+        this.hitAnimLt = new Animation(walking, 0,5,1,5,true,100,true);
+        this.idleAnimRt = new Animation(walking, 0,6,9,6,true,100,true);
+        this.idleAnimLt = new Animation(walking, 0,7,9,7,true,100,true);
+
+        this.deathAnim = new Animation(walking, 0,8,5,8,true,100,true);
+        deathAnim.setLooping(false);
+        //  Attack and hit anim are the same except he shoots things when attacking.
+        this.attackAnim = new Animation(walking, 0,5,1,5,true,100,true);
+
+//        set bounding box for being based on animation
+        ConvexPolygon beingBoundBox = new ConvexPolygon((float)this.walkLeftAnim.getWidth(),(float)this.walkLeftAnim.getHeight());
+        this.addShape(beingBoundBox);
+    }
 }
