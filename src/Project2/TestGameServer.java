@@ -694,6 +694,7 @@ public class TestGameServer {
                 send(msg);
             }
             if (levelTransition) {
+                playersKeys = 0;
                 activeLevel = 2;
 //                for(Hero player: Players) {
 //                    player.setHealth(1f);
