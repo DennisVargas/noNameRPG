@@ -289,7 +289,7 @@ public class TestGameClient extends BasicGameState{
 
 /** Game Functions */
 
-private synchronized void moveEntity(String entity, InputCommands input, Float posX, Float posY) {
+private synchronized void moveEntity(String entity, InputCommands input, Float posX, Float posY, String playerBool) {
         if(entity.contains("/")){
             boolean found = false;
             for (int i=0; i < Players.size(); i++) {
@@ -307,7 +307,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                 }
             }
             if (!found)
-                addPlayer(entity, posX, posY);
+                    addPlayer(entity, posX, posY, playerBool);
         }else if(entity.contains("mob")){
             for(BasicBeing mob: Mobs){
                 if(entity.equals(mob.getName())){
@@ -390,10 +390,13 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
     }
 
 
-    private void addPlayer(String playerID, float xPos, float yPos) {
+    private void addPlayer(String playerID, float xPos, float yPos, String typeString) {
+    boolean type = false;
+    if (typeString.equalsIgnoreCase("true"))
+        type = true;
 //        System.out.println("Adding Player at " + xPos + ", " + yPos);
-//        Hero hero = new Hero(new Vector(xPos,yPos), false, playerID); // melee
-        Hero hero = new Hero(new Vector(xPos,yPos), true, playerID);
+        Hero hero = new Hero(new Vector(xPos,yPos), type, playerID); // melee
+//        Hero hero = new Hero(new Vector(xPos,yPos), true, playerID);
         Players.add(hero);
     }
 
@@ -580,23 +583,23 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
         if (msg.length() >= 0) {
             String[] tokens = msg.split(delims);
             String command = tokens[0];
-//            System.out.println("Client" + msg);
+            System.out.println("Client " + msg);
 
             switch (command) {
                 case "INIT":
     //                System.out.println("Client: got INIT response ");
                     loadLevel(Integer.parseInt(tokens[1]));
-                    addPlayer(tokens[2], Float.parseFloat(tokens[3]), Float.parseFloat(tokens[4]));
+                    addPlayer(tokens[2], Float.parseFloat(tokens[3]), Float.parseFloat(tokens[4]), tokens[5]);
     //                addPlayer("/animalCrackers", 92f, 105f);
                     init = true;
                     break;
                 case "UPDT":
     //                System.out.println("Client: got UPDT response ");
                     // loop through tokens by fours (entity, input, velX, velY);
-                    for (int i = 1; i < tokens.length; i += 4) {
+                    for (int i = 1; i < tokens.length; i += 5) {
     //                    System.out.println("UPDT loop: entering; length: " + tokens.length);
                         InputCommands input = getCommand(tokens[i + 1]);
-                        moveEntity(tokens[i], input, Float.parseFloat(tokens[i + 2]), Float.parseFloat(tokens[i + 3]));
+                        moveEntity(tokens[i], input, Float.parseFloat(tokens[i + 2]), Float.parseFloat(tokens[i + 3]), tokens[i + 4]);
     //                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
                     }
                     break;

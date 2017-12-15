@@ -37,7 +37,7 @@ public class Hero extends BasicBeing{
         this.setCommand(InputManager.InputCommands.idle);
         this.setLastDirectionCommand(InputManager.InputCommands.left);
 //        if the hero is ranged then set them to the ranged animation
-        if (this.isRanged()) {
+        if (isRanged()) {
             InitHeroRangedAnimations(rangedWalkingSheet,rangedAttackingSheet);
         } else {
             InitHeroMeleeAnimations(meleeWalkingSheet, meleeAttackingSheet);
