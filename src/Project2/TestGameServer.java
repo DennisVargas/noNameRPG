@@ -442,6 +442,8 @@ public class TestGameServer {
                 }
 
                 break;
+            case "SKIP":
+                levelTransition = true;
             default:
 //                System.out.println("Server: unknown message received: " + msg);
                 break;

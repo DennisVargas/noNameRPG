@@ -267,6 +267,8 @@ public class TestGameClient extends BasicGameState{
                 isIdle = false;
                 inptMsg(inputCommand.toString());
             }
+            if (input.isKeyPressed(Input.KEY_F12))
+                send("SKIP ALL");
             float playerOffX = (float)Math.floor(Players.get(0).getWorldPositionX());
             float playerOffY = (float)Math.floor(Players.get(0).getWorldPositionY());
             Vector playerPosition = new Vector(playerOffX, playerOffY);
