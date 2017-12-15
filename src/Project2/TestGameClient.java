@@ -87,7 +87,7 @@ public class TestGameClient extends BasicGameState{
         Keys = Collections.synchronizedList(new ArrayList<Key>());
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
         map1 = new TiledMap(Project2.LEVEL1RSC, Project2.TILESHEETRSC);
-        map2 = new TiledMap(Project2.LEVEL1RSC, Project2.TILESHEETRSC);
+        map2 = new TiledMap(Project2.LEVEL2RSC, Project2.TILESHEETRSC);
     }
 
     @Override
