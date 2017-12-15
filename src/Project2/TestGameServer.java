@@ -398,6 +398,12 @@ public class TestGameServer {
                             for(int j = 0; j < MoneyDrops.size(); j++){
                                 if(MoneyDrops.get(j).getName().contains(money.getName())){
                                     playersMoney += money.value;
+
+                                    if(playersMoney >= 500) {
+                                        playersMoney -= 500;
+                                        playersLives += 1;
+                                        livesChange = true;
+                                    }
                                     moneyPickupChanges += " " + money.getName();
                                     MoneyDrops.remove(MoneyDrops.get(j));
                                 }
