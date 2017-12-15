@@ -22,6 +22,7 @@ public class Hero extends BasicBeing{
     private static final SpriteSheet meleeWalkingSheet = ResourceManager.getSpriteSheet(Project2.MELEEHEROWALKINGSHEETRSC,21,32);
     private static final SpriteSheet meleeAttackingSheet = ResourceManager.getSpriteSheet(Project2.MELEEHEROATTACKINGSHEETRSC,21,32);
     Rectangle healthBar;
+    int deathCounter = 0;
 
     /**
      * constructs a hero who is centered in screen position .
@@ -53,6 +54,11 @@ public class Hero extends BasicBeing{
         InitHealthBarRect();
         this.setCurrentAnimation(idleAnimLt);
 
+    }
+
+    @Override
+    public void setCommand(InputManager.InputCommands cmd) {
+        super.setCommand(cmd);
     }
 
     public void InitHealthBarRect() {
