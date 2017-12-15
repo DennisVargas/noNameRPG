@@ -49,7 +49,7 @@ public class GamePlayState extends BasicGameState {
     private void ProcessInputCommand(InputManager.InputCommands inputCommand, StateBasedGame stateBasedGame) {
         switch (inputCommand){
             case back:
-                stateBasedGame.enterState(Project2.OPTIONMENUSTATE);
+                stateBasedGame.enterState(Project2.MAINMENUSTATE);
                 break;
         }
     }

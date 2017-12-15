@@ -56,9 +56,9 @@ public class JoinGameMenu extends BasicGameState {
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        startItem = new MenuItem(new Vector(490f,355f), startOffRsc, startOnRsc,"start-button");
+        startItem = new MenuItem(new Vector(500f,350f), startOffRsc, startOnRsc,"start-button");
         startItem.setItemOff();
-        backItem = new MenuItem(new Vector(675f,360f), backOffRsc, backOnRsc,"back-button");
+        backItem = new MenuItem(new Vector(655f,350f), backOffRsc, backOnRsc,"back-button");
         backItem.setItemOff();
         menuChoice = MenuChoices.text;
     }
@@ -129,7 +129,7 @@ public class JoinGameMenu extends BasicGameState {
                 switch(menuChoice){
                     case start:
                         Project2.settings.setserverIP(textfield.getText());
-                        stateBasedGame.enterState(Project2.TESTGAMECLIENT);
+                        stateBasedGame.enterState(Project2.HEROSELECTSTATE);
                         break;
                     case back:
                         stateBasedGame.enterState(Project2.NEWMULTIMENUSTATE);

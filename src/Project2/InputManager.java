@@ -37,7 +37,7 @@ public class InputManager {
      */
     public static InputCommands ProcessInput(Input input, int stateId) {
 //      if the stateId is equal to any of the menu states then ProcessMenuInput
-        if (stateId == Project2.MAINMENUSTATE || stateId == Project2.OPTIONMENUSTATE
+        if (stateId == Project2.MAINMENUSTATE || stateId == Project2.HEROSELECTSTATE
                 || stateId == Project2.NEWSINGLEMENUSTATE || stateId == Project2.NEWMULTIMENUSTATE
                 || stateId == Project2.JOINGAMESTATE) {
             return ProcessMenuInput(input);

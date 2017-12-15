@@ -401,9 +401,8 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
 
     private void addPlayer(String playerID, float xPos, float yPos) {
 //        System.out.println("Adding Player at " + xPos + ", " + yPos);
-        // TODO: Add ClassID to player constructor, whatever gets used here
 //        Hero hero = new Hero(new Vector(xPos,yPos), false, playerID); // melee
-        Hero hero = new Hero(new Vector(xPos,yPos), true, playerID); // ranged
+        Hero hero = new Hero(new Vector(xPos,yPos), true, playerID);
         Players.add(hero);
     }
 
@@ -513,7 +512,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
 
             // send message to initialize player on server (INIT PLAYERIP CLASS)
 //            System.out.println("Sending init message to server");
-            send("INIT " + socket.getLocalSocketAddress() + " " + 1);
+            send("INIT " + socket.getLocalSocketAddress() + " " + Project2.settings.getRanged());
 
             // set up listening thread for client listener
             listening = true;

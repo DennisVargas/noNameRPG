@@ -35,7 +35,7 @@ public class Project2 extends StateBasedGame {
     public static final int MAINMENUSTATE = 0;
     public static int NEWSINGLEMENUSTATE = 1;
     public static final int NEWMULTIMENUSTATE = 2;
-    public static final int OPTIONMENUSTATE = 3;
+    public static final int HEROSELECTSTATE = 3;
     public static final int JOINGAMESTATE = 4;
     public static final int GAMEPLAYSTATE = 5;
     public static final int DISCONNECTED = 6;
@@ -97,7 +97,7 @@ public class Project2 extends StateBasedGame {
         this.addState(new MainMenuState(MAINMENUSTATE));
         this.addState(new NewSingleMenu(NEWSINGLEMENUSTATE));
         this.addState(new NewMultiMenu(NEWMULTIMENUSTATE));
-        this.addState(new OptionMenuState(OPTIONMENUSTATE));
+        this.addState(new HeroSelect(HEROSELECTSTATE));
         this.addState(new JoinGameMenu());
         this.addState(new GamePlayState(GAMEPLAYSTATE));
         this.addState(new Disconnect());
@@ -167,7 +167,7 @@ public class Project2 extends StateBasedGame {
         this.getState(MAINMENUSTATE).init(gameContainer, this);
         this.getState(NEWSINGLEMENUSTATE).init(gameContainer, this);
         this.getState(NEWMULTIMENUSTATE).init(gameContainer, this);
-        this.getState(OPTIONMENUSTATE).init(gameContainer, this);
+        this.getState(HEROSELECTSTATE).init(gameContainer, this);
         this.getState(JOINGAMESTATE).init(gameContainer, this);
         this.getState(GAMEPLAYSTATE).init(gameContainer, this);
 
