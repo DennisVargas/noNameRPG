@@ -35,7 +35,7 @@ public class BasicBeing extends Entity{
     private String name = "default";
     private int beingID = 0;
 
-    private InputCommands inputCommand = InputCommands.idle;
+    protected InputCommands inputCommand = InputCommands.idle;
 
     private InputCommands lastDirectionCommand = InputCommands.left;
     private Vector worldPosition;
@@ -123,6 +123,8 @@ public class BasicBeing extends Entity{
                     setCurrentAnimation(idleAnimLt);
                 else if(currentAnim == walkRightAnim || currentAnim == hitAnimRt || currentAnim == walkUpAnim)
                     setCurrentAnimation(idleAnimRt);
+                else
+                    setCurrentAnimation(idleAnimLt);
                 break;
             case attack:
                 if(currentAnim == walkLeftAnim || currentAnim == idleAnimLt || currentAnim == walkDnAnim)

@@ -161,41 +161,42 @@ public class TestGameClient extends BasicGameState{
                     +"      worldY:"+Players.get(0).getWorldPositionY(), 100,230);
             g.drawString("screenX: "+Players.get(0).getScreenPositionX()
                     +" screenY:"+Players.get(0).getScreenPositionY(), 100,260);
-*/
-            //<editor-fold desc ="Grid STUFF do NOT touch"
-            float xoff = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionX())-5);
-            float yoff = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionY())-5);
-            Vector offSet = MovementCalc.CalcScreenPosition(
-                    Players.get(0).getWorldPosition(),
-                    new Vector(xoff, yoff));
-            if (temp == 1){
-                for (int x = 0; x < 11; x++){
-                    for (int j = 0; j < 11; j++){
-                        Vector temp = worldOffset(xoff, yoff);
-                        int cost = mapping.getTileCost((int)temp.getX()+x, (int)temp.getY()+j);
-                        g.setColor(Color.white);
-                        g.drawString(String.valueOf(cost), (offSet.getX())+(x*32), (offSet.getY())+(j*32));
+    */
+                //<editor-fold desc ="Grid STUFF do NOT touch"
+                    float xoff = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionX())-5);
+                    float yoff = (float)Math.floor(Math.floor(Players.get(0).getWorldPositionY())-5);
+                    Vector offSet = MovementCalc.CalcScreenPosition(
+                            Players.get(0).getWorldPosition(),
+                            new Vector(xoff, yoff));
+                    if (temp == 1){
+                        for (int x = 0; x < 11; x++){
+                            for (int j = 0; j < 11; j++){
+                                Vector temp = worldOffset(xoff, yoff);
+                                int cost = mapping.getTileCost((int)temp.getX()+x, (int)temp.getY()+j);
+                                g.setColor(Color.white);
+                                g.drawString(String.valueOf(cost), (offSet.getX())+(x*32), (offSet.getY())+(j*32));
+                            }
+                        }
                     }
-                }
-            }
-            if (temp == 2){
-                for (int x = 0; x < 11; x++){
-                    for (int j = 0; j < 11; j++){
-                        float distance = Pathfinding.distanceFromPlayer[(int)xoff+x][(int)yoff+j];
-                        g.setColor(Color.white);
-                        g.drawString(String.valueOf((int)distance), (offSet.getX())+(x*32), (offSet.getY())+(j*32));
+                    if (temp == 2){
+                        for (int x = 0; x < 11; x++){
+                            for (int j = 0; j < 11; j++){
+                                float distance = Pathfinding.distanceFromPlayer[(int)xoff+x][(int)yoff+j];
+                                g.setColor(Color.white);
+                                g.drawString(String.valueOf((int)distance), (offSet.getX())+(x*32), (offSet.getY())+(j*32));
+                            }
+                        }
                     }
-                }
-            }
-            g.setColor(Color.green);
+                    g.setColor(Color.green);
             //</editor-fold
             //g.drawString("Mobs in range: "+mobsToMove.size(),100, 300 );
             //g.drawString("Players Account: "+playersMoney, 200,200);
                     // only set up to do mob list now
                     viewportX = (int)((Players.get(i).getWorldPositionX()*32.0) - screenCenter.getX());
                     viewportY = (int)((Players.get(i).getWorldPositionY()*32.0) - screenCenter.getY());
-                }
-            }
+
+                }// if the playing player
+            }// for each player in players
 
             // convert all non-controlling player entities world to screen coords
             worldToScreen(viewportX, viewportY);
@@ -232,6 +233,16 @@ public class TestGameClient extends BasicGameState{
                 g.setColor(Color.red);
                 Players.get(i).UpdateHealthBarLocation();
                 g.fill(Players.get(i).getHealthBar());
+
+
+//
+                if(Players.get(i).getCommand().equals(InputCommands.death)) {
+                    g.drawString("You Have Died", Project2.WIDTH / 2f-60, Project2.HEIGHT / 2f);
+                    if(playersLives>0)
+                        g.drawString("Awaiting Resurection. Lives Remaining: "+playersLives, Project2.WIDTH / 2f-160,Project2.HEIGHT / 2f+20 );
+                    else
+                        g.drawString("NO RESURRECTION. Lives Remaining: " + playersLives, Project2.WIDTH / 2f-160,Project2.HEIGHT / 2f+20 );
+                }
 
             }
             g.setColor(Color.black);
@@ -322,6 +333,8 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
 //                        System.out.println("Client removed player, player size = " + Players.size());
                     }
                     else {
+//                        System.out.println("client:setcommand" + input);
+                        Players.get(i).setCommand(input);
                         Players.get(i).UpdateBeing(input, new Vector(posX, posY));
 //                        System.out.println("Client: updated player: " + entity + " to " + Float.toString(posX) + ", " + Float.toString(posY));
                     }
@@ -621,6 +634,8 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                     for (int i = 1; i < tokens.length; i += 5) {
     //                    System.out.println("UPDT loop: entering; length: " + tokens.length);
                         InputCommands input = getCommand(tokens[i + 1]);
+//                        if(tokens[i].equals(Project2.getSettings().getIpAddress()))
+//                            System.out.println("client Command: "+input);
                         moveEntity(tokens[i], input, Float.parseFloat(tokens[i + 2]), Float.parseFloat(tokens[i + 3]), tokens[i + 4]);
     //                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
                     }

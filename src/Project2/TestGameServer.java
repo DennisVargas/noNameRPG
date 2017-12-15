@@ -384,7 +384,7 @@ public class TestGameServer {
                         if(CollisionManager.CheckValidMove(Players.get(i))) {
                             // if movement was valid, add update to changes
                             String newChange = " " + player;
-                            newChange += " " + tokens[2];
+                            newChange += " " + Players.get(i).getCommand();
                             newChange += " " + x;
                             newChange += " " + y;
                             newChange += " " + "DoesntMatter";
@@ -398,6 +398,12 @@ public class TestGameServer {
                             for(int j = 0; j < MoneyDrops.size(); j++){
                                 if(MoneyDrops.get(j).getName().contains(money.getName())){
                                     playersMoney += money.value;
+
+                                    if(playersMoney >= 500) {
+                                        playersMoney -= 500;
+                                        playersLives += 1;
+                                        livesChange = true;
+                                    }
                                     moneyPickupChanges += " " + money.getName();
                                     MoneyDrops.remove(MoneyDrops.get(j));
                                 }
@@ -662,6 +668,27 @@ public class TestGameServer {
                 String msg = "UPDTHLTH "+Players.get(bubbles).getName()
                         + " " + Players.get(bubbles).getHealth();
                 send(msg);
+
+                if(Players.get(bubbles).getCommand().equals(InputCommands.death)){
+//                    System.out.println("Player lives: "+playersLives);
+                    if(playersLives > 0)
+                        Players.get(bubbles).setCommand(InputCommands.idle);
+                    if(Players.get(bubbles).getCommand().equals(InputCommands.idle)) {
+                        playersLives--;
+                        livesChange = true;
+//                        System.out.println("Changed Command: " + Players.get(bubbles).getCommand());
+                        Players.get(bubbles).setHealth(1f);
+                    }
+
+//                    System.out.println("server resurrect message: "+msg);
+                }
+                msg = "UPDT "+Players.get(bubbles).getName()+" "
+                        +Players.get(bubbles).getCommand()+" "
+                        +Players.get(bubbles).getWorldPositionX()
+                        +" "+Players.get(bubbles).getWorldPositionY()
+                        +" "+"doesn'tMatter";
+                send(msg);
+
                 //</editor-fold desc= "Player Update Health">
             }
             //</editor-fold desc= "for each player logged in">
