@@ -693,7 +693,7 @@ public class TestGameServer {
                         +Players.get(bubbles).getCommand()+" "
                         +Players.get(bubbles).getWorldPositionX()
                         +" "+Players.get(bubbles).getWorldPositionY()
-                        +" "+"doesn'tMatter";
+                        +" "+ Players.get(bubbles).isRanged();
                 send(msg);
 
                 //</editor-fold desc= "Player Update Health">

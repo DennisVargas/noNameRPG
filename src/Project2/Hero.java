@@ -38,7 +38,7 @@ public class Hero extends BasicBeing{
         this.setCommand(InputManager.InputCommands.idle);
         this.setLastDirectionCommand(InputManager.InputCommands.left);
 //        if the hero is ranged then set them to the ranged animation
-        if (isRanged()) {
+        if (isRanged) {
             InitHeroRangedAnimations(rangedWalkingSheet,rangedAttackingSheet);
         } else {
             InitHeroMeleeAnimations(meleeWalkingSheet, meleeAttackingSheet);
@@ -96,8 +96,8 @@ public class Hero extends BasicBeing{
     public void InitHealthBarRect() {
         float heroWidth,heroHeight;
 
-        heroWidth = this.getLocallyOffsetShapes().getFirst().getHeight()*this.getScale();
-        heroHeight = this.getLocallyOffsetShapes().getFirst().getWidth()*this.getScale();
+        heroHeight = this.getLocallyOffsetShapes().getFirst().getHeight()*this.getScale();
+        heroWidth = this.getLocallyOffsetShapes().getFirst().getWidth()*this.getScale();
         healthBar = new Rectangle(this.getX()-heroWidth/2,
                 this.getY()+heroHeight/2,
                 heroWidth,
@@ -106,14 +106,18 @@ public class Hero extends BasicBeing{
 
     public void UpdateHealthBarLocation(){
         float heroWidth,heroHeight;
-        heroWidth = this.getLocallyOffsetShapes().getFirst().getHeight()*this.getScale();
-        heroHeight = this.getLocallyOffsetShapes().getFirst().getWidth()*this.getScale();
+        heroHeight = this.getLocallyOffsetShapes().getFirst().getHeight()*this.getScale();
+        heroWidth = this.getLocallyOffsetShapes().getFirst().getWidth()*this.getScale();
+//        System.out.println("heroheight: "+heroHeight+"herowidth: "+heroWidth);
         healthBar.setLocation(this.getX()-heroWidth/2,
                 this.getY() + heroHeight/2);
         float curHealth = this.getHealth();
         if(curHealth<0)
             curHealth = 0;
-        healthBar.setWidth(heroWidth*curHealth);
+        if (curHealth == 0)
+            healthBar.setWidth(heroWidth*curHealth);
+        else
+            healthBar.setWidth(heroWidth*curHealth+1);
 
 
     }
