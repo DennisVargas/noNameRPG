@@ -35,7 +35,7 @@ public class BasicBeing extends Entity{
     private String name = "default";
     private int beingID = 0;
 
-    private InputCommands inputCommand = InputCommands.idle;
+    protected InputCommands inputCommand = InputCommands.idle;
 
     private InputCommands lastDirectionCommand = InputCommands.left;
     private Vector worldPosition;
