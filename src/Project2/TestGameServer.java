@@ -63,7 +63,7 @@ public class TestGameServer {
     int playersMoney;
     int playersKeys;
     int playersLives;
-    private boolean livesChange;
+    private boolean livesChange = true;
     int activeLevel = 1;
     boolean levelTransition = false;
 
@@ -90,7 +90,7 @@ public class TestGameServer {
         NewKeyDrops = new ArrayList<Key>();
         playersMoney = 0;
         clients = new ArrayList<>();
-        playersLives = 0;
+        playersLives = 3;
         playersKeys = 0;
         livesChange = false;
         // Set game info based on what level was requested by host
@@ -392,11 +392,6 @@ public class TestGameServer {
                                     playersMoney += money.value;
                                     moneyPickupChanges += " " + money.getName();
                                     MoneyDrops.remove(MoneyDrops.get(j));
-                                    if(playersMoney >= 500) {
-                                        playersMoney -= 500;
-                                        playersLives += 1;
-                                        livesChange = true;
-                                    }
                                 }
                             }
                         }
@@ -656,7 +651,11 @@ public class TestGameServer {
                 //</editor-fold desc= "Player Update Health">
             }
             //</editor-fold desc= "for each player logged in">
-
+            if(playersMoney >= 500) {
+                playersMoney -= 500;
+                playersLives += 1;
+                livesChange = true;
+            }
             if (changes != "") {
                 String msg = "UPDT" + changes;
                 changes = "";

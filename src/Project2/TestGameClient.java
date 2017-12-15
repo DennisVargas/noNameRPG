@@ -50,7 +50,7 @@ public class TestGameClient extends BasicGameState{
     private ArrayList<Mob>mobsToMove;
     private int playersMoney;
     private int playersKey;
-    private int playersLives;
+    private int playersLives = 3;
 
     private int temp = 0;
 
@@ -700,6 +700,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                     break;
                 case "LIVES":
                     playersLives = Integer.parseInt(tokens[1]);
+                    break;
                 default:
                     System.out.println("Client: unknown message received:"+msg);
                     break;
