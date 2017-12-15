@@ -394,7 +394,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
 //        System.out.println("Adding Player at " + xPos + ", " + yPos);
         // TODO: Add ClassID to player constructor, whatever gets used here
 //        Hero hero = new Hero(new Vector(xPos,yPos), false, playerID); // melee
-        Hero hero = new Hero(new Vector(xPos,yPos), true, playerID); // ranged
+        Hero hero = new Hero(new Vector(xPos,yPos), false, playerID); // ranged
         Players.add(hero);
     }
 

@@ -189,7 +189,7 @@ public class TestGameServer {
     /** Game Functions */
     private void addPlayer(String playerID, int type) {
 //        Hero hero = new Hero(new Vector(mapX, mapY), false, playerID); // melee
-        Hero hero = new Hero(new Vector(mapX, mapY), true, playerID); // ranged
+        Hero hero = new Hero(new Vector(mapX, mapY), false, playerID); // ranged
         hero.setPosition(new Vector(mapX,mapY));
         Players.add(hero);
         String newChange  = " " + playerID;

@@ -50,8 +50,8 @@ public class Project2 extends StateBasedGame {
     public static final String WALKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     public static final String ATTACKINGSHEETRSC = "resources/Characters/CrystalBuddy.png";
     //TODO change to Charme.png when mobs are done
-    public static final String MELEEHEROATTACKINGSHEETRSC = "resources/Characters/Lilith.png";
-    public static final String MELEEHEROWALKINGSHEETRSC = "resources/Characters/Lilith.png";
+    public static final String MELEEHEROATTACKINGSHEETRSC = "resources/Characters/Charme.png";
+    public static final String MELEEHEROWALKINGSHEETRSC = "resources/Characters/Charme.png";
 
     public static final String RANGEDHEROWALKINGSHEETRSC = "resources/Characters/Lilith.png";
     public static final String RANGEDHEROATTACKINGSHEETRSC = "resources/Characters/Lilith.png";

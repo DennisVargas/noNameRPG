@@ -37,9 +37,11 @@ public class Hero extends BasicBeing{
         this.setCommand(InputManager.InputCommands.idle);
         this.setLastDirectionCommand(InputManager.InputCommands.left);
 //        if the hero is ranged then set them to the ranged animation
-//        if (this.isRanged()) {
-//            InitHeroRangedAnimations(rangedWalkingSheet,rangedAttackingSheet);
-//        }
+        if (this.isRanged()) {
+            InitHeroRangedAnimations(rangedWalkingSheet,rangedAttackingSheet);
+        } else {
+            InitHeroMeleeAnimations(meleeWalkingSheet, meleeAttackingSheet);
+        }
 //        if the hero isn't a client then don't place them in center screen
 //        System.out.println(Project2.settings.getIpAddress());
         if(Project2.settings.getIpAddress().equals(name)) {
@@ -47,8 +49,7 @@ public class Hero extends BasicBeing{
 
             Project2.getSettings().setPlayer(this);
         }
-        //InitHeroMeleeAnimations(meleeWalkingSheet, meleeAttackingSheet);
-        InitHeroRangedAnimations(rangedWalkingSheet,rangedAttackingSheet);
+        //InitHeroRangedAnimations(rangedWalkingSheet,rangedAttackingSheet);
         InitHealthBarRect();
         this.setCurrentAnimation(idleAnimLt);
 
@@ -105,22 +106,22 @@ public class Hero extends BasicBeing{
     }
 
     private void InitHeroMeleeAnimations(SpriteSheet walking, SpriteSheet attacking){
-        this.walkRightAnim = new Animation(walking, 0,0,9,0,true,100,true);
-        this.walkLeftAnim = new Animation(walking, 0,1,9,1,true,100,true);
-        this.walkDnAnim = new Animation(walking, 0,2,9,2,true,100,true);
-        this.walkUpAnim = new Animation(walking, 0,3,9,3,true,100,true);
+        this.walkRightAnim = new Animation(walking, 0,0,3,0,true,100,true);
+        this.walkLeftAnim = new Animation(walking, 0,1,3,1,true,100,true);
+        this.walkDnAnim = new Animation(walking, 0,2,3,2,true,100,true);
+        this.walkUpAnim = new Animation(walking, 0,3,3,3,true,100,true);
         this.hitAnimRt = new Animation(walking, 0,4,1,4,true,100,true);
         this.hitAnimLt = new Animation(walking, 0,5,1,5,true,100,true);
-        this.idleAnimRt = new Animation(walking, 0,6,0,6,true,100,true);
+        this.idleAnimRt = new Animation(walking, 0,6,3,6,true,100,true);
         idleAnimRt.setLooping(false);
-        this.idleAnimLt = new Animation(walking, 0,7,0,7,true,100,true);
+        this.idleAnimLt = new Animation(walking, 0,7,3,7,true,100,true);
         idleAnimLt.setLooping(true);
         this.deathAnim = new Animation(walking, 0,8,0,8,true,100,true);
         deathAnim.setLooping(true);
         //  Attack and hit anim are the same except he shoots things when attacking.
         //this.attackAnim = new Animation(walking, 0,5,1,5,true,100,true);
-        this.attackAnimLt = new Animation(walking, 0,9,0,3, true, 100, true);
-        this.attackAnimRt = new Animation(walking, 0,10,0,3, true, 100, true);
+        this.attackAnimLt = new Animation(walking, 0,9,3,9, true, 100, true);
+        this.attackAnimRt = new Animation(walking, 0,10,3,10, true, 100, true);
 //        set bounding box for being based on animation
         ConvexPolygon beingBoundBox = new ConvexPolygon((float)this.walkLeftAnim.getWidth(),(float)this.walkLeftAnim.getHeight());
         this.addShape(beingBoundBox);
