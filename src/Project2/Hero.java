@@ -33,7 +33,7 @@ public class Hero extends BasicBeing{
 //        initialize the hero as if they are a client and a melee character
         super(worldPosition, worldPosition, true);//, meleeWalkingSheet, meleeAttackingSheet);
         this.setName(name);
-        this.setAttackPower(100f);
+        this.setAttackPower(75f);
         this.setRanged(isRanged);
         this.setCommand(InputManager.InputCommands.idle);
         this.setLastDirectionCommand(InputManager.InputCommands.left);

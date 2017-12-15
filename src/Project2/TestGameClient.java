@@ -438,9 +438,18 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
     if (typeString.equalsIgnoreCase("true"))
         type = true;
 //        System.out.println("Adding Player at " + xPos + ", " + yPos);
-        Hero hero = new Hero(new Vector(xPos,yPos), type, playerID); // melee
+        boolean found = false;
+        for (int i=0; i < Players.size(); i++) {
+            if (playerID.equals(Players.get(i).getName())) {
+                found = true;
+            }
+        }
+        if (!found) {
+            Hero hero = new Hero(new Vector(xPos, yPos), type, playerID); // melee
 //        Hero hero = new Hero(new Vector(xPos,yPos), true, playerID);
-        Players.add(hero);
+            Players.add(hero);
+        }
+
     }
 
     private InputCommands getCommand(String rawCommand) {

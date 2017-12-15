@@ -1,0 +1,69 @@
+Project 2
+by
+Vannesa Farmer
+Tyler Petty
+Amy Phillips
+Dennis Vargas
+CS 447 Fall 2017
+
+Controls:
+Movement is controlled by WASD
+Attack (ranged and melee) is the up arrow
+
+Shortcuts:
+Dijkstra's displays (for hosting player only)
+1 = shows Dijkstra's tile costs
+2 = shows Dijkstra's path costs
+3 = removes Dijkstra's overlay
+F11 = gives 100 keys (can open all doors)
+F12 = goes to level 2
+
+Low-Bar Goals:
+ * Network with two players - complete
+ * Large Map - complete
+ * 2 Playable characters - complete
+ * 2 levels - complete
+ * Mob pathfinding - complete
+ * Four types of mobs with different toughness and abilities - complete
+ * Mob drops - money, power-ups, health - complete
+ * Money provides lives after a certain amount is gained - complete
+ * Destructible Object - complete
+
+High-Bar Goals:
+ * Moustaches & Hats - partially implemented: We used moustaches in the menus!
+
+Liscensing Terms:
+For the code and original art:
+    https://creativecommons.org/licenses/by-nc/4.0/
+All of the other art and music are the works of others and covered by their own licenses.
+
+Art Sources:
+Mobs/Players:
+Pencil - Vannesa
+Agav - https://www.spriters-resource.com/pc_computer/ragnarokonline/sheet/42191/
+Crystal Buddy - https://www.spriters-resource.com/pc_computer/nuclearthrone/sheet/88434/
+Charme - https://www.spriters-resource.com/pc_computer/recettear/sheet/51930/
+Lilith - https://www.spriters-resource.com/pc_computer/bindingofisaacrebirth/sheet/76018/ 
+Wizhoo - https://www.spriters-resource.com/pc_computer/bindingofisaacrebirth/sheet/64502/
+
+Others:
+Menu_Background - Vannesa
+Bullet - Vannesa
+Congrats - Amy
+Crates - https://www.spriters-resource.com/pc_computer/hammerwatch/sheet/71295/
+Heart-Icon - Vannesa
+Key - http://photobucket.com/gallery/user/Flizia/media/bWVkaWFJZDoyMDI0OTUxOQ==/?ref=
+Potion - Vannesa
+money - https://opengameart.org/content/shiny-treasure-icons-16x16
+
+Music:
+Background Music - https://opengameart.org/content/a-tricky-puzzle-loop
+Enemy_dropped_coin - https://opengameart.org/content/coin-sounds-0
+
+Tile:
+Tileset - https://opengameart.org/content/dungeon-tileset
+
+Ui:
+coinUI - same as money
+keyUi - same as key
+livesUi- same as heart_icon
