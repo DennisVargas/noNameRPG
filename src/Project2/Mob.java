@@ -50,19 +50,20 @@ public class Mob extends BasicBeing {
 //                mob1 has different dimensions
                 InitMob1Animations(mob1Walking, mob1Attacking);
 //                this.InitAnimations(mob1Walking,mob1Attacking);
+                this.setHealth(100f);
                 this.setRanged(false);
                 this.setAttackPower(1f);
                 break;
             case 2: //Agav
                 InitMob2Animations(mob2Walking, mob2Attacking);
                 this.setRanged(false);
-                this.setAttackPower(1f);
+                this.setAttackPower(3f);
                 break;
             case 3: //crystal Dude
                 this.InitMob3Animations(mob3Walking, mob3Attacking);
 //                this.InitAnimations(mob3Walking,mob3Attacking);
                 this.setRanged(true);
-                this.setAttackPower(1f);
+                this.setAttackPower(2f);
 
                 break;
             case 4: //wizhoo
