@@ -9,15 +9,15 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-public class NewMultiMenu extends BasicGameState {
+public class HeroSelect extends BasicGameState {
     int stateId = Integer.MIN_VALUE;
-    private MenuItem hostGame;
-    private MenuItem joinGame;
+    private MenuItem meleeItem;
+    private MenuItem rangedItem;
     private MenuItem backItem;
-    private static final String hostGameOff = "testAssets/host_1.png";
-    private static final String hostGameOn = "testAssets/host_2.png";
-    private static final String joinGameOff = "testAssets/join_1.png";
-    private static final String joinGameOn = "testAssets/join_2.png";
+    private static final String meleeOff = "testAssets/melee_1.png";
+    private static final String meleeOn = "testAssets/melee_2.png";
+    private static final String rangedOff = "testAssets/ranged_1.png";
+    private static final String rangedOn = "testAssets/ranged_2.png";
     private static final String backOffRsc = "testAssets/grey_back.png";
     private static final String backOnRsc = "testAssets/white_back.png";
 
@@ -27,9 +27,9 @@ public class NewMultiMenu extends BasicGameState {
         return stateId;
     }
 
-    private enum NewMultiMenuChoices {host, join, back}
-    NewMultiMenuChoices menuChoice = NewMultiMenuChoices.host;
-    public NewMultiMenu(int stateId) {
+    private enum NewMultiMenuChoices {melee, ranged, back}
+    NewMultiMenuChoices menuChoice = NewMultiMenuChoices.melee;
+    public HeroSelect(int stateId) {
         this.stateId = stateId;
     }
 
@@ -40,10 +40,10 @@ public class NewMultiMenu extends BasicGameState {
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
-        ResourceManager.loadImage(hostGameOff);
-        ResourceManager.loadImage(hostGameOn);
-        ResourceManager.loadImage(joinGameOff);
-        ResourceManager.loadImage(joinGameOn);
+        ResourceManager.loadImage(meleeOff);
+        ResourceManager.loadImage(meleeOn);
+        ResourceManager.loadImage(rangedOff);
+        ResourceManager.loadImage(rangedOn);
         ResourceManager.loadImage(backOffRsc);
         ResourceManager.loadImage(backOnRsc);
     }
@@ -51,17 +51,17 @@ public class NewMultiMenu extends BasicGameState {
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        hostGame = new MenuItem(new Vector(640f, 250f), hostGameOff, hostGameOn, "host-game");
-        joinGame = new MenuItem(new Vector(635f, 300f), joinGameOff, joinGameOn, "join-game");
-        backItem = new MenuItem(new Vector(655f,360f), backOffRsc, backOnRsc,"back-button");
-        hostGame.setItemOn();
-        menuChoice = NewMultiMenuChoices.host;
+        meleeItem = new MenuItem(new Vector(640f, 250f), meleeOff, meleeOn, "melee");
+        rangedItem = new MenuItem(new Vector(640f, 300f), rangedOff, rangedOn, "ranged");
+        backItem = new MenuItem(new Vector(635f,360f), backOffRsc, backOnRsc,"back-button");
+        meleeItem.setItemOn();
+        menuChoice = NewMultiMenuChoices.melee;
     }
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
-        hostGame.renderItem(graphics);
-        joinGame.renderItem(graphics);
+        meleeItem.renderItem(graphics);
+        rangedItem.renderItem(graphics);
         backItem.renderItem(graphics);
     }
 
@@ -77,63 +77,60 @@ public class NewMultiMenu extends BasicGameState {
         switch (inputCommand) {
             case up:
                 switch(menuChoice){
-                    case host:
-                        hostGame.setItemOff();
-                        joinGame.setItemOff();
+                    case melee:
+                        meleeItem.setItemOff();
+                        rangedItem.setItemOff();
                         backItem.setItemOn();
                         menuChoice = NewMultiMenuChoices.back;
                         break;
-                    case join:
-                        hostGame.setItemOn();
-                        joinGame.setItemOff();
+                    case ranged:
+                        meleeItem.setItemOn();
+                        rangedItem.setItemOff();
                         backItem.setItemOff();
-                        menuChoice = NewMultiMenuChoices.host;
+                        menuChoice = NewMultiMenuChoices.melee;
                         break;
                     case back:
-                        hostGame.setItemOff();
-                        joinGame.setItemOn();
+                        meleeItem.setItemOff();
+                        rangedItem.setItemOn();
                         backItem.setItemOff();
-                        menuChoice = NewMultiMenuChoices.join;
+                        menuChoice = NewMultiMenuChoices.ranged;
                         break;
                 }
                 break;
             case down:
                 switch(menuChoice){
-                    case host:
-                        hostGame.setItemOff();
-                        joinGame.setItemOn();
+                    case melee:
+                        meleeItem.setItemOff();
+                        rangedItem.setItemOn();
                         backItem.setItemOff();
-                        menuChoice = NewMultiMenuChoices.join;
+                        menuChoice = NewMultiMenuChoices.ranged;
 
                         break;
-                    case join:
-                        hostGame.setItemOff();
-                        joinGame.setItemOff();
+                    case ranged:
+                        meleeItem.setItemOff();
+                        rangedItem.setItemOff();
                         backItem.setItemOn();
                         menuChoice = NewMultiMenuChoices.back;
                         break;
                     case back:
-                        hostGame.setItemOn();
-                        joinGame.setItemOff();
+                        meleeItem.setItemOn();
+                        rangedItem.setItemOff();
                         backItem.setItemOff();
-                        menuChoice = NewMultiMenuChoices.host;
+                        menuChoice = NewMultiMenuChoices.melee;
                         break;
                 }
                 break;
             // TODO: Player needs way of choosing ranged or melee
             case enter:
                 switch (menuChoice) {
-                    case host:
-                        Project2.settings.setHosting(true);
-                        Project2.settings.setJoining(false);
-                        Project2.settings.setserverIP("localhost");
-                        stateBasedGame.enterState(Project2.HEROSELECTSTATE);
+                    case melee:
+                        Project2.settings.setRanged(false);
+                        stateBasedGame.enterState(Project2.TESTGAMECLIENT);
                         break;
-                    case join:
-                        Project2.settings.setHosting(false);
-                        Project2.settings.setJoining(true);
+                    case ranged:
+                        Project2.settings.setRanged(true);
                         // TODO: go to state where user can enter ip and server
-                        stateBasedGame.enterState(Project2.JOINGAMESTATE);
+                        stateBasedGame.enterState(Project2.TESTGAMECLIENT);
                         break;
                     case back:
                         stateBasedGame.enterState(Project2.MAINMENUSTATE);

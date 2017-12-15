@@ -497,7 +497,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
 
             // send message to initialize player on server (INIT PLAYERIP CLASS)
 //            System.out.println("Sending init message to server");
-            send("INIT " + socket.getLocalSocketAddress() + " " + 1);
+            send("INIT " + socket.getLocalSocketAddress() + " " + Project2.settings.getRanged());
 
             // set up listening thread for client listener
             listening = true;

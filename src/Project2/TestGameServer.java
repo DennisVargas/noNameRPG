@@ -187,9 +187,9 @@ public class TestGameServer {
         }
     }
     /** Game Functions */
-    private void addPlayer(String playerID, int type) {
+    private void addPlayer(String playerID, boolean type) {
 //        Hero hero = new Hero(new Vector(mapX, mapY), false, playerID); // melee
-        Hero hero = new Hero(new Vector(mapX, mapY), true, playerID); // ranged
+        Hero hero = new Hero(new Vector(mapX, mapY), type, playerID); // ranged
         hero.setPosition(new Vector(mapX,mapY));
         Players.add(hero);
         String newChange  = " " + playerID;
@@ -322,7 +322,7 @@ public class TestGameServer {
             case "INIT":
 //                System.out.println("Server: got INIT message");
                 if (Players.size() < PlayerCount) {
-                    addPlayer(player, Integer.parseInt(tokens[2]));
+                    addPlayer(player, Boolean.parseBoolean(tokens[2]));
                     msg = initPacket();
 
                     // loop through player list, find player that sent init message

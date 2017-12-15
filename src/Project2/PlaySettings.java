@@ -23,6 +23,7 @@ public class PlaySettings {
     private boolean joining = false; // true if player is joining multiplayer (to block singleplayer server launch)
     private Vector hostStartLevel1 = new Vector(90.5f,105.5f);
     private Vector guestStartLevel1 = new Vector(91.5f,105.5f);
+    private boolean ranged = false;
 
 
     private Hero player;
@@ -90,6 +91,10 @@ public class PlaySettings {
     public boolean getJoining() { return joining; }
 
     public void setJoining(boolean join) { joining = join; }
+
+    public boolean getRanged() { return ranged; }
+
+    public void setRanged(boolean ranged) { this.ranged = ranged; }
 
     public void editTileMapping(float x, float y, String type) {
         int ix = (int) Math.round(x-.5) + 20;

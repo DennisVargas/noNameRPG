@@ -20,9 +20,9 @@ public class MainMenuState extends BasicGameState {
 
     private InputCommands inputCommand;
 
-//  MenuItem objects are a vector position and a animation
+    //  MenuItem objects are a vector position and a animation
     private MenuItem newSingleItem; private MenuItem quitItem;
-    private MenuItem newMultiItem; private MenuItem optionItem;
+    private MenuItem newMultiItem;
 
     public int getStateId() {
         return stateId;
@@ -33,16 +33,14 @@ public class MainMenuState extends BasicGameState {
      * useful when switching the current
      * selection from off to on.
      */
-    private enum MainMenuChoices {NewSingle, NewMulti, Options, Quit}
+    private enum MainMenuChoices {NewSingle, NewMulti, Quit}
     MainMenuChoices menuChoice;
 
-//  image resource file paths that will be passed to MenuItem() constructor
+    //  image resource file paths that will be passed to MenuItem() constructor
     private static String singlePlayerOffImageRsc = "testAssets/new_game3.png";
     private static String singlePlayerOnImageRsc = "testAssets/new_game4.png";
     private static String multiPlayerOffImageRsc = "testAssets/multi_1.png";
     private static String multiPlayerOnImageRsc = "testAssets/multi_2.png";
-    private static String optionsOffImageRsc = "testAssets/options3.png";
-    private static String optionsOnImageRsc = "testAssets/options4.png";
     private static String quitOffImageRsc = "testAssets/quit3.png";
     private static String quitOnImageRsc = "testAssets/quit4.png";
 
@@ -77,8 +75,6 @@ public class MainMenuState extends BasicGameState {
         ResourceManager.loadImage(singlePlayerOnImageRsc);
         ResourceManager.loadImage(multiPlayerOffImageRsc);
         ResourceManager.loadImage(multiPlayerOnImageRsc);
-        ResourceManager.loadImage(optionsOffImageRsc);
-        ResourceManager.loadImage(optionsOnImageRsc);
         ResourceManager.loadImage(quitOffImageRsc);
         ResourceManager.loadImage(quitOnImageRsc);
         menuChoice = MainMenuChoices.NewSingle;
@@ -93,15 +89,13 @@ public class MainMenuState extends BasicGameState {
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        newSingleItem = new MenuItem(new Vector(640f, 100f), singlePlayerOffImageRsc, singlePlayerOnImageRsc,"new-game-item");
-        newSingleItem.setItemOff();
-        newMultiItem = new MenuItem(new Vector(640f, 150f), multiPlayerOffImageRsc, multiPlayerOnImageRsc,"quit-item");
-        newMultiItem.setItemOn();
-        optionItem = new MenuItem(new Vector(640f, 200f), optionsOffImageRsc, optionsOnImageRsc,"quit-item");
-        optionItem.setItemOff();
-        quitItem = new MenuItem(new Vector(640f, 250f), quitOffImageRsc, quitOnImageRsc,"quit-item");
+        newSingleItem = new MenuItem(new Vector(640f, 250f), singlePlayerOffImageRsc, singlePlayerOnImageRsc,"new-game-item");
+        newSingleItem.setItemOn();
+        newMultiItem = new MenuItem(new Vector(640f, 300f), multiPlayerOffImageRsc, multiPlayerOnImageRsc,"quit-item");
+        newMultiItem.setItemOff();
+        quitItem = new MenuItem(new Vector(635f, 350f), quitOffImageRsc, quitOnImageRsc,"quit-item");
         quitItem.setItemOff();
-        menuChoice = MainMenuChoices.NewMulti;
+        menuChoice = MainMenuChoices.NewSingle;
     }
 
 
@@ -115,9 +109,8 @@ public class MainMenuState extends BasicGameState {
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         newSingleItem.renderItem(graphics);
         newMultiItem.renderItem(graphics);
-        optionItem.renderItem(graphics);
         quitItem.renderItem(graphics);
-        graphics.drawString(String.valueOf(menuChoice), 200,125);
+//        graphics.drawString(String.valueOf(menuChoice), 200,125);
     }
 
 
@@ -152,15 +145,10 @@ public class MainMenuState extends BasicGameState {
                         newMultiItem.setItemOff();
                         menuChoice = MainMenuChoices.NewSingle;
                         break;
-                    case Options:
-                        newMultiItem.setItemOn();
-                        optionItem.setItemOff();
-                        menuChoice = MainMenuChoices.NewMulti;
-                        break;
                     case Quit:
                         quitItem.setItemOff();
-                        optionItem.setItemOn();
-                        menuChoice = MainMenuChoices.Options;
+                        newMultiItem.setItemOn();
+                        menuChoice = MainMenuChoices.NewMulti;
                         break;
                     default:
                         break;
@@ -175,11 +163,6 @@ public class MainMenuState extends BasicGameState {
                         break;
                     case NewMulti:
                         newMultiItem.setItemOff();
-                        optionItem.setItemOn();
-                        menuChoice = MainMenuChoices.Options;
-                        break;
-                    case Options:
-                        optionItem.setItemOff();
                         quitItem.setItemOn();
                         menuChoice = MainMenuChoices.Quit;
                         break;
@@ -198,13 +181,11 @@ public class MainMenuState extends BasicGameState {
                         Project2.settings.setHosting(false);
                         Project2.settings.setJoining(false);
                         Project2.settings.setserverIP("localhost");
-                        stateBasedGame.enterState(Project2.TESTGAMECLIENT);
+//                        stateBasedGame.enterState(Project2.TESTGAMECLIENT);
+                        stateBasedGame.enterState(Project2.HEROSELECTSTATE);
                         break;
                     case NewMulti:
                         stateBasedGame.enterState(Project2.NEWMULTIMENUSTATE);
-                        break;
-                    case Options:
-                        stateBasedGame.enterState(Project2.OPTIONMENUSTATE);
                         break;
                     case Quit:
                         System.exit(0);
