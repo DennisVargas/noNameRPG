@@ -99,7 +99,7 @@ public class BasicBeing extends Entity{
      * Evaluates the possible animation options based on
      * the <code>InputManager.InputCommands</code> enumeration.
      */
-    private void ProcessNextAnimation(InputCommands command) {
+    public void ProcessNextAnimation(InputCommands command) {
 
         switch(command){
             case up:

@@ -92,7 +92,7 @@ public class Hero extends BasicBeing{
         this.hitAnimRt = new Animation(walkingSheet, 0,4,1,4,true,100,true);
         this.hitAnimLt = new Animation(walkingSheet, 0,5,1,5,true,100,true);
         this.idleAnimRt = new Animation(walkingSheet, 0,6,0,6,true,100,true);
-        idleAnimRt.setLooping(false);
+        idleAnimRt.setLooping(true);
         this.idleAnimLt = new Animation(walkingSheet, 0,7,0,7,true,100,true);
         idleAnimLt.setLooping(true);
         this.deathAnim = new Animation(walkingSheet, 0,8,0,8,true,100,true);
@@ -120,8 +120,10 @@ public class Hero extends BasicBeing{
         deathAnim.setLooping(true);
         //  Attack and hit anim are the same except he shoots things when attacking.
         //this.attackAnim = new Animation(walking, 0,5,1,5,true,100,true);
-        this.attackAnimLt = new Animation(walking, 0,9,3,9, true, 100, true);
-        this.attackAnimRt = new Animation(walking, 0,10,3,10, true, 100, true);
+        this.attackAnimRt = new Animation(walking, 0,9,3,9, true, 100, true);
+        attackAnimRt.setLooping(true);
+        this.attackAnimLt = new Animation(walking, 0,10,3,10, true, 100, true);
+        attackAnimLt.setLooping(true);
 //        set bounding box for being based on animation
         ConvexPolygon beingBoundBox = new ConvexPolygon((float)this.walkLeftAnim.getWidth(),(float)this.walkLeftAnim.getHeight());
         this.addShape(beingBoundBox);
