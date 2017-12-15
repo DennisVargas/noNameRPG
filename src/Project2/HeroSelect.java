@@ -120,7 +120,6 @@ public class HeroSelect extends BasicGameState {
                         break;
                 }
                 break;
-            // TODO: Player needs way of choosing ranged or melee
             case enter:
                 switch (menuChoice) {
                     case melee:
@@ -129,7 +128,6 @@ public class HeroSelect extends BasicGameState {
                         break;
                     case ranged:
                         Project2.settings.setRanged(true);
-                        // TODO: go to state where user can enter ip and server
                         stateBasedGame.enterState(Project2.TESTGAMECLIENT);
                         break;
                     case back:

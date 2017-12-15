@@ -120,7 +120,6 @@ public class NewMultiMenu extends BasicGameState {
                         break;
                 }
                 break;
-            // TODO: Player needs way of choosing ranged or melee
             case enter:
                 switch (menuChoice) {
                     case host:
@@ -132,7 +131,6 @@ public class NewMultiMenu extends BasicGameState {
                     case join:
                         Project2.settings.setHosting(false);
                         Project2.settings.setJoining(true);
-                        // TODO: go to state where user can enter ip and server
                         stateBasedGame.enterState(Project2.JOINGAMESTATE);
                         break;
                     case back:
