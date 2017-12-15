@@ -465,6 +465,13 @@ public class CollisionManager {
         return false;
     }
 
+    public static boolean CheckHeroGoalCollision(Hero player) {
+        if (Project2.settings.checkTile((int) Math.round(player.getWorldPositionX()-.5) + 20, (int) Math.round(player.getWorldPositionY()) + 11).equals("goal")) {
+            return true;
+        }
+        return false;
+    }
+
     public static Key CheckHeroKeyCollision(BasicBeing player, ArrayList<Key> keys) {
         for (Key key : keys) {
             Collision collides = null;

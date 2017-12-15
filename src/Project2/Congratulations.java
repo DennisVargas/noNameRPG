@@ -39,7 +39,7 @@ public class Congratulations extends BasicGameState {
                        int delta) throws SlickException {
         timer -= delta;
         if (timer <= 0)
-            game.enterState(Project2.MAINMENUSTATE, new EmptyTransition(), new HorizontalSplitTransition() );
+            System.exit(0);
     }
 
     @Override

@@ -54,6 +54,7 @@ public class TestGameClient extends BasicGameState{
     private int playersLives = 3;
     public Music music;
     public Sound coin;
+    boolean win;
 
     private int temp = 0;
 
@@ -264,6 +265,11 @@ public class TestGameClient extends BasicGameState{
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) throws SlickException {
         // collect commands
+        if(win) {
+            win = false;
+            stateBasedGame.enterState(Project2.CONGRATULATIONS);
+            return;
+        }
         if (init) {
             Input input = gameContainer.getInput();
             inputCommand = InputManager.ProcessInput(input, stateId);
@@ -734,6 +740,9 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                 case "LIVES":
                     playersLives = Integer.parseInt(tokens[1]);
                     break;
+                case "WIN":
+                    loadLevel(1);
+                    win = true;
                 default:
                     System.out.println("Client: unknown message received:"+msg);
                     break;

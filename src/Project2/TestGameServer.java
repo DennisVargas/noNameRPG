@@ -66,6 +66,7 @@ public class TestGameServer {
     private boolean livesChange = true;
     int activeLevel = 1;
     boolean levelTransition = false;
+    boolean win = false;
 
     //        map stuff
     public TiledMap map = null;
@@ -364,6 +365,9 @@ public class TestGameServer {
                 for (int i = 0; i < Players.size(); i++) {
                     if (CollisionManager.CheckHeroDestinationCollision(Players.get(i))) {
                         levelTransition = true;
+                    }
+                    if (CollisionManager.CheckHeroGoalCollision(Players.get(i))) {
+                        win = true;
                     }
                     if (Players.get(i).getName().equals(player)) {
                         // process movement based on input
@@ -767,6 +771,15 @@ public class TestGameServer {
                     Players.get(i).setWorldPosition(new Vector(87 + i, 78));
                 }
                 levelTransition = false;
+            }
+            if(win) {
+                String msg = "WIN ";
+                send(msg);
+                activeLevel = 1;
+                try{switchLevel();} catch (SlickException e){}
+                for (int i = 0; i < Players.size(); i++)
+                    Players.get(i).setWorldPosition(new Vector(mapX, mapY));
+                win = false;
             }
         }
     };
