@@ -1,0 +1,38 @@
+Project 2
+by
+Vannesa Farmer
+Tyler Petty
+Amy Phillips
+Dennis Vargas
+CS 447 Fall 2017
+
+Controls:
+Movement is controlled by WASD
+Attack (ranged and melee) is the up arrow
+
+Shortcuts:
+Dijkstra's displays (for hosting player only)
+1 = shows Dijkstra's tile costs
+2 = shows Dijkstra's path costs
+3 = removes Dijkstra's overlay
+F11 = gives 100 keys (can open all doors)
+F12 = goes to level 2
+
+Low-Bar Goals:
+ * Network with two players - complete
+ * Large Map - complete
+ * 2 Playable characters - complete
+ * 2 levels - complete
+ * Mob pathfinding - complete
+ * Four types of mobs with different toughness and abilities - complete
+ * Mob drops - money, power-ups, health - complete
+ * Money provides lives after a certain amount is gained - complete
+ * Destructible Object - complete
+
+High-Bar Goals:
+ * Moustaches & Hats - partially implemented: We used moustaches in the menus!
+
+Liscensing Terms:
+For the code and original art:
+    https://creativecommons.org/licenses/by-nc/4.0/
+All of the other art and music are the works of others and covered by their own licenses.
