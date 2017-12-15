@@ -668,6 +668,26 @@ public class TestGameServer {
                 String msg = "UPDTHLTH "+Players.get(bubbles).getName()
                         + " " + Players.get(bubbles).getHealth();
                 send(msg);
+
+                if(Players.get(bubbles).getCommand().equals(InputCommands.death)){
+                    System.out.println("Player lives: "+playersLives);
+                    if(playersLives > 0)
+                        Players.get(bubbles).setCommand(InputCommands.idle);
+                    if(Players.get(bubbles).getCommand().equals(InputCommands.idle)) {
+                        playersLives--;
+                        livesChange = true;
+                        System.out.println("Changed Command: " + Players.get(bubbles).getCommand());
+                        Players.get(bubbles).setHealth(1f);
+                    }
+
+                    System.out.println("server resurrect message: "+msg);
+                }
+                msg = "UPDT "+Players.get(bubbles).getName()+" "
+                        +Players.get(bubbles).getCommand()+" "
+                        +Players.get(bubbles).getWorldPositionX()
+                        +" "+Players.get(bubbles).getWorldPositionY();
+                send(msg);
+
                 //</editor-fold desc= "Player Update Health">
             }
             //</editor-fold desc= "for each player logged in">
