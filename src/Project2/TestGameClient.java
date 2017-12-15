@@ -286,6 +286,8 @@ public class TestGameClient extends BasicGameState{
             }
             if (input.isKeyPressed(Input.KEY_F12))
                 send("SKIP ALL");
+            if (input.isKeyPressed(Input.KEY_F11))
+                send("ADDKEYS ALL");
             float playerOffX = (float)Math.floor(Players.get(0).getWorldPositionX());
             float playerOffY = (float)Math.floor(Players.get(0).getWorldPositionY());
             Vector playerPosition = new Vector(playerOffX, playerOffY);

@@ -454,6 +454,9 @@ public class TestGameServer {
                 break;
             case "SKIP":
                 levelTransition = true;
+                break;
+            case "ADDKEYS":
+                playersKeys += 100;
             default:
 //                System.out.println("Server: unknown message received: " + msg);
                 break;
@@ -775,10 +778,6 @@ public class TestGameServer {
             if(win) {
                 String msg = "WIN ";
                 send(msg);
-                activeLevel = 1;
-                try{switchLevel();} catch (SlickException e){}
-                for (int i = 0; i < Players.size(); i++)
-                    Players.get(i).setWorldPosition(new Vector(mapX, mapY));
                 win = false;
             }
         }
