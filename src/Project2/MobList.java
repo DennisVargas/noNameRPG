@@ -443,7 +443,7 @@ public class MobList {
             mob = new Mob(new Vector(74.5f, 62.5f), 4, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(74f, 67f), 1, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
             mob = new Mob(new Vector(74f, 71f), 2, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
-            mob = new Mob(new Vector(72.5f, 71.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
+//            mob = new Mob(new Vector(72.5f, 71.5f), 3, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;
 
             // hallway from 4-2
             mob = new Mob(new Vector(78.5f, 27.5f), 4, mobName); Mobs.add(mob); mobNum++; mobName = "mob" + mobNum;

@@ -35,7 +35,8 @@
 - **[2]** Add art assets
 - **[9]** Add mob path finding
 - **[14]** Design and implement level 1 mob & item locations - waiting on item img
-- **[45]** set melee mob attacks to the attack timer
+- **[16]** Add money-to-lives system
+- **[11]** Add character death
 - **[13]** UI design (health for each player, life pool, collectible items) 
 
 
