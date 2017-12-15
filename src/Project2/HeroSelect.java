@@ -2,10 +2,7 @@ package Project2;
 
 import jig.ResourceManager;
 import jig.Vector;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -20,6 +17,8 @@ public class HeroSelect extends BasicGameState {
     private static final String rangedOn = "testAssets/ranged_2.png";
     private static final String backOffRsc = "testAssets/grey_back.png";
     private static final String backOnRsc = "testAssets/white_back.png";
+
+    private Image background;
 
     private InputManager.InputCommands inputCommand;
 
@@ -46,6 +45,8 @@ public class HeroSelect extends BasicGameState {
         ResourceManager.loadImage(rangedOn);
         ResourceManager.loadImage(backOffRsc);
         ResourceManager.loadImage(backOnRsc);
+
+        background = new Image(Project2.BACKGROUND);
     }
 
     @Override
@@ -60,9 +61,11 @@ public class HeroSelect extends BasicGameState {
 
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+        graphics.drawImage(background, 0, 0);
         meleeItem.renderItem(graphics);
         rangedItem.renderItem(graphics);
         backItem.renderItem(graphics);
+//        graphics.drawString("I'm here!", 100, 100);
     }
 
     @Override

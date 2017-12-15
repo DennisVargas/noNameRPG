@@ -4,13 +4,7 @@ package Project2;
 import jig.ResourceManager;
 import jig.Vector;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.TrueTypeFont;
+import org.newdawn.slick.*;
 import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -25,6 +19,7 @@ public class JoinGameMenu extends BasicGameState {
     private static final String backOnRsc = "testAssets/white_back.png";
     private static final String startOffRsc = "testAssets/start_game_grey.png";
     private static final String startOnRsc = "testAssets/start_game_white.png";
+    private Image background;
 
     private InputManager.InputCommands inputCommand;
 
@@ -50,6 +45,7 @@ public class JoinGameMenu extends BasicGameState {
         textfield.setMaxLength(15);
         textfield.setBackgroundColor(Color.darkGray);
         textfield.setFocus(true);
+        background = new Image(Project2.BACKGROUND);
     }
 
 
@@ -67,6 +63,7 @@ public class JoinGameMenu extends BasicGameState {
 
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
+        g.drawImage(background, 0, 0);
         g.drawString("Enter the server's IP address", 510,230);
         startItem.renderItem(g);
         backItem.renderItem(g);

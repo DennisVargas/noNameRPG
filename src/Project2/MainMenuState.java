@@ -2,10 +2,7 @@ package Project2;
 
 import jig.ResourceManager;
 import jig.Vector;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import static Project2.InputManager.InputCommands;
@@ -19,6 +16,7 @@ public class MainMenuState extends BasicGameState {
     private int stateId;
 
     private InputCommands inputCommand;
+    private Image background;
 
     //  MenuItem objects are a vector position and a animation
     private MenuItem newSingleItem; private MenuItem quitItem;
@@ -78,6 +76,7 @@ public class MainMenuState extends BasicGameState {
         ResourceManager.loadImage(quitOffImageRsc);
         ResourceManager.loadImage(quitOnImageRsc);
         menuChoice = MainMenuChoices.NewSingle;
+        background = new Image(Project2.BACKGROUND);
     }
 
     /**
@@ -107,6 +106,7 @@ public class MainMenuState extends BasicGameState {
      */
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+        graphics.drawImage(background, 0,0);
         newSingleItem.renderItem(graphics);
         newMultiItem.renderItem(graphics);
         quitItem.renderItem(graphics);

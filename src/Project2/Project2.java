@@ -86,6 +86,8 @@ public class Project2 extends StateBasedGame {
     public static final String KEYUIRSC = "resources/ui/keyUI.png";
     public static final String LIVESUIRSC = "resources/ui/livesUI.png";
 
+    public static final String BACKGROUND = "resources/Other/background.png";
+
     /**
      * instantiates the game name and then creates a
      * new instance of each of the states in the game.
@@ -167,6 +169,8 @@ public class Project2 extends StateBasedGame {
         ResourceManager.loadImage(MONEYUIRSC);
         ResourceManager.loadImage(KEYUIRSC);
         ResourceManager.loadImage(LIVESUIRSC);
+
+        ResourceManager.loadImage(BACKGROUND);
 
         if(this.testStatePlay) {
 //        test states init
