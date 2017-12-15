@@ -621,7 +621,9 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                     for (int i = 1; i < tokens.length; i += 5) {
     //                    System.out.println("UPDT loop: entering; length: " + tokens.length);
                         InputCommands input = getCommand(tokens[i + 1]);
-                        moveEntity(tokens[i], input, Float.parseFloat(tokens[i + 2]), Float.parseFloat(tokens[i + 3]), tokens[i + 4]);
+                        if(tokens[i].equals(Project2.getSettings().getIpAddress()))
+                            System.out.println("client Command: "+input);
+                        moveEntity(tokens[i], input, Float.parseFloat(tokens[i + 2]), Float.parseFloat(tokens[i + 3]));
     //                    System.out.println("UPDT loop: i+4 = " + (i+4) + "; tokens.length = " + tokens.length);
                     }
                     break;
