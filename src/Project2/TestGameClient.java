@@ -50,6 +50,7 @@ public class TestGameClient extends BasicGameState{
     private ArrayList<Mob>mobsToMove;
     private int playersMoney;
     private int playersKey;
+    private int playersLives = 3;
 
     private int temp = 0;
 
@@ -138,8 +139,7 @@ public class TestGameClient extends BasicGameState{
 //                    g.drawString("worldX: "+Players.get(i).getWorldPositionX() + "      worldY:"+Players.get(i).getWorldPositionY(), 200,230);
 //                    g.drawString("screenX: "+Players.get(i).getScreenPositionX() + " screenY:"+Players.get(i).getScreenPositionY(), 200,260);
 
-            g.drawString("Players Account: "+playersMoney, 200,200);
-            g.drawString("Players Keys: " + playersKey, 200, 210);
+
 //            g.drawString("displaceX: "+displaceX*-1
 //                    +" displaceY:"+displaceY*-1, 200,200);
 //            g.drawString("worldX: "+Players.get(0).getWorldPositionX()
@@ -227,6 +227,15 @@ public class TestGameClient extends BasicGameState{
                 g.fill(Players.get(i).getHealthBar());
 
             }
+            g.setColor(Color.black);
+            g.fillRect(0,0,125,40);
+            g.drawRect(0,0,125, 40);
+            g.setColor(Color.yellow);
+            g.drawString("Coins: "+playersMoney+"/500", 0,0);
+            g.setColor(Color.green);
+            g.drawString("Keys: " + playersKey, 0, 11);
+            g.setColor(Color.red);
+            g.drawString("Lives: " + playersLives, 0, 22);
         }
     }
 
@@ -622,7 +631,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                     break;
                 case "PCKUPM":
                     playersMoney = Integer.parseInt(tokens[1]);
-                    for (int i = 2; i < tokens.length; i++) {
+                    for (int i = 3; i < tokens.length; i++) {
                         for (int j = 0; j < MoneyDrops.size(); j++) {
                             if (MoneyDrops.get(j).getName().equals(tokens[i])) {
                                 MoneyDrops.remove(MoneyDrops.get(j));
@@ -688,6 +697,9 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                         Players.get(i).setWorldPosition(new Vector(87 + i, 78));
                     }
                     System.out.print("Done");
+                    break;
+                case "LIVES":
+                    playersLives = Integer.parseInt(tokens[1]);
                     break;
                 default:
                     System.out.println("Client: unknown message received:"+msg);
