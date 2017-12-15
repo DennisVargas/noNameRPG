@@ -18,7 +18,7 @@ public class KeyList {
         String keyName = "key" + keyNum;
         if (level == 1) {
             // Room 1
-            key = new Key(new Vector(62f, 105f), keyName, 1); keyNum++; keyName = "key" + keyNum;
+            key = new Key(new Vector(40f, 105f), keyName, 1); keyNum++; keyName = "key" + keyNum;
             Keys.add(key);
             key = new Key(new Vector(33f, 93f), keyName, 1); keyNum++; keyName = "key" + keyNum;
             Keys.add(key);
