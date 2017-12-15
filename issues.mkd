@@ -26,19 +26,20 @@
 - **[42]** let characters move in component direction not blocked when diagonal move
 - **[44]** trigger mob melee attacks when in range
 - **[43]** send Hero health messages
-
+- **[45]** set melee mob attacks to the attack timer
 ## Claimed Issues ##
 - **[2]** Add art assets
 - **[9]** Add mob path finding
 - **[14]** Design and implement level 1 mob & item locations - waiting on item img
-- **[45]** set melee mob attacks to the attack timer
+- **[16]** Add money-to-lives system
+- **[11]** Add character death
 - **[13]** UI design (health for each player, life pool, collectible items) 
 
 
 ## Open Issues ##
-- **[11]** Add character death
+
 - **[15]** Mob & destructible drop system
-- **[16]** Add money-to-lives system
+
 - **[18]** Splash screen & menu system for character selection and networking integration
 - **[19]** Level complete and win screens
 - **[20]** Add music and sound effects
