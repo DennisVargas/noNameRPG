@@ -583,7 +583,7 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
         if (msg.length() >= 0) {
             String[] tokens = msg.split(delims);
             String command = tokens[0];
-            System.out.println("Client " + msg);
+//            System.out.println("Client " + msg);
 
             switch (command) {
                 case "INIT":

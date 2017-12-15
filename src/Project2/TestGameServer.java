@@ -212,6 +212,7 @@ public class TestGameServer {
                 balls += " " + rm;
                 balls += " " + MobBalls.get(i).getWorldPositionX();
                 balls += " " + MobBalls.get(i).getWorldPositionY();
+                balls += " " + "DoesntMatter";
                 changes += balls;
                 MobBalls.remove(i);
             } else {
@@ -221,6 +222,7 @@ public class TestGameServer {
                 balls += " " + up;
                 balls += " " + MobBalls.get(i).getWorldPositionX();
                 balls += " " + MobBalls.get(i).getWorldPositionY();
+                balls += " " + "DoesntMatter";
                 changes += balls;
             }
         }
@@ -231,6 +233,7 @@ public class TestGameServer {
                 balls += " " + rm;
                 balls += " " + HeroBalls.get(i).getWorldPositionX();
                 balls += " " + HeroBalls.get(i).getWorldPositionY();
+                balls += " " + "DoesntMatter";
                 changes += balls;
                 HeroBalls.remove(i);
             } else {
@@ -240,6 +243,7 @@ public class TestGameServer {
                 balls += " " + up;
                 balls += " " + HeroBalls.get(i).getWorldPositionX();
                 balls += " " + HeroBalls.get(i).getWorldPositionY();
+                balls += " " + "DoesntMatter";
                 changes += balls;
             }
         }
@@ -383,6 +387,7 @@ public class TestGameServer {
                             newChange += " " + tokens[2];
                             newChange += " " + x;
                             newChange += " " + y;
+                            newChange += " " + "DoesntMatter";
 
                             changes += newChange;
                         }
@@ -522,6 +527,7 @@ public class TestGameServer {
                         newChange += " " + InputCommands.rm;
                         newChange += " " + Players.get(j).getWorldPositionX();
                         newChange += " " + Players.get(j).getWorldPositionY();
+                        newChange += " " + "DoesntMatter";
                         changes += newChange;
                         Players.remove(j);
                         System.out.println("Server removed player, player size = " + Players.size());
