@@ -199,6 +199,7 @@ public class TestGameServer {
         newChange += " " + idle;
         newChange += " " + hero.getWorldPositionX();
         newChange += " " + hero.getWorldPositionY();
+        newChange += " " + String.valueOf(type);
 
         changes += newChange;
     }
@@ -211,6 +212,7 @@ public class TestGameServer {
                 balls += " " + rm;
                 balls += " " + MobBalls.get(i).getWorldPositionX();
                 balls += " " + MobBalls.get(i).getWorldPositionY();
+                balls += " " + "DoesntMatter";
                 changes += balls;
                 MobBalls.remove(i);
             } else {
@@ -220,6 +222,7 @@ public class TestGameServer {
                 balls += " " + up;
                 balls += " " + MobBalls.get(i).getWorldPositionX();
                 balls += " " + MobBalls.get(i).getWorldPositionY();
+                balls += " " + "DoesntMatter";
                 changes += balls;
             }
         }
@@ -230,6 +233,7 @@ public class TestGameServer {
                 balls += " " + rm;
                 balls += " " + HeroBalls.get(i).getWorldPositionX();
                 balls += " " + HeroBalls.get(i).getWorldPositionY();
+                balls += " " + "DoesntMatter";
                 changes += balls;
                 HeroBalls.remove(i);
             } else {
@@ -239,6 +243,7 @@ public class TestGameServer {
                 balls += " " + up;
                 balls += " " + HeroBalls.get(i).getWorldPositionX();
                 balls += " " + HeroBalls.get(i).getWorldPositionY();
+                balls += " " + "DoesntMatter";
                 changes += balls;
             }
         }
@@ -254,6 +259,7 @@ public class TestGameServer {
             balls += " " + Mobs.get(i).getLastDirectionCommand();
             balls += " " + Mobs.get(i).getWorldPositionX();
             balls += " " + Mobs.get(i).getWorldPositionY();
+            balls += " " + "DoesntMatter";
             changes += balls;
         }
     }
@@ -268,6 +274,7 @@ public class TestGameServer {
             balls += " " + Players.get(i).getLastDirectionCommand();
             balls += " " + Players.get(i).getWorldPositionX();
             balls += " " + Players.get(i).getWorldPositionY();
+            balls += " " + "DoesntMatter";
             changes += balls;
         }
     }
@@ -380,6 +387,7 @@ public class TestGameServer {
                             newChange += " " + tokens[2];
                             newChange += " " + x;
                             newChange += " " + y;
+                            newChange += " " + "DoesntMatter";
 
                             changes += newChange;
                         }
@@ -466,6 +474,7 @@ public class TestGameServer {
             msg += " " + Players.get(i).getName();
             msg += " " + Float.toString(Players.get(i).getWorldPositionX());
             msg += " " + Float.toString(Players.get(i).getWorldPositionY());
+            msg += " " + Players.get(i).isRanged();
         }
         return msg;
     }
@@ -513,6 +522,7 @@ public class TestGameServer {
                         newChange += " " + InputCommands.rm;
                         newChange += " " + Players.get(j).getWorldPositionX();
                         newChange += " " + Players.get(j).getWorldPositionY();
+                        newChange += " " + "DoesntMatter";
                         changes += newChange;
                         Players.remove(j);
                         System.out.println("Server removed player, player size = " + Players.size());
@@ -640,6 +650,7 @@ public class TestGameServer {
                     mobChange += " " + Mobs.get(i).getCommand();
                     mobChange += " " + Mobs.get(i).getWorldPositionX();
                     mobChange += " " + Mobs.get(i).getWorldPositionY();
+                    mobChange += " " + Mobs.get(i).isRanged();
                     changes = changes.concat(mobChange);
                 }
 //                </editor-fold desc="iterate through the mobs">
