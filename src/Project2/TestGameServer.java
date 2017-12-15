@@ -62,6 +62,8 @@ public class TestGameServer {
     private String crateRemoval = "";
     int playersMoney;
     int playersKeys;
+    int playersLives;
+    private boolean livesChange;
     int activeLevel = 1;
     boolean levelTransition = false;
 
@@ -88,8 +90,9 @@ public class TestGameServer {
         NewKeyDrops = new ArrayList<Key>();
         playersMoney = 0;
         clients = new ArrayList<>();
-
+        playersLives = 0;
         playersKeys = 0;
+        livesChange = false;
         // Set game info based on what level was requested by host
         // TODO: have state_id set map level info - currently hardcoded to test state, but should have switch or series of if/thens
         if (stateId == 22) {
@@ -153,6 +156,7 @@ public class TestGameServer {
 //        clients = new ArrayList<>();
 
         playersKeys = 0;
+
         // Set game info based on what level was requested by host
         Mobs = moblist.getMobList(activeLevel);
         Doors = doorList.getDoorList(activeLevel);
@@ -389,6 +393,11 @@ public class TestGameServer {
                                     playersMoney += money.value;
                                     moneyPickupChanges += " " + money.getName();
                                     MoneyDrops.remove(MoneyDrops.get(j));
+                                    if(playersMoney >= 500) {
+                                        playersMoney -= 500;
+                                        playersLives += 1;
+                                        livesChange = true;
+                                    }
                                 }
                             }
                         }
@@ -691,6 +700,11 @@ public class TestGameServer {
             if (crateRemoval != "") {
                 String msg = "RMVC" + crateRemoval;
                 crateRemoval = "";
+                send(msg);
+            }
+            if (livesChange) {
+                String msg = "LIVES " + playersLives;
+                livesChange = false;
                 send(msg);
             }
             if (levelTransition) {
