@@ -36,3 +36,34 @@ Liscensing Terms:
 For the code and original art:
     https://creativecommons.org/licenses/by-nc/4.0/
 All of the other art and music are the works of others and covered by their own licenses.
+
+Art Sources:
+Mobs/Players:
+Pencil - Vannesa
+Agav - https://www.spriters-resource.com/pc_computer/ragnarokonline/sheet/42191/
+Crystal Buddy - https://www.spriters-resource.com/pc_computer/nuclearthrone/sheet/88434/
+Charme - https://www.spriters-resource.com/pc_computer/recettear/sheet/51930/
+Lilith - https://www.spriters-resource.com/pc_computer/bindingofisaacrebirth/sheet/76018/ 
+Wizhoo - https://www.spriters-resource.com/pc_computer/bindingofisaacrebirth/sheet/64502/
+
+Others:
+Menu_Background - Vannesa
+Bullet - Vannesa
+Congrats - Amy
+Crates - https://www.spriters-resource.com/pc_computer/hammerwatch/sheet/71295/
+Heart-Icon - Vannesa
+Key - http://photobucket.com/gallery/user/Flizia/media/bWVkaWFJZDoyMDI0OTUxOQ==/?ref=
+Potion - Vannesa
+money - https://opengameart.org/content/shiny-treasure-icons-16x16
+
+Music:
+Background Music - https://opengameart.org/content/a-tricky-puzzle-loop
+Enemy_dropped_coin - https://opengameart.org/content/coin-sounds-0
+
+Tile:
+Tileset - https://opengameart.org/content/dungeon-tileset
+
+Ui:
+coinUI - same as money
+keyUi - same as key
+livesUi- same as heart_icon
