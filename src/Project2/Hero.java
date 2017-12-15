@@ -112,9 +112,9 @@ public class Hero extends BasicBeing{
         this.walkUpAnim = new Animation(walking, 0,3,3,3,true,100,true);
         this.hitAnimRt = new Animation(walking, 0,4,1,4,true,100,true);
         this.hitAnimLt = new Animation(walking, 0,5,1,5,true,100,true);
-        this.idleAnimRt = new Animation(walking, 0,6,3,6,true,100,true);
-        idleAnimRt.setLooping(false);
-        this.idleAnimLt = new Animation(walking, 0,7,3,7,true,100,true);
+        this.idleAnimRt = new Animation(walking, 0,6,3,6,true,150,true);
+        idleAnimRt.setLooping(true);
+        this.idleAnimLt = new Animation(walking, 0,7,3,7,true,150,true);
         idleAnimLt.setLooping(true);
         this.deathAnim = new Animation(walking, 0,8,0,8,true,100,true);
         deathAnim.setLooping(true);
