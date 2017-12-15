@@ -56,7 +56,9 @@ public class TestGameClient extends BasicGameState{
     // MAP STUFF
     private double x, y;
     private int mapX, mapY;
+    public TiledMap map = null;
     public TiledMap map1 = null;
+    public TiledMap map2 = null;
 
 
     public TestGameClient(int state_id) {
@@ -84,6 +86,8 @@ public class TestGameClient extends BasicGameState{
 //        MoneyDrops = new ArrayList<>();
         Keys = Collections.synchronizedList(new ArrayList<Key>());
         screenCenter = (new Vector(container.getWidth()/2,container.getHeight()/2));
+        map1 = new TiledMap(Project2.LEVEL1RSC, Project2.TILESHEETRSC);
+        map2 = new TiledMap(Project2.LEVEL1RSC, Project2.TILESHEETRSC);
     }
 
     @Override
@@ -125,7 +129,7 @@ public class TestGameClient extends BasicGameState{
                     worldPosY = (int) Players.get(i).getWorldPositionY();
                     displaceX = (Players.get(i).getWorldPositionX() - worldPosX) * -32;
                     displaceY = (Players.get(i).getWorldPositionY() - worldPosY) * -32;
-                    map1.render((int)displaceX, (int)displaceY,
+                    map.render((int)displaceX, (int)displaceY,
                             (int)worldPosX, (int)worldPosY, (int)worldPosX+45, (int)worldPosY+30 );
 
 //                    g.drawString("player name: "+Players.get(i).getName(), 200,170);
@@ -355,9 +359,11 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
         keyList = new KeyList();
         crateList = new CrateList();
         // should match info switch statement in TestGameServer constructor
+//        map1 = new TiledMap(Project2.LEVEL1RSC, Project2.TILESHEETRSC);
         switch (level) {
             case 1:
-                map1 = new TiledMap(Project2.LEVEL1RSC, Project2.TILESHEETRSC);
+                map = map1;
+//                map1 = new TiledMap(Project2.LEVEL1RSC, Project2.TILESHEETRSC);
                 mapX = 45;
                 mapY = 100;
                 Mobs = moblist.getMobList(1);
@@ -367,7 +373,8 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                 mapping = Project2.settings.getTilemapping();
                 break;
             case 2:
-                map1 = new TiledMap(Project2.LEVEL2RSC, Project2.TILESHEETRSC);
+                map = map2;
+//                map1 = new TiledMap(Project2.LEVEL2RSC, Project2.TILESHEETRSC);
                 mapX = 86;
                 mapY = 78;
                 Mobs = moblist.getMobList(2);
