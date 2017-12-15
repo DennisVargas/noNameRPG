@@ -384,7 +384,7 @@ public class TestGameServer {
                         if(CollisionManager.CheckValidMove(Players.get(i))) {
                             // if movement was valid, add update to changes
                             String newChange = " " + player;
-                            newChange += " " + tokens[2];
+                            newChange += " " + Players.get(i).getCommand();
                             newChange += " " + x;
                             newChange += " " + y;
                             newChange += " " + "DoesntMatter";
