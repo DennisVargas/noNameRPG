@@ -2,10 +2,7 @@ package Project2;
 
 import jig.ResourceManager;
 import jig.Vector;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import static Project2.InputManager.InputCommands;
@@ -19,10 +16,11 @@ public class MainMenuState extends BasicGameState {
     private int stateId;
 
     private InputCommands inputCommand;
+    private Image background;
 
-//  MenuItem objects are a vector position and a animation
+    //  MenuItem objects are a vector position and a animation
     private MenuItem newSingleItem; private MenuItem quitItem;
-    private MenuItem newMultiItem; private MenuItem optionItem;
+    private MenuItem newMultiItem;
 
     public int getStateId() {
         return stateId;
@@ -33,16 +31,14 @@ public class MainMenuState extends BasicGameState {
      * useful when switching the current
      * selection from off to on.
      */
-    private enum MainMenuChoices {NewSingle, NewMulti, Options, Quit}
+    private enum MainMenuChoices {NewSingle, NewMulti, Quit}
     MainMenuChoices menuChoice;
 
-//  image resource file paths that will be passed to MenuItem() constructor
+    //  image resource file paths that will be passed to MenuItem() constructor
     private static String singlePlayerOffImageRsc = "testAssets/new_game3.png";
     private static String singlePlayerOnImageRsc = "testAssets/new_game4.png";
-    private static String multiPlayerOffImageRsc = "testAssets/new_game3.png";
-    private static String multiPlayerOnImageRsc = "testAssets/new_game4.png";
-    private static String optionsOffImageRsc = "testAssets/options3.png";
-    private static String optionsOnImageRsc = "testAssets/options4.png";
+    private static String multiPlayerOffImageRsc = "testAssets/multi_1.png";
+    private static String multiPlayerOnImageRsc = "testAssets/multi_2.png";
     private static String quitOffImageRsc = "testAssets/quit3.png";
     private static String quitOnImageRsc = "testAssets/quit4.png";
 
@@ -70,9 +66,6 @@ public class MainMenuState extends BasicGameState {
     /**
      * Initializes the <code>MainMenuState</code>; loads image resources,
      * sets the initial menu choice.
-     * @param gameContainer
-     * @param stateBasedGame
-     * @throws SlickException
      */
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) throws SlickException {
@@ -80,11 +73,10 @@ public class MainMenuState extends BasicGameState {
         ResourceManager.loadImage(singlePlayerOnImageRsc);
         ResourceManager.loadImage(multiPlayerOffImageRsc);
         ResourceManager.loadImage(multiPlayerOnImageRsc);
-        ResourceManager.loadImage(optionsOffImageRsc);
-        ResourceManager.loadImage(optionsOnImageRsc);
         ResourceManager.loadImage(quitOffImageRsc);
         ResourceManager.loadImage(quitOnImageRsc);
         menuChoice = MainMenuChoices.NewSingle;
+        background = new Image(Project2.BACKGROUND);
     }
 
     /**
@@ -92,22 +84,17 @@ public class MainMenuState extends BasicGameState {
      * Each menu choice is given a position, off image,
      * on image and a name. These are arguments to the <code>MenuItem</code>
      * constructor.
-     * @param container
-     * @param game
-     * @throws SlickException
      */
     @Override
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
-        newSingleItem = new MenuItem(new Vector(640f, 100f), singlePlayerOffImageRsc, singlePlayerOnImageRsc,"new-game-item");
-        newSingleItem.setItemOff();
-        newMultiItem = new MenuItem(new Vector(640f, 150f), multiPlayerOffImageRsc, multiPlayerOnImageRsc,"quit-item");
-        newMultiItem.setItemOn();
-        optionItem = new MenuItem(new Vector(640f, 200f), optionsOffImageRsc, optionsOnImageRsc,"quit-item");
-        optionItem.setItemOff();
-        quitItem = new MenuItem(new Vector(640f, 250f), quitOffImageRsc, quitOnImageRsc,"quit-item");
+        newSingleItem = new MenuItem(new Vector(640f, 250f), singlePlayerOffImageRsc, singlePlayerOnImageRsc,"new-game-item");
+        newSingleItem.setItemOn();
+        newMultiItem = new MenuItem(new Vector(640f, 300f), multiPlayerOffImageRsc, multiPlayerOnImageRsc,"quit-item");
+        newMultiItem.setItemOff();
+        quitItem = new MenuItem(new Vector(635f, 350f), quitOffImageRsc, quitOnImageRsc,"quit-item");
         quitItem.setItemOff();
-        menuChoice = MainMenuChoices.NewMulti;
+        menuChoice = MainMenuChoices.NewSingle;
     }
 
 
@@ -116,28 +103,20 @@ public class MainMenuState extends BasicGameState {
      * items in main menu. A string is drawn to screen showing the accurate
      * menu selection as opposed to the png currently being used which are
      * placeholders till menu art is complete.
-     * @param gameContainer
-     * @param stateBasedGame
-     * @param graphics
-     * @throws SlickException
      */
     @Override
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
+        graphics.drawImage(background, 0,0);
         newSingleItem.renderItem(graphics);
         newMultiItem.renderItem(graphics);
-        optionItem.renderItem(graphics);
         quitItem.renderItem(graphics);
-        graphics.drawString(String.valueOf(menuChoice), 200,125);
+//        graphics.drawString(String.valueOf(menuChoice), 200,125);
     }
 
 
     /**
      * processes input with InputManager then uses the results in the
      * <code>ProcessInputCommand()</code>.
-     * @param gameContainer
-     * @param stateBasedGame
-     * @param i
-     * @throws SlickException
      */
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
@@ -150,8 +129,6 @@ public class MainMenuState extends BasicGameState {
     /**
      * Swaps the MenuItem image and sets the current menu choice with up and down input commands,
      * confirms selection with 'hit' commands.
-     * @param inputCommand
-     * @param stateBasedGame
      */
     private void ProcessInputCommand(InputManager.InputCommands inputCommand, StateBasedGame stateBasedGame) {
         switch(inputCommand){
@@ -168,15 +145,10 @@ public class MainMenuState extends BasicGameState {
                         newMultiItem.setItemOff();
                         menuChoice = MainMenuChoices.NewSingle;
                         break;
-                    case Options:
-                        newMultiItem.setItemOn();
-                        optionItem.setItemOff();
-                        menuChoice = MainMenuChoices.NewMulti;
-                        break;
                     case Quit:
                         quitItem.setItemOff();
-                        optionItem.setItemOn();
-                        menuChoice = MainMenuChoices.Options;
+                        newMultiItem.setItemOn();
+                        menuChoice = MainMenuChoices.NewMulti;
                         break;
                     default:
                         break;
@@ -191,11 +163,6 @@ public class MainMenuState extends BasicGameState {
                         break;
                     case NewMulti:
                         newMultiItem.setItemOff();
-                        optionItem.setItemOn();
-                        menuChoice = MainMenuChoices.Options;
-                        break;
-                    case Options:
-                        optionItem.setItemOff();
                         quitItem.setItemOn();
                         menuChoice = MainMenuChoices.Quit;
                         break;
@@ -211,13 +178,14 @@ public class MainMenuState extends BasicGameState {
             case enter:
                 switch(menuChoice){
                     case NewSingle:
-                        stateBasedGame.enterState(Project2.NEWSINGLEMENUSTATE);
+                        Project2.settings.setHosting(false);
+                        Project2.settings.setJoining(false);
+                        Project2.settings.setserverIP("localhost");
+//                        stateBasedGame.enterState(Project2.CONGRATULATIONS);
+                        stateBasedGame.enterState(Project2.HEROSELECTSTATE);
                         break;
                     case NewMulti:
                         stateBasedGame.enterState(Project2.NEWMULTIMENUSTATE);
-                        break;
-                    case Options:
-                        stateBasedGame.enterState(Project2.OPTIONMENUSTATE);
                         break;
                     case Quit:
                         System.exit(0);

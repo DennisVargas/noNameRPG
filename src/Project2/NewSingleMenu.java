@@ -2,10 +2,7 @@ package Project2;
 
 import jig.ResourceManager;
 import jig.Vector;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -60,6 +57,7 @@ public class NewSingleMenu extends BasicGameState {
     public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) throws SlickException {
         backItem.renderItem(graphics);
         startGameItem.renderItem(graphics);
+        graphics.drawString("draw HERE", 100, 100);
     }
 
     @Override
@@ -91,7 +89,7 @@ public class NewSingleMenu extends BasicGameState {
                 switch(menuChoice){
                     case start:
 //                        stateBasedGame.enterState(Project2.GAMEPLAYSTATE);
-                        stateBasedGame.enterState(Project2.TESTSTATEBASICBEING);
+                        stateBasedGame.enterState(Project2.TESTGAMECLIENT);
                         break;
                     case back:
                         stateBasedGame.enterState(Project2.MAINMENUSTATE);

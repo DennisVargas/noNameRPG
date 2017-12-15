@@ -17,11 +17,12 @@ public class InputManager {
      * InputCommands to drive the BasicBeings.
      */
     public enum InputCommands {up, down, left, right, enter, idle, attack, back, hit,
-                                ulDiag, dlDiag, urDiag, drDiag, hitLt, hitRt, death}
+                                ulDiag, dlDiag, urDiag, drDiag, hitLt, hitRt, death, rm
+    }
 
 //  boolean that stores the value of when a GamePad button
 //  has been pressed once so that it will not repeat.
-    private static boolean buttonBeenPressed;
+    private static boolean buttonBeenPressed = false;
 
     /**
      * Based on the stateID current input key pressed returns a <code>InputCommands</code>.
@@ -36,16 +37,14 @@ public class InputManager {
      */
     public static InputCommands ProcessInput(Input input, int stateId) {
 //      if the stateId is equal to any of the menu states then ProcessMenuInput
-        if (stateId == Project2.MAINMENUSTATE || stateId == Project2.OPTIONMENUSTATE
-                || stateId == Project2.NEWSINGLEMENUSTATE|| stateId == Project2.NEWMULTIMENUSTATE) {
+        if (stateId == Project2.MAINMENUSTATE || stateId == Project2.HEROSELECTSTATE
+                || stateId == Project2.NEWSINGLEMENUSTATE || stateId == Project2.NEWMULTIMENUSTATE
+                || stateId == Project2.JOINGAMESTATE) {
             return ProcessMenuInput(input);
-        }
 //      if currently in the game state
-        else if(stateId == Project2.GAMEPLAYSTATE || stateId == Project2.TESTSTATEBASICBEING){
+        } else{
             return ProcessGamePlayInput(input);
         }
-        else
-            return InputCommands.idle;
     }
 
     /**
@@ -87,10 +86,14 @@ public class InputManager {
                     curCommand = right;
             }
 //            test for the attack action which stops movement.
-            if (input.isKeyDown(Input.KEY_UP)
-                    || input.isButton3Pressed(0)) {
-                curCommand = attack;}
-
+            if (input.isKeyPressed(Input.KEY_UP)
+                    || (input.isButton3Pressed(0))){
+                if(!buttonBeenPressed){
+                    buttonBeenPressed = true;
+                    curCommand = attack;
+                }
+            }else
+                buttonBeenPressed = false;
             return curCommand;
         }
     }
@@ -107,6 +110,10 @@ public class InputManager {
             return InputCommands.down;
         } else if (input.isKeyPressed(Input.KEY_UP)) {
             return up;
+        } else if (input.isKeyPressed(Input.KEY_LEFT)) {
+            return InputCommands.left;
+        } else if (input.isKeyPressed(Input.KEY_RIGHT)) {
+            return InputCommands.right;
         } else if (input.isKeyPressed(Input.KEY_ENTER)) {
             return InputCommands.enter;
         }

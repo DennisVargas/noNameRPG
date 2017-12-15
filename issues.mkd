@@ -7,29 +7,50 @@
 - **[3]** Build first level map with graphic tiles
 - **[21]** Build second level map
 - **[28]** Improve javadoc in BasicBeing class
+- **[30]** Create javadoc comments where missing
+- **[31]** Adjust BasicBeing Animations to match updated sprite sheet
+- **[32]** Update BasicBeing to have World Position and Screen Position Vectors
+- **[17]** Create a Hero Class with two character types
+- **[33]** javadoc update Hero, MovementCalc, BasicBeing classes.
+- **[8]** Add mob class that extends BasicBeing
+- **[6]** Client/server networking system
+- **[34]** BasicBeing/BasicBeing collisions
+- **[7]** Camera viewport that follows player
+- **[36]** Update Mobs in server and Update move entities in Client
+- **[35]** BasicBeing hit function reduces health
+- **[37]** Attacks cause damage
+- **[10]** Trigger Death Animations upon Death
+- **[40]** make dead beings walkable tiles.
+- **[12]** Add additional animated mob types 1 and hero type 1
+- **[29]** Create functional MenuItems in Multi-player Menu
+- **[42]** let characters move in component direction not blocked when diagonal move
+- **[44]** trigger mob melee attacks when in range
+- **[43]** send Hero health messages
+- **[40]** Add animated mob type 2
+- **[41]** Add animated mob type 4
+- **[22]** Design and implement level 2 mob & item locations
+- **[15]** Mob & destructible drop system
 
 ## Claimed Issues ##
 - **[2]** Add art assets
-- **[6]** Client/server networking system
-- **[7]** Camera viewport that follows player
-- **[30]** Create javadoc comments where missing
+- **[9]** Add mob path finding
+- **[14]** Design and implement level 1 mob & item locations - waiting on item img
+- **[16]** Add money-to-lives system
+- **[11]** Add character death
+- **[13]** UI design (health for each player, life pool, collectible items) 
+
 
 ## Open Issues ##
-- **[8]** Add first animated mob
-- **[9]** Add mob path finding
-- **[10]** Add mob death
-- **[11]** Add character death, basic lives counter, and game over screen
-- **[12]** Add additional animated mob types
-- **[13]** UI design (health for each player, life pool, collectible items)
-- **[14]** Design and implement level 1 mob & item locations
-- **[15]** Mob & destructible drop system
+- **[11]** Add character death
 - **[16]** Add money-to-lives system
-- **[17]** Add second character type
 - **[18]** Splash screen & menu system for character selection and networking integration
 - **[19]** Level complete and win screens
 - **[20]** Add music and sound effects
-- **[22]** Design and implement level 2 mob & item locations
-- **[23]** Add any missing mobs if less than four types implemented
+- **[23]** Add hero type melee animations
 - **[24]** Create functional MenuItem object in Single player menu
 - **[26]** Create functional MenuItems in Option Menu
-- **[29]** Create functional MenuItems in Multi-player Menu
+- **[38]** basic lives counter
+- **[39]** Create a game over screen
+
+
+
