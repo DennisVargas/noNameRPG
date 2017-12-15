@@ -292,7 +292,7 @@ public class BasicBeing extends Entity{
     }
 
     public boolean isRanged() {
-        return isRanged;
+        return this.isRanged;
     }
 
 
