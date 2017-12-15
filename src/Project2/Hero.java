@@ -22,7 +22,7 @@ public class Hero extends BasicBeing{
     private static final SpriteSheet meleeWalkingSheet = ResourceManager.getSpriteSheet(Project2.MELEEHEROWALKINGSHEETRSC,21,32);
     private static final SpriteSheet meleeAttackingSheet = ResourceManager.getSpriteSheet(Project2.MELEEHEROATTACKINGSHEETRSC,21,32);
     Rectangle healthBar;
-    int deathCounter = 0;
+    int deathCounter = -9999;
 
     /**
      * constructs a hero who is centered in screen position .
@@ -58,7 +58,39 @@ public class Hero extends BasicBeing{
 
     @Override
     public void setCommand(InputManager.InputCommands cmd) {
-        super.setCommand(cmd);
+//        System.out.println("Deathcounter: "+deathCounter);
+        if(!this.getCommand().equals(InputManager.InputCommands.death)) {
+            if (cmd.equals(InputManager.InputCommands.down)
+                    || cmd.equals(InputManager.InputCommands.up)
+                    || cmd.equals(InputManager.InputCommands.left)
+                    || cmd.equals(InputManager.InputCommands.right)
+                    || cmd.equals(InputManager.InputCommands.dlDiag)
+                    || cmd.equals(InputManager.InputCommands.drDiag)
+                    || cmd.equals(InputManager.InputCommands.ulDiag)
+                    || cmd.equals(InputManager.InputCommands.urDiag))
+                this.setLastDirectionCommand(cmd);
+            this.inputCommand = cmd;
+        }
+        else{
+            if(deathCounter == -9999)
+                deathCounter = 300;
+            if(isDeathTimerOver()) {
+                deathCounter = -9999;
+                this.inputCommand = cmd;
+            }
+        }
+    }
+
+    private boolean isDeathTimerOver() {
+        if(deathCounter <= 0){
+            return true;
+        }
+
+        else{
+            deathCounter--;
+            return false;
+        }
+
     }
 
     public void InitHealthBarRect() {
