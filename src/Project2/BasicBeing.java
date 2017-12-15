@@ -123,6 +123,8 @@ public class BasicBeing extends Entity{
                     setCurrentAnimation(idleAnimLt);
                 else if(currentAnim == walkRightAnim || currentAnim == hitAnimRt || currentAnim == walkUpAnim)
                     setCurrentAnimation(idleAnimRt);
+                else
+                    setCurrentAnimation(idleAnimLt);
                 break;
             case attack:
                 if(currentAnim == walkLeftAnim || currentAnim == idleAnimLt || currentAnim == walkDnAnim)
