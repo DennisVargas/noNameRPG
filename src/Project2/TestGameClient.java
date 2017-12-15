@@ -1,5 +1,6 @@
 package Project2;
 
+import jig.ResourceManager;
 import jig.Vector;
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.BasicGameState;
@@ -51,6 +52,8 @@ public class TestGameClient extends BasicGameState{
     private int playersMoney;
     private int playersKey;
     private int playersLives = 3;
+    public Music music;
+    public Sound coin;
 
     private int temp = 0;
 
@@ -75,6 +78,9 @@ public class TestGameClient extends BasicGameState{
 
     @Override
     public void init(GameContainer container, StateBasedGame stateBasedGame) throws SlickException {
+        music = new Music("resources/Sounds/background_music.wav");
+        coin = new Sound("resources/Sounds/enemy_dropped_coin2.wav");
+
         Players = Collections.synchronizedList(new ArrayList<Hero>());
         Mobs = Collections.synchronizedList(new ArrayList<>());
         MobBalls = new ArrayList<Ball>();
@@ -95,7 +101,8 @@ public class TestGameClient extends BasicGameState{
     public void enter(GameContainer container, StateBasedGame game) throws SlickException {
         super.enter(container, game);
         Players.clear();
-
+        coin.stop();
+        music.loop();
         if (!Project2.settings.getJoining()) { // launch server if hosting or singleplayer
             // SERVER STUFF (if client is running server)
             // TODO: determine level number and send as variable in place of stateId
@@ -228,14 +235,18 @@ public class TestGameClient extends BasicGameState{
 
             }
             g.setColor(Color.black);
-            g.fillRect(0,0,125,40);
-            g.drawRect(0,0,125, 40);
+            g.fillRect(0,0,80,50);
+            g.setColor(Color.white);
+            g.drawRect(0,0,80, 50);
             g.setColor(Color.yellow);
-            g.drawString("Coins: "+playersMoney+"/500", 0,0);
+            g.drawImage(ResourceManager.getImage(Project2.MONEYUIRSC),0,0);
+            g.drawString(playersMoney+"/500", 16,0);
             g.setColor(Color.green);
-            g.drawString("Keys: " + playersKey, 0, 11);
+            g.drawImage(ResourceManager.getImage(Project2.KEYUIRSC), 0, 18);
+            g.drawString(Integer.toString(playersKey), 16, 16);
             g.setColor(Color.red);
-            g.drawString("Lives: " + playersLives, 0, 22);
+            g.drawImage(ResourceManager.getImage(Project2.LIVESUIRSC),0,34);
+            g.drawString(Integer.toString(playersLives), 16, 32);
         }
     }
 
@@ -628,8 +639,10 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
                     break;
                 case "DROPM":
                     for (int i = 1; i < tokens.length; i++) {
-                        if (tokens[i].contains("money"))
+                        if (tokens[i].contains("money")) {
                             MoneyDrops.add(new Money(new Vector(Float.parseFloat(tokens[i + 1]), (Float.parseFloat(tokens[i + 2]))), tokens[i], Integer.parseInt(tokens[i + 3])));
+                            coin.play();
+                        }
                     }
                     break;
                 case "PCKUPM":

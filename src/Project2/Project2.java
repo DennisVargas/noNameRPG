@@ -81,6 +81,10 @@ public class Project2 extends StateBasedGame {
     public static final String LEVEL2RSC = "resources/Levels/Level2Remake.tmx";
     public static final String TILESHEETRSC = "resources/Levels/";
 
+    public static final String MONEYUIRSC = "resources/ui/coinUI.png";
+    public static final String KEYUIRSC = "resources/ui/keyUI.png";
+    public static final String LIVESUIRSC = "resources/ui/livesUI.png";
+
     /**
      * instantiates the game name and then creates a
      * new instance of each of the states in the game.
@@ -157,6 +161,10 @@ public class Project2 extends StateBasedGame {
         ResourceManager.loadImage(KEYSHEETRSC);
         ResourceManager.loadImage(POTION);
         ResourceManager.loadImage(CRATESHEETRSC);
+
+        ResourceManager.loadImage(MONEYUIRSC);
+        ResourceManager.loadImage(KEYUIRSC);
+        ResourceManager.loadImage(LIVESUIRSC);
 
         if(this.testStatePlay) {
 //        test states init
