@@ -597,7 +597,7 @@ public class TestGameServer {
                         command = Pathfinding.getPath((int) mobX, (int) mobY);
                         // if mob is melee or if mob is greater than 3 tiles away, set it's path
                         if (!Mobs.get(i).isRanged() || (!Pathfinding.rangedRange(playerPosition, cheesyMobs))) {
-                            if (Pathfinding.meleeRange(playerPosition, cheesyMobs)){Mobs.get(i).setCommand(InputCommands.attack);}
+                            if (Pathfinding.meleeRange(playerPosition, cheesyMobs)){Mobs.get(i).ProcessNextAnimation(InputCommands.attack);}
                             else Mobs.get(i).setCommand(getCommand(command));
                         } else {
                             // if mob is ranged and 3 or fewer tiles away, set to idle (so it stops and attacks)
