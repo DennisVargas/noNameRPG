@@ -37,6 +37,19 @@ public class Pathfinding {
         return false;
     }
 
+    public static boolean meleeRange(Vector player, Vector mob){
+        float playerXMin =  player.getX()-1;
+        float playerYMin = player.getY()-1;
+        float playerXMax = player.getX()+1;
+        float playerYMax = player.getY()+1;
+
+        if (mob.getX() >= playerXMin && mob.getX() <= playerXMax &&
+                mob.getY() >= playerYMin && mob.getY() <= playerYMax)
+            return true;
+
+        return false;
+    }
+
     public static void Dijkstra(Map tiles, Vector playerPosition){
         initialize(playerPosition.getX(), playerPosition.getY() );
         makeGraphCopy(tiles, playerPosition.getX(), playerPosition.getY());
