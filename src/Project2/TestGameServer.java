@@ -685,7 +685,8 @@ public class TestGameServer {
                 msg = "UPDT "+Players.get(bubbles).getName()+" "
                         +Players.get(bubbles).getCommand()+" "
                         +Players.get(bubbles).getWorldPositionX()
-                        +" "+Players.get(bubbles).getWorldPositionY();
+                        +" "+Players.get(bubbles).getWorldPositionY()
+                        +" "+"doesn'tMatter";
                 send(msg);
 
                 //</editor-fold desc= "Player Update Health">
