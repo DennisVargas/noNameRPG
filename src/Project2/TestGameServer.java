@@ -670,17 +670,17 @@ public class TestGameServer {
                 send(msg);
 
                 if(Players.get(bubbles).getCommand().equals(InputCommands.death)){
-                    System.out.println("Player lives: "+playersLives);
+//                    System.out.println("Player lives: "+playersLives);
                     if(playersLives > 0)
                         Players.get(bubbles).setCommand(InputCommands.idle);
                     if(Players.get(bubbles).getCommand().equals(InputCommands.idle)) {
                         playersLives--;
                         livesChange = true;
-                        System.out.println("Changed Command: " + Players.get(bubbles).getCommand());
+//                        System.out.println("Changed Command: " + Players.get(bubbles).getCommand());
                         Players.get(bubbles).setHealth(1f);
                     }
 
-                    System.out.println("server resurrect message: "+msg);
+//                    System.out.println("server resurrect message: "+msg);
                 }
                 msg = "UPDT "+Players.get(bubbles).getName()+" "
                         +Players.get(bubbles).getCommand()+" "
