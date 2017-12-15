@@ -333,6 +333,8 @@ private synchronized void moveEntity(String entity, InputCommands input, Float p
 //                        System.out.println("Client removed player, player size = " + Players.size());
                     }
                     else {
+//                        System.out.println("client:setcommand" + input);
+                        Players.get(i).setCommand(input);
                         Players.get(i).UpdateBeing(input, new Vector(posX, posY));
 //                        System.out.println("Client: updated player: " + entity + " to " + Float.toString(posX) + ", " + Float.toString(posY));
                     }
